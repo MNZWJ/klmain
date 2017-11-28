@@ -1,0 +1,68 @@
+server:
+  port: 8080
+#  context-path: /tst-api
+  session:
+    timeout: 14400
+spring:
+  #模板引擎
+  freemarker:
+    #关闭缓存
+    cache: false
+    charset: UTF-8
+    request-context-attribute: request
+    #模板加载的位置
+    template-loader-path: classpath:/templates
+    #前缀
+    suffix: .html
+
+  datasource:
+    name: CoalExam
+#    url: jdbc:mysql://10.206.1.248:3306/tst?allowMultiQueries=true
+#    username: root
+#    password: agy!tst2017S
+    url: jdbc:sqlserver://qdjxd.gnway.cc:11433; DatabaseName=kl-main
+    username: sa
+    password: sa
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    filters: stat
+    maxActive: 20
+    initialSize: 1
+    maxWait: 60000
+    minIdle: 1
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: select 'x'
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxOpenPreparedStatements: 20
+
+  http:
+    multipart:
+      max-file-size: 2048Mb
+      max-request-size: 2048Mb
+    converters:
+      preferred-json-mapper: fastjson
+  cache:
+      jcache:
+        config: classpath:ehcache.xml
+mybatis-plus:
+  mapper-locations: classpath*:com/example/**/mapper/xml/*.xml
+  typeAliasesPackage: com.example.**.entity
+#  type-handlers-package: ax.tst.handler
+  global-config:
+    id-type: 3
+    db-column-underline: false
+    refresh-mapper: true
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: true
+    lazyLoadingEnabled: true
+    multipleResultSetsEnabled: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+f4j:
+  sql-performance-scan: false
+  file-copy-file-store-root: C:/bzaq/file/
+

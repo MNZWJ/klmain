@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <#include "/Common/Layout.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="../../Scripts/bootstrap-table/bootstrap-table.min.css"/>
+    <link rel="stylesheet" href="../../Scripts/bootstrap-treeview/bootstrap-treeview.min.css"/>
+    <link rel="stylesheet" href="../../Scripts/bootstrape-select/css/bootstrap-select.min.css">
+    <script src="../../Scripts/bootstrap-table/bootstrap-table.min.js"></script>
+    <script src="../../Scripts/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+
+    <script src="../../ProjectScripts/SysOrganise/SysOrganise.js"></script>
+    <script src="../../Scripts/bootstrape-select/js/bootstrap-select.min.js"></script>
+    <script src="../../Scripts/bootstrape-select/js/i18n/defaults-zh_CN.js"></script>
+    <script src="../../Scripts/bootstrap-treeview/bootstrap-treeview.js"></script>
+    <style>
+        /*固定表格行高*/
+        .bootTableRow {
+            white-space: nowrap;
+            overflow: hidden;
+            height: 120px;
+            max-height: 120px;
+
+        }
+    </style>
+
+
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-3">
+
+            <div id="treeDiv" style="width: 99%;height: 100%;overflow-y: auto;box-shadow: 1px 1px 1px 1px #dddddd;">
+                <div id="tree">
+                </div>
+            </div>
+
+
+        </div>
+        <!--字典表格-->
+        <div class="col-xs-9">
+            <table id="sysorgTable" class="table  table-striped table-bordered table-hover">
+            </table>
+            <div id="sysorgToolbar" class="toolbar" role="toolbar">
+                <form class="form-inline" role="form">
+                    <div class="form-group">
+                        <label class="xs-only" for="searchName">名称：</label>
+                        <input type="text" class="form-control" id="searchName"
+                               placeholder="请输入名称">
+                    </div>
+                    <button class="btn btn-default" type="button" onclick="searchMenus()">
+                        <span class="glyphicon glyphicon-search" type="button"></span> 查询
+                    </button>
+                    <button class="btn btn-success" type="button" onclick="sysorgAdd()">
+                        <span class="glyphicon glyphicon-plus"></span> 新增
+                    </button>
+                    <button class="btn btn-warning" type="button" onclick="sysorgEdit()">
+                        <span class="glyphicon glyphicon-pencil"></span> 修改
+                    </button>
+                    <button class="btn btn-danger" type="button" onclick="sysorgDel()">
+                        <span class="glyphicon glyphicon-minus"></span> 删除
+                    </button>
+                    <!--<div class="btn-group" role="group">-->
+                        <!--<button class="btn btn-success" type="button" onclick="moveOrder('up')">-->
+                            <!--<span class="glyphicon glyphicon-arrow-up"></span> 上移-->
+                        <!--</button>-->
+                        <!--<button class="btn btn-success" type="button" onclick="moveOrder('down')">-->
+                            <!--<span class="glyphicon glyphicon-arrow-down"></span> 下移-->
+                        <!--</button>-->
+                    <!--</div>-->
+                </form>
+
+            </div>
+
+        </div>
+
+
+    </div>
+</div>
+<!--模态窗-->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop='static'
+     data-target=".bs-example-modal-lg">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel"></h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-8 col-xs-offset-2">
+                        <form id="sysorgForm">
+                            <input type="hidden" name="organiseId" id="organiseId">
+                            <input type="hidden" name="parentId" id="parentId">
+                            <input type="hidden" name="organiseCode" id="organiseCode">
+                            <div class="form-group">
+                                <label for="organiseName">组织机构名称</label>
+                                <input type="text" name="organiseName" class="form-control" id="organiseName"
+                                       placeholder="请输入组织机构名称">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="orgType" class="col-xs-10" style="padding-left: 0">组织机构类型</label>
+                                <select id="orgType" name="OrgType" class="selectpicker show-tick form-control"
+                                        data-live-search="false" data-live-search-style="begins" title="">
+
+                                </select>
+                            </div>
+
+
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="btn_save">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
