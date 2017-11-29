@@ -36,7 +36,7 @@ public class SysDictionaryController {
     @RequestMapping(value = "/Index",method= RequestMethod.GET)
     @ApiOperation(value = "获取数据字典页面")
     public String doView(){
-        return "Dictionary/Dictionary";
+        return "SysDictionary/Dictionary";
     }
 
     @ApiOperation(value = "获取字典列表")

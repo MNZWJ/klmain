@@ -86,7 +86,7 @@ public class SysMenuController {
     @ApiOperation(value = "获取菜单页面")
     @RequestMapping(value="/MenuView",method=RequestMethod.GET)
     public String doView () {
-        return "Menu/index";
+        return "SysMenu/index";
     }
 
     @ApiOperation(value = "菜单排序")
