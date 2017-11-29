@@ -1,8 +1,9 @@
 package ax.kl.web.controller;
 
 
-import ax.kl.entity.Menu;
+import ax.kl.entity.SysMenu;
 import ax.kl.entity.TreeModel;
+import ax.kl.service.SysMenuService;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.plugins.Page;
 import ax.f4j.model.JsonResult;
@@ -28,9 +29,9 @@ import java.util.Map;
 
 @RequestMapping("/menu")
 @Api(value = "/menu", tags = {"菜单"})
-public class MenuController {
+public class SysMenuController {
     @Autowired
-    ax.kl.service.MenuService MenuService;
+    SysMenuService SysMenuService;
 
 
     @ApiOperation(value = "获取菜单列表")
@@ -44,7 +45,7 @@ public class MenuController {
         page.setCurrent(pageNumber);
         page.setSize(pageSize);
 
-        Page<Menu> list = MenuService.GetMenuList(page,parentId,searchName);
+        Page<SysMenu> list = SysMenuService.GetMenuList(page,parentId,searchName);
         Map<String,Object> map=new HashMap<>();
         map.put("total",list.getTotal());
         map.put("rows",list.getRecords());
@@ -56,16 +57,16 @@ public class MenuController {
     @ResponseBody
     public List<TreeModel> getMenuTreeList() {
 
-        List<TreeModel> list = MenuService.getMenuTrueList();
+        List<TreeModel> list = SysMenuService.getMenuTrueList();
         return list;
     }
 
     @ApiOperation(value = "保存菜单")
     @RequestMapping(value = "/saveMenu", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult saveMenu(@RequestBody Menu menu) {
+    public JsonResult saveMenu(@RequestBody SysMenu menu) {
 
-        String MenuId=this.MenuService.saveOrUpdateMenu(menu);
+        String MenuId=this.SysMenuService.saveOrUpdateMenu(menu);
         return ResultUtil.success(MenuId);
     }
 
@@ -74,7 +75,7 @@ public class MenuController {
     @ResponseBody
     public JsonResult deleteMenus(@RequestParam String ids) {
         String[] idList= ids.split(",");
-        if(this.MenuService.deleteMenus(idList)==1){
+        if(this.SysMenuService.deleteMenus(idList)==1){
             return ResultUtil.success("111");
         }
         return ResultUtil.error(01,"字典下有子字典！");
@@ -94,8 +95,8 @@ public class MenuController {
     public JsonResult moveOrder(@RequestParam String type,@RequestParam String dataDictStr) {
 
         JSONObject jsonObject=JSONObject.parseObject(dataDictStr);
-        Menu menu=(Menu)JSONObject.toJavaObject(jsonObject,Menu.class);
-        String code= MenuService.moveOrder(type,menu);
+        SysMenu menu=(SysMenu)JSONObject.toJavaObject(jsonObject,SysMenu.class);
+        String code= SysMenuService.moveOrder(type,menu);
 
         if("0".equals(code)){
             return ResultUtil.error(00,"移动成功!");

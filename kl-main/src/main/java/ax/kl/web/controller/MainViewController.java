@@ -2,8 +2,8 @@ package ax.kl.web.controller;
 
 
 
-import ax.kl.entity.Menu;
-import ax.kl.service.MenuService;
+import ax.kl.entity.SysMenu;
+import ax.kl.service.SysMenuService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,14 +32,14 @@ public class MainViewController {
 
 
     @Autowired
-    MenuService MenuService;
+    SysMenuService SysMenuService;
 
     @ApiOperation(value = "获取主页面")
     @RequestMapping(value="/Index",method= RequestMethod.GET)
     public String doView (Model model) {
-        List<Menu> menuList=MenuService.GetMenusList();
-        List<Menu> rootMenu=menuList.stream().filter(s-> "1".equals(s.getMenuLevel())).collect(Collectors.toList());
-        Map<String,List<Menu>> secondMenu=menuList.stream().filter(s-> "2".equals(s.getMenuLevel())).collect(Collectors.groupingBy(Menu::getParentMenuId));
+        List<SysMenu> menuList= SysMenuService.GetMenusList();
+        List<SysMenu> rootMenu=menuList.stream().filter(s-> "1".equals(s.getMenuLevel())).collect(Collectors.toList());
+        Map<String,List<SysMenu>> secondMenu=menuList.stream().filter(s-> "2".equals(s.getMenuLevel())).collect(Collectors.groupingBy(SysMenu::getParentMenuId));
         model.addAttribute("rootMenu",rootMenu);
         model.addAttribute("secondMenu",secondMenu);
         return  "MainView/Index";

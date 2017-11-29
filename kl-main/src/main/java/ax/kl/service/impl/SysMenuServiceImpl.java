@@ -3,9 +3,9 @@ package ax.kl.service.impl;
 import ax.kl.entity.TreeModel;
 import com.baomidou.mybatisplus.plugins.Page;
 import ax.kl.common.TreeUtil;
-import ax.kl.entity.Menu;
-import ax.kl.mapper.MenuMapper;
-import ax.kl.service.MenuService;
+import ax.kl.entity.SysMenu;
+import ax.kl.mapper.SysMenuMapper;
+import ax.kl.service.SysMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,36 +21,36 @@ import java.util.UUID;
  */
 @Transactional
 @Service
-public class MenuServiceImpl implements MenuService {
+public class SysMenuServiceImpl implements SysMenuService {
 
     @Autowired
-    MenuMapper MenuMapper;
+    SysMenuMapper SysMenuMapper;
 
     @Override
-    public Page<Menu> GetMenuList(Page page,String parentId,String searchName) {
-        page.setRecords(MenuMapper.GetMenuList(page,parentId,searchName));
+    public Page<SysMenu> GetMenuList(Page page, String parentId, String searchName) {
+        page.setRecords(SysMenuMapper.GetMenuList(page,parentId,searchName));
         return page;
     }
     @Override
     public List<TreeModel> getMenuTrueList(){
-        return TreeUtil.getTree(MenuMapper.getMenuTreeList());
+        return TreeUtil.getTree(SysMenuMapper.getMenuTreeList());
     }
 
     @Override
-    public List<Menu> GetMenusList(){
-        return MenuMapper.GetMenusList();
+    public List<SysMenu> GetMenusList(){
+        return SysMenuMapper.GetMenusList();
     }
 
     @Override
-    public String  saveOrUpdateMenu(Menu menu) {
+    public String  saveOrUpdateMenu(SysMenu menu) {
         if("".equals(menu.getMenuId()) ||menu.getMenuId()==null){
             String MenuId= UUID.randomUUID().toString();
             menu.setMenuId(MenuId);
-            menu.setMenuOrder(Integer.toString(this.MenuMapper.getMaxOrder()));
-            this.MenuMapper.saveMenu(menu);
+            menu.setMenuOrder(Integer.toString(this.SysMenuMapper.getMaxOrder()));
+            this.SysMenuMapper.saveMenu(menu);
             return MenuId;
         }else{
-            this.MenuMapper.updateMenu(menu);
+            this.SysMenuMapper.updateMenu(menu);
             return "";
         }
 
@@ -59,9 +59,9 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public int deleteMenus(String[] list){
 
-        if(MenuMapper.getMenuType(list).size()==0)
+        if(SysMenuMapper.getMenuType(list).size()==0)
         {
-            this.MenuMapper.deleteMenus(list);
+            this.SysMenuMapper.deleteMenus(list);
             return 1;
         }
 
@@ -70,13 +70,13 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public String moveOrder(String type, Menu menu) {
-        List<Menu> menuList= MenuMapper.getOrder(menu.getParentMenuId(),type,menu.getMenuOrder());
+    public String moveOrder(String type, SysMenu menu) {
+        List<SysMenu> menuList= SysMenuMapper.getOrder(menu.getParentMenuId(),type,menu.getMenuOrder());
 
         if(menuList.size()>0){
 
-            Menu menuM=menuList.get(0);
-            MenuMapper.upDateOrderSort(menuM.getMenuId(),menu.getMenuOrder(),menu.getMenuId(),menuM.getMenuOrder());
+            SysMenu menuM=menuList.get(0);
+            SysMenuMapper.upDateOrderSort(menuM.getMenuId(),menu.getMenuOrder(),menu.getMenuId(),menuM.getMenuOrder());
 
 
             return "0";

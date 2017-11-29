@@ -2,7 +2,7 @@ package ax.kl.service;
 
 import ax.kl.entity.TreeModel;
 import com.baomidou.mybatisplus.plugins.Page;
-import ax.kl.entity.Menu;
+import ax.kl.entity.SysMenu;
 
 import java.util.List;
 
@@ -12,12 +12,12 @@ import java.util.List;
  * Date: Created in 11:01 2017/11/13
  * @Modified By:
  */
-public interface MenuService {
+public interface SysMenuService {
     /**
      * 获取菜单列表
      * @return
      */
-    Page<Menu> GetMenuList(Page page,String parentId,String searchName);
+    Page<SysMenu> GetMenuList(Page page, String parentId, String searchName);
 
     /**
      * 获取树列表
@@ -29,11 +29,11 @@ public interface MenuService {
      * 获取菜单列表
      * @return
      */
-    List<Menu> GetMenusList();
+    List<SysMenu> GetMenusList();
     /**
      * 新增或更新菜单
      */
-    String saveOrUpdateMenu( Menu menu);
+    String saveOrUpdateMenu( SysMenu menu);
 
     /**
      * 删除菜单
@@ -46,6 +46,6 @@ public interface MenuService {
      * @param menu
      * @return
      */
-    String moveOrder(String type,Menu menu);
+    String moveOrder(String type,SysMenu menu);
 
 }

@@ -17,7 +17,7 @@ import java.io.Serializable;
  */
 @Data
 @TableName("TB_SYS_MENUS")
-public class Menu extends Model<Menu>{
+public class SysMenu extends Model<SysMenu>{
 
 
     /**
