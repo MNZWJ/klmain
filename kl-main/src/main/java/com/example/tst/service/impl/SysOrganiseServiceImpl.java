@@ -38,10 +38,11 @@ public class SysOrganiseServiceImpl implements SysOrganiseService {
         return TreeUtil.getTree(sysOrganiseMapper.getSysOrganiseTreeList());
     }
 
+
     //新增或更新组织机构
     @Override
     public String updateOrAddSysOrganise(SysOrganise sysOrganise) {
-        if("".equals(sysOrganise.getOrganiseId()) ||sysOrganise.getOrganiseId()==null){
+        if(sysOrganise.getOrganiseId().equals("")||sysOrganise.getOrganiseId()==null){
             String organiseId= UUID.randomUUID().toString();
             sysOrganise.setOrganiseId(organiseId);
             sysOrganise.setShowOrder(sysOrganiseMapper.getMaxOrder());
@@ -84,5 +85,10 @@ public class SysOrganiseServiceImpl implements SysOrganiseService {
     @Override
     public List<DataDict> getDataDictByTypeId() {
         return dictionaryMapper.GetDictList(new Page(),"53",null);
+    }
+
+    @Override
+    public List<SysOrganise> getAllSysOrganises() {
+        return sysOrganiseMapper.getAllSysOrganises();
     }
 }

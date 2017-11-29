@@ -313,7 +313,7 @@ function formValidator() {
 }
 
 //按名称查询
-function searchMenus() {
+function searchSysorgs() {
     searchName = $("#searchName").val();
     $("#sysorgTable").bootstrapTable("refresh", {});
 }

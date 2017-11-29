@@ -1,12 +1,14 @@
 package com.example.tst.web.controller;
 
-import com.baomidou.mybatisplus.plugins.Page;
 import ax.f4j.model.JsonResult;
 import ax.f4j.model.ResultUtil;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.example.tst.entity.DataDict;
+import com.example.tst.entity.Menu;
 import com.example.tst.entity.SysOrganise;
 import com.example.tst.entity.TreeModel;
 import com.example.tst.service.SysOrganiseService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
+@Api(value="/SysOrganise", tags = {"组织机构维护"})
 @RequestMapping("/SysOrganise")
 public class SysOrganiseController {
 
@@ -26,8 +29,6 @@ public class SysOrganiseController {
     @RequestMapping(value = "/Index",method= RequestMethod.GET)
     @ApiOperation(value = "获取组织机构维护页面")
     public String doView(){
-
-
         return "SysOrganise/SysOrganise";
     }
 
@@ -37,7 +38,9 @@ public class SysOrganiseController {
     @ResponseBody
     public Map<String,Object> getSysOrganiseTreeList(){
         //获取组织机构类型
-        Map<String,Object> map=this.getType();
+        List<DataDict> lists= sysOrganiseService.getDataDictByTypeId();
+        Map<String,Object> map=new HashMap<>();
+        map.put("data",lists);
         List<TreeModel> tm=sysOrganiseService.getSysOrganiseTreeList();
         map.put("tm",tm);
         return map;
@@ -50,17 +53,6 @@ public class SysOrganiseController {
     public JsonResult updateOrAddSysOrganise(@RequestBody SysOrganise sysOrganise){
         String result=sysOrganiseService.updateOrAddSysOrganise(sysOrganise);
         return ResultUtil.success(result);
-    }
-
-
-    @RequestMapping(value = "/getType",method= RequestMethod.GET)
-    @ApiOperation(value = "列出组织类型")
-    @ResponseBody
-    public Map<String,Object> getType(){
-        List<DataDict> lists= sysOrganiseService.getDataDictByTypeId();
-        Map<String,Object> map=new HashMap<>();
-        map.put("data",lists);
-        return map;
     }
 
     @RequestMapping(value = "/deleteSysOrganise",method= RequestMethod.POST)

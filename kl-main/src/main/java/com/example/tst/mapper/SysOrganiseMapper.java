@@ -26,12 +26,13 @@ public interface SysOrganiseMapper {
     /**
      * 新增组织机构
      */
-    int  insertSysOrganise( SysOrganise sysOrganise);
+    int  insertSysOrganise(SysOrganise sysOrganise);
 
     /**
      * 获取组织机构序号
      */
     int  getMaxOrder();
+
 
     /**
      * 更新组织机构
@@ -70,5 +71,6 @@ public interface SysOrganiseMapper {
      */
     List<SysOrganise> getSysOrganiseType(String[] ids);
 
-
+    //获取所有组织机构
+    List<SysOrganise> getAllSysOrganises();
 }

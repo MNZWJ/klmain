@@ -41,4 +41,6 @@ public interface SysOrganiseService {
     //在字典中获取指定的typeId的数据
     List<DataDict> getDataDictByTypeId();
 
+    //获取所有的组织机构
+    List<SysOrganise> getAllSysOrganises();
 }
