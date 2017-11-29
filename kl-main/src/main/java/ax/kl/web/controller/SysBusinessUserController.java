@@ -35,7 +35,7 @@ public class SysBusinessUserController {
     @RequestMapping(value = "/Index",method= RequestMethod.GET)
     @ApiOperation(value = "获取人员维护页面")
     public String doView(){
-        return "BusinessUser/BusinessUser";
+        return "SysBusinessUser/BusinessUser";
     }
 
 
