@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 @CrossOrigin
-@RequestMapping("/BusinessUser")
+@RequestMapping("/SysBusinessUser")
 @Api(value = "/SysBusinessUser",tags ={"人员维护"})
 @Controller
 public class SysBusinessUserController {

@@ -26,7 +26,7 @@ import java.util.Map;
  */
 @CrossOrigin
 @Controller
-@RequestMapping("/Dictionary")
+@RequestMapping("/SysDictionary")
 @Api(value = "/SysDictionary",tags = {"数据字典"})
 public class SysDictionaryController {
 
