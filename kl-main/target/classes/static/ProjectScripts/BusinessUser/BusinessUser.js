@@ -101,7 +101,7 @@ $(function () {
         pageSize: 5,                       //每页的记录行数（*）
         pageList: [5,10, 25, 50, 100],        //可供选择的每页的行数（*）
         toolbar: '#userToolbar',                //工具按钮用哪个容器
-        clickToSelect: true,//是否启用点击选中行
+        clickToSelect: false,//是否启用点击选中行
         sidePagination: 'server',//'server'或'client'服务器端分页
         showRefresh: 'true',//是否显示 刷新按钮
         queryParams: queryParams,//返回到前台的参数集
@@ -270,7 +270,7 @@ $(function () {
 
                         closable: false, // <-- Default value is false
                         draggable: true, // <-- Default value is false
-                        buttonLabel: '确定', // <-- Default value is 'OK',
+                        buttonLabel: '确定' // <-- Default value is 'OK',
 
                     });
                 }
@@ -334,7 +334,7 @@ function formValidator() {
                     }
                 }
             },
-            //设置组织机构名称验证
+            //设置电话号码名称验证
             telephone: {
                 validators: {
                     notEmpty: {
@@ -370,7 +370,7 @@ function getPositionTypeList() {
     $("#positionId").selectpicker('refresh');
 }
 
-//新增组织机构
+//新增人员
 function userAdd() {
     var node = $("#tree").treeview('getSelected');
     //如果没有选中
@@ -494,7 +494,7 @@ function userEdit() {
 }
 
 /**
- * 删除字典
+ * 删除人员
  */
 function userDel() {
     var rows = $("#userTable").bootstrapTable("getSelections");//获取所有选中的行

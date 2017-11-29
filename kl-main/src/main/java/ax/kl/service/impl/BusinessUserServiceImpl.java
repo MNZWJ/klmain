@@ -45,7 +45,7 @@ public class BusinessUserServiceImpl implements BusinessUserService {
     @Transactional
     public String updateOrAddBusinessUser(HttpServletRequest request,BusinessUser businessUser) {
         //如果传来的对象没有userId，说明是添加数据
-        if(businessUser.getUserId().equals("")||businessUser.getUserId()==null){
+        if("".equals(businessUser.getUserId()) ||businessUser.getUserId()==null){
             //UUID码来创建ID
             String userId= UUID.randomUUID().toString();
             businessUser.setUserId(userId);

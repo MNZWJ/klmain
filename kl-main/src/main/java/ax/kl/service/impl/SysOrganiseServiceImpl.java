@@ -28,7 +28,7 @@ public class SysOrganiseServiceImpl implements SysOrganiseService {
     //获取组织机构列表
     @Override
     public Page<SysOrganise> getSysOrganiseList(Page page, String typeId, String searchName) {
-        page.setRecords(sysOrganiseMapper.getSysOrganiseList(page,typeId,searchName));
+        page.setRecords(sysOrganiseMapper.getSysOrganiseList(page, typeId, searchName));
         return page;
     }
 
@@ -42,14 +42,14 @@ public class SysOrganiseServiceImpl implements SysOrganiseService {
     //新增或更新组织机构
     @Override
     public String updateOrAddSysOrganise(SysOrganise sysOrganise) {
-        if(sysOrganise.getOrganiseId().equals("")||sysOrganise.getOrganiseId()==null){
-            String organiseId= UUID.randomUUID().toString();
+        if ("".equals(sysOrganise.getOrganiseId()) || sysOrganise.getOrganiseId() == null) {
+            String organiseId = UUID.randomUUID().toString();
             sysOrganise.setOrganiseId(organiseId);
             sysOrganise.setShowOrder(sysOrganiseMapper.getMaxOrder());
             sysOrganise.setIsDel("0");
             sysOrganiseMapper.insertSysOrganise(sysOrganise);
             return organiseId;
-        }else{
+        } else {
             sysOrganiseMapper.updateSysOrganise(sysOrganise);
             return "";
         }
@@ -59,7 +59,7 @@ public class SysOrganiseServiceImpl implements SysOrganiseService {
     @Override
     public int deleteSysOrganises(String[] ids) {
         //如果没有子节点
-        if(sysOrganiseMapper.getSysOrganiseType(ids).size()==0){
+        if (sysOrganiseMapper.getSysOrganiseType(ids).size() == 0) {
             sysOrganiseMapper.deleteSysOrganises(ids);
             return 1;
         }
@@ -84,7 +84,7 @@ public class SysOrganiseServiceImpl implements SysOrganiseService {
 
     @Override
     public List<DataDict> getDataDictByTypeId() {
-        return dictionaryMapper.GetDictList(new Page(),"53",null);
+        return dictionaryMapper.GetDictList(new Page(), "53", null);
     }
 
     @Override
