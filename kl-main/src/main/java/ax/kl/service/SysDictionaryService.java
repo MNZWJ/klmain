@@ -2,7 +2,7 @@ package ax.kl.service;
 
 import ax.kl.entity.TreeModel;
 import com.baomidou.mybatisplus.plugins.Page;
-import ax.kl.entity.DataDict;
+import ax.kl.entity.SysDataDict;
 
 import java.util.List;
 
@@ -13,12 +13,12 @@ import java.util.List;
  * Date: Created in 15:32 2017/11/17
  * @Modified By:
  */
-public interface DictionaryService {
+public interface SysDictionaryService {
 
     /**
      * 获取字典
      */
-    Page<DataDict> GetDictList(Page page,String typeId, String dictSearchName);
+    Page<SysDataDict> GetDictList(Page page, String typeId, String dictSearchName);
 
     /**
      * 获取字典树
@@ -30,7 +30,7 @@ public interface DictionaryService {
      * @param dataDict
      * @return
      */
-    String saveDict(DataDict dataDict);
+    String saveDict(SysDataDict dataDict);
 
     /**
      * 删除字典
@@ -43,6 +43,6 @@ public interface DictionaryService {
      * @param dataDict
      * @return
      */
-    String moveOrder(String type,DataDict dataDict);
+    String moveOrder(String type,SysDataDict dataDict);
 
 }

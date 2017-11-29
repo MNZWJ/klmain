@@ -1,6 +1,6 @@
 package ax.kl.mapper;
 
-import ax.kl.entity.Menu;
+import ax.kl.entity.SysMenu;
 import ax.kl.entity.TreeModel;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -16,12 +16,12 @@ import java.util.List;
  * @Modified By:
  */
 @Repository
-public interface MenuMapper extends BaseMapper<Menu> {
+public interface SysMenuMapper extends BaseMapper<SysMenu> {
 
     /**
      * 获取菜单
      */
-    List<Menu> GetMenuList(Page page,@Param("parentId") String parentId,@Param("searchName") String searchName);
+    List<SysMenu> GetMenuList(Page page, @Param("parentId") String parentId, @Param("searchName") String searchName);
 
 
     /**
@@ -34,11 +34,11 @@ public interface MenuMapper extends BaseMapper<Menu> {
      * 获取菜单列表
      * @return
      */
-    List<Menu> GetMenusList();
+    List<SysMenu> GetMenusList();
     /**
      * 新增菜单
      */
-    int  saveMenu( Menu menu);
+    int  saveMenu( SysMenu menu);
 
     /**
      * 获取菜单序号
@@ -48,7 +48,7 @@ public interface MenuMapper extends BaseMapper<Menu> {
     /**
      * 更新菜单
      */
-    int updateMenu(Menu menu);
+    int updateMenu(SysMenu menu);
 
     /**
      * 删除菜单
@@ -62,7 +62,7 @@ public interface MenuMapper extends BaseMapper<Menu> {
      * @param type
      * @return
      */
-    List<Menu> getOrder(@Param("parentId") String parentId, @Param("type") String type, @Param("menuOrder") String menuOrder);
+    List<SysMenu> getOrder(@Param("parentId") String parentId, @Param("type") String type, @Param("menuOrder") String menuOrder);
 
     /**
      * 进行排序
@@ -80,7 +80,7 @@ public interface MenuMapper extends BaseMapper<Menu> {
      * @param ids
      * @return
      */
-    List<Menu> getMenuType(String[] ids);
+    List<SysMenu> getMenuType(String[] ids);
 
 
 

@@ -1,12 +1,13 @@
 package ax.kl.web.controller;
 
-
-import ax.kl.entity.Menu;
+import ax.kl.entity.SysDataDict;
 import ax.kl.entity.TreeModel;
+import ax.kl.service.SysDictionaryService;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.plugins.Page;
 import ax.f4j.model.JsonResult;
 import ax.f4j.model.ResultUtil;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,23 +21,30 @@ import java.util.Map;
 /**
  * @Author: SuZhenpeng
  * Description:
- * Date: Created in 11:14 2017/11/13
+ * Date: Created in 14:18 2017/11/17
  * @Modified By:
  */
 @CrossOrigin
 @Controller
+@RequestMapping("/Dictionary")
+@Api(value = "/Dictionary",tags = {"数据字典"})
+public class SysDictionaryController {
 
-@RequestMapping("/menu")
-@Api(value = "/menu", tags = {"菜单"})
-public class MenuController {
     @Autowired
-    ax.kl.service.MenuService MenuService;
+    SysDictionaryService SysDictionaryService;
 
+    @RequestMapping(value = "/Index",method= RequestMethod.GET)
+    @ApiOperation(value = "获取数据字典页面")
+    public String doView(){
+        return "Dictionary/Dictionary";
+    }
 
-    @ApiOperation(value = "获取菜单列表")
-    @RequestMapping(value = "/menuList", method = RequestMethod.GET)
+    @ApiOperation(value = "获取字典列表")
+    @RequestMapping(value = "/getDictList", method = RequestMethod.GET)
     @ResponseBody
-    public Map<String,Object>  getMenuList(@RequestParam Map<String,String> paraMap,@RequestParam String parentId,@RequestParam String searchName) {
+    public Map<String,Object> getDictList(@RequestParam Map<String,String> paraMap, @RequestParam String typeId, @RequestParam String dictSearchName) {
+
+
 
         int pageSize=Integer.parseInt(paraMap.get("pageSize"));
         int pageNumber=Integer.parseInt(paraMap.get("pageNumber"));
@@ -44,58 +52,49 @@ public class MenuController {
         page.setCurrent(pageNumber);
         page.setSize(pageSize);
 
-        Page<Menu> list = MenuService.GetMenuList(page,parentId,searchName);
+        Page<SysDataDict> list = SysDictionaryService.GetDictList(page,typeId,dictSearchName);
         Map<String,Object> map=new HashMap<>();
         map.put("total",list.getTotal());
         map.put("rows",list.getRecords());
         return map ;
     }
 
-    @ApiOperation(value = "获取树列表")
-    @RequestMapping(value = "/getMenuTreeList", method = RequestMethod.POST)
+    @ApiOperation(value = "获取字典树")
+    @RequestMapping(value = "/getDictTreeList", method = RequestMethod.POST)
     @ResponseBody
-    public List<TreeModel> getMenuTreeList() {
-
-        List<TreeModel> list = MenuService.getMenuTrueList();
+    public List<TreeModel> getDictTreeList(){
+        List<TreeModel> list = SysDictionaryService.getDictTreeList();
         return list;
     }
 
-    @ApiOperation(value = "保存菜单")
-    @RequestMapping(value = "/saveMenu", method = RequestMethod.POST)
+    @ApiOperation(value = "保存字典")
+    @RequestMapping(value = "/saveDict", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult saveMenu(@RequestBody Menu menu) {
+    public JsonResult saveDict(@RequestBody SysDataDict dataDict) {
 
-        String MenuId=this.MenuService.saveOrUpdateMenu(menu);
-        return ResultUtil.success(MenuId);
+        String dictId=this.SysDictionaryService.saveDict(dataDict);
+        return ResultUtil.success(dictId);
     }
 
-    @ApiOperation(value = "删除菜单")
-    @RequestMapping(value = "/deleteMenus", method = RequestMethod.POST)
+    @ApiOperation(value = "删除字典")
+    @RequestMapping(value = "/deleteDicts", method = RequestMethod.POST)
     @ResponseBody
     public JsonResult deleteMenus(@RequestParam String ids) {
         String[] idList= ids.split(",");
-        if(this.MenuService.deleteMenus(idList)==1){
+        if(this.SysDictionaryService.deleteDicts(idList)==1){
             return ResultUtil.success("111");
         }
         return ResultUtil.error(01,"字典下有子字典！");
     }
 
-
-
-    @ApiOperation(value = "获取菜单页面")
-    @RequestMapping(value="/MenuView",method=RequestMethod.GET)
-    public String doView () {
-        return "Menu/index";
-    }
-
-    @ApiOperation(value = "菜单排序")
+    @ApiOperation(value = "字典排序")
     @RequestMapping(value = "/moveOrder", method = RequestMethod.POST)
     @ResponseBody
     public JsonResult moveOrder(@RequestParam String type,@RequestParam String dataDictStr) {
 
         JSONObject jsonObject=JSONObject.parseObject(dataDictStr);
-        Menu menu=(Menu)JSONObject.toJavaObject(jsonObject,Menu.class);
-        String code= MenuService.moveOrder(type,menu);
+        SysDataDict dataDict=(SysDataDict)JSONObject.toJavaObject(jsonObject,SysDataDict.class);
+        String code= SysDictionaryService.moveOrder(type,dataDict);
 
         if("0".equals(code)){
             return ResultUtil.error(00,"移动成功!");
@@ -105,5 +104,6 @@ public class MenuController {
 
         return ResultUtil.error(02,"当前已是最后一条数据！");
     }
+
 
 }

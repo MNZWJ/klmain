@@ -1,11 +1,11 @@
 package ax.kl.service.impl;
 
 import ax.kl.entity.SysOrganise;
-import ax.kl.service.BusinessUserService;
+import ax.kl.service.SysBusinessUserService;
 import com.baomidou.mybatisplus.plugins.Page;
-import ax.kl.entity.BusinessUser;
+import ax.kl.entity.SysBusinessUser;
 import ax.kl.entity.WorkTypeInfo;
-import ax.kl.mapper.BusinessUserMapper;
+import ax.kl.mapper.SysBusinessUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,16 +15,16 @@ import java.util.*;
 
 @Service
 
-public class BusinessUserServiceImpl implements BusinessUserService {
+public class SysBusinessUserServiceImpl implements SysBusinessUserService {
 
     @Autowired
-    private BusinessUserMapper businessUserMapper;
+    private SysBusinessUserMapper sysBusinessUserMapper;
 
 
     //获取岗位类型
     @Override
     public List<WorkTypeInfo> getWorkTypeInfo() {
-        return businessUserMapper.getWorkTypeInfo();
+        return sysBusinessUserMapper.getWorkTypeInfo();
     }
 
     //显示人员列表
@@ -37,27 +37,27 @@ public class BusinessUserServiceImpl implements BusinessUserService {
 //        //将获取的节点ID集合转成数组
 //        String[] arrId= (String[]) ids.toArray();
         //获取对应的人员列表
-        page.setRecords(businessUserMapper.getBusinessUserList(page,typeCode,searchName));
+        page.setRecords(sysBusinessUserMapper.getBusinessUserList(page,typeCode,searchName));
         return page;
     }
 
     @Override
     @Transactional
-    public String updateOrAddBusinessUser(HttpServletRequest request,BusinessUser businessUser) {
+    public String updateOrAddBusinessUser(HttpServletRequest request,SysBusinessUser businessUser) {
         //如果传来的对象没有userId，说明是添加数据
         if("".equals(businessUser.getUserId()) ||businessUser.getUserId()==null){
             //UUID码来创建ID
             String userId= UUID.randomUUID().toString();
             businessUser.setUserId(userId);
-            BusinessUser user= (BusinessUser) request.getSession().getAttribute("user");
+            SysBusinessUser user= (SysBusinessUser) request.getSession().getAttribute("user");
             businessUser.setCreateDeptId(user==null?"0000":user.getDeptId());
             businessUser.setCreateUserId(user==null?"0000":user.getUserId());
             //添加数据
-            businessUserMapper.insertBusinessUser(businessUser);
+            sysBusinessUserMapper.insertBusinessUser(businessUser);
             return userId;
         }else{
             //有UserId，说明是更新数据
-            businessUserMapper.updateBusinessUser(businessUser);
+            sysBusinessUserMapper.updateBusinessUser(businessUser);
             return "";
         }
     }
@@ -66,7 +66,7 @@ public class BusinessUserServiceImpl implements BusinessUserService {
     @Transactional
     public void deleteBusinessUser(String[] idLists) {
         //直接删除
-        businessUserMapper.deleteBusinessUser(idLists);
+        sysBusinessUserMapper.deleteBusinessUser(idLists);
     }
 
 

@@ -1,6 +1,6 @@
 package ax.kl.service;
 
-import ax.kl.entity.DataDict;
+import ax.kl.entity.SysDataDict;
 import ax.kl.entity.SysOrganise;
 import ax.kl.entity.TreeModel;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -38,7 +38,7 @@ public interface SysOrganiseService {
 //    String moveOrder(String type,SysOrganise sysOrganise);
 
     //在字典中获取指定的typeId的数据
-    List<DataDict> getDataDictByTypeId();
+    List<SysDataDict> getDataDictByTypeId();
 
     //获取所有的组织机构
     List<SysOrganise> getAllSysOrganises();

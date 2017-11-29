@@ -13,7 +13,7 @@ import lombok.Data;
  */
 @Data
 @TableName("TB_SYS_DATADICT")
-public class DataDict {
+public class SysDataDict {
 
     @TableId("DictId")
     private String dictId;
