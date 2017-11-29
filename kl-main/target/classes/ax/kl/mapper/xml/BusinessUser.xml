@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="ax.kl.mapper.BusinessUserMapper">
+<mapper namespace="ax.kl.mapper.SysBusinessUserMapper">
 
 
     <!--加载列表-->
@@ -11,7 +11,7 @@
     </select>
 
     <!--根据机构查询人员列表-->
-    <select id="getBusinessUserList" resultType="ax.kl.entity.BusinessUser">
+    <select id="getBusinessUserList" resultType="ax.kl.entity.SysBusinessUser">
         SELECT UserId as userId,UserName as userName,LoginName as loginName,DeptId as deptId,
                 CreateUserId as createUserId,CreateDeptId as createDeptId,CreateTime as createTime,
                 Sex as sex,WorkNum as workNum,DeptCode as deptCode,PositionId as positionId,

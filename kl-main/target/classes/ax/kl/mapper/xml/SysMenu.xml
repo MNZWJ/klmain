@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ax.kl.mapper.SysMenuMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="ax.kl.entity.SysMenu">
+        <id column="MenuId" property="MenuId"/>
+        <result column="ParentMenuId" property="ParentMenuId"/>
+        <result column="URL" property="URL"/>
+        <result column="MenuName" property="MenuName"/>
+        <result column="MenuOrder" property="MenuOrder"/>
+        <result column="MenuLevel" property="MenuLevel"/>
+    </resultMap>
+
+    <select id="GetMenuList" resultMap="BaseResultMap">
+        SELECT * FROM TB_SYS_MENUS WHERE ParentMenuId=#{parentId}
+        <if test="searchName != null or searchName !='' ">
+            AND MenuName LIKE CONCAT(CONCAT('%',#{searchName}),'%')
+        </if>
+
+        ORDER BY MenuOrder
+    </select>
+
+    <select id="getMenuTreeList" resultType="ax.kl.entity.TreeModel">
+        SELECT MenuId AS id,ParentMenuId as parentId,MenuName AS text FROM  TB_SYS_MENUS ORDER BY MenuOrder
+    </select>
+
+    <select id="GetMenusList" resultMap="BaseResultMap">
+        SELECT * FROM  TB_SYS_MENUS ORDER BY MenuOrder
+    </select>
+
+    <insert id="saveMenu" parameterType="ax.kl.entity.SysMenu">
+        insert into TB_SYS_MENUS(MenuId, ParentMenuId,URL,MenuName,MenuOrder,MenuLevel)
+          values(NEWID(), #{ParentMenuId},#{URL},#{MenuName},#{MenuOrder},#{MenuLevel})
+    </insert>
+
+    <select id="getMaxOrder" resultType="int">
+        SELECT CASE WHEN MAX(MenuOrder) IS null THEN 0 ELSE MAX(MenuOrder)+1 END FROM TB_SYS_MENUS
+    </select>
+
+    <update id="updateMenu" parameterType="ax.kl.entity.SysMenu">
+        UPDATE TB_SYS_MENUS SET URL=#{URL},MenuName=#{MenuName},MenuLevel=#{MenuLevel} WHERE MenuId=#{MenuId}
+    </update>
+
+    <delete id="deleteMenus">
+        DELETE FROM TB_SYS_MENUS WHERE MenuId in
+
+        <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+
+            #{item}
+
+        </foreach>
+    </delete>
+
+
+    <!--获取排序-->
+    <select id="getOrder" resultMap="BaseResultMap">
+
+        SELECT * FROM TB_SYS_MENUS WHERE ParentMenuId=#{parentId}
+
+        <choose>
+            <when test=" type=='up'">
+                AND MenuOrder &lt; #{menuOrder} ORDER BY MenuOrder DESC
+            </when>
+            <otherwise>
+                AND MenuOrder &gt; #{menuOrder} ORDER BY MenuOrder
+            </otherwise>
+        </choose>
+
+
+    </select>
+
+    <!--排序-->
+    <update id="upDateOrderSort">
+        UPDATE TB_SYS_MENUS SET MenuOrder=#{menuOrder1} WHERE  MenuId=#{menuId1}
+        UPDATE TB_SYS_MENUS SET MenuOrder=#{menuOrder2} WHERE  MenuId=#{menuId2}
+    </update>
+
+    <!--获取子菜单-->
+    <select id="getMenuType" resultMap="BaseResultMap">
+        SELECT * FROM TB_SYS_MENUS WHERE ParentMenuId in
+
+        <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+
+            #{item}
+
+        </foreach>
+    </select>
+
+</mapper>

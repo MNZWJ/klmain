@@ -22,7 +22,7 @@ import java.util.Map;
 
 @CrossOrigin
 @RequestMapping("/BusinessUser")
-@Api(value = "/BusinessUser",tags ={"人员维护"})
+@Api(value = "/SysBusinessUser",tags ={"人员维护"})
 @Controller
 public class SysBusinessUserController {
 
