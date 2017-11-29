@@ -19,7 +19,7 @@
         SELECT OrganiseId,OrganiseName,ParentId,ShowOrder,IsDel,
                 OrganiseCode,iconField,OrganiseLevel,OrgType
 
-        FROM TB_SYS_Organise o
+        FROM TB_SYS_Organise
         WHERE IsDel='0'
 
         <choose>
@@ -33,6 +33,16 @@
         </if>
 
         ORDER BY ShowOrder
+    </select>
+
+    <!--获取所有组织机构-->
+    <select id="getAllSysOrganises" resultMap="BaseResultMap">
+        SELECT OrganiseId,OrganiseName,ParentId,ShowOrder,IsDel,
+                OrganiseCode,iconField,OrganiseLevel,OrgType
+
+        FROM TB_SYS_Organise
+        WHERE IsDel='0'
+
     </select>
 
     <!--加载组织机构树-->
