@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="ProjectModuleManager">
-    <modules>
-      <module fileurl="file://$PROJECT_DIR$/f4j/f4j-spring-boot-starter.iml" filepath="$PROJECT_DIR$/f4j/f4j-spring-boot-starter.iml" />
-      <module fileurl="file://$PROJECT_DIR$/kl-main/kl-main.iml" filepath="$PROJECT_DIR$/kl-main/kl-main.iml" />
-    </modules>
-  </component>
-</project>
