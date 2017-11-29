@@ -3,7 +3,7 @@ package ax.kl.mapper;
 import ax.kl.entity.TreeModel;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.baomidou.mybatisplus.plugins.Page;
-import ax.kl.entity.DataDict;
+import ax.kl.entity.SysDataDict;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -16,12 +16,12 @@ import java.util.List;
  * @Modified By:
  */
 @Repository
-public interface DictionaryMapper extends BaseMapper<DataDict> {
+public interface SysDictionaryMapper extends BaseMapper<SysDataDict> {
 
     /**
      * 获取字典
      */
-    List<DataDict> GetDictList(Page page, @Param("typeId") String typeId, @Param("dictSearchName") String dictSearchName);
+    List<SysDataDict> GetDictList(Page page, @Param("typeId") String typeId, @Param("dictSearchName") String dictSearchName);
 
 
     /**
@@ -39,14 +39,14 @@ public interface DictionaryMapper extends BaseMapper<DataDict> {
      * @param dataDict
      * @return
      */
-    int saveDict(DataDict dataDict);
+    int saveDict(SysDataDict dataDict);
 
     /**
      * 更新字典
      * @param dataDict
      * @return
      */
-    int updateDict(DataDict dataDict);
+    int updateDict(SysDataDict dataDict);
 
     /**
      * 删除字典
@@ -60,7 +60,7 @@ public interface DictionaryMapper extends BaseMapper<DataDict> {
      * @param ids
      * @return
      */
-    List<DataDict> getDictType(String[] ids);
+    List<SysDataDict> getDictType(String[] ids);
 
     /**
      * 获取是否有排序序号
@@ -68,7 +68,7 @@ public interface DictionaryMapper extends BaseMapper<DataDict> {
      * @param type
      * @return
      */
-    List<DataDict> getOrder(@Param("typeId") String typeId,@Param("type") String type,@Param("dictOrder") String dictOrder);
+    List<SysDataDict> getOrder(@Param("typeId") String typeId, @Param("type") String type, @Param("dictOrder") String dictOrder);
 
     /**
      * 进行排序

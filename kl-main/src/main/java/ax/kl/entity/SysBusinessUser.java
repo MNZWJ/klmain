@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 @TableName("TB_SYS_BUSINESSUSER")
 @ApiModel(value = "人员维护")
-public class BusinessUser {
+public class SysBusinessUser {
 
     @TableId("UserId")
     @ApiModelProperty(value = "身份证号")

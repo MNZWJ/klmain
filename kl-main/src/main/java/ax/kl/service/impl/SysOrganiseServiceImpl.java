@@ -1,9 +1,9 @@
 package ax.kl.service.impl;
 
-import ax.kl.entity.DataDict;
+import ax.kl.entity.SysDataDict;
 import ax.kl.entity.SysOrganise;
 import ax.kl.entity.TreeModel;
-import ax.kl.mapper.DictionaryMapper;
+import ax.kl.mapper.SysDictionaryMapper;
 import ax.kl.mapper.SysOrganiseMapper;
 import ax.kl.service.SysOrganiseService;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -23,7 +23,7 @@ public class SysOrganiseServiceImpl implements SysOrganiseService {
     private SysOrganiseMapper sysOrganiseMapper;
 
     @Autowired
-    private DictionaryMapper dictionaryMapper;
+    private SysDictionaryMapper sysDictionaryMapper;
 
     //获取组织机构列表
     @Override
@@ -83,8 +83,8 @@ public class SysOrganiseServiceImpl implements SysOrganiseService {
 //    }
 
     @Override
-    public List<DataDict> getDataDictByTypeId() {
-        return dictionaryMapper.GetDictList(new Page(),"53",null);
+    public List<SysDataDict> getDataDictByTypeId() {
+        return sysDictionaryMapper.GetDictList(new Page(),"53",null);
     }
 
     @Override

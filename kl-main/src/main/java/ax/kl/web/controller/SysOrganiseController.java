@@ -4,7 +4,7 @@ import ax.kl.entity.SysOrganise;
 import ax.f4j.model.JsonResult;
 import ax.f4j.model.ResultUtil;
 import com.baomidou.mybatisplus.plugins.Page;
-import ax.kl.entity.DataDict;
+import ax.kl.entity.SysDataDict;
 import ax.kl.entity.TreeModel;
 import ax.kl.service.SysOrganiseService;
 import io.swagger.annotations.Api;
@@ -37,7 +37,7 @@ public class SysOrganiseController {
     @ResponseBody
     public Map<String,Object> getSysOrganiseTreeList(){
         //获取组织机构类型
-        List<DataDict> lists= sysOrganiseService.getDataDictByTypeId();
+        List<SysDataDict> lists= sysOrganiseService.getDataDictByTypeId();
         Map<String,Object> map=new HashMap<>();
         map.put("data",lists);
         List<TreeModel> tm=sysOrganiseService.getSysOrganiseTreeList();

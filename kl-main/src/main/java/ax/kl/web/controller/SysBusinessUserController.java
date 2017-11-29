@@ -2,11 +2,11 @@ package ax.kl.web.controller;
 
 import ax.kl.entity.SysOrganise;
 import ax.kl.entity.TreeModel;
-import ax.kl.service.BusinessUserService;
+import ax.kl.service.SysBusinessUserService;
 import ax.f4j.model.JsonResult;
 import ax.f4j.model.ResultUtil;
 import com.baomidou.mybatisplus.plugins.Page;
-import ax.kl.entity.BusinessUser;
+import ax.kl.entity.SysBusinessUser;
 import ax.kl.entity.WorkTypeInfo;
 import ax.kl.service.SysOrganiseService;
 import io.swagger.annotations.Api;
@@ -24,13 +24,13 @@ import java.util.Map;
 @RequestMapping("/BusinessUser")
 @Api(value = "/BusinessUser",tags ={"人员维护"})
 @Controller
-public class BusinessUserController {
+public class SysBusinessUserController {
 
     @Autowired
     private SysOrganiseService sysOrganiseService;
 
     @Autowired
-    private BusinessUserService businessUserService;
+    private SysBusinessUserService sysBusinessUserService;
 
     @RequestMapping(value = "/Index",method= RequestMethod.GET)
     @ApiOperation(value = "获取人员维护页面")
@@ -49,7 +49,7 @@ public class BusinessUserController {
         //获取组织机构树
         List<TreeModel> tm=sysOrganiseService.getSysOrganiseTreeList();
         //获取岗位类型
-        List<WorkTypeInfo> workTypeInfos=businessUserService.getWorkTypeInfo();
+        List<WorkTypeInfo> workTypeInfos= sysBusinessUserService.getWorkTypeInfo();
         //获取所有的可显的组织机构信息
         List<SysOrganise> sysOrganises=sysOrganiseService.getAllSysOrganises();
         map.put("syss",sysOrganises);
@@ -72,7 +72,7 @@ public class BusinessUserController {
         page.setCurrent(pageNumber);
         page.setSize(pageSize);
         //根据好多的id和searchName来进行条件查询
-        Page<SysOrganise> list = businessUserService.getBusinessUserList(page,typeCode,searchName);
+        Page<SysOrganise> list = sysBusinessUserService.getBusinessUserList(page,typeCode,searchName);
         Map<String,Object> map=new HashMap<>();
         map.put("total",list.getTotal());
         map.put("rows",list.getRecords());
@@ -84,8 +84,8 @@ public class BusinessUserController {
     @RequestMapping(value = "/updateOrAddBusinessUser",method= RequestMethod.POST)
     @ApiOperation(value = "保存数据")
     @ResponseBody
-    public JsonResult updateOrAddBusinessUser(HttpServletRequest request, @RequestBody BusinessUser businessUser){
-        String result=businessUserService.updateOrAddBusinessUser(request,businessUser);
+    public JsonResult updateOrAddBusinessUser(HttpServletRequest request, @RequestBody SysBusinessUser businessUser){
+        String result= sysBusinessUserService.updateOrAddBusinessUser(request,businessUser);
         return ResultUtil.success(result);
     }
 
@@ -96,7 +96,7 @@ public class BusinessUserController {
     public JsonResult deleteBusinessUser(@RequestParam String ids){
         String[] idLists=ids.split(",");
         //直接删除
-        this.businessUserService.deleteBusinessUser(idLists);
+        this.sysBusinessUserService.deleteBusinessUser(idLists);
         return ResultUtil.success(00);
     }
 }

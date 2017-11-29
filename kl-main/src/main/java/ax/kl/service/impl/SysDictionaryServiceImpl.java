@@ -1,9 +1,9 @@
 package ax.kl.service.impl;
 
 import ax.kl.common.TreeUtil;
-import ax.kl.entity.DataDict;
+import ax.kl.entity.SysDataDict;
 import ax.kl.entity.TreeModel;
-import ax.kl.service.DictionaryService;
+import ax.kl.service.SysDictionaryService;
 import com.baomidou.mybatisplus.plugins.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,10 +21,10 @@ import java.util.UUID;
  */
 @Transactional//事务控制
 @Service
-public class DictionaryServiceImpl  implements DictionaryService {
+public class SysDictionaryServiceImpl implements SysDictionaryService {
 
     @Autowired
-    ax.kl.mapper.DictionaryMapper DictionaryMapper;
+    ax.kl.mapper.SysDictionaryMapper SysDictionaryMapper;
 
     /**
      * 加载列表
@@ -34,8 +34,8 @@ public class DictionaryServiceImpl  implements DictionaryService {
      * @return
      */
     @Override
-    public Page<DataDict> GetDictList(Page page, String typeId, String dictSearchName) {
-        page.setRecords(DictionaryMapper.GetDictList(page,typeId,dictSearchName));
+    public Page<SysDataDict> GetDictList(Page page, String typeId, String dictSearchName) {
+        page.setRecords(SysDictionaryMapper.GetDictList(page,typeId,dictSearchName));
         return page;
     }
 
@@ -45,7 +45,7 @@ public class DictionaryServiceImpl  implements DictionaryService {
      */
     @Override
     public List<TreeModel> getDictTreeList() {
-        return TreeUtil.getTree(DictionaryMapper.getDictTreeList());
+        return TreeUtil.getTree(SysDictionaryMapper.getDictTreeList());
     }
 
     /**
@@ -53,17 +53,17 @@ public class DictionaryServiceImpl  implements DictionaryService {
      * @param dataDict
      */
     @Override
-    public String saveDict(DataDict dataDict) {
+    public String saveDict(SysDataDict dataDict) {
 
         if(dataDict.getDictId()==null|| "".equals(dataDict.getDictId())){
             String dictId=UUID.randomUUID().toString();
             dataDict.setDictId(dictId);
-            dataDict.setDictOrder(Integer.toString(DictionaryMapper.getMaxOrder()));
+            dataDict.setDictOrder(Integer.toString(SysDictionaryMapper.getMaxOrder()));
             dataDict.setIsDel("0");
-            DictionaryMapper.saveDict(dataDict);
+            SysDictionaryMapper.saveDict(dataDict);
             return dictId;
         }else{
-            DictionaryMapper.updateDict(dataDict);
+            SysDictionaryMapper.updateDict(dataDict);
             return "";
         }
 
@@ -72,9 +72,9 @@ public class DictionaryServiceImpl  implements DictionaryService {
 
     @Override
     public int deleteDicts(String[] ids) {
-        if(DictionaryMapper.getDictType(ids).size()==0)
+        if(SysDictionaryMapper.getDictType(ids).size()==0)
         {
-            DictionaryMapper.deleteDicts(ids);
+            SysDictionaryMapper.deleteDicts(ids);
             return 1;
         }
 
@@ -82,14 +82,14 @@ public class DictionaryServiceImpl  implements DictionaryService {
     }
 
     @Override
-    public String moveOrder(String type, DataDict dataDict) {
+    public String moveOrder(String type, SysDataDict dataDict) {
 
-        List<DataDict> dataList=DictionaryMapper.getOrder(dataDict.getTypeId(),type,dataDict.getDictOrder());
+        List<SysDataDict> dataList= SysDictionaryMapper.getOrder(dataDict.getTypeId(),type,dataDict.getDictOrder());
 
         if(dataList.size()>0){
 
-            DataDict data=dataList.get(0);
-            DictionaryMapper.upDateOrderSort(dataDict.getDictId(),data.getDictOrder(),data.getDictId(),dataDict.getDictOrder());
+            SysDataDict data=dataList.get(0);
+            SysDictionaryMapper.upDateOrderSort(dataDict.getDictId(),data.getDictOrder(),data.getDictId(),dataDict.getDictOrder());
 
 
             return "0";

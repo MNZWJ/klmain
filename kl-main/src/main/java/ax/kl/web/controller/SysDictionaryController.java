@@ -1,7 +1,8 @@
 package ax.kl.web.controller;
 
-import ax.kl.entity.DataDict;
+import ax.kl.entity.SysDataDict;
 import ax.kl.entity.TreeModel;
+import ax.kl.service.SysDictionaryService;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.plugins.Page;
 import ax.f4j.model.JsonResult;
@@ -27,10 +28,10 @@ import java.util.Map;
 @Controller
 @RequestMapping("/Dictionary")
 @Api(value = "/Dictionary",tags = {"数据字典"})
-public class DictionaryController {
+public class SysDictionaryController {
 
     @Autowired
-    ax.kl.service.DictionaryService DictionaryService;
+    SysDictionaryService SysDictionaryService;
 
     @RequestMapping(value = "/Index",method= RequestMethod.GET)
     @ApiOperation(value = "获取数据字典页面")
@@ -51,7 +52,7 @@ public class DictionaryController {
         page.setCurrent(pageNumber);
         page.setSize(pageSize);
 
-        Page<DataDict> list = DictionaryService.GetDictList(page,typeId,dictSearchName);
+        Page<SysDataDict> list = SysDictionaryService.GetDictList(page,typeId,dictSearchName);
         Map<String,Object> map=new HashMap<>();
         map.put("total",list.getTotal());
         map.put("rows",list.getRecords());
@@ -62,16 +63,16 @@ public class DictionaryController {
     @RequestMapping(value = "/getDictTreeList", method = RequestMethod.POST)
     @ResponseBody
     public List<TreeModel> getDictTreeList(){
-        List<TreeModel> list = DictionaryService.getDictTreeList();
+        List<TreeModel> list = SysDictionaryService.getDictTreeList();
         return list;
     }
 
     @ApiOperation(value = "保存字典")
     @RequestMapping(value = "/saveDict", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult saveDict(@RequestBody DataDict dataDict) {
+    public JsonResult saveDict(@RequestBody SysDataDict dataDict) {
 
-        String dictId=this.DictionaryService.saveDict(dataDict);
+        String dictId=this.SysDictionaryService.saveDict(dataDict);
         return ResultUtil.success(dictId);
     }
 
@@ -80,7 +81,7 @@ public class DictionaryController {
     @ResponseBody
     public JsonResult deleteMenus(@RequestParam String ids) {
         String[] idList= ids.split(",");
-        if(this.DictionaryService.deleteDicts(idList)==1){
+        if(this.SysDictionaryService.deleteDicts(idList)==1){
             return ResultUtil.success("111");
         }
         return ResultUtil.error(01,"字典下有子字典！");
@@ -92,8 +93,8 @@ public class DictionaryController {
     public JsonResult moveOrder(@RequestParam String type,@RequestParam String dataDictStr) {
 
         JSONObject jsonObject=JSONObject.parseObject(dataDictStr);
-        DataDict dataDict=(DataDict)JSONObject.toJavaObject(jsonObject,DataDict.class);
-        String code= DictionaryService.moveOrder(type,dataDict);
+        SysDataDict dataDict=(SysDataDict)JSONObject.toJavaObject(jsonObject,SysDataDict.class);
+        String code= SysDictionaryService.moveOrder(type,dataDict);
 
         if("0".equals(code)){
             return ResultUtil.error(00,"移动成功!");
