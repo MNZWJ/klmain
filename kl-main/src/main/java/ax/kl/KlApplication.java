@@ -10,9 +10,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableCaching
 @EnableTransactionManagement
 @MapperScan(basePackages = {"ax.kl.**.mapper"})
-public class TstApplication {
+public class KlApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TstApplication.class, args);
+		SpringApplication.run(KlApplication.class, args);
 	}
 }
