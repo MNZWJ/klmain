@@ -49,9 +49,9 @@ spring:
       jcache:
         config: classpath:ehcache.xml
 mybatis-plus:
-  mapper-locations: classpath*:com/example/**/mapper/xml/*.xml
-  typeAliasesPackage: com.example.**.entity
-#  type-handlers-package: ax.tst.handler
+  mapper-locations: classpath*:ax/kl/**/mapper/xml/*.xml
+  typeAliasesPackage: ax.kl.**.entity
+#  type-handlers-package: ax.kl.handler
   global-config:
     id-type: 3
     db-column-underline: false
