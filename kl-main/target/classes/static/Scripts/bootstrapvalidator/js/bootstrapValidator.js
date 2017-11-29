@@ -758,7 +758,7 @@ if (typeof jQuery === 'undefined') {
          * Check whether or not a field option is enabled
          *
          * @param {String} field The field name
-         * @param {String} option The option name, "verbose", "autoFocus", for example
+         * @param {String} option The option name, "verbose", "autoFocus", for kl
          * @returns {Boolean}
          */
         _isOptionEnabled: function(field, option) {
@@ -1587,7 +1587,7 @@ if (typeof jQuery === 'undefined') {
 
         /**
          * Some validators have option which its value is dynamic.
-         * For example, the zipCode validator has the country option which might be changed dynamically by a select element.
+         * For kl, the zipCode validator has the country option which might be changed dynamically by a select element.
          *
          * @param {jQuery|String} field The field name or element
          * @param {String|Function} option The option which can be determined by:
