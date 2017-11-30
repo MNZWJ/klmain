@@ -1,52 +1,21 @@
 //存放树节点对应的OrganiseId值
 var typeId = "";
 //存放树节点对应的OrganiseCode的值
-var typeCode="";
+var typeCode = "";
 //存放模糊查找的条件
 var searchName = "";
 //存放树节点
 var treeNode = "";
 //存放显示的岗位类型字符串
-var pType="";
+var pType = "";
 //存放显示的部门类型字符串
-var sType="";
-//存放岗位类型所有对象
-var positionTypes={};
+var sType = "";
 //存放所有可显组织机构
-var sysOrgs={};
+var sysOrgs = {};
 //存放所有用户
-var users=[];
+var users = [];
 
-//查看人员信息
-function look(obj){
-    // var obj=JSON.parse(JSON.stringify(aa));
-    //清空表单
-    $(':input', '#userForm')
-        .not(':button, :submit, :reset')
-        .val('')
-        .removeAttr('checked')
-        .removeAttr('selected');
-
-    //初始化下拉列表
-    getPositionTypeList();
-
-    $.each(users, function (i,n) {
-        if(n.userId==obj){
-            $('#positionId').selectpicker('val', n.positionId);
-            $('#sex').selectpicker('val', n.sex);
-            $("#userName").val(n.userName);
-            $("#telephone").val(n.telephone);
-            return false;
-        }
-    });
-
-
-    $("#myModelLabel").text("查看");
-    $('#myModel').modal('show');
-    $("#myModel").find('input').attr('readonly',true);
-    $("#myModel").find('select').attr("disabled","disabled")
-    $("#btn_save").hide();
-}
+var loginNameG="";
 
 //开启页面直接加载
 $(function () {
@@ -74,18 +43,17 @@ $(function () {
                     $("#searchName").val('');//清空查询框
                     typeId = data.id;
                     typeCode = data.code;
-                    $("#userTable").bootstrapTable("refresh", {query: {typeId: data.id,typeCode:data.code}})
+                    $("#userTable").bootstrapTable("refresh", {query: {typeId: data.id, typeCode: data.code}})
                 }
             });
             //获取点击的树的id和code
             typeId = result.tm[0].id;
-            typeCode=result.tm[0].code;
+            typeCode = result.tm[0].code;
             treeNode = $("#tree").treeview("getNodes", typeId);
             $("#tree").treeview("selectNode", [treeNode[0]]);
-            //为岗位类型附上初值
-            positionTypes=result.data;
+
             //为组组织机构列表附上初值
-            sysOrgs=result.syss;
+            sysOrgs = result.syss;
         }
     });
 
@@ -99,7 +67,7 @@ $(function () {
         paginationLoop: 'true',//启用分页条无限循环功能
         pageNumber: 1,                       //初始化加载第一页，默认第一页
         pageSize: 5,                       //每页的记录行数（*）
-        pageList: [5,10, 25, 50, 100],        //可供选择的每页的行数（*）
+        pageList: [5, 10, 25, 50, 100],        //可供选择的每页的行数（*）
         toolbar: '#userToolbar',                //工具按钮用哪个容器
         clickToSelect: false,//是否启用点击选中行
         sidePagination: 'server',//'server'或'client'服务器端分页
@@ -110,6 +78,7 @@ $(function () {
         sortStable: true,//设置为 true 将获得稳定的排序，我们会添加_position属性到 row 数据中。
         selectItemName: 'state',
         idField: 'userId',
+        uniqueId:'userId',
         rowStyle: function () {//自定义行样式
             return "bootTableRow";
         },
@@ -125,11 +94,12 @@ $(function () {
 
             });
         },
-        onClickRow:function(row, $element){
+        onClickRow: function (row, $element) {
 
             $("#userTable").bootstrapTable("uncheckAll");
-            $("#userTable").bootstrapTable("checkBy",{field:'userId',values:[row.userId]})
+            $("#userTable").bootstrapTable("checkBy", {field: 'userId', values: [row.userId]})
         },
+
         columns: [
             {
                 title: '序号',
@@ -150,10 +120,10 @@ $(function () {
                 title: '姓名',
                 halign: 'center',
                 align: 'center',
-                width: '20%',
-                formatter:function(value,rowData,rowIndex){
+                width: '35%',
+                formatter: function (value, rowData, rowIndex) {
                     users.push(rowData);
-                    return "<a href='javascript:look(\""+rowData.userId+"\")'>"+value+"</a>";
+                    return "<a href='javascript:look(\""+rowData.userId+"\")'>" + value + "</a>";
                 }
             },
             {
@@ -161,7 +131,7 @@ $(function () {
                 title: '性别',
                 halign: 'center',
                 align: 'center',
-                width: '10%',
+                width: '20%',
                 formatter: function (value, row, index) {
                     if (value == "1") {
                         return "男";
@@ -178,11 +148,11 @@ $(function () {
                 title: '部门',
                 halign: 'center',
                 align: 'center',
-                width: '30%',
+                width: '40%',
                 formatter: function (value, row, index) {
-                    $.each(sysOrgs,function(i,n){
-                        if(value==n.organiseId){
-                            sType=n.organiseName;
+                    $.each(sysOrgs, function (i, n) {
+                        if (value == n.organiseId) {
+                            sType = n.organiseName;
 
                         }
                     });
@@ -190,28 +160,9 @@ $(function () {
                     return sType;
 
                 }
-            },{
-
-                field: 'positionId',
-                title: '岗位',
-                halign: 'center',
-                align: 'center',
-                width: '60%',
-                formatter: function (value, row, index) {
-                    $.each(positionTypes,function(i,q){
-                        if(value==q.id){
-                            pType=q.workTypeName;
-
-                        }
-                    });
-                    //返回对应类型名
-                    return pType;
-
-                }
             }
         ]
     });
-
 
 
     formValidator();
@@ -230,6 +181,41 @@ $(function () {
             $.each(buList, function () {
                 bu[this.name] = this.value
             });
+            var flag=true;
+            if(loginNameG!=$("#loginName").val()){
+                $.ajax({
+                    type:'post',
+                    url:'/SysBusinessUser/checkLoginName',
+                    async:false,
+                    data:{loginName:$("#loginName").val()},
+                    success:function (result) {
+                        if(result.obj){
+
+                            flag=true;
+                        }else{
+                            BootstrapDialog.alert({
+                                title: "提示",
+                                message: "登录名已存在！",
+                                size: BootstrapDialog.SIZE_SMALL,
+                                type: BootstrapDialog.TYPE_WARNING, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+
+                                //回调函数
+                                callback: function () {
+
+
+                                }
+                            });
+                            flag=false;
+                        }
+                    }
+                });
+            }
+
+
+            if(flag==false){
+                return false;
+            }
+
 
             $.ajax({
                 type: 'post',
@@ -288,6 +274,13 @@ $(function () {
             .removeAttr('selected');
         $("#userForm").data('bootstrapValidator').destroy();
         $('#userForm').data('bootstrapValidator', null);
+
+        $("#myModel").find('input').attr('readonly', false);
+        $("#myModel").find('select').removeAttr("disabled");
+        $("#btn_save").show();
+        $('#sex').selectpicker('refresh');
+        $("#isLogin").removeAttr("disabled");
+        $("#login").hide();
         formValidator();
     });
 
@@ -337,9 +330,7 @@ function formValidator() {
             //设置电话号码名称验证
             telephone: {
                 validators: {
-                    notEmpty: {
-                        message: '电话不能为空'
-                    },
+
                     regexp: {
                         regexp: /^1([3578]\d|4[57])\d{8}$/,
                         message: '请正确填写您的手机号码'
@@ -357,24 +348,14 @@ function searchUsers() {
     $("#userTable").bootstrapTable("refresh", {});
 }
 
-//获取下拉岗位类型列表
-function getPositionTypeList() {
-    //将id值为orgType的控件内的html元素清空
-    $("#positionId").html('');
-    //遍历传来的每条数据
-    $.each(positionTypes, function (i,n) {
-        //为id为orgType的控件添加一个下拉菜单选项
-        $("#positionId").append("<option value=" + n.id + ">" + n.workTypeName + "</option>");
-    });
-    //更新这个select控件
-    $("#positionId").selectpicker('refresh');
-}
 
 //新增人员
 function userAdd() {
+
+    loginNameG="";
     var node = $("#tree").treeview('getSelected');
     //如果没有选中
-    if(node.length==0){
+    if (node.length == 0) {
         BootstrapDialog.alert({
             title: '警告',
             message: '请选择一个最底层的组织机构！',
@@ -386,11 +367,10 @@ function userAdd() {
             buttonLabel: '确定', // <-- Default value is 'OK',
         });
         return false;
-    }else{
+    } else {
         //如果此机构下没有子机构
-        if(node[0].nodes==null){
-            //获取下拉组织机构类型列表
-            getPositionTypeList();
+        if (node[0].nodes == null) {
+
 
             //重置指定表单的控件
             $('#userForm')[0].reset();
@@ -423,19 +403,18 @@ function userAdd() {
             //为parentId赋值为节点的Id
             $("#deptId").val(node[0].id);
             $("#deptCode").val(node[0].code);
-            //刷新下拉菜单,开始必须要进行刷新下拉菜单
-            $("#positionId").selectpicker('refresh');
+
             $("#sex").selectpicker('refresh');
             //如果复选框被选中
-            if($('#isWxCreated').is(':checked')) {
-                $('#login').style.visibility="visible";
+            if ($('#isWxCreated').is(':checked')) {
+                $('#login').style.visibility = "visible";
             }
 
             //将此标签标题改为新增
             $("#myModelLabel").text("新增");
             //展示悬浮窗口
             $('#myModel').modal('show');
-        }else{
+        } else {
             BootstrapDialog.alert({
                 title: '警告',
                 message: '此机构下有子机构，不可添加！',
@@ -464,6 +443,7 @@ function userEdit() {
         .removeAttr('checked')
         .removeAttr('selected');
     var rows = $("#userTable").bootstrapTable("getSelections");//获取所有选中的行
+
     if (rows.length != 1) {
 
         BootstrapDialog.alert({
@@ -480,15 +460,23 @@ function userEdit() {
         return false;
     }
 
-    //初始化下拉列表
-    getPositionTypeList();
+    loginNameG=rows[0].loginName;
+
+    if(rows[0].loginName!=""&&rows[0].loginName!=null){
+        $("#isLogin").prop("checked",true);
+        $("#login").show();
+    }else{
+        $("#isLogin").prop("checked",false);
+        $("#login").hide();
+    }
+
 
     for (var p in rows[0]) {
         $("#userForm").find(":input[name='" + p + "']").val(rows[0][p]);
 
     }
-    $('#positionId').selectpicker('val', rows[0].positionId);
 
+    $('#sex').selectpicker('val', rows[0].sex);
     $("#myModelLabel").text("修改");
     $('#myModel').modal('show');
 }
@@ -526,7 +514,7 @@ function userDel() {
                 //选择ok后调用
                 var ids = "";
                 $.each(rows, function (i, n) {
-                    ids += n.userId+ ",";
+                    ids += n.userId + ",";
                 });
                 ids = ids.substring(0, ids.length - 1);
 
@@ -606,4 +594,48 @@ function userDel() {
     });
 
 
+}
+
+//显示或隐藏登录名
+function showOrHiddenLogin() {
+    if ($("#isLogin").is(':checked')) {
+        $("#login").show();
+    } else {
+        $("#login").hide();
+        $("#loginName").val('');
+    }
+}
+
+//点击弹出查看窗
+function  look(userId) {
+
+    var row=$("#userTable").bootstrapTable("getRowByUniqueId",userId);
+    //清空表单
+    $(':input', '#userForm')
+        .not(':button, :submit, :reset')
+        .val('')
+        .removeAttr('checked')
+        .removeAttr('selected');
+
+    if(row.loginName!=""&&row.loginName!=null){
+        $("#isLogin").prop("checked",true);
+        $("#login").show();
+    }else{
+        $("#isLogin").prop("checked",false);
+        $("#login").hide();
+    }
+
+
+    $('#sex').selectpicker('val', row.sex);
+    $("#userName").val(row.userName);
+    $("#telephone").val(row.telephone);
+    $("#loginName").val(row.loginName);
+
+    $("#myModelLabel").text("查看");
+    $('#myModel').modal('show');
+    $("#myModel").find('input').attr('readOnly', true);
+    $("#myModel").find('select').attr("disabled", "disabled");
+    $("#isLogin").attr("disabled", "disabled");
+
+    $("#btn_save").hide();
 }

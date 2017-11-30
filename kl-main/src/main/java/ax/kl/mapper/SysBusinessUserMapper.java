@@ -1,5 +1,6 @@
 package ax.kl.mapper;
 
+import ax.kl.entity.SysUser;
 import com.baomidou.mybatisplus.plugins.Page;
 import ax.kl.entity.SysBusinessUser;
 import ax.kl.entity.WorkTypeInfo;
@@ -26,4 +27,21 @@ public interface SysBusinessUserMapper {
 
     //删除数据
     void deleteBusinessUser(String[] idLists);
+
+    /**
+     * 保存登陆人员信息
+     * @param businessUser
+     */
+    void saveUser(SysBusinessUser businessUser);
+
+
+    /**
+     * 检查登录名
+     * @param loginName
+     * @return
+     */
+    List<SysUser> checkLoginName(@Param("loginName") String loginName);
+
+
+
 }

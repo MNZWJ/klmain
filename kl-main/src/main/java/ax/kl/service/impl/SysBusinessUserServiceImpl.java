@@ -1,6 +1,8 @@
 package ax.kl.service.impl;
 
+import ax.kl.common.DESEncryptTools;
 import ax.kl.entity.SysOrganise;
+import ax.kl.entity.SysUser;
 import ax.kl.service.SysBusinessUserService;
 import com.baomidou.mybatisplus.plugins.Page;
 import ax.kl.entity.SysBusinessUser;
@@ -52,12 +54,24 @@ public class SysBusinessUserServiceImpl implements SysBusinessUserService {
             SysBusinessUser user= (SysBusinessUser) request.getSession().getAttribute("user");
             businessUser.setCreateDeptId(user==null?"0000":user.getDeptId());
             businessUser.setCreateUserId(user==null?"0000":user.getUserId());
+
             //添加数据
             sysBusinessUserMapper.insertBusinessUser(businessUser);
+            businessUser.setPassWord(DESEncryptTools.encrypt("888888".getBytes()).toString());
+            sysBusinessUserMapper.saveUser(businessUser);
+
             return userId;
         }else{
+
+
+
+
+
             //有UserId，说明是更新数据
             sysBusinessUserMapper.updateBusinessUser(businessUser);
+            businessUser.setPassWord(DESEncryptTools.encrypt("888888".getBytes()).toString());
+
+            sysBusinessUserMapper.saveUser(businessUser);
             return "";
         }
     }
@@ -67,6 +81,17 @@ public class SysBusinessUserServiceImpl implements SysBusinessUserService {
     public void deleteBusinessUser(String[] idLists) {
         //直接删除
         sysBusinessUserMapper.deleteBusinessUser(idLists);
+    }
+
+    @Override
+    public boolean checkLoginName(String loginName) {
+
+        if(sysBusinessUserMapper.checkLoginName(loginName).size()>0){
+            return false;
+        }else{
+            return true;
+        }
+
     }
 
 

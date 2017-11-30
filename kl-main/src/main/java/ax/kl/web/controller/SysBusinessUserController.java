@@ -73,7 +73,7 @@ public class SysBusinessUserController {
         page.setSize(pageSize);
         //根据好多的id和searchName来进行条件查询
         Page<SysOrganise> list = sysBusinessUserService.getBusinessUserList(page,typeCode,searchName);
-        Map<String,Object> map=new HashMap<>();
+        Map<String,Object> map=new HashMap<>(3);
         map.put("total",list.getTotal());
         map.put("rows",list.getRecords());
         return map ;
@@ -99,4 +99,12 @@ public class SysBusinessUserController {
         this.sysBusinessUserService.deleteBusinessUser(idLists);
         return ResultUtil.success(00);
     }
+
+    @RequestMapping(value = "/checkLoginName",method= RequestMethod.POST)
+    @ApiOperation(value = "检查登录名唯一性")
+    @ResponseBody
+    public JsonResult checkLoginName(@RequestParam("loginName")String loginName){
+        return ResultUtil.success(sysBusinessUserService.checkLoginName(loginName));
+    }
+
 }
