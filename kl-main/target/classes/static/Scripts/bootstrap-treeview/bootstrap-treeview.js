@@ -126,6 +126,7 @@
 			// Query methods
 			findNodes: $.proxy(this.findNodes, this),
 			getNodes: $.proxy(this.getNodes, this), // todo document + test
+            getNode: $.proxy(this.getNode, this),
 			getParents: $.proxy(this.getParents, this),
 			getSiblings: $.proxy(this.getSiblings, this),
 			getSelected: $.proxy(this.getSelected, this),
@@ -1178,6 +1179,23 @@
 	Tree.prototype.getNodes = function () {
 		return this._orderedNodes;
 	};
+
+    /**
+     Returns an treenode by nodeId.
+     @return {Array} nodes - An array of all nodes
+     */
+    Tree.prototype.getNode = function (id) {
+        var node=new Array();
+        if (!(id instanceof Array)) {
+            id = [id];
+        }
+        $.each(this._orderedNodes,function(i,n){
+            if($.inArray(n.id, id)!=-1){
+                node.push(n);
+            }
+        })
+        return node;
+    };
 
 	/**
 		Returns parent nodes for given nodes, if valid otherwise returns undefined.

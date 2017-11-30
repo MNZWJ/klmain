@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ax.kl.mapper.SysRoleMenuMapper">
+
+    <resultMap id="RoleMenu" type="ax.kl.entity.SysRoleMenu">
+        <id column="MenuId" property="MenuId"/>
+        <result column="ParentMenuId" property="ParentMenuId"/>
+        <result column="MenuName" property="MenuName"/>
+        <result column="RoleId" property="RoleId"/>
+    </resultMap>
+
+    <!--角色菜单查询-->
+    <select id="getRoleMenuTreeList" resultMap="RoleMenu" >
+        SELECT m.MenuId AS MenuId,m.ParentMenuId AS parentId,m.MenuName AS MenuName,RM.RoleId AS RoleId FROM TB_SYS_MENUS M INNER JOIN TB_SYS_MANAGERROLEMENU RM ON m.MenuId=RM.MenuId WHERE RM.RoleId=#{roleId} ORDER BY MenuOrder;
+    </select>
+
+    <delete id="delRoleMenuByRoleId" >
+        DELETE FROM  TB_SYS_MANAGERROLEMENU WHERE roleId=#{roleId}
+    </delete>
+
+    <insert id="insertRoleMenu" >
+        INSERT INTO TB_SYS_MANAGERROLEMENU (id,RoleId,MenuId) VALUES (NEWID(),#{roleId},#{menuId});
+    </insert>
+</mapper>
