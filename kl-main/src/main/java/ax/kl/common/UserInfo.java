@@ -3,7 +3,7 @@ package ax.kl.common;
 import lombok.Data;
 
 /**
- * @Author: SuZhenpeng
+ * @author: SuZhenpeng
  * Description:
  * Date: Created in 8:36 2017/11/13
  * @Modified By:

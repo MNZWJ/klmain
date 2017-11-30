@@ -14,7 +14,7 @@
     <select id="getBusinessUserList" resultType="ax.kl.entity.SysBusinessUser">
         SELECT UserId as userId,UserName as userName,LoginName as loginName,DeptId as deptId,
                 CreateUserId as createUserId,CreateDeptId as createDeptId,CreateTime as createTime,
-                Sex as sex,WorkNum as workNum,DeptCode as deptCode,PositionId as positionId,
+                Sex as sex,WorkNum as workNum,DeptCode as deptCode,
                 StationId as stationId,Telephone as telephone,SendType as sendType,IsWxCreated as isWxCreated
         FROM TB_SYS_BUSINESSUSER
         WHERE 1=1
@@ -31,9 +31,19 @@
             set Telephone=#{telephone},
                 UserName=#{userName},
                 Sex=#{sex},
-                PositionId=#{positionId}
+                LoginName=#{loginName}
           WHERE UserId=#{userId}
+
+
+
     </insert>
+
+
+    <insert id="insertBusinessUser">
+        INSERT into TB_SYS_BUSINESSUSER(UserId,UserName,LoginName,DeptId,CreateUserId,CreateDeptId,Sex,DeptCode,Telephone)
+        VALUES (#{userId},#{userName},#{loginName},#{deptId},#{createUserId},#{createDeptId},#{sex},#{deptCode},#{telephone})
+    </insert>
+
 
     <!--单一或批量删除组织机构-->
     <delete id="deleteBusinessUser">
@@ -43,6 +53,32 @@
         <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
             #{item}
         </foreach>
+
+        DELETE FROM  TB_SYS_USER WHERE  BusinessUserId IN
+        <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+
     </delete>
+
+    <!--保存登陆表-->
+    <insert id="saveUser">
+
+        DELETE FROM TB_SYS_USER WHERE BusinessUserId=#{userId}
+
+        INSERT INTO TB_SYS_USER(UserId,LoginName,PassWord,BusinessUserId)
+        VALUES(newid(),#{loginName},#{passWord},#{userId})
+
+    </insert>
+
+
+    <select id="checkLoginName" resultType="ax.kl.entity.SysUser">
+        SELECT * FROM TB_SYS_USER WHERE LoginName =#{loginName}
+    </select>
+
+
+
+
+
 
 </mapper>

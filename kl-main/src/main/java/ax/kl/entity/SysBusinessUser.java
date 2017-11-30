@@ -52,9 +52,7 @@ public class SysBusinessUser {
     @ApiModelProperty(value = "部门编码")
     private String deptCode;
 
-    @TableField("PositionId")
-    @ApiModelProperty(value = "岗位ID")
-    private String positionId;
+
 
     @TableField("StationId")
     @ApiModelProperty(value = "分类ID")
@@ -71,5 +69,13 @@ public class SysBusinessUser {
     @TableField("IsWxCreated")
     @ApiModelProperty(value = "是否有权限创建")
     private String isWxCreated;
+
+    @TableField("PassWord")
+    @ApiModelProperty(value = "密码")
+    private String passWord;
+
+
+    @ApiModelProperty(value = "是否需要登陆")
+    private String isLogin;
 
 }

@@ -110,23 +110,22 @@
                                 </select>
                             </div>
 
-                            <div class="form-group">
-                                <label for="positionId" class="col-xs-10" style="padding-left: 0">岗位</label>
-                                <select id="positionId" name="positionId" class="selectpicker show-tick form-control"
-                                        data-live-search="false" data-live-search-style="begins" title="">
-                                </select>
-                            </div>
+
 
                             <div class="form-group">
-                                <input type="checkbox" id="isWxCreated" for="isWxCreated" />
-                                设置当前用户可登录
+                                <input type="checkbox" id="isLogin" onclick="showOrHiddenLogin()" />
+                                <label for="isLogin">设置当前用户可登录</label>
+
+
                             </div>
 
-                            <div id="login" class="form-group" style="visibility: hidden">
+                            <div id="login" class="form-group" style="display: none">
                                 <label for="loginName" class="col-xs-10" style="padding-left: 0">登录名</label>
-                                <select id="loginName" name="positionId" class="selectpicker show-tick form-control"
-                                        data-live-search="false" data-live-search-style="begins" title="">
-                                </select>
+
+                                <input type="text" name="loginName" class="form-control" id="loginName"
+                                       placeholder="请输入登录名">
+
+
                             </div>
 
 
