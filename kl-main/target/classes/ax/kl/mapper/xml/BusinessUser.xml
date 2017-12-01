@@ -14,8 +14,7 @@
     <select id="getBusinessUserList" resultType="ax.kl.entity.SysBusinessUser">
         SELECT UserId as userId,UserName as userName,LoginName as loginName,DeptId as deptId,
                 CreateUserId as createUserId,CreateDeptId as createDeptId,CreateTime as createTime,
-                Sex as sex,WorkNum as workNum,DeptCode as deptCode,
-                StationId as stationId,Telephone as telephone,SendType as sendType,IsWxCreated as isWxCreated
+                Sex as sex,DeptCode as deptCode,Telephone as telephone
         FROM TB_SYS_BUSINESSUSER
         WHERE 1=1
         <if test="typeCode != null or typeCode !='' ">
