@@ -10,7 +10,7 @@
     <select id="getUserTreeList" resultType="ax.kl.entity.TreeModel">
         SELECT UserId AS id,DeptId AS ParentId,UserName AS text,'0' AS code,'glyphicon glyphicon-user' AS icon FROM TB_SYS_BUSINESSUSER
         UNION ALL
-        SELECT OrganiseId AS id,ParentId,OrganiseName AS text,ShowOrder AS code,'' AS icon FROM TB_SYS_ORGANISE ORDER BY code
+        SELECT OrganiseId AS id,ParentId,OrganiseName AS text,ShowOrder AS code,'glyphicon glyphicon-folder-open' AS icon FROM TB_SYS_ORGANISE ORDER BY code
     </select>
 
     <select id="getRoleUser" resultMap="RoleUser">

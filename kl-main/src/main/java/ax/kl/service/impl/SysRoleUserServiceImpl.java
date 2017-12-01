@@ -44,9 +44,7 @@ public class SysRoleUserServiceImpl implements SysRoleUserService {
     public boolean updateRoleUser(String RoleId, String[] UserId) {
         RoleUserMapper.delRoleUser(RoleId);
         for (String u:UserId){
-            int a=RoleUserMapper.validateUser(u);
-            if (a!=0)
-                RoleUserMapper.addRoleUser(RoleId,u);
+            RoleUserMapper.addRoleUser(RoleId,u);
         }
         return true;
     }

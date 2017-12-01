@@ -18,6 +18,7 @@ $(function () {
                 highlightSelected: true,//当选择节点时是否高亮显示。
                 showBorder: false,//是否在节点上显示边框。
                 showCheckbox:true,
+                showIcon:true,
                 data: result,
                 onNodeChecked:function(event, node){
                     var nodeIds =getChildNodeIdArr(node);
@@ -180,6 +181,7 @@ function saveRoleMenu() {
     var roleId=$('#roleIdtext').val();
     var userId="";
     $.each($('#tree').treeview("getChecked"),function(i,n){
+        if(n.code == "0")
         userId=n.id+","+userId;
     });
     if(userId!="")
