@@ -44,9 +44,6 @@ public class SysBusinessUser {
     @ApiModelProperty(value = "性别")
     private String sex;
 
-    @TableField("WorkNum")
-    @ApiModelProperty(value = "工作号")
-    private String workNum;
 
     @TableField("DeptCode")
     @ApiModelProperty(value = "部门编码")
@@ -54,21 +51,12 @@ public class SysBusinessUser {
 
 
 
-    @TableField("StationId")
-    @ApiModelProperty(value = "分类ID")
-    private String StationId;
-
     @TableField("Telephone")
     @ApiModelProperty(value = "电话号")
     private String telephone;
 
-    @TableField("SendType")
-    @ApiModelProperty(value = "发送类型")
-    private String sendType;
 
-    @TableField("IsWxCreated")
-    @ApiModelProperty(value = "是否有权限创建")
-    private String isWxCreated;
+
 
     @TableField("PassWord")
     @ApiModelProperty(value = "密码")
