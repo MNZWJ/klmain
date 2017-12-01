@@ -44,4 +44,9 @@ public class TreeModel {
     @TableField("code")
     private String code;
 
+    /**
+     * 图标
+     */
+    @TableField("icon")
+    private String icon;
 }
