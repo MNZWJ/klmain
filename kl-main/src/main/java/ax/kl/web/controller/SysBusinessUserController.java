@@ -39,7 +39,9 @@ public class SysBusinessUserController {
     }
 
 
-    //获取组织机构树并获取所有岗位类型将其传到前端
+    /**
+     * 获取组织机构树并获取所有岗位类型将其传到前端
+     */
     @RequestMapping(value = "/getSysOrganiseTreeList",method= RequestMethod.POST)
     @ApiOperation(value = "获取组织机构树")
     @ResponseBody
@@ -48,12 +50,11 @@ public class SysBusinessUserController {
         Map<String,Object> map=new HashMap();
         //获取组织机构树
         List<TreeModel> tm=sysOrganiseService.getSysOrganiseTreeList();
-        //获取岗位类型
-        List<WorkTypeInfo> workTypeInfos= sysBusinessUserService.getWorkTypeInfo();
+
         //获取所有的可显的组织机构信息
         List<SysOrganise> sysOrganises=sysOrganiseService.getAllSysOrganises();
         map.put("syss",sysOrganises);
-        map.put("data",workTypeInfos);
+
         map.put("tm",tm);
         return map;
     }
