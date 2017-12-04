@@ -2,11 +2,9 @@ package ax.kl.service.impl;
 
 import ax.kl.common.DESEncryptTools;
 import ax.kl.entity.SysOrganise;
-import ax.kl.entity.SysUser;
 import ax.kl.service.SysBusinessUserService;
 import com.baomidou.mybatisplus.plugins.Page;
 import ax.kl.entity.SysBusinessUser;
-import ax.kl.entity.WorkTypeInfo;
 import ax.kl.mapper.SysBusinessUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

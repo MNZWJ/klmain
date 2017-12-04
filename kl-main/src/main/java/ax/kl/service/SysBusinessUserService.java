@@ -1,14 +1,10 @@
 package ax.kl.service;
 
 import ax.kl.entity.SysOrganise;
-import ax.kl.entity.SysUser;
 import com.baomidou.mybatisplus.plugins.Page;
 import ax.kl.entity.SysBusinessUser;
-import ax.kl.entity.WorkTypeInfo;
-import org.apache.ibatis.annotations.Param;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 public interface SysBusinessUserService {
 

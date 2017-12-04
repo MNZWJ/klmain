@@ -7,7 +7,6 @@ import ax.f4j.model.JsonResult;
 import ax.f4j.model.ResultUtil;
 import com.baomidou.mybatisplus.plugins.Page;
 import ax.kl.entity.SysBusinessUser;
-import ax.kl.entity.WorkTypeInfo;
 import ax.kl.service.SysOrganiseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
