@@ -23,11 +23,7 @@ public class SysBusinessUserServiceImpl implements SysBusinessUserService {
     private SysBusinessUserMapper sysBusinessUserMapper;
 
 
-    //获取岗位类型
-    @Override
-    public List<WorkTypeInfo> getWorkTypeInfo() {
-        return sysBusinessUserMapper.getWorkTypeInfo();
-    }
+
 
     //显示人员列表
     @Override

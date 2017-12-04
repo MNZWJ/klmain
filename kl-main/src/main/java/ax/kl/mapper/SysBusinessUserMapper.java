@@ -12,10 +12,7 @@ import java.util.List;
 @Repository
 public interface SysBusinessUserMapper {
 
-    /**
-     * 获取岗位类型
-     */
-    List<WorkTypeInfo> getWorkTypeInfo();
+
 
 
     /**

@@ -12,11 +12,7 @@ import java.util.List;
 
 public interface SysBusinessUserService {
 
-    /**
-     *  获取岗位类型
-     *  @return
-     */
-    List<WorkTypeInfo> getWorkTypeInfo();
+
 
     /**
      * 获取机构及其子机构的人员列表

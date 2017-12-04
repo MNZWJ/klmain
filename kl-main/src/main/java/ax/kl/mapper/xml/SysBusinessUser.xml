@@ -3,12 +3,7 @@
 <mapper namespace="ax.kl.mapper.SysBusinessUserMapper">
 
 
-    <!--加载列表-->
-    <select id="getWorkTypeInfo" resultType="ax.kl.entity.WorkTypeInfo">
-        SELECT Id,WorkTypeName
-          FROM  TB_WORKTYPE_INFO
 
-    </select>
 
     <!--根据机构查询人员列表-->
     <select id="getBusinessUserList" resultType="ax.kl.entity.SysBusinessUser">
