@@ -81,4 +81,11 @@ public interface SysDictionaryMapper extends BaseMapper<SysDataDict> {
     int upDateOrderSort(@Param("dictId1")String dictId1,@Param("dictOrder1")String dictOrder1,@Param("dictId2")String dictId2,@Param("dictOrder2")String dictOrder2);
 
 
+    /**
+     * 加载字典内容
+     * @param typeId
+     * @return
+     */
+    List<SysDataDict> getDataDictList(@Param("typeId") String typeId);
+
 }

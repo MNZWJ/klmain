@@ -45,4 +45,11 @@ public interface SysDictionaryService {
      */
     String moveOrder(String type,SysDataDict dataDict);
 
+    /**
+     * 加载字典内容
+     * @param typeId
+     * @return
+     */
+    List<SysDataDict> getDataDictList(String typeId);
+
 }

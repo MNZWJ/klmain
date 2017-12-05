@@ -64,7 +64,7 @@
 
     <!--获取字典-->
     <select id="getDictType" resultMap="BaseResultMap">
-        SELECT * FROM TB_SYS_DATADICT WHERE TypeId in
+        SELECT * FROM TB_SYS_DATADICT WHERE IsDel!='1' AND TypeId in
 
         <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
 
@@ -95,5 +95,10 @@
         UPDATE TB_SYS_DATADICT SET DictOrder=#{dictOrder1} WHERE  DictId=#{dictId1}
         UPDATE TB_SYS_DATADICT SET DictOrder=#{dictOrder2} WHERE  DictId=#{dictId2}
     </update>
+
+    <!--获取字典内容-->
+    <select id="getDataDictList" resultMap="BaseResultMap">
+        SELECT * FROM  TB_SYS_DATADICT WHERE TypeId=#{typeId} AND IsDel='0' AND IsUsed='1' order BY DictOrder
+    </select>
 
 </mapper>
