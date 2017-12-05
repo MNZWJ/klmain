@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin
 @Controller
@@ -27,8 +28,14 @@ public class MajorHazardController {
     @RequestMapping(value = "/searchHazard",method= RequestMethod.POST)
     @ApiOperation(value = "获取重大危险源")
     @ResponseBody
-    public List<MajorHazard> searchHazard(@RequestParam String CompanyName,@RequestParam String SourceName,@RequestParam String Rank){
-        List<MajorHazard> majorHazards=majorHazardService.getMajorHazard(CompanyName,SourceName,Rank);
-        return majorHazards;
+    public List<MajorHazard> searchHazard(@RequestParam Map<String,String> param){
+        return majorHazardService.getMajorHazard(param);
+    }
+
+    @RequestMapping(value = "/searchHazard",method= RequestMethod.POST)
+    @ApiOperation(value = "获取重大危险源")
+    @ResponseBody
+    public List<MajorHazard> getHazardData(@RequestParam String sourceId){
+        return null;
     }
 }
