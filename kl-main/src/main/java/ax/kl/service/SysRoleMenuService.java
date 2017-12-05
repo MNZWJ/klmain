@@ -1,5 +1,6 @@
 package ax.kl.service;
 
+import ax.kl.entity.SysMenu;
 import ax.kl.entity.SysRoleMenu;
 import java.util.List;
 
@@ -29,4 +30,11 @@ public interface SysRoleMenuService {
      * @return
      */
     int insertRoleMenu(String roleId, String menuId);
+
+    /**
+     * 根据角色ID获取权限菜单
+     * @param roleIds
+     * @return
+     */
+    List<SysMenu> getMenusByRoleId(String[] roleIds);
 }

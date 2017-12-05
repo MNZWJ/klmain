@@ -1,5 +1,6 @@
 package ax.kl.mapper;
 
+import ax.kl.entity.SysMenu;
 import ax.kl.entity.SysRoleMenu;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
@@ -34,4 +35,11 @@ public interface SysRoleMenuMapper extends BaseMapper<SysRoleMenu> {
      * @return
      */
     int insertRoleMenu(@Param("roleId") String roleId, @Param("menuId") String menuId);
+
+    /**
+     * 根据角色获取权限菜单
+     * @param roleIds
+     * @return
+     */
+    List<SysMenu> getMenusByRoleId(String[] roleIds);
 }

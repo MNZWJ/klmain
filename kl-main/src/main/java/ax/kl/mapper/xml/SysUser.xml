@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ax.kl.mapper.SysUserMapper">
+
+    <!--根据登录名获取登录信息-->
+    <select id="getUserInfoByLoginName" resultType="ax.kl.entity.SysUser">
+        SELECT *   FROM TB_SYS_USER u  WHERE u.LoginName = #{loginName}
+    </select>
+
+</mapper>

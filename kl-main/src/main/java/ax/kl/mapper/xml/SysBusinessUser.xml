@@ -2,9 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ax.kl.mapper.SysBusinessUserMapper">
 
-
-
-
     <!--根据机构查询人员列表-->
     <select id="getBusinessUserList" resultType="ax.kl.entity.SysBusinessUser">
         SELECT UserId as userId,UserName as userName,LoginName as loginName,DeptId as deptId,
@@ -70,9 +67,17 @@
         SELECT * FROM TB_SYS_USER WHERE LoginName =#{loginName}
     </select>
 
-
-
-
-
+    <select id="getUserInfo" resultType="ax.kl.entity.LoginInfo">
+        SELECT b.UserId         AS userId,
+           b.UserName       AS userName,
+           org.OrganiseId   AS orgId,
+           org.OrganiseCode AS orgCode,
+           org.OrganiseCode AS orgCode,
+           org.OrgType      AS orgType
+      FROM TB_SYS_BUSINESSUSER b
+     INNER JOIN TB_SYS_ORGANISE org
+        ON b.DeptId = org.OrganiseId
+     WHERE b.UserId = #{buserId}
+    </select>
 
 </mapper>
