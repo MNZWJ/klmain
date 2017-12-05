@@ -1,1 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=ax.f4j.autoconfig.F4jConfiguration,ax.f4j.autoconfig.SwaggerConfig
