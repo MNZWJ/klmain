@@ -45,7 +45,7 @@ function initMap() {
     loadCompanyList(getCompanyList());
     mini.get("searchIndustryCode").load("/SysDictionary/getDataDictList?typeId=" + IndustryCodeDictId);
     mini.get("searchScaleCode").load("/SysDictionary/getDataDictList?typeId=" + ScaleCodeDictId);
-
+    mini.get("searchTypeCode").load("/SysDictionary/getDataDictList?typeId=" + TypeCodeDictId);
 }
 
 //初始化表格
@@ -314,7 +314,7 @@ function searchCompanyList() {
     var searchCompanyName = mini.get("searchCompanyName").getValue();
     var searchIndustryCode = mini.get("searchIndustryCode").getValue();
     var searchScaleCode = mini.get("searchScaleCode").getValue();
-
+    var searchTypeCode = mini.get("searchTypeCode").setValue('');
 
     $.ajax({
         type: 'post',
@@ -322,7 +322,8 @@ function searchCompanyList() {
         data: {
             searchCompanyName: searchCompanyName,
             searchIndustryCode: searchIndustryCode,
-            searchScaleCode: searchScaleCode
+            searchScaleCode: searchScaleCode,
+            searchTypeCode:searchTypeCode
         },
         url: '/Inspection/getCompanyList',
         success: function (result) {
@@ -341,6 +342,6 @@ function clearSearch() {
     mini.get("searchCompanyName").setValue('');
     mini.get("searchIndustryCode").setValue('');
     mini.get("searchScaleCode").setValue('');
-    mini.get("startDate").setValue('');
-    mini.get("endDate").setValue('');
+    mini.get("searchTypeCode").setValue('');
+
 }

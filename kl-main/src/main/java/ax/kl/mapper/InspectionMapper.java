@@ -22,7 +22,7 @@ public interface InspectionMapper extends BaseMapper<CompanyInfo> {
      * 获取企业
      * @return
      */
-    List<CompanyInfo> getCompanyList(@Param("searchCompanyName") String searchCompanyName,@Param("searchIndustryCode") String searchIndustryCode,@Param("searchScaleCode") String searchScaleCode);
+    List<CompanyInfo> getCompanyList(@Param("searchCompanyName") String searchCompanyName,@Param("searchIndustryCode") String searchIndustryCode,@Param("searchScaleCode") String searchScaleCode,@Param("searchTypeCode")String searchTypeCode);
 
     /**
      * 获取公司信息

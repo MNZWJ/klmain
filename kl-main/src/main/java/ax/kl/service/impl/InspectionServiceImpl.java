@@ -33,7 +33,7 @@ public class InspectionServiceImpl implements InspectionService {
         String searchCompanyName="";
         String searchIndustryCode="";
         String searchScaleCode="";
-
+        String searchTypeCode="";
         if(param.containsKey("searchCompanyName")){
             searchCompanyName=param.get("searchCompanyName");
         }
@@ -43,9 +43,12 @@ public class InspectionServiceImpl implements InspectionService {
         if(param.containsKey("searchScaleCode")){
             searchScaleCode=param.get("searchScaleCode");
         }
+        if(param.containsKey("searchTypeCode")){
+            searchTypeCode=param.get("searchTypeCode");
+        }
 
 
-        return inspectionMapper.getCompanyList(searchCompanyName,searchIndustryCode,searchScaleCode);
+        return inspectionMapper.getCompanyList(searchCompanyName,searchIndustryCode,searchScaleCode,searchTypeCode);
     }
 
     /**
