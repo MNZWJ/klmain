@@ -16,7 +16,7 @@
             AND DeptCode LIKE CONCAT(#{typeCode},'%')
         </if>
         <if test="searchName != null or searchName !='' ">
-            AND UserName LIKE CONCAT(CONCAT(#{searchName},'%'),'%')
+            AND UserName LIKE CONCAT('%',CONCAT(#{searchName}),'%')
         </if>
     </select>
     <!--更新人员-->
