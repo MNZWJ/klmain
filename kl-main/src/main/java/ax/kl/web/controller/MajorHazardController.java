@@ -32,7 +32,8 @@ public class MajorHazardController {
         return majorHazardService.getMajorHazard(param);
     }
 
-    @RequestMapping(value = "/getHazard",method= RequestMethod.POST)
+    
+    @RequestMapping(value = "/getHazardChe",method= RequestMethod.POST)
     @ApiOperation(value = "获取重大危险源")
     @ResponseBody
     public List<MajorHazard> getHazardData(@RequestParam String sourceId){
