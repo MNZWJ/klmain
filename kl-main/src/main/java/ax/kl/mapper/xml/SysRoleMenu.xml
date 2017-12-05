@@ -21,4 +21,13 @@
     <insert id="insertRoleMenu" >
         INSERT INTO TB_SYS_MANAGERROLEMENU (id,RoleId,MenuId) VALUES (NEWID(),#{roleId},#{menuId});
     </insert>
+
+    <select id="getMenusByRoleId" resultType="ax.kl.entity.SysMenu">
+        select DISTINCT m.* from TB_SYS_MANAGERROLEMENU r
+        INNER JOIN TB_SYS_MENUS m on r.MenuId=m.MenuId
+        where m.MenuId in
+        <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
 </mapper>

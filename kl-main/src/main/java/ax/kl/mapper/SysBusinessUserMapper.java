@@ -1,5 +1,6 @@
 package ax.kl.mapper;
 
+import ax.kl.entity.LoginInfo;
 import ax.kl.entity.SysUser;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -11,9 +12,6 @@ import java.util.List;
 
 @Repository
 public interface SysBusinessUserMapper extends BaseMapper<SysBusinessUser> {
-
-
-
 
     /**
      * 根据点击的节点及其子节点的ID值来对人员进行条件查询
@@ -41,7 +39,6 @@ public interface SysBusinessUserMapper extends BaseMapper<SysBusinessUser> {
      */
     void saveUser(SysBusinessUser businessUser);
 
-
     /**
      * 检查登录名
      * @param loginName
@@ -49,6 +46,12 @@ public interface SysBusinessUserMapper extends BaseMapper<SysBusinessUser> {
      */
     List<SysUser> checkLoginName(@Param("loginName") String loginName);
 
-
+    /**
+     * 根据用户ID获取用户信息
+     * @param buserId
+     * add--xum  用于用户登录
+     * @return
+     */
+    List<LoginInfo> getUserInfo(@Param("buserId") String buserId);
 
 }

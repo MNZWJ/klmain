@@ -1,14 +1,14 @@
 package ax.kl.service;
 
+import ax.kl.entity.LoginInfo;
 import ax.kl.entity.SysOrganise;
 import com.baomidou.mybatisplus.plugins.Page;
 import ax.kl.entity.SysBusinessUser;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 public interface SysBusinessUserService {
-
-
 
     /**
      * 获取机构及其子机构的人员列表
@@ -32,7 +32,11 @@ public interface SysBusinessUserService {
      */
     boolean checkLoginName( String loginName);
 
-
-
+    /**
+     * 根据ID获取用户信息
+     * @param buserId
+     * @return
+     */
+    LoginInfo getUserInfo(String buserId);
 
 }
