@@ -11,7 +11,6 @@ public class MajorHazard {
     //Id
     @TableField(value = "SourceId")
     private String sourceId;
-
     //唯一编码
     @TableField(value = "UniqueCode")
     private String uniqueCode;
