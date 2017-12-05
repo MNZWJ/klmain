@@ -17,15 +17,24 @@
         <if test="searchScaleCode!=null and searchScaleCode!= ''">
             AND ScaleCode =#{searchScaleCode}
         </if>
+        <if test="searchTypeCode!=null and searchTypeCode!=''">
+            AND  TypeCode=#{searchTypeCode}
+        </if>
 
 
     </select>
     <!--通过Id查询企业信息-->
     <select id="getCompanyInfo" resultType="ax.kl.entity.CompanyInfo">
         SELECT 	CompanyId,	UniqueCode,	CompanyName,	Area,	LegalPerson,	ContactWay,sd2.DictName as	IndustryCode,
-	    SafeManageRank,	StandardRank,	OperatingState,	Longt,	Lat,	sd1.DictName as ScaleCode,	TypeCode
+	    sd6.DictName as SafeManageRank,sd5.DictName as	StandardRank,sd4.DictName as OperatingState,	Longt,	Lat,	sd1.DictName as ScaleCode,sd3.DictName as	TypeCode
         FROM	TB_BASE_COMPANY_INFO bci LEFT JOIN TB_SYS_DATADICT sd1 ON bci.ScaleCode = sd1.DictId
         LEFT JOIN  TB_SYS_DATADICT sd2 ON bci.IndustryCode=sd2.DictId
+
+        LEFT JOIN  TB_SYS_DATADICT sd3 ON bci.TypeCode=sd3.DictId
+        LEFT JOIN  TB_SYS_DATADICT sd4 ON bci.operatingState=sd4.DictId
+        LEFT JOIN  TB_SYS_DATADICT sd5 ON bci.standardRank=sd5.DictId
+        LEFT JOIN  TB_SYS_DATADICT sd6 ON bci.safeManageRank=sd6.DictId
+
         WHERE  bci.CompanyId=#{companyId}
     </select>
 
