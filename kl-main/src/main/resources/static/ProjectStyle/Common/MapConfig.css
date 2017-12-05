@@ -1,0 +1,8 @@
+<!--去除百度地图logo-->
+.BMap_cpyCtrl
+{
+    display:none;
+}
+.anchorBL{
+    display:none;
+}

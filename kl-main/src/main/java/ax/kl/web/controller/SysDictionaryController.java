@@ -106,4 +106,12 @@ public class SysDictionaryController {
     }
 
 
+    @ApiOperation(value="加载字典内容")
+    @RequestMapping(value = "/getDataDictList",method = RequestMethod.GET)
+    @ResponseBody
+    public List<SysDataDict> getDataDictList(@RequestParam String typeId){
+        return SysDictionaryService.getDataDictList(typeId);
+    }
+
+
 }

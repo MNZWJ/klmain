@@ -1,6 +1,7 @@
 package ax.kl.mapper;
 
 import ax.kl.entity.SysUser;
+import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import ax.kl.entity.SysBusinessUser;
 import org.apache.ibatis.annotations.Param;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface SysBusinessUserMapper {
+public interface SysBusinessUserMapper extends BaseMapper<SysBusinessUser> {
 
 
 

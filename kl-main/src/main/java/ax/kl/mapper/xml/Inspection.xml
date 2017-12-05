@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ax.kl.mapper.InspectionMapper">
+
+    <!--加载企业列表-->
+    <select id="getCompanyList" resultType="ax.kl.entity.CompanyInfo">
+        SELECT
+        *
+        FROM
+        TB_BASE_COMPANY_INFO WHERE CompanyId IS NOT NULL
+        <if test="searchCompanyName!=null and searchCompanyName!= ''">
+            AND CompanyName LIKE CONCAT(CONCAT(#{searchCompanyName},'%'),'%')
+        </if>
+        <if test="searchIndustryCode!=null and searchIndustryCode!= ''">
+            AND IndustryCode =#{searchIndustryCode}
+        </if>
+        <if test="searchScaleCode!=null and searchScaleCode!= ''">
+            AND ScaleCode =#{searchScaleCode}
+        </if>
+
+
+    </select>
+    <!--通过Id查询企业信息-->
+    <select id="getCompanyInfo" resultType="ax.kl.entity.CompanyInfo">
+        SELECT * FROM TB_BASE_COMPANY_INFO
+        WHERE CompanyId=#{companyId}
+    </select>
+
+
+</mapper>
+
