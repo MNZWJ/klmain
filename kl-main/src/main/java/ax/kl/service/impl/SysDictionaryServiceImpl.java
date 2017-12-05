@@ -103,5 +103,13 @@ public class SysDictionaryServiceImpl implements SysDictionaryService {
 
     }
 
+    /**
+     * 加载字典内容
+     */
+    @Override
+    public List<SysDataDict> getDataDictList(String typeId) {
+        return SysDictionaryMapper.getDataDictList(typeId);
+    }
+
 
 }
