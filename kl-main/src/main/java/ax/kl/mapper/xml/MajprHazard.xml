@@ -4,6 +4,6 @@
 
 
     <select id="getMorHazar" resultType="ax.kl.entity.MajorHazard">
-        SELECT SourceId,c.Longt,c.Lat FROM TB_BASE_COMPANY_INFO c RIGHT JOIN TB_BASE_DANGERSOURCE_INFO d ON c.CompanyId=d.CompanyId WHERE ${filter}
+        SELECT d.* FROM TB_BASE_DANGERSOURCE_INFO d LEFT JOIN TB_BASE_COMPANY_INFO c ON d.CompanyId=c.CompanyId WHERE ${filter}
     </select>
 </mapper>

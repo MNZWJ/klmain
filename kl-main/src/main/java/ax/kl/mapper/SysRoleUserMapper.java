@@ -1,5 +1,6 @@
 package ax.kl.mapper;
 
+import ax.kl.entity.SysRole;
 import ax.kl.entity.SysRoleUser;
 import ax.kl.entity.TreeModel;
 import org.apache.ibatis.annotations.Param;
@@ -48,4 +49,11 @@ public interface SysRoleUserMapper {
      * @return
      */
     int validateUser(@Param("UserId")String UserId);
+
+    /**
+     * 根据用户ID获取所有的角色
+     * @param userId
+     * @return
+     */
+    List<String> getRoleByUserId(@Param("userId") String userId);
 }

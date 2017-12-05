@@ -26,8 +26,9 @@ function initMap() {
     map.setMaxZoom(18);
 
 
-    loadCompanyList(getCompanyList());
-    mini.get("searchRank").load("/SysDictionary/getDataDictList?typeId=" + IndustryCodeDictId);
+    loadSourceList(hazardSearch());
+    getCompanyList();
+    mini.get("searchRank").load("/SysDictionary/getDataDictList?typeId=" + MajorHazardRank);
 }
 
 //获取企业集合
@@ -48,33 +49,48 @@ function getCompanyList() {
     return companyList;
 }
 
-//加载所有企业集合
-function loadCompanyList(companyList) {
+//加载所有危险源
+function loadSourceList(courceList) {
     map.clearOverlays();
-    $.each(companyList, function (i, n) {
+    $.each(courceList, function (i, n) {
         var tempPoint = new BMap.Point(n.longt, n.lat);
+        var myIcon = new BMap.Icon("../../Images/Common/红点.png", new BMap.Size(50,50));
+        switch (n.rank){
+            case "ece6d61a-7294-46ba-b8df-60bc838d9deb":
+                myIcon = new BMap.Icon("../../Images/Common/红点.png", new BMap.Size(50,50));
+                break;
+            case "b006c3bd-f7b5-402e-a7c9-74ea4a739d64":
+                myIcon = new BMap.Icon("../../Images/Common/橙点.png", new BMap.Size(50,50));
+                break;
+            case "5fc43c2b-4784-4b55-ac22-e982a2b98bce":
+                myIcon = new BMap.Icon("../../Images/Common/黄点.png", new BMap.Size(50,50));
+                break;
+            case "6d0eb494-6b77-4f97-be3d-0b2e675703d7":
+                myIcon = new BMap.Icon("../../Images/Common/蓝点.png", new BMap.Size(50,50));
+                break;
+        }
         var marker = new BMap.Marker(tempPoint, {
-            title: n.companyName
-
+            title: n.sourceName,
+            icon:myIcon
         });
-
         map.addOverlay(marker);
-        marker.customData = {companyId: n.companyId};
+        marker.customData = {sourceId: n.sourceId};
         marker.addEventListener("onclick", onMarkClick);
     });
 
 }
 
-//企业点击事件
+//危险源点击事件
 function onMarkClick(e) {
-    var companyId = e.target.customData.companyId;
+    debugger;
+    var sourceId = e.target.customData.sourceId;
     $.ajax({
         type: 'post',
         url: '/Inspection/getCompanyInfo',
-        data:{companyId:companyId},
-        success:function(result){
+        data: {companyId: companyId},
+        success: function (result) {
             //清空表单
-            $(':input','#companyForm')
+            $(':input', '#companyForm')
                 .not(':button, :submit, :reset')
                 .val('')
                 .removeAttr('checked')
@@ -85,12 +101,12 @@ function onMarkClick(e) {
 
             }
         },
-        error:function(){
+        error: function () {
             BootstrapDialog.alert({
                 title: '错误',
                 message: '请检查网络连接！',
-                size:BootstrapDialog.SIZE_SMALL,
-                type: BootstrapDialog.TYPE_DANGER , // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+                size: BootstrapDialog.SIZE_SMALL,
+                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
 
                 closable: false, // <-- Default value is false
                 draggable: true, // <-- Default value is false
@@ -150,58 +166,36 @@ function openwindow() {
 
 }
 
-//查询企业
-function searchCompanyList() {
-    var searchCompanyName = mini.get("searchCompanyName").getValue();
-    var searchIndustryCode = mini.get("searchIndustryCode").getValue();
-    var searchScaleCode = mini.get("searchScaleCode").getValue();
-    var startDate = mini.get("startDate").getFormValue();
-    var endDate = mini.get("endDate").getFormValue();
-
-    $.ajax({
-        type: 'post',
-        async: false,
-        data: {
-            searchCompanyName: searchCompanyName,
-            searchIndustryCode: searchIndustryCode,
-            searchScaleCode: searchScaleCode,
-            startDate: startDate,
-            endDate: endDate
-        },
-        url: '/Inspection/getCompanyList',
-        success: function (result) {
-            loadCompanyList(result);
-        },
-        error: function () {
-            alert("请求失败");
-        }
-    });
-
+//查询企业type=true 查询;type=false 复位
+function searchSourceList(type) {
+    if (!type)
+        clearSearch();
+    loadSourceList(hazardSearch());
 }
 
 
 //清空查询条件
 function clearSearch() {
     mini.get("searchCompanyName").setValue('');
-    mini.get("searchIndustryCode").setValue('');
-    mini.get("searchScaleCode").setValue('');
-    mini.get("startDate").setValue('');
-    mini.get("endDate").setValue('');
+    mini.get("searchSourceNmae").setValue('');
+    mini.get("searchRank").setValue('');
 }
 
 
-function HazardSearch() {
-    var CompanyName="企业名称";
-    var SourceName="危险源名称";
-    var Rank="危险源等级";
+function hazardSearch() {
+    var sourceList = [];
+    var companyName = mini.get("searchCompanyName").getText();
+    var courceName = mini.get("searchSourceNmae").getValue();
+    var rank = mini.get("searchRank").getValue();
     $.ajax({
-        type:'post',
-        url:'/MajorHazard/searchHazard',
-        async:false,
-        data:{CompanyName:CompanyName,SourceName:SourceName,Rank:Rank},
-        success:function (result) {
-            alert(result);
+        type: 'post',
+        url: '/MajorHazard/searchHazard',
+        async: false,
+        data: {companyName: companyName, sourceName: courceName, rank: rank},
+        success: function (result) {
+            sourceList = result;
         }
     });
+    return sourceList;
 }
 

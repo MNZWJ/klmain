@@ -28,4 +28,8 @@
     <select id="validateUser" resultType="int">
         SELECT COUNT(*) FROM TB_SYS_BUSINESSUSER WHERE USERID=#{UserId}
     </select>
+
+    <select id="getRoleByUserId" resultType="String">
+        select u.RoleId from TB_SYS_MANAGERROLEUSER u where u.UserId=#{userId}
+    </select>
 </mapper>

@@ -110,7 +110,8 @@ public class SysDictionaryController {
     @RequestMapping(value = "/getDataDictList",method = RequestMethod.GET)
     @ResponseBody
     public List<SysDataDict> getDataDictList(@RequestParam String typeId){
-        return SysDictionaryService.getDataDictList(typeId);
+        List<SysDataDict> a=SysDictionaryService.getDataDictList(typeId);
+        return a;
     }
 
 

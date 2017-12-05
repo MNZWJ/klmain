@@ -48,4 +48,21 @@ public class SysRoleUserServiceImpl implements SysRoleUserService {
         }
         return true;
     }
+
+    /**
+     * 根据用户ID获取用户角色
+     * @param userId
+     * @return
+     */
+     public String getRoleByUserId(String userId){
+        String roleId = "";
+        List<String> list = this.RoleUserMapper.getRoleByUserId(userId);
+        for(String tempId : list){
+            roleId = roleId+"," + tempId;
+        }
+        if(roleId.length()>0){
+            roleId = roleId.substring(1);
+        }
+        return roleId;
+    }
 }

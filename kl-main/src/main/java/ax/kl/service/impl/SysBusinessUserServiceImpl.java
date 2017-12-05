@@ -1,6 +1,8 @@
 package ax.kl.service.impl;
 
 import ax.kl.common.DESEncryptTools;
+import ax.kl.common.PublicTools;
+import ax.kl.entity.LoginInfo;
 import ax.kl.entity.SysOrganise;
 import ax.kl.service.SysBusinessUserService;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -9,12 +11,12 @@ import ax.kl.mapper.SysBusinessUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sun.misc.BASE64Encoder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @Service
-
 public class SysBusinessUserServiceImpl implements SysBusinessUserService {
 
     @Autowired
@@ -51,20 +53,16 @@ public class SysBusinessUserServiceImpl implements SysBusinessUserService {
 
             //添加数据
             sysBusinessUserMapper.insertBusinessUser(businessUser);
-            businessUser.setPassWord(DESEncryptTools.encrypt("888888".getBytes()).toString());
+            String pwd = PublicTools.byteArr2HexStr(DESEncryptTools.encrypt("888888".getBytes()));
+            businessUser.setPassWord(pwd);
             sysBusinessUserMapper.saveUser(businessUser);
 
             return userId;
         }else{
-
-
-
-
-
             //有UserId，说明是更新数据
             sysBusinessUserMapper.updateBusinessUser(businessUser);
-            businessUser.setPassWord(DESEncryptTools.encrypt("888888".getBytes()).toString());
-
+            String pwd = PublicTools.byteArr2HexStr(DESEncryptTools.encrypt("888888".getBytes()));
+            businessUser.setPassWord(pwd);
             sysBusinessUserMapper.saveUser(businessUser);
             return "";
         }
@@ -86,6 +84,20 @@ public class SysBusinessUserServiceImpl implements SysBusinessUserService {
             return true;
         }
 
+    }
+
+    /**
+     * 根据ID获取用户信息
+     * @param buserId
+     * @return
+     */
+    public LoginInfo getUserInfo(String buserId){
+        LoginInfo loginInfo = null;
+        List<LoginInfo> list = this.sysBusinessUserMapper.getUserInfo(buserId);
+        if(list!=null && list.size()>0){
+            loginInfo = list.get(0);
+        }
+        return loginInfo;
     }
 
 

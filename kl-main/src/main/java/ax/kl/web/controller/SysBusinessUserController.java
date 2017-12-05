@@ -1,10 +1,10 @@
 package ax.kl.web.controller;
 
+import ax.f4j.model.JsonResult;
+import ax.f4j.model.ResultUtil;
 import ax.kl.entity.SysOrganise;
 import ax.kl.entity.TreeModel;
 import ax.kl.service.SysBusinessUserService;
-import ax.f4j.model.JsonResult;
-import ax.f4j.model.ResultUtil;
 import com.baomidou.mybatisplus.plugins.Page;
 import ax.kl.entity.SysBusinessUser;
 import ax.kl.service.SysOrganiseService;
@@ -13,7 +13,6 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
