@@ -9,7 +9,7 @@
         FROM
         TB_BASE_COMPANY_INFO WHERE CompanyId IS NOT NULL
         <if test="searchCompanyName!=null and searchCompanyName!= ''">
-            AND CompanyName LIKE CONCAT(CONCAT(#{searchCompanyName},'%'),'%')
+            AND CompanyName LIKE CONCAT('%',CONCAT(#{searchCompanyName},'%'))
         </if>
         <if test="searchIndustryCode!=null and searchIndustryCode!= ''">
             AND IndustryCode =#{searchIndustryCode}
@@ -22,13 +22,29 @@
     </select>
     <!--通过Id查询企业信息-->
     <select id="getCompanyInfo" resultType="ax.kl.entity.CompanyInfo">
-        SELECT * FROM TB_BASE_COMPANY_INFO
-        WHERE CompanyId=#{companyId}
+        SELECT 	CompanyId,	UniqueCode,	CompanyName,	Area,	LegalPerson,	ContactWay,sd2.DictName as	IndustryCode,
+	    SafeManageRank,	StandardRank,	OperatingState,	Longt,	Lat,	sd1.DictName as ScaleCode,	TypeCode
+        FROM	TB_BASE_COMPANY_INFO bci LEFT JOIN TB_SYS_DATADICT sd1 ON bci.ScaleCode = sd1.DictId
+        LEFT JOIN  TB_SYS_DATADICT sd2 ON bci.IndustryCode=sd2.DictId
+        WHERE  bci.CompanyId=#{companyId}
     </select>
 
     <!--查询企业下的危险源-->
-    <select id="getDangerSourceList" resultType="ax.kl.entity">
-        SELECT * FROM TB_BASE_DANGERSOURCE_INFO di WHERE di.CompanyId =#{companyId}
+    <select id="getDangerSourceList" resultType="ax.kl.entity.MajorHazard">
+        SELECT 	di.SourceId,	di.UniqueCode,	di.CompanyId,	di.SourceName,	di.RValue,	di.RecordNo,
+	    di.Validity,	di.Status,	di.Longt,	di.Lat,	di.OutPersonCount,	di.AccidentType,	di.DeathToll,
+	    di.RecordDate,	sd.DictName AS Rank FROM	TB_BASE_DANGERSOURCE_INFO di
+        JOIN TB_SYS_DATADICT sd ON di.Rank = sd.DictId WHERE di.CompanyId =#{companyId}
+    </select>
+
+    <!--查询企业下的化学品信息-->
+    <select id="getChemicalsInfoList" resultType="ax.kl.entity.CompanyInfo">
+        SELECT ci.* FROM TB_BASE_DANGERSOURCE_INFO di
+        JOIN TB_BASE_PROCESS_UNIT pu ON di.SourceId=pu.SourceId
+        JOIN TB_BASE_EQUIP_INFO ei ON pu.UnitId=ei.UnitId
+        JOIN TB_REL_BASE_COMPANY_CHEMICAL cc ON ei.EquipId=cc.EquipId
+        JOIN TB_BASE_CHEMICAL_INFO ci ON cc.ChemId=ci.ChemId
+        WHERE di.CompanyId=#{companyId}
     </select>
 
 
