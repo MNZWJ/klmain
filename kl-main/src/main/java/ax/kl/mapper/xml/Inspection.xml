@@ -26,6 +26,11 @@
         WHERE CompanyId=#{companyId}
     </select>
 
+    <!--查询企业下的危险源-->
+    <select id="getDangerSourceList" resultType="ax.kl.entity">
+        SELECT * FROM TB_BASE_DANGERSOURCE_INFO di WHERE di.CompanyId =#{companyId}
+    </select>
+
 
 </mapper>
 
