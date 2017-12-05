@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <#include "/Common/Layout.html" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+    <style type="text/css">
+        body, html {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            font-family: "微软雅黑";
+        }
+
+        #allmap {
+            width: 100%;
+            height: 500px;
+        }
+
+        p {
+            margin-left: 5px;
+            font-size: 14px;
+        }
+    </style>
+    <script type="text/javascript"
+            src="http://api.map.baidu.com/api?v=2.0&ak=EC1491j5jGKwgMZHeUuoTGZUhn7uvqti"></script>
+    <script type="text/javascript"
+            src="http://api.map.baidu.com/library/AreaRestriction/1.2/src/AreaRestriction_min.js"></script>
+    <script src="../../ProjectScripts/MajorHazard/MajorHazard.js"></script>
+    <title>重大危险源</title>
+</head>
+<body>
+<div id="allmap"></div>
+<button class="btn btn-default" type="button" onclick="HazardSearch()">
+    <span class="glyphicon glyphicon-search" type="button"></span> 查询
+</button>
+<style>
+    .BMap_cpyCtrl {
+        display: none;
+    }
+
+    .anchorBL {
+        display: none;
+    }
+</style>
+</body>
+</html>
+<script type="text/javascript">
+    //百度地图API功能
+    var map = new BMap.Map("allmap");
+    map.centerAndZoom("垦利", 15);//设初始化地图。 如果center类型为Point时，zoom必须赋值，范围3-19级，若调用高清底图（针对移动端开发）时，zoom可赋值范围为3-18级。
+    map.enableScrollWheelZoom();//开启鼠标滚轮缩放功能。
+</script>
