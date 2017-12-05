@@ -1,7 +1,9 @@
 package ax.kl.web.controller;
 
 
+import ax.kl.entity.ChemicalsInfo;
 import ax.kl.entity.CompanyInfo;
+import ax.kl.entity.MajorHazard;
 import ax.kl.service.InspectionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,30 +24,46 @@ import java.util.Map;
 @CrossOrigin
 @Controller
 @RequestMapping("/Inspection")
-@Api(value = "/Inspection",tags = {"企业分布"})
+@Api(value = "/Inspection", tags = {"企业分布"})
 public class InspectionController {
 
     @Autowired
     InspectionService inspectionService;
 
     @ApiOperation(value = "获取主页面")
-    @RequestMapping(value="/Inspection",method= RequestMethod.GET)
-    public String doView (Model model) {
+    @RequestMapping(value = "/Inspection", method = RequestMethod.GET)
+    public String doView(Model model) {
         return "/Inspection/Inspection";
     }
 
     @RequestMapping("/getCompanyList")
-    @ApiOperation(value="获取企业")
+    @ApiOperation(value = "获取企业")
     @ResponseBody
-    public List<CompanyInfo> getCompanyList(@RequestParam Map<String,String> param){
+    public List<CompanyInfo> getCompanyList(@RequestParam Map<String, String> param) {
         return inspectionService.getCompanyList(param);
     }
 
     @RequestMapping("/getCompanyInfo")
-    @ApiOperation(value="通过id获取企业信息")
+    @ApiOperation(value = "通过id获取企业信息")
     @ResponseBody
-    public List<CompanyInfo> getCompanyInfo(@RequestParam String companyId){
+    public List<CompanyInfo> getCompanyInfo(@RequestParam String companyId) {
         return inspectionService.getCompanyInfo(companyId);
+    }
+
+    @RequestMapping("/getDangerSourceList")
+    @ApiOperation(value = "通过id获取危险源")
+    @ResponseBody
+    public List<MajorHazard> getDangerSourceList(@RequestParam("companyId") String companyId) {
+
+        return inspectionService.getDangerSourceList(companyId);
+    }
+
+
+    @RequestMapping("/getChemicalsInfoList")
+    @ApiOperation(value="获取化学品信息")
+    @ResponseBody
+    public List<ChemicalsInfo> getChemicalsInfoList(@RequestParam("companyId") String companyId){
+        return inspectionService.getChemicalsInfoList(companyId);
     }
 
 }
