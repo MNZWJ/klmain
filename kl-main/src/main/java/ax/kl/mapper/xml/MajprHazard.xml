@@ -4,10 +4,12 @@
 
 
     <select id="getMorHazar" resultType="ax.kl.entity.MajorHazard">
+        WITH acc AS(SELECT dre.SourceId,da.DictName FROM TB_BASE_DRESOURCE_ACCIDENTYPE dre JOIN TB_SYS_DATADICT da ON dre.DictId=da.DictId)
         SELECT d.SourceId,d.UniqueCode,c.CompanyName AS 'CompanyId',d.SourceName,d.RValue,sd.DictName AS 'Rank',
-        d.RecordNo,d.Validity,d.Status,d.Longt,d.Lat,d.OutPersonCount,d.DeathToll,d.RecordDate
+        d.RecordNo,d.Validity,d1.DictName AS 'Status',d.Longt,d.Lat,d.OutPersonCount,d.DeathToll,d.RecordDate,
+        (SELECT RTRIM(acc.DictName) + ',' FROM acc WHERE d.SourceId=acc.SourceId FOR XML PATH ('')) AS AccidentType
         FROM TB_BASE_DANGERSOURCE_INFO d LEFT JOIN TB_BASE_COMPANY_INFO c ON d.CompanyId=c.CompanyId LEFT JOIN
-        TB_SYS_DATADICT sd ON d.Rank=sd.DictId WHERE ${filter}
+        TB_SYS_DATADICT sd ON d.Rank=sd.DictId LEFT JOIN TB_SYS_DATADICT d1 ON d.Status = d1.DictId WHERE ${filter}
     </select>
 
     <select id="getChemicalsInfoListBySourceId" resultType="ax.kl.entity.CompanyInfo">
