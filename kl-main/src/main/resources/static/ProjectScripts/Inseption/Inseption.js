@@ -212,7 +212,7 @@ function loadCompanyList(companyList) {
     map.clearOverlays();
     $.each(companyList, function (i, n) {
         var tempPoint = new BMap.Point(n.longt, n.lat);
-        var marker = new BMap.Marker(tempPoint, {
+        var marker = new BMap.Marker(wgs2bd(tempPoint), {
             title: n.companyName
 
         });
@@ -314,7 +314,7 @@ function searchCompanyList() {
     var searchCompanyName = mini.get("searchCompanyName").getValue();
     var searchIndustryCode = mini.get("searchIndustryCode").getValue();
     var searchScaleCode = mini.get("searchScaleCode").getValue();
-    var searchTypeCode = mini.get("searchTypeCode").setValue('');
+    var searchTypeCode = mini.get("searchTypeCode").getValue();
 
     $.ajax({
         type: 'post',
@@ -328,6 +328,10 @@ function searchCompanyList() {
         url: '/Inspection/getCompanyList',
         success: function (result) {
             loadCompanyList(result);
+            //定位到查询到的点
+            // if(result.length>0){
+            //     map.panTo(new BMap.Point(result[0].longt,result[0].lat));
+            // }
         },
         error: function () {
             alert("请求失败");
