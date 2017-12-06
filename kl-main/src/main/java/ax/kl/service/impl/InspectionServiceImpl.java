@@ -31,14 +31,18 @@ public class InspectionServiceImpl implements InspectionService {
     @Override
     public List<CompanyInfo> getCompanyList(Map<String,String> param){
         String searchCompanyName="";
-        String searchIndustryCode="";
+        String[] searchIndustryCode={};
         String searchScaleCode="";
         String searchTypeCode="";
         if(param.containsKey("searchCompanyName")){
             searchCompanyName=param.get("searchCompanyName");
         }
         if(param.containsKey("searchIndustryCode")){
-            searchIndustryCode=param.get("searchIndustryCode");
+            String  searchIndustryCodeStr=param.get("searchIndustryCode");
+            if(searchIndustryCodeStr.length()>0){
+                searchIndustryCode=searchIndustryCodeStr.split(",");
+            }
+
         }
         if(param.containsKey("searchScaleCode")){
             searchScaleCode=param.get("searchScaleCode");
