@@ -2,24 +2,30 @@ package ax.kl.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
 import lombok.Data;
 
+/**
+ * 角色菜单
+ * @author wangbiao
+ * Date 2017/11/28
+ */
 @Data
 public class SysRoleMenu {
 
-    @TableField("MenuId")
-    @JSONField(name = "MenuId")
-    private String MenuId;
+    /**主键菜单Id*/
+    @TableId("MenuId")
+    private String menuId;
 
+    /**父菜单Id*/
     @TableField("ParentMenuId")
-    @JSONField(name = "ParentMenuId")
-    private String ParentMenuId;
+    private String parentMenuId;
 
+    /**菜单名称*/
     @TableField("MenuName")
-    @JSONField(name = "MenuName")
-    private String MenuName;
+    private String menuName;
 
+    /**角色Id*/
     @TableField("RoleId")
-    @JSONField(name = "MenuName")
-    private String RoleId;
+    private String roleId;
 }

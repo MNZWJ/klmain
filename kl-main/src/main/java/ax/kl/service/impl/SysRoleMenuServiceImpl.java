@@ -29,10 +29,12 @@ public class SysRoleMenuServiceImpl implements SysRoleMenuService {
      * @param roleId
      * @return
      */
+    @Override
     public boolean delRoleMenuByRoleId(String roleId,String[] menuId){
         RoleMenuMapper.delRoleMenuByRoleId(roleId);
-        for (String m:menuId)
+        for (String m:menuId){
             RoleMenuMapper.insertRoleMenu(roleId,m);
+        }
         return true;
     }
 
@@ -41,6 +43,7 @@ public class SysRoleMenuServiceImpl implements SysRoleMenuService {
      * @param roleId
      * @return
      */
+    @Override
     public int insertRoleMenu(String roleId,String menuId){
         return  RoleMenuMapper.insertRoleMenu(roleId,menuId);
     };
@@ -50,6 +53,7 @@ public class SysRoleMenuServiceImpl implements SysRoleMenuService {
      * @param roleIds
      * @return
      */
+    @Override
     public List<SysMenu> getMenusByRoleId(String[] roleIds){
         return this.RoleMenuMapper.getMenusByRoleId(roleIds);
     }

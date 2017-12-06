@@ -19,8 +19,8 @@ public class SysRoleMenuController {
     SysRoleMenuService RoleMenuService;
 
     @ApiOperation(value = "获取角色菜单页面")
-    @RequestMapping(value="/RoleMenu",method=RequestMethod.GET)
-    public String doView () {
+    @RequestMapping(value = "/RoleMenu", method = RequestMethod.GET)
+    public String doView() {
         return "/SysRoleMenu/SysRoleMenu";
     }
 
@@ -35,13 +35,12 @@ public class SysRoleMenuController {
     @ApiOperation(value = "保存角色菜单")
     @RequestMapping(value = "/saveRoleMenu", method = RequestMethod.POST)
     @ResponseBody
-    public boolean saveRoleMenu(@RequestParam String role,@RequestParam String menu) {
-        String[] m=menu.split(",");
-        if(role==null||role.equals(""))
+    public boolean saveRoleMenu(@RequestParam String role, @RequestParam String menu) {
+        String[] m = menu.split(",");
+        if (role == null || role.equals("")) {
             return false;
-        boolean del=RoleMenuService.delRoleMenuByRoleId(role,m);
+        }
+        boolean del = RoleMenuService.delRoleMenuByRoleId(role, m);
         return del;
     }
-
-
 }

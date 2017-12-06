@@ -5,6 +5,11 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import lombok.Data;
 
+/**
+ * 角色人员
+ * @author wangbiao
+ * Date 2017/11/30
+ */
 @Data
 @TableName("TB_SYS_MANAGERROLEUSER")
 public class SysRoleUser {
