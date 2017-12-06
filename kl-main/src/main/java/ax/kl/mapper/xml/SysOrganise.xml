@@ -71,17 +71,21 @@
 
     <!--单一或批量删除组织机构-->
     <update id="deleteSysOrganises" >
-        update TB_SYS_Organise SET IsDel='1'  WHERE OrganiseId in
+        DELETE  from TB_SYS_Organise  WHERE OrganiseId in
 
         <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
             #{item}
         </foreach>
     </update>
 
-    <!--判断是否有子组织机构-->
+    <!--判断是否有子组织机构或人员-->
     <select id="getSysOrganiseType" resultMap="BaseResultMap">
-        SELECT * FROM TB_SYS_Organise WHERE ParentId in
-
+        select org.OrganiseId as id from TB_SYS_Organise org where org.ParentId in
+        <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        union ALL
+        select b.UserId as id from TB_SYS_BUSINESSUSER b where b.DeptId IN
         <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
             #{item}
         </foreach>
