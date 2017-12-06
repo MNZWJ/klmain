@@ -10,49 +10,50 @@ import javax.management.relation.Role;
 import java.util.List;
 
 /**
+ * 角色人员
  * @author wangbiao
- *
+ * Date 2017/11/30
  */
 @Repository
 public interface SysRoleUserMapper {
     /**
      * 获取人员树
-     * @return
+     * @return 人员树
      */
     List<TreeModel> getUserTreeList();
 
     /**
      * 获取角色人员
-     * @param RoleId(角色ID)
-     * @return
+     * @param roleId(角色ID)
+     * @return 人员类
      */
-    List<SysRoleUser> getRoleUser(@Param("RoleId") String RoleId);
+    List<SysRoleUser> getRoleUser(@Param("roleId") String roleId);
 
     /**
      * 根据角色ID删除角色人员
-     * @param RoleId
+     * @param roleId 角色Id
      * @return
      */
-    int delRoleUser(@Param("RoleId")String RoleId);
+    int delRoleUser(@Param("roleId")String roleId);
 
     /**
      * 插入角色人员
-     * @param RoleId
-     * @param UserId
+     * @param roleId 角色Id
+     * @param userId 人员Id
      * @return
      */
-    int addRoleUser(@Param("RoleId")String RoleId,@Param("UserId")String UserId);
+    int addRoleUser(@Param("roleId")String roleId,@Param("UserId")String userId);
 
     /**
      * 验证人员是否存在
-     * @param UserId
+     * @param userId 人员Id
      * @return
      */
-    int validateUser(@Param("UserId")String UserId);
+    int validateUser(@Param("userId")String userId);
 
     /**
      * 根据用户ID获取所有的角色
-     * @param userId
+     * @param userId 用户Id
      * @return
      */
     List<String> getRoleByUserId(@Param("userId") String userId);

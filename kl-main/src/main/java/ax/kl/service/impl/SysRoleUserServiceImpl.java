@@ -10,18 +10,23 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
+/**
+ * 角色人员
+ * @author wangbiao
+ * Date 2017/11/30
+ */
 @Transactional
 @Service
 public class SysRoleUserServiceImpl implements SysRoleUserService {
     @Autowired
-    SysRoleUserMapper RoleUserMapper;
+    SysRoleUserMapper roleUserMapper;
     /**
      * 获取人员树
      * @return
      */
     @Override
     public List<TreeModel> getUserTreeList(){
-        return TreeUtil.getTree(RoleUserMapper.getUserTreeList());
+        return TreeUtil.getTree(roleUserMapper.getUserTreeList());
     };
 
     /**
@@ -31,7 +36,7 @@ public class SysRoleUserServiceImpl implements SysRoleUserService {
      */
     @Override
     public List<SysRoleUser> getRoleUser(String RoleId){
-        return RoleUserMapper.getRoleUser(RoleId);
+        return roleUserMapper.getRoleUser(RoleId);
     }
 
     /**
@@ -42,9 +47,9 @@ public class SysRoleUserServiceImpl implements SysRoleUserService {
      */
     @Override
     public boolean updateRoleUser(String RoleId, String[] UserId) {
-        RoleUserMapper.delRoleUser(RoleId);
+        roleUserMapper.delRoleUser(RoleId);
         for (String u:UserId){
-            RoleUserMapper.addRoleUser(RoleId,u);
+            roleUserMapper.addRoleUser(RoleId,u);
         }
         return true;
     }
@@ -54,9 +59,10 @@ public class SysRoleUserServiceImpl implements SysRoleUserService {
      * @param userId
      * @return
      */
+    @Override
      public String getRoleByUserId(String userId){
         String roleId = "";
-        List<String> list = this.RoleUserMapper.getRoleByUserId(userId);
+        List<String> list = this.roleUserMapper.getRoleByUserId(userId);
         for(String tempId : list){
             roleId = roleId+"," + tempId;
         }

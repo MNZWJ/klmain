@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * @Author: SuZhenpeng
+ * @Author: Wangbiao
  * Description:
  * Date: Created in 10:23 2017/11/13
  * @Modified By:
@@ -33,6 +33,7 @@ public interface SysRoleMenuMapper extends BaseMapper<SysRoleMenu> {
     /**
      * 插入角色菜单
      * @param roleId 角色Id
+     * @param menuId 菜单Id
      * @return
      */
     int insertRoleMenu(@Param("roleId") String roleId, @Param("menuId") String menuId);
