@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ax.kl.mapper.UserRoleMapper">
+    <!--字段-->
+    <resultMap id="UserRole" type="ax.kl.entity.UserRole">
+        <id column="Id" property="id"/>
+        <result column="UserId" property="userId"/>
+        <result column="RoleId" property="roleId"/>
+    </resultMap>
+
+    <!--新增-->
+    <insert id="insertRole" >
+        INSERT  INTO TB_SYS_MANAGERROLEUSER(Id,UserId,RoleId)
+        VALUES (NEWID(),#{menuId},#{roleId})
+    </insert>
+
+    <!--//根据人员ID删除菜单关联关系-->
+    <delete id="delRoleByRoleId"  >
+        DELETE FROM  TB_SYS_MANAGERROLEUSER  WHERE UserId=#{UserId}
+    </delete>
+
+    <!--根据人员ID查找选中的角色-->
+    <select id="getRoleInfo"  resultMap="UserRole">
+        SELECT UserId,RoleId  FROM  TB_SYS_MANAGERROLEUSER  WHERE UserId=#{UserId}
+    </select>
+
+</mapper>
