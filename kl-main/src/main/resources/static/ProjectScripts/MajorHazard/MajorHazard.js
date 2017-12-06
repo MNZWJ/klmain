@@ -9,6 +9,11 @@ $(function () {
         $('#chemistryTable').bootstrapTable("refresh");
     });
     initTable();
+
+    //模态窗关闭事件
+    $('#myModal').on('hidden.bs.modal', function () {
+        $('#myTab a[href="#sourceInfo"]').tab('show')
+    });
 });
 
 function initMap() {
@@ -192,12 +197,12 @@ function hazardSearch() {
     var companyName = mini.get("searchCompanyName").getText();
     var courceName = mini.get("searchSourceNmae").getValue();
     var rank = mini.get("searchRank").getValue();
-    var area = mini.get("qx").getValue();
+//    var area = mini.get("qx").getValue();
     $.ajax({
         type: 'post',
         url: '/MajorHazard/getMajorHazard',
         async: false,
-        data: {companyName: companyName, sourceName: courceName, rank: rank,area:area},
+        data: {companyName: companyName, sourceName: courceName, rank: rank},
         success: function (result) {
             sourceList = result;
         }

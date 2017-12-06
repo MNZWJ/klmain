@@ -33,8 +33,8 @@ public class MajorHazard {
     private String rank;
 
     //备案编号
-    @TableField(value = "RecodeNo")
-    private String recodeNo;
+    @TableField(value = "RecordNo")
+    private String recordNo;
 
     //有效期
     @TableField(value = "Validity")
