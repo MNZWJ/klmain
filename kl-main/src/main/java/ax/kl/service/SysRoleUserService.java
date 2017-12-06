@@ -30,4 +30,11 @@ public interface SysRoleUserService {
      * @return
      */
     boolean updateRoleUser(String RoleId,String[] UserId);
+
+    /**
+     * 根据用户ID获取用户角色
+     * @param userId
+     * @return
+     */
+    String getRoleByUserId(String userId);
 }

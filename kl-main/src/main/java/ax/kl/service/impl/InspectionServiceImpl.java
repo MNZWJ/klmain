@@ -1,6 +1,8 @@
 package ax.kl.service.impl;
 
+import ax.kl.entity.ChemicalsInfo;
 import ax.kl.entity.CompanyInfo;
+import ax.kl.entity.MajorHazard;
 import ax.kl.mapper.InspectionMapper;
 import ax.kl.service.InspectionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +33,7 @@ public class InspectionServiceImpl implements InspectionService {
         String searchCompanyName="";
         String searchIndustryCode="";
         String searchScaleCode="";
-
+        String searchTypeCode="";
         if(param.containsKey("searchCompanyName")){
             searchCompanyName=param.get("searchCompanyName");
         }
@@ -41,9 +43,12 @@ public class InspectionServiceImpl implements InspectionService {
         if(param.containsKey("searchScaleCode")){
             searchScaleCode=param.get("searchScaleCode");
         }
+        if(param.containsKey("searchTypeCode")){
+            searchTypeCode=param.get("searchTypeCode");
+        }
 
 
-        return inspectionMapper.getCompanyList(searchCompanyName,searchIndustryCode,searchScaleCode);
+        return inspectionMapper.getCompanyList(searchCompanyName,searchIndustryCode,searchScaleCode,searchTypeCode);
     }
 
     /**
@@ -54,5 +59,15 @@ public class InspectionServiceImpl implements InspectionService {
     @Override
     public List<CompanyInfo> getCompanyInfo(String companyInfo) {
         return inspectionMapper.getCompanyInfo(companyInfo);
+    }
+
+    @Override
+    public List<MajorHazard> getDangerSourceList(String companyId) {
+        return inspectionMapper.getDangerSourceList(companyId);
+    }
+
+    @Override
+    public List<ChemicalsInfo> getChemicalsInfoList(String companyId) {
+        return inspectionMapper.getChemicalsInfoList(companyId);
     }
 }

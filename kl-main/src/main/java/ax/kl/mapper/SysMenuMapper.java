@@ -82,6 +82,4 @@ public interface SysMenuMapper extends BaseMapper<SysMenu> {
      */
     List<SysMenu> getMenuType(String[] ids);
 
-
-
 }

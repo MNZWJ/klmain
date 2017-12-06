@@ -1,5 +1,6 @@
 package ax.kl.service.impl;
 
+import ax.kl.entity.SysMenu;
 import ax.kl.entity.SysRoleMenu;
 import ax.kl.mapper.SysRoleMenuMapper;
 import ax.kl.service.SysRoleMenuService;
@@ -43,4 +44,15 @@ public class SysRoleMenuServiceImpl implements SysRoleMenuService {
     public int insertRoleMenu(String roleId,String menuId){
         return  RoleMenuMapper.insertRoleMenu(roleId,menuId);
     };
+
+    /**
+     * 根据角色ID获取权限菜单
+     * @param roleIds
+     * @return
+     */
+    public List<SysMenu> getMenusByRoleId(String[] roleIds){
+        return this.RoleMenuMapper.getMenusByRoleId(roleIds);
+    }
+
+
 }

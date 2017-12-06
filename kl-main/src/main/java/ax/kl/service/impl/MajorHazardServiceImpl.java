@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author wangbiao
@@ -21,26 +22,26 @@ public class MajorHazardServiceImpl implements MajorHazardService {
 
     /**
      * 获取重大危险源
+     * <p>
+     * CompanyName 所属企业Id
+     * SourceName  重大危险源名称
+     * Rank        危险源级别
      *
-     * @param CompanyName 所属企业
-     * @param SourceName  重大危险源名称
-     * @param Rank        危险源级别
      * @return
      */
     @Override
-    public List<MajorHazard> getMajorHazard(String CompanyName, String SourceName, String Rank) {
-        String filter = "1=1";
-//        if ("".equals(CompanyName))
-//            filter += " and CompanyName = '" + CompanyName + "'";
-//        if ("".equals(SourceName))
-//            filter += " and SourceName = '" + SourceName + "'";
-//        if ("".equals(Rank))
-//            filter += " and Rank = '" + Rank + ",";
-//        if ("".equals(CompanyName + SourceName + Rank))
-//            filter = "1 = 1";
-//        else
-//            filter = filter.substring(5);
-        return majorHazardMapper.getMorHazar(filter);
+    public List<MajorHazard> getMajorHazard(Map<String, String> param) {
+        StringBuffer filter = new StringBuffer("1=1");
+        if (param.containsKey("companyName")&&!param.get("companyName").equals("")) {
+            filter.append(" and c.CompanyName like '%").append(param.get("companyName")).append("%'");
+        }
+        if (param.containsKey("sourceName")&&!param.get("sourceName").equals("")) {
+            filter.append(" and d.SourceId='").append(param.get("sourceName")).append("'");
+        }
+        if (param.containsKey("rank")&&!param.get("rank").equals("")) {
+            filter.append(" and d.Rank='").append(param.get("rank")).append("'");
+        }
+        return majorHazardMapper.getMorHazar(filter.toString());
     }
 }
 

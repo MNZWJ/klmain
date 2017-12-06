@@ -2,6 +2,7 @@ package ax.kl.web.controller;
 
 
 
+import ax.kl.common.Auth;
 import ax.kl.entity.SysMenu;
 import ax.kl.service.SysMenuService;
 import io.swagger.annotations.Api;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -36,8 +38,9 @@ public class MainViewController {
 
     @ApiOperation(value = "获取主页面")
     @RequestMapping(value="/Index",method= RequestMethod.GET)
-    public String doView (Model model) {
-        List<SysMenu> menuList= SysMenuService.GetMenusList();
+    public String doView (Model model, HttpServletRequest request) {
+       // List<SysMenu> menuList= (List<SysMenu>) request.getSession().getAttribute("MenuList");
+        List<SysMenu> menuList = this.SysMenuService.GetMenusList();
         List<SysMenu> rootMenu=menuList.stream().filter(s-> "1".equals(s.getMenuLevel())).collect(Collectors.toList());
         Map<String,List<SysMenu>> secondMenu=menuList.stream().filter(s-> "2".equals(s.getMenuLevel())).collect(Collectors.groupingBy(SysMenu::getParentMenuId));
         model.addAttribute("rootMenu",rootMenu);
