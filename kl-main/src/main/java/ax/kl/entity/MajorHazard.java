@@ -1,6 +1,7 @@
 package ax.kl.entity;
 
 import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import lombok.Data;
 
@@ -9,7 +10,7 @@ import lombok.Data;
 public class MajorHazard {
 
     //Id
-    @TableField(value = "SourceId")
+    @TableId(value = "SourceId")
     private String sourceId;
     //唯一编码
     @TableField(value = "UniqueCode")

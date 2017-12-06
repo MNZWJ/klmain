@@ -2,12 +2,13 @@ package ax.kl.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
 import lombok.Data;
 
 @Data
 public class SysRoleMenu {
 
-    @TableField("MenuId")
+    @TableId("MenuId")
     @JSONField(name = "MenuId")
     private String MenuId;
 
