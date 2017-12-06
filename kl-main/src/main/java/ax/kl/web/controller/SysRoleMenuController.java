@@ -10,17 +10,23 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * 角色菜单
+ *
+ * @author wangbiao
+ * Date 2017/11/28
+ */
 @CrossOrigin
 @Controller
 @RequestMapping("/ManagerRoleMenu")
 @Api(value = "/ManagerRoleMenu", tags = {"角色可管理菜单"})
 public class SysRoleMenuController {
     @Autowired
-    SysRoleMenuService RoleMenuService;
+    SysRoleMenuService roleMenuService;
 
     @ApiOperation(value = "获取角色菜单页面")
-    @RequestMapping(value="/RoleMenu",method=RequestMethod.GET)
-    public String doView () {
+    @RequestMapping(value = "/RoleMenu", method = RequestMethod.GET)
+    public String doView() {
         return "/SysRoleMenu/SysRoleMenu";
     }
 
@@ -28,20 +34,19 @@ public class SysRoleMenuController {
     @RequestMapping(value = "/getRoleMenuTreeList", method = RequestMethod.POST)
     @ResponseBody
     public List<SysRoleMenu> getMenuTreeList(@RequestParam String role) {
-        List<SysRoleMenu> list = RoleMenuService.getRoleMenuTreeList(role);
+        List<SysRoleMenu> list = roleMenuService.getRoleMenuTreeList(role);
         return list;
     }
 
     @ApiOperation(value = "保存角色菜单")
     @RequestMapping(value = "/saveRoleMenu", method = RequestMethod.POST)
     @ResponseBody
-    public boolean saveRoleMenu(@RequestParam String role,@RequestParam String menu) {
-        String[] m=menu.split(",");
-        if(role==null||role.equals(""))
+    public boolean saveRoleMenu(@RequestParam String role, @RequestParam String menu) {
+        String[] m = menu.split(",");
+        if (role == null || "".equals(role)) {
             return false;
-        boolean del=RoleMenuService.delRoleMenuByRoleId(role,m);
+        }
+        boolean del = roleMenuService.delRoleMenuByRoleId(role, m);
         return del;
     }
-
-
 }

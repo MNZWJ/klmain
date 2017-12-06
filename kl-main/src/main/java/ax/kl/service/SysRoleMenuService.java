@@ -5,14 +5,14 @@ import ax.kl.entity.SysRoleMenu;
 import java.util.List;
 
 /**
- * @Author: SuZhenpeng
+ * @Author: Wangbiao
  * Description:
- * Date: Created in 11:01 2017/11/13
- * @Modified By:
+ * Date: 2017/11/30
  */
 public interface SysRoleMenuService {
     /**
      * 获取角色权限树列表
+     * @param roleId
      * @return
      */
     List<SysRoleMenu> getRoleMenuTreeList(String roleId);
@@ -20,6 +20,7 @@ public interface SysRoleMenuService {
     /**
      * 根据角色ID删除菜单ID
      * @param roleId
+     * @param menuId
      * @return
      */
     boolean delRoleMenuByRoleId(String roleId, String[] menuId);
@@ -27,6 +28,7 @@ public interface SysRoleMenuService {
     /**
      * 插入角色菜单
      * @param roleId
+     * @param menuId
      * @return
      */
     int insertRoleMenu(String roleId, String menuId);

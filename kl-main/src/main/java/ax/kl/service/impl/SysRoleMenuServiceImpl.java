@@ -10,18 +10,23 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * 角色菜单
+ * @author wangbiao
+ * Date 2017/12/04
+ */
 @Transactional
 @Service
 public class SysRoleMenuServiceImpl implements SysRoleMenuService {
     @Autowired
-    SysRoleMenuMapper RoleMenuMapper;
+    SysRoleMenuMapper roleMenuMapper;
     /**
      * 角色权限树列表
      * @return
      */
     @Override
     public List<SysRoleMenu> getRoleMenuTreeList(String roleId){
-        return RoleMenuMapper.getRoleMenuTreeList(roleId);
+        return roleMenuMapper.getRoleMenuTreeList(roleId);
     }
 
     /**
@@ -29,10 +34,12 @@ public class SysRoleMenuServiceImpl implements SysRoleMenuService {
      * @param roleId
      * @return
      */
+    @Override
     public boolean delRoleMenuByRoleId(String roleId,String[] menuId){
-        RoleMenuMapper.delRoleMenuByRoleId(roleId);
-        for (String m:menuId)
-            RoleMenuMapper.insertRoleMenu(roleId,m);
+        roleMenuMapper.delRoleMenuByRoleId(roleId);
+        for (String m:menuId){
+            roleMenuMapper.insertRoleMenu(roleId,m);
+        }
         return true;
     }
 
@@ -41,8 +48,9 @@ public class SysRoleMenuServiceImpl implements SysRoleMenuService {
      * @param roleId
      * @return
      */
+    @Override
     public int insertRoleMenu(String roleId,String menuId){
-        return  RoleMenuMapper.insertRoleMenu(roleId,menuId);
+        return  roleMenuMapper.insertRoleMenu(roleId,menuId);
     };
 
     /**
@@ -50,8 +58,9 @@ public class SysRoleMenuServiceImpl implements SysRoleMenuService {
      * @param roleIds
      * @return
      */
+    @Override
     public List<SysMenu> getMenusByRoleId(String[] roleIds){
-        return this.RoleMenuMapper.getMenusByRoleId(roleIds);
+        return this.roleMenuMapper.getMenusByRoleId(roleIds);
     }
 
 

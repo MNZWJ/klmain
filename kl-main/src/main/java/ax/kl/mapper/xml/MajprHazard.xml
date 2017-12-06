@@ -4,6 +4,21 @@
 
 
     <select id="getMorHazar" resultType="ax.kl.entity.MajorHazard">
-        SELECT d.* FROM TB_BASE_DANGERSOURCE_INFO d LEFT JOIN TB_BASE_COMPANY_INFO c ON d.CompanyId=c.CompanyId WHERE ${filter}
+        WITH acc AS(SELECT SourceId, DictName=STUFF((SELECT ','+da.DictName FROM TB_BASE_DRESOURCE_ACCIDENTYPE t JOIN TB_SYS_DATADICT da ON t.DictId=da.DictId
+        WHERE SourceId=t1.SourceId FOR XML PATH('')), 1, 1, '') FROM TB_BASE_DRESOURCE_ACCIDENTYPE t1 GROUP BY SourceId)
+        SELECT d.SourceId,d.UniqueCode,c.CompanyName AS 'CompanyId',d.SourceName,d.RValue,sd.DictName AS 'Rank',
+        d.RecordNo,d.Validity,d1.DictName AS 'Status',d.Longt,d.Lat,d.OutPersonCount,d.DeathToll,d.RecordDate,
+        (SELECT acc.DictName FROM acc WHERE acc.SourceId=d.SourceId) AS AccidentType
+        FROM TB_BASE_DANGERSOURCE_INFO d LEFT JOIN TB_BASE_COMPANY_INFO c ON d.CompanyId=c.CompanyId LEFT JOIN
+        TB_SYS_DATADICT sd ON d.Rank=sd.DictId LEFT JOIN TB_SYS_DATADICT d1 ON d.Status = d1.DictId WHERE ${filter}
+    </select>
+
+    <select id="getChemicalsInfoListBySourceId" resultType="ax.kl.entity.CompanyInfo">
+        SELECT ci.* FROM TB_BASE_DANGERSOURCE_INFO di
+        JOIN TB_BASE_PROCESS_UNIT pu ON di.SourceId=pu.SourceId
+        JOIN TB_BASE_EQUIP_INFO ei ON pu.UnitId=ei.UnitId
+        JOIN TB_REL_BASE_COMPANY_CHEMICAL cc ON ei.EquipId=cc.EquipId
+        JOIN TB_BASE_CHEMICAL_INFO ci ON cc.ChemId=ci.ChemId
+        WHERE di.SourceId=#{sourceId}
     </select>
 </mapper>

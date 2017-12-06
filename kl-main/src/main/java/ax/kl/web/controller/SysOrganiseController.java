@@ -62,7 +62,7 @@ public class SysOrganiseController {
         if(this.sysOrganiseService.deleteSysOrganises(idLists)==1){
             return ResultUtil.success("111");
         }
-        return ResultUtil.error(01,"您选中的机构下有子机构，不可删除");
+        return ResultUtil.error(01,"您选中的机构下有子机构或人员，不可删除");
     }
 
     @ApiOperation(value = "获取组织机构列表")

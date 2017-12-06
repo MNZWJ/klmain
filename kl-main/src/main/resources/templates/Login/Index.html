@@ -45,7 +45,7 @@
            $('#btn_Login').click(function(){
                if ($.trim($('#userName').val()) == '') {
                    BootstrapDialog.alert({
-                       title: '警告',
+                       title: '提示',
                        message: "请输入用户名",
                        size: BootstrapDialog.SIZE_SMALL,
                        type: BootstrapDialog.TYPE_WARNING, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
@@ -58,7 +58,7 @@
                    return false;
                } else if ($.trim($('#pwd').val()) == '') {
                    BootstrapDialog.alert({
-                       title: '警告',
+                       title: '提示',
                        message: "请输入密码",
                        size: BootstrapDialog.SIZE_SMALL,
                        type: BootstrapDialog.TYPE_WARNING, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
@@ -76,7 +76,21 @@
                    url: "/Login/login",
                    data: { "loginName": base64.encode($('#userName').val().toString()), "pwd": base64.encode($('#pwd').val().toString()) },
                    success: function (result) {
-                       alert(12);
+                      if(result.code=="01"){
+                          BootstrapDialog.alert({
+                              title: '提示',
+                              message: result.msg,
+                              size: BootstrapDialog.SIZE_SMALL,
+                              type: BootstrapDialog.TYPE_WARNING, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+
+                              closable: false, // <-- Default value is false
+                              draggable: true, // <-- Default value is false
+                              buttonLabel: '确定', // <-- Default value is 'OK',
+
+                          });
+                      }else{
+                          window.location.href="/MainView/Index";
+                      }
                    }
                });
            });

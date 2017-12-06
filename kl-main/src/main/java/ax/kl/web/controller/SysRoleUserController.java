@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * @author wangbiao
+ * Date 2017/11/28
+ */
 @CrossOrigin
 @Controller
 @RequestMapping("/ManagerRoleUser")
@@ -18,11 +22,11 @@ import java.util.List;
 public class SysRoleUserController {
 
     @Autowired
-    SysRoleUserService SysRoleUserService;
+    SysRoleUserService roleUserService;
 
     @ApiOperation(value = "角色可管理人员")
-    @RequestMapping(value="/RoleUser",method= RequestMethod.GET)
-    public String doView () {
+    @RequestMapping(value = "/RoleUser", method = RequestMethod.GET)
+    public String doView() {
         return "/SysRoleUser/SysRoleUser";
     }
 
@@ -30,22 +34,21 @@ public class SysRoleUserController {
     @RequestMapping(value = "/getUserTreeList", method = RequestMethod.POST)
     @ResponseBody
     public List<TreeModel> getMenuTreeList() {
-        List<TreeModel> UserTree=SysRoleUserService.getUserTreeList();
-        return UserTree;
+        return roleUserService.getUserTreeList();
     }
 
     @ApiOperation(value = "获取角色人员")
-    @RequestMapping(value = "/getRoleUser",method = RequestMethod.GET)
+    @RequestMapping(value = "/getRoleUser", method = RequestMethod.GET)
     @ResponseBody
-    public List<SysRoleUser> getRoleUser(@RequestParam String role){
-        return SysRoleUserService.getRoleUser(role);
+    public List<SysRoleUser> getRoleUser(@RequestParam String role) {
+        return roleUserService.getRoleUser(role);
     }
 
     @ApiOperation(value = "更新角色人员")
-    @RequestMapping(value = "/saveRoleUser",method = RequestMethod.POST)
+    @RequestMapping(value = "/saveRoleUser", method = RequestMethod.POST)
     @ResponseBody
-    public boolean updateRoleUser(@RequestParam String RoleId,@RequestParam String UserId){
-        String User[]=UserId.split(",");
-        return SysRoleUserService.updateRoleUser(RoleId,User);
+    public boolean updateRoleUser(@RequestParam String roleId, @RequestParam String userId) {
+        String user[] = userId.split(",");
+        return roleUserService.updateRoleUser(roleId, user);
     }
 }
