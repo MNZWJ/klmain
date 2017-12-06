@@ -5,7 +5,7 @@
 
     <select id="getMorHazar" resultType="ax.kl.entity.MajorHazard">
         SELECT d.SourceId,d.UniqueCode,c.CompanyName AS 'CompanyId',d.SourceName,d.RValue,sd.DictName AS 'Rank',
-        d.RecordNo,d.Validity,d.Status,d.Longt,d.Lat,d.OutPersonCount,d.AccidentType,d.DeathToll,d.RecordDate
+        d.RecordNo,d.Validity,d.Status,d.Longt,d.Lat,d.OutPersonCount,d.DeathToll,d.RecordDate
         FROM TB_BASE_DANGERSOURCE_INFO d LEFT JOIN TB_BASE_COMPANY_INFO c ON d.CompanyId=c.CompanyId LEFT JOIN
         TB_SYS_DATADICT sd ON d.Rank=sd.DictId WHERE ${filter}
     </select>

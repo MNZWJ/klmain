@@ -14,19 +14,19 @@
     </select>
 
     <select id="getRoleUser" resultMap="RoleUser">
-        SELECT UserId,RoleId FROM TB_SYS_MANAGERROLEUSER WHERE RoleId=#{RoleId}
+        SELECT UserId,RoleId FROM TB_SYS_MANAGERROLEUSER WHERE RoleId=#{roleId}
     </select>
 
     <delete id="delRoleUser">
-        DELETE FROM TB_SYS_MANAGERROlEUSER WHERE RoleId=#{RoleId}
+        DELETE FROM TB_SYS_MANAGERROlEUSER WHERE RoleId=#{roleId}
     </delete>
 
     <insert id="addRoleUser">
-        INSERT INTO TB_SYS_MANAGERROLEUSER (Id,RoleId,UserId) VALUES (NEWID(),#{RoleId},#{UserId})
+        INSERT INTO TB_SYS_MANAGERROLEUSER (Id,RoleId,UserId) VALUES (NEWID(),#{roleId},#{userId})
     </insert>
 
     <select id="validateUser" resultType="int">
-        SELECT COUNT(*) FROM TB_SYS_BUSINESSUSER WHERE USERID=#{UserId}
+        SELECT COUNT(*) FROM TB_SYS_BUSINESSUSER WHERE USERID=#{userId}
     </select>
 
     <select id="getRoleByUserId" resultType="String">

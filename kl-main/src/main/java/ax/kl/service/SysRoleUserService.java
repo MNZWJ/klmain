@@ -18,18 +18,18 @@ public interface SysRoleUserService {
 
     /**
      * get角色人员
-     * @param RoleId
+     * @param roleId
      * @return
      */
-    List<SysRoleUser> getRoleUser(String RoleId);
+    List<SysRoleUser> getRoleUser(String roleId);
 
     /**
      * 更新角色人员
-     * @param RoleId
-     * @param UserId
+     * @param roleId
+     * @param userId
      * @return
      */
-    boolean updateRoleUser(String RoleId,String[] UserId);
+    boolean updateRoleUser(String roleId,String[] userId);
 
     /**
      * 根据用户ID获取用户角色
