@@ -25,9 +25,10 @@
     <select id="getMenusByRoleId" resultType="ax.kl.entity.SysMenu">
         select DISTINCT m.* from TB_SYS_MANAGERROLEMENU r
         INNER JOIN TB_SYS_MENUS m on r.MenuId=m.MenuId
-        where m.MenuId in
+        where r.roleId in
         <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
             #{item}
         </foreach>
+        ORDER BY m.MenuOrder
     </select>
 </mapper>

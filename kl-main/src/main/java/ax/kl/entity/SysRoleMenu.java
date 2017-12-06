@@ -13,9 +13,15 @@ import lombok.Data;
 @Data
 public class SysRoleMenu {
 
+<<<<<<< HEAD
     /**主键菜单Id*/
     @TableId("MenuId")
     private String menuId;
+=======
+    @TableId("MenuId")
+    @JSONField(name = "MenuId")
+    private String MenuId;
+>>>>>>> 7055f56815611e355b2555fabeea4737b296c9ee
 
     /**父菜单Id*/
     @TableField("ParentMenuId")

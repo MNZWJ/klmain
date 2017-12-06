@@ -14,7 +14,11 @@ import lombok.Data;
 @TableName("TB_BASE_DANGERSOURCE_INFO")
 public class MajorHazard {
 
+<<<<<<< HEAD
     /**主键*/
+=======
+    //Id
+>>>>>>> 7055f56815611e355b2555fabeea4737b296c9ee
     @TableId(value = "SourceId")
     private String sourceId;
     /**唯一编码*/
