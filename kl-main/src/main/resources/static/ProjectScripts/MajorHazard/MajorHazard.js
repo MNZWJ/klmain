@@ -80,7 +80,7 @@ function loadSourceList(courceList) {
                 myIcon = new BMap.Icon("../../Images/Common/蓝点.png", new BMap.Size(50, 50));
                 break;
         }
-        var marker = new BMap.Marker(tempPoint, {
+        var marker = new BMap.Marker(wgs2bd(tempPoint), {
             title: n.sourceName,
             icon: myIcon
         });
