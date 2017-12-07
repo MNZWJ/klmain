@@ -14,7 +14,7 @@
 
     <select id="GetMenuList" resultMap="BaseResultMap">
         SELECT * FROM TB_SYS_MENUS WHERE ParentMenuId=#{parentId}
-        <if test="searchName != null or searchName !='' ">
+        <if test="searchName != null and searchName !='' ">
             AND MenuName LIKE CONCAT(CONCAT('%',#{searchName}),'%')
         </if>
 

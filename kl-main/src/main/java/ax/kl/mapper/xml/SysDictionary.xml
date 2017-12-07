@@ -16,7 +16,7 @@
         SELECT * FROM TB_SYS_DATADICT WHERE TypeId=
 
         <choose>
-            <when test="typeId != null or typeId !='' ">
+            <when test="typeId != null and typeId !='' ">
                 #{typeId}
             </when>
             <otherwise>
@@ -26,7 +26,7 @@
 
 
         AND IsDel='0'
-        <if test="dictSearchName != null or dictSearchName !='' ">
+        <if test="dictSearchName != null and dictSearchName !='' ">
             AND DictName LIKE CONCAT(CONCAT('%',#{dictSearchName}),'%')
         </if>
 
