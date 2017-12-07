@@ -1,13 +1,10 @@
 package ax.kl.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import lombok.Data;
-
-import java.io.Serializable;
 
 /**
  * @Author: SuZhenpeng
@@ -17,7 +14,7 @@ import java.io.Serializable;
  */
 @Data
 @TableName("TB_SYS_MENUS")
-public class SysMenu extends Model<SysMenu>{
+public class SysMenu {
 
 
     /**
@@ -43,9 +40,4 @@ public class SysMenu extends Model<SysMenu>{
     @JSONField(name = "MenuLevel")
     private String MenuLevel;
 
-
-    @Override
-    protected Serializable pkVal() {
-        return this.MenuId;
-    }
 }
