@@ -51,45 +51,54 @@ $(function () {
         columns: [
             {
                 title: '序号',
+                halign: 'center',
+                width: '5%',
+                align: 'center',
                 formatter: function (value, row, index) {
                     var page = $('#table').bootstrapTable('getOptions');
                     return (page.pageNumber - 1) * page.pageSize + index + 1;
-                    width: '5%'
                 }
             }, {
                 field: 'chemName',
                 title: '化学品名称',
-                halign: 'left',
+                halign: 'center',
+                align: 'left',
                 width: '13.57%'
             }, {
                 field: 'cAS',
                 title: 'CAS',
-                halign: 'left',
+                halign: 'center',
+                align: 'left',
                 width: '13.57%'
             }, {
                 field: 'equipName',
                 title: '设备名称',
-                halign: 'left',
+                halign: 'center',
+                align: 'left',
                 width: '13.57%'
             }, {
                 field: 'unitName',
                 title: '工艺单元名称',
-                halign: 'left',
+                halign: 'center',
+                align: 'left',
                 width: '13.57%'
             },{
                 field: 'sourceName',
                 title: '危险源名称',
-                halign: 'left',
+                halign: 'center',
+                align: 'left',
                 width: '13.57%'
             },{
                 field: 'companyName',
                 title: '企业名称',
-                halign: 'left',
+                halign: 'center',
+                align: 'left',
                 width: '13.57%'
             },{
                 field: 'area',
                 title: '行政区域',
-                halign: 'left',
+                halign: 'center',
+                align: 'left',
                 width: '13.57%'
             }]
     });
