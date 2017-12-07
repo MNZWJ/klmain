@@ -1,8 +1,9 @@
 var sourceId = "";
+var scanHeight="";
 $(function () {
     //获取浏览器高度
-    var scanHeight = $(window).height();
-    $("#map").height(scanHeight - 8);
+    scanHeight = $(window).height();
+    $("#map").height(scanHeight);
     initMap();
 
     $("#chemicalsTab").on("shown.bs.tab", function (e) {
@@ -214,7 +215,7 @@ function hazardSearch() {
 function initTable() {
     //化学品表格
     $('#chemistryTable').bootstrapTable({
-        height: 'auto',
+        height: scanHeight *4/7,
         striped: true,      //是否显示行间隔色
         cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
         method: 'get',//请求方式
