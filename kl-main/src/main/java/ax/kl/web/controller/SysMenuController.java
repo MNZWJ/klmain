@@ -44,7 +44,6 @@ public class SysMenuController {
         Page page=new Page();
         page.setCurrent(pageNumber);
         page.setSize(pageSize);
-
         Page<SysMenu> list = SysMenuService.GetMenuList(page,parentId,searchName);
         Map<String,Object> map=new HashMap<>();
         map.put("total",list.getTotal());

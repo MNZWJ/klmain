@@ -1,6 +1,7 @@
 package ax.kl.mapper;
 
 import ax.kl.entity.ChemicalsInfo;
+import ax.kl.entity.CompanyArt;
 import ax.kl.entity.CompanyInfo;
 import ax.kl.entity.MajorHazard;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
@@ -44,5 +45,13 @@ public interface InspectionMapper extends BaseMapper<CompanyInfo> {
      * @return
      */
     List<ChemicalsInfo> getChemicalsInfoList(@Param("companyId") String companyId);
+
+
+    /**
+     * 加载危险化学工艺
+     * @param companyId
+     * @return
+     */
+    List<CompanyArt> getCompanyArtList(@Param("companyId")String companyId);
 
 }
