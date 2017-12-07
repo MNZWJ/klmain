@@ -24,7 +24,14 @@ public class SessionInterceptHandler implements HandlerInterceptor {
         if (clazz.isAnnotationPresent(Auth.class) ||
                 method.isAnnotationPresent(Auth.class)) {
             if(request.getSession().getAttribute("sessionuser")==null){
-              response.sendRedirect("/Login/Index");
+                if (request.getHeader("x-requested-with") != null
+                        && request.getHeader("x-requested-with")
+                        .equalsIgnoreCase("XMLHttpRequest")){
+                    //ajax请求
+                    response.setHeader("sessionstatus", "timeout");
+                }else{
+                    response.sendRedirect("/Login/error");
+                }
             }else{
                 return true;
             }

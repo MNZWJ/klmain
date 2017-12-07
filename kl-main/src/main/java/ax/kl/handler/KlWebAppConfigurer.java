@@ -1,7 +1,9 @@
 package ax.kl.handler;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @Configuration
@@ -15,5 +17,15 @@ public class KlWebAppConfigurer extends WebMvcConfigurerAdapter {
         registry.addInterceptor(new SessionInterceptHandler()).addPathPatterns("/**")
                 .excludePathPatterns("/").excludePathPatterns("/Login/**");
         super.addInterceptors(registry);
+    }
+
+    /**
+     * 设置默认的访问页面
+     * @param registry
+     */
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/").setViewName("forward:/Login/Index");
+        registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
+        super.addViewControllers(registry);
     }
 }

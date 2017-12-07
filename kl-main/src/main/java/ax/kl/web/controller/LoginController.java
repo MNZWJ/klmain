@@ -53,6 +53,11 @@ public class LoginController {
         return  "Login/Index";
     }
 
+    @ApiOperation(value = "跳转的error页面")
+    @RequestMapping(value="/error",method= RequestMethod.GET)
+    public String error () {
+        return  "Login/error";
+    }
 
     @ApiOperation(value = "登录")
     @RequestMapping(value = "/login", method = RequestMethod.POST)
