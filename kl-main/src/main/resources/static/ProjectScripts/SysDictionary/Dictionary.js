@@ -21,7 +21,7 @@ $(function () {
                 onNodeSelected: function (event, data) {
 
                     treeNode = $("#tree").treeview("getSelected");
-                    $('#tree').treeview('expandNode', [treeNode, {silent: true}]);
+                   // $('#tree').treeview('expandNode', [treeNode, {silent: true}]);
                     dictSearchName = "";//清空查询条件
                     $("#dictSearchName").val('');//清空查询框
                     typeId = data.id;
