@@ -30,19 +30,7 @@ public class MajorHazardServiceImpl implements MajorHazardService {
      */
     @Override
     public List<MajorHazard> getMajorHazard(Map<String, String> param) {
-        StringBuffer filter = new StringBuffer("1 = 1");
-        for (Map.Entry<String, String> entry : param.entrySet()) {
-            if ("".equals(entry.getValue())) {
-                continue;
-            } else if ("companyName".equals(entry.getKey())) {
-                filter.append(" AND c.companyName like '%").append(entry.getValue()).append("%'");
-            } else if ("sourceName".equals(entry.getKey())) {
-                filter.append(" AND d.sourceName like '%").append(entry.getValue()).append("%'");
-            } else {
-                filter.append(" AND d.").append(entry.getKey()).append(" = '").append(entry.getValue()).append("'");
-            }
-        }
-        return majorHazardMapper.getMorHazar(filter.toString());
+        return majorHazardMapper.getMorHazar(param.get("companyName"),param.get("sourceName"),param.get("rank"),param.get("sourceId"));
     }
 
     /**

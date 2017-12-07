@@ -176,14 +176,6 @@ function openwindow() {
 
 }
 
-//查询企业type=true 查询;type=false 复位
-function searchSourceList(type) {
-    if (!type)
-        clearSearch();
-    loadSourceList(hazardSearch());
-}
-
-
 //清空查询条件
 function clearSearch() {
     mini.get("searchCompanyName").setValue('');
@@ -191,18 +183,18 @@ function clearSearch() {
     mini.get("searchRank").setValue('');
 }
 
-
+//查询
 function hazardSearch() {
     var sourceList = [];
     var companyName = mini.get("searchCompanyName").getText();
-    var courceName = mini.get("searchSourceNmae").getValue();
+    var sourceName = mini.get("searchSourceNmae").getValue();
     var rank = mini.get("searchRank").getValue();
 //    var area = mini.get("qx").getValue();
     $.ajax({
         type: 'post',
         url: '/MajorHazard/getMajorHazard',
         async: false,
-        data: {companyName: companyName, sourceName: courceName, rank: rank},
+        data: {companyName: companyName, sourceName: sourceName, rank: rank},
         success: function (result) {
             sourceList = result;
         }
