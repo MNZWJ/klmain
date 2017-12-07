@@ -157,7 +157,7 @@ function roleTBonClich(roleId) {
             //初始化treeView
            var listNode= new Array();
                $.each(result,function(i,n){
-                   listNode[i]=($("#tree").treeview("getNode",n.MenuId));
+                   listNode[i]=($("#tree").treeview("getNode",n.menuId));
            });
            $.each(listNode,function(i,n){
                $("#tree").treeview('checkNode', [n,{ silent: true }]);//选中节点

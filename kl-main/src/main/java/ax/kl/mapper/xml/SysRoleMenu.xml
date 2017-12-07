@@ -3,10 +3,10 @@
 <mapper namespace="ax.kl.mapper.SysRoleMenuMapper">
 
     <resultMap id="RoleMenu" type="ax.kl.entity.SysRoleMenu">
-        <id column="MenuId" property="MenuId"/>
-        <result column="ParentMenuId" property="ParentMenuId"/>
-        <result column="MenuName" property="MenuName"/>
-        <result column="RoleId" property="RoleId"/>
+        <id column="menuId" property="menuId"/>
+        <result column="parentMenuId" property="parentMenuId"/>
+        <result column="nenuName" property="menuName"/>
+        <result column="roleId" property="roleId"/>
     </resultMap>
 
     <!--角色菜单查询-->
