@@ -2,6 +2,7 @@ package ax.kl.web.controller;
 
 
 import ax.kl.entity.ChemicalsInfo;
+import ax.kl.entity.CompanyArt;
 import ax.kl.entity.CompanyInfo;
 import ax.kl.entity.MajorHazard;
 import ax.kl.service.InspectionService;
@@ -64,6 +65,14 @@ public class InspectionController {
     @ResponseBody
     public List<ChemicalsInfo> getChemicalsInfoList(@RequestParam("companyId") String companyId){
         return inspectionService.getChemicalsInfoList(companyId);
+    }
+
+
+    @RequestMapping("/getCompanyArtList")
+    @ApiOperation(value ="加载关联危险化学品信息" )
+    @ResponseBody
+    public List<CompanyArt> getCompanyArtList(@RequestParam("companyId")String companyId){
+        return inspectionService.getCompanyArtList(companyId);
     }
 
 }

@@ -6,7 +6,7 @@ $(function () {
     //获取浏览器高度
     var scanHeight = $(window).height();
 
-    $("#treeDiv").height(scanHeight - 10);
+    $("#treeDiv").height(scanHeight);
 
     $.ajax({
         type: 'post',
@@ -36,7 +36,7 @@ $(function () {
         }
     });
     $('#table').bootstrapTable({
-        height: scanHeight - 6,
+        height: scanHeight,
         striped: true,      //是否显示行间隔色
         cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
         method: 'get',//请求方式

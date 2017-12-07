@@ -3,7 +3,7 @@ $(function () {
     //获取浏览器高度
     var scanHeight = $(window).height();
 
-    $("#map").height(scanHeight - 8);
+    $("#map").height(scanHeight);
     initMap();
 
     $("#myTabDrop1").on("shown.bs.tab", function (e) {
@@ -12,6 +12,10 @@ $(function () {
 
     $("#chemicalsTab").on("shown.bs.tab", function (e) {
         $('#chemistryTable').bootstrapTable("refresh");
+    });
+
+    $("#companyArt").on("shown.bs.tab", function (e) {
+        $('#companyArtTable').bootstrapTable("refresh");
     });
 
     initTable();
@@ -181,6 +185,68 @@ function initTable(){
                 title: '投用时间',
                 halign: 'center',
                 width: '30%'
+            }]
+    });
+
+    //危险关联工艺
+    $('#companyArtTable').bootstrapTable({
+        height: 'auto',
+        striped: true,      //是否显示行间隔色
+        cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+        method: 'get',//请求方式
+        url: '/Inspection/getCompanyArtList',//请求url
+
+        clickToSelect: true,//是否启用点击选中行
+        showRefresh: false,//是否显示 刷新按钮
+        queryParams: function (pageReqeust) {
+            pageReqeust.companyId = companyId;
+
+            return pageReqeust;
+        },
+        rowStyle: function () {//自定义行样式
+            return "bootTableRow";
+        },
+        onLoadError: function () {
+
+
+            BootstrapDialog.alert({
+                title: '错误',
+                size: BootstrapDialog.SIZE_SMALL,
+                message: '表格加载失败！',
+                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+                closable: false, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                buttonLabel: '确定', // <-- Default value is 'OK',
+
+            });
+        },
+
+        columns: [
+            {
+
+                title: '序号',
+                formatter: function (value, row, index) {
+
+
+                    return index + 1;
+                }
+            }
+            ,
+
+            {
+
+                field: 'technologyName',
+                title: '工艺名称',
+                halign: 'center',
+                width: '40%',
+                cellStyle: function (value, row, index, field) {
+                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis'}};
+                }
+            }, {
+                field: 'monitorUnit',
+                title: '重点监控单元',
+                halign: 'center',
+                width: '50%'
             }]
     });
 

@@ -1,6 +1,7 @@
 package ax.kl.service.impl;
 
 import ax.kl.entity.ChemicalsInfo;
+import ax.kl.entity.CompanyArt;
 import ax.kl.entity.CompanyInfo;
 import ax.kl.entity.MajorHazard;
 import ax.kl.mapper.InspectionMapper;
@@ -73,5 +74,10 @@ public class InspectionServiceImpl implements InspectionService {
     @Override
     public List<ChemicalsInfo> getChemicalsInfoList(String companyId) {
         return inspectionMapper.getChemicalsInfoList(companyId);
+    }
+
+    @Override
+    public List<CompanyArt> getCompanyArtList(String companyId) {
+        return inspectionMapper.getCompanyArtList(companyId);
     }
 }

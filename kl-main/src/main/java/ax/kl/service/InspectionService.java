@@ -1,10 +1,9 @@
 package ax.kl.service;
 
 import ax.kl.entity.ChemicalsInfo;
+import ax.kl.entity.CompanyArt;
 import ax.kl.entity.CompanyInfo;
 import ax.kl.entity.MajorHazard;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -45,5 +44,12 @@ public interface InspectionService {
      * @return
      */
     List<ChemicalsInfo> getChemicalsInfoList(String companyId);
+
+    /**
+     * 加载危险化学工艺
+     * @param companyId
+     * @return
+     */
+    List<CompanyArt> getCompanyArtList(String companyId);
 
 }
