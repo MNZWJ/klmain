@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ax.kl.mapper.ChemicalsInfoMapper">
-    <select id="getChemicalsList" resultType="ax.kl.entity.ChemicalsInfo">
+    <resultMap id="ChemicalsList" type="ax.kl.entity.ChemicalsInfo">
+        <id column="ChemId" property="chemId"/>
+        <result column="CAS" property="cAS"/>
+        <result column="EquipName" property="equipName"/>
+        <result column="UnitName" property="unitName"/>
+        <result column="SourceName" property="sourceName"/>
+        <result column="CompanyName" property="companyName"/>
+        <result column="Area" property="area"/>
+    </resultMap>
+
+    <select id="getChemicalsList" resultMap="ChemicalsList">
         SELECT c.ChemId,c.ChemName,c.CAS,ei.EquipName,pu.UnitName,di.SourceName,ci.CompanyName,ci.Area
         FROM TB_BASE_CHEMICAL_INFO c
         LEFT JOIN TB_REL_EQUIP_CHEMICAL rc ON c.ChemId = rc.ChemId

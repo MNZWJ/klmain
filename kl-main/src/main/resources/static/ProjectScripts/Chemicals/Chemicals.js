@@ -13,7 +13,6 @@ $(function () {
         striped: true,      //是否显示行间隔色
         cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
         method: 'get',//请求方式
-        date:{a:"1"},
         url: '/Chemicals/getChemicalsList',//请求url
         pagination: 'true',//显示分页条
         paginationLoop: 'true',//启用分页条无限循环功能
@@ -26,13 +25,12 @@ $(function () {
         showRefresh: 'true',//是否显示 刷新按钮
         queryParams: queryParams,
         queryParamsType: '', //默认值为 'limit' ,在默认情况下 传给服务端的参数为：offset,limit,sort
+        idField:"chemId",
         // 设置为 ''  在这种情况下传给服务器的参数为：pageSize,pageNumber
         rowStyle: function () {//自定义行样式
             return "bootTableRow";
         },
         onLoadError:function(){
-
-
             BootstrapDialog.alert({
                 title: '错误',
                 size:BootstrapDialog.SIZE_SMALL,
@@ -44,9 +42,11 @@ $(function () {
 
             });
         },
+        onLoadSuccess:function(result){
+        },
         onClickRow:function(row, $element){
-            // $("#table").bootstrapTable("uncheckAll");
-            // $("#table").bootstrapTable("checkBy",{field:'chemId',values:[row.chemId]})
+            $("#table").bootstrapTable("uncheckAll");
+            $("#table").bootstrapTable("checkBy",{field:'chemId',values:[row.chemId]})
         },
         columns: [
             {

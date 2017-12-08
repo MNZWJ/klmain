@@ -1,6 +1,7 @@
 package ax.kl.service;
 
 import ax.kl.entity.ChemicalsInfo;
+import com.baomidou.mybatisplus.plugins.Page;
 
 import java.util.List;
 import java.util.Map;
@@ -13,8 +14,9 @@ import java.util.Map;
 public interface ChemicalsInfoService {
     /**
      * 获取化学品列表
+     * @param page
      * @param param
      * @return
      */
-    List<ChemicalsInfo> getChemicalsList(Map<String, String> param);
+    Page<ChemicalsInfo> getChemicalsList(Page page, Map<String, String> param);
 }

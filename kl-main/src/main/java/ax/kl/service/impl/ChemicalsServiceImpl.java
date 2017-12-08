@@ -3,12 +3,10 @@ package ax.kl.service.impl;
 import ax.kl.entity.ChemicalsInfo;
 import ax.kl.mapper.ChemicalsInfoMapper;
 import ax.kl.service.ChemicalsInfoService;
-import org.apache.xmlbeans.impl.xb.xsdschema.Public;
+import com.baomidou.mybatisplus.plugins.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,7 +27,8 @@ public class ChemicalsServiceImpl implements ChemicalsInfoService {
      * @return
      */
     @Override
-    public java.util.List<ChemicalsInfo> getChemicalsList(Map<String,String> param) {
-        return chemicalsInfoMapper.getChemicalsList(param.get("chemName"),param.get("equipName"),param.get("companyName"));
+    public Page<ChemicalsInfo> getChemicalsList(Page page,Map<String, String> param) {
+        page.setRecords(chemicalsInfoMapper.getChemicalsList(page,param.get("chemName"),param.get("equipName"),param.get("companyName")));
+        return page;
     }
 }
