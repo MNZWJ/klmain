@@ -59,10 +59,10 @@ public class DangerSourceController {
         return dangerSourceService.getDSourceInfo(sourceId);
     }
 
-    @RequestMapping(value = "/getChemicalsInfoListBySourceId")
-    @ApiOperation(value = "获取重大危险源化学品信息")
+    @RequestMapping(value = "/getChemicalsInfoListTable")
+    @ApiOperation(value = "获取重大危险源化学品列表信息")
     @ResponseBody
-    public Map<String,Object> getChemicalsInfoListBySourceId(@RequestParam Map<String,String> param) {
+    public Map<String,Object> getChemicalsInfoListTable(@RequestParam Map<String,String> param) {
         Page page =new Page();
         int pageSize=Integer.parseInt(param.get("pageSize"));
         int pageNumber=Integer.parseInt(param.get("pageNumber"));
@@ -73,6 +73,18 @@ public class DangerSourceController {
         Map<String,Object> map=new HashMap<>();
         map.put("total",list.getTotal());
         map.put("rows",list.getRecords());
+        return map;
+    }
+
+    @RequestMapping(value = "/getChemicalsInfoListBySourceId")
+    @ApiOperation(value = "获取重大危险源化学品信息")
+    @ResponseBody
+    public Map<String,Object> getChemicalsInfoListBySourceId(@RequestParam Map<String,String> param) {
+        String sourceId =param.get("sourceId");
+        List<ChemicalsInfo> list=dangerSourceService.getChemicalsInfoListBySourceId(sourceId);
+        Map<String,Object> map=new HashMap<>();
+        map.put("total",list.size());
+        map.put("rows",list);
         return map;
     }
 }
