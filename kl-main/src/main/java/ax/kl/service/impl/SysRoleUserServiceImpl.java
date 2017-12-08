@@ -31,12 +31,12 @@ public class SysRoleUserServiceImpl implements SysRoleUserService {
 
     /**
      * 角色人员
-     * @param RoleId
+     * @param roleId
      * @return
      */
     @Override
-    public List<SysRoleUser> getRoleUser(String RoleId){
-        return roleUserMapper.getRoleUser(RoleId);
+    public List<SysRoleUser> getRoleUser(String roleId){
+        return roleUserMapper.getRoleUser(roleId);
     }
 
     /**

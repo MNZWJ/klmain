@@ -42,7 +42,7 @@ public interface SysRoleUserMapper {
      * @param userId 人员Id
      * @return
      */
-    int addRoleUser(@Param("roleId")String roleId,@Param("UserId")String userId);
+    int addRoleUser(@Param("roleId")String roleId,@Param("userId")String userId);
 
     /**
      * 验证人员是否存在
