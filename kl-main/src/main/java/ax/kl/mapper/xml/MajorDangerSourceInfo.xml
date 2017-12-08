@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ax.kl.mapper.MajorDangerSourceInfoMapper">
+    <!--通用查询映射结果-->
+    <resultMap id="BaseResultMap" type="ax.kl.entity.MajorHazard">
+        <id column="SourceId" property="sourceId"/>
+        <result column="UniqueCode" property="uniqueCode"/>
+        <result column="CompanyId" property="companyId"/>
+        <result column="SourceName" property="sourceName"/>
+        <result column="RValue" property="rValue"/>
+        <result column="Rank" property="rank"/>
+        <result column="RecodeNo" property="recodeNo"/>
+        <result column="Validity" property="validity"/>
+        <result column="Status" property="status"/>
+        <result column="Longt" property="longt"/>
+        <result column="Lat" property="lat"/>
+        <result column="OutPersonCount" property="outPersonCount"/>
+        <result column="AccidentType" property="accidentType"/>
+        <result column="DeathToll" property="deathToll"/>
+        <result column="RecordDate" property="recorDate"/>
+    </resultMap>
+    <select id="getMajorInfo" resultType="ax.kl.entity.MajorHazard">
+        SELECT
+        ci.CompanyName AS CompanyId,
+        di.SourceId,
+        di.UniqueCode,
+        di.SourceName,
+        di.RValue,
+        sd.DictName AS Rank,
+        di.RecordNo,
+        di.Validity,
+        sd1.DictName AS Status,
+        di.Longt,
+        di.Lat,
+        di.OutPersonCount,
+        di.DeathToll,
+        di.RecordDate,
+        STUFF(
+        (
+        SELECT
+        ',' + sd3.DictName
+        FROM
+        TB_REL_DRESOURCE_ACCIDENTYPE da
+        JOIN TB_SYS_DATADICT sd3 ON sd3.DictId = da.TypeId
+        WHERE
+        da.SourceId = di.SourceId FOR xml path ('')
+        ),
+        1,
+        1,
+        ''
+        ) AS AccidentType
+        FROM
+        TB_BASE_DANGERSOURCE_INFO di
+        JOIN TB_BASE_COMPANY_INFO ci ON di.CompanyId = ci.CompanyId
+        LEFT JOIN TB_SYS_DATADICT sd ON di.Rank = sd.DictId
+        LEFT JOIN TB_SYS_DATADICT sd1 ON di.Status = sd1.DictId
+        WHERE  di.SourceId  IS  NOT  NULL
+            <if test="companyName != null and companyName !='' ">
+                 AND di.CompanyId=#{companyName}
+            </if>
+        <if test="sourceNmae != null and sourceNmae !='' ">
+            AND di.SourceName LIKE CONCAT(CONCAT('%',#{sourceNmae}),'%')
+        </if>
+        <if test="rank != null and rank !='' ">
+            AND di.Rank = #{rank}
+        </if>
+    </select>
+
+
+
+</mapper>
