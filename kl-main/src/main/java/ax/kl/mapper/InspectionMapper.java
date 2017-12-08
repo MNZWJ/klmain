@@ -3,7 +3,7 @@ package ax.kl.mapper;
 import ax.kl.entity.ChemicalsInfo;
 import ax.kl.entity.CompanyArt;
 import ax.kl.entity.CompanyInfo;
-import ax.kl.entity.MajorHazard;
+import ax.kl.entity.DangerSourceInfo;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -37,7 +37,7 @@ public interface InspectionMapper extends BaseMapper<CompanyInfo> {
      * @param companyId
      * @return
      */
-    List<MajorHazard> getDangerSourceList(@Param("companyId") String companyId);
+    List<DangerSourceInfo> getDangerSourceList(@Param("companyId") String companyId);
 
     /**
      * 获取企业下的化学品信息

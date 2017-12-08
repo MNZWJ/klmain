@@ -3,7 +3,7 @@ package ax.kl.service;
 import ax.kl.entity.ChemicalsInfo;
 import ax.kl.entity.CompanyArt;
 import ax.kl.entity.CompanyInfo;
-import ax.kl.entity.MajorHazard;
+import ax.kl.entity.DangerSourceInfo;
 
 import java.util.List;
 import java.util.Map;
@@ -36,7 +36,7 @@ public interface InspectionService {
      * @param companyId
      * @return
      */
-    List<MajorHazard> getDangerSourceList(String companyId);
+    List<DangerSourceInfo> getDangerSourceList(String companyId);
 
     /**
      * 获取企业下的化学品信息
