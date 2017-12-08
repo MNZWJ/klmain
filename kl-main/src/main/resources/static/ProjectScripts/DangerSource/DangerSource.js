@@ -1,4 +1,4 @@
-var sourceId = "";
+var sourceId = "null";
 $(function () {
     //获取浏览器高度
     var scanHeight = $(window).height();
@@ -216,7 +216,7 @@ function initTable() {
         method: 'get',//请求方式
         pagination: 'false',//显示分页条
         paginationLoop: 'false',//启用分页条无限循环功能
-        url: '/DangerSource/getChemicalsInfoListBySourceId',//请求url
+        url: '/DangerSource/getChemicalsInfoListTable',//请求url
         pageNumber: 1,                       //初始化加载第一页，默认第一页
         pageSize: 10,                       //每页的记录行数（*）
         pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
@@ -279,6 +279,10 @@ function queryParams(pageReqeust) {
     return pageReqeust;
 }
 
+/**
+ * 获取化学品列表数据
+ * @param sourceId
+ */
 function chemicalsTableLoda(sourceId) {
     $.ajax({
         type: 'get',
