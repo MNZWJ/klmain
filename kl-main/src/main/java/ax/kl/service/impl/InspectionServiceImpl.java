@@ -1,9 +1,6 @@
 package ax.kl.service.impl;
 
-import ax.kl.entity.ChemicalsInfo;
-import ax.kl.entity.CompanyArt;
-import ax.kl.entity.CompanyInfo;
-import ax.kl.entity.MajorHazard;
+import ax.kl.entity.*;
 import ax.kl.mapper.InspectionMapper;
 import ax.kl.service.InspectionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,5 +76,10 @@ public class InspectionServiceImpl implements InspectionService {
     @Override
     public List<CompanyArt> getCompanyArtList(String companyId) {
         return inspectionMapper.getCompanyArtList(companyId);
+    }
+
+    @Override
+    public List<IndustryCompanyInfo> getIndustryCompanyInfo() {
+        return inspectionMapper.getIndustryCompanyInfo();
     }
 }

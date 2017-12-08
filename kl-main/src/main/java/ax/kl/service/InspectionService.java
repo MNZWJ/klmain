@@ -1,9 +1,6 @@
 package ax.kl.service;
 
-import ax.kl.entity.ChemicalsInfo;
-import ax.kl.entity.CompanyArt;
-import ax.kl.entity.CompanyInfo;
-import ax.kl.entity.MajorHazard;
+import ax.kl.entity.*;
 
 import java.util.List;
 import java.util.Map;
@@ -51,5 +48,12 @@ public interface InspectionService {
      * @return
      */
     List<CompanyArt> getCompanyArtList(String companyId);
+
+
+    /**
+     * 获取企业行业分布情况
+     * @return
+     */
+    List<IndustryCompanyInfo> getIndustryCompanyInfo();
 
 }

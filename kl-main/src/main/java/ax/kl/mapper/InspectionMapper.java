@@ -1,9 +1,6 @@
 package ax.kl.mapper;
 
-import ax.kl.entity.ChemicalsInfo;
-import ax.kl.entity.CompanyArt;
-import ax.kl.entity.CompanyInfo;
-import ax.kl.entity.MajorHazard;
+import ax.kl.entity.*;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -53,5 +50,12 @@ public interface InspectionMapper extends BaseMapper<CompanyInfo> {
      * @return
      */
     List<CompanyArt> getCompanyArtList(@Param("companyId")String companyId);
+
+
+    /**
+     * 获取企业行业分布情况
+     * @return
+     */
+    List<IndustryCompanyInfo> getIndustryCompanyInfo();
 
 }
