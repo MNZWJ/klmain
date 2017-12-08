@@ -49,7 +49,7 @@
     </select>
 
     <!--查询企业下的危险源-->
-    <select id="getDangerSourceList" resultType="ax.kl.entity.MajorHazard">
+    <select id="getDangerSourceList" resultType="ax.kl.entity.DangerSourceInfo">
         SELECT 	di.SourceId,	di.UniqueCode,	di.CompanyId,	di.SourceName,	di.RValue,	di.RecordNo,
 	    di.Validity,	di.Status,	di.Longt,	di.Lat,	di.OutPersonCount,		di.DeathToll,
 	    di.RecordDate,	sd.DictName AS Rank FROM	TB_BASE_DANGERSOURCE_INFO di

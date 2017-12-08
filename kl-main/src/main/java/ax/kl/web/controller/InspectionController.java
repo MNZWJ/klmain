@@ -1,6 +1,7 @@
 package ax.kl.web.controller;
 
 
+
 import ax.kl.entity.*;
 import ax.kl.service.InspectionService;
 import io.swagger.annotations.Api;
@@ -51,7 +52,7 @@ public class InspectionController {
     @RequestMapping("/getDangerSourceList")
     @ApiOperation(value = "通过id获取危险源")
     @ResponseBody
-    public List<MajorHazard> getDangerSourceList(@RequestParam("companyId") String companyId) {
+    public List<DangerSourceInfo> getDangerSourceList(@RequestParam("companyId") String companyId) {
 
         return inspectionService.getDangerSourceList(companyId);
     }

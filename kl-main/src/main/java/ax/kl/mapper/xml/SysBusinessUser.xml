@@ -8,13 +8,14 @@
                 CreateUserId as createUserId,CreateDeptId as createDeptId,CreateTime as createTime,
                 Sex as sex,DeptCode as deptCode,Telephone as telephone
         FROM TB_SYS_BUSINESSUSER
-        WHERE 1=1
-        <if test="typeCode != null or typeCode !='' ">
-            AND DeptCode LIKE CONCAT(#{typeCode},'%')
-        </if>
-        <if test="searchName != null or searchName !='' ">
-            AND UserName LIKE CONCAT('%',CONCAT(#{searchName},'%'))
-        </if>
+        <where>
+            <if test="typeCode != null and typeCode !=''">
+                and DeptCode LIKE CONCAT(#{typeCode},'%')
+            </if>
+            <if test="searchName != null and searchName !=''">
+                and UserName LIKE CONCAT('%',CONCAT(#{searchName},'%'))
+            </if>
+        </where>
     </select>
     <!--更新人员-->
     <insert id="updateBusinessUser">

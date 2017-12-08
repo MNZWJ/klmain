@@ -21,17 +21,12 @@
 
         FROM TB_SYS_Organise
         WHERE IsDel='0'
-
-        <choose>
-            <when test="typeId != null or typeId !='' ">
+            <if test="typeId != null and typeId !='' ">
                 AND ParentId= #{typeId}
-            </when>
-        </choose>
-
-        <if test="searchName != null or searchName !='' ">
-            AND OrganiseName LIKE CONCAT(CONCAT('%',#{searchName}),'%')
-        </if>
-
+            </if>
+            <if test="searchName != null and searchName !='' ">
+                AND OrganiseName LIKE CONCAT(CONCAT('%',#{searchName}),'%')
+            </if>
         ORDER BY ShowOrder
     </select>
 

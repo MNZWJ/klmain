@@ -22,7 +22,7 @@ $(function () {
                 //节点选中方法
                 onNodeSelected: function (event, data) {
                     treeNode=$("#tree").treeview("getSelected");
-                    $('#tree').treeview('expandNode', [ treeNode, {  silent: true } ]);
+                   // $('#tree').treeview('expandNode', [ treeNode, {  silent: true } ]);
                     searchName = "";//清空查询条件
                     $("#searchName").val('');//清空查询框
                     parentId = data.id;

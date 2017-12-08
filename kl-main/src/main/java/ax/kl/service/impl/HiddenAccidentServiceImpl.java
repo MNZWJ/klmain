@@ -1,7 +1,7 @@
 package ax.kl.service.impl;
 
 import ax.kl.entity.HiddenAccident;
-import ax.kl.entity.MajorHazard;
+import ax.kl.entity.DangerSourceInfo;
 import ax.kl.mapper.HiddenAccidentMapper;
 import ax.kl.service.HiddenAccidentService;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -26,7 +26,7 @@ public class HiddenAccidentServiceImpl implements HiddenAccidentService {
     HiddenAccidentMapper hiddenAccidentMapper;
 
     @Override
-    public List<MajorHazard> getHazardList(Map<String,String> param) {
+    public List<DangerSourceInfo> getHazardList(Map<String,String> param) {
         String searchCompanyName="";
         String searchSourceName="";
         String searchRank="";

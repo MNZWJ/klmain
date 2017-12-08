@@ -1,7 +1,7 @@
 package ax.kl.web.controller;
 
 import ax.kl.entity.HiddenAccident;
-import ax.kl.entity.MajorHazard;
+import ax.kl.entity.DangerSourceInfo;
 import ax.kl.service.HiddenAccidentService;
 import com.baomidou.mybatisplus.plugins.Page;
 import io.swagger.annotations.Api;
@@ -39,7 +39,7 @@ public class HiddenAccidentController {
     @ApiOperation(value="加载危险源集合")
     @RequestMapping(value = "/getHazardList",method = RequestMethod.POST)
     @ResponseBody
-    public List<MajorHazard> getHazardList(@RequestParam Map<String,String> param){
+    public List<DangerSourceInfo> getHazardList(@RequestParam Map<String,String> param){
         return hiddenAccidentService.getHazardList(param);
     }
 
