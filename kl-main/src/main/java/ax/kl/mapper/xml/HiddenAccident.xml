@@ -3,7 +3,7 @@
 <mapper namespace="ax.kl.mapper.HiddenAccidentMapper">
 
     <!--加载危险源列表-->
-    <select id="getHazardList" resultType="ax.kl.entity.MajorHazard">
+    <select id="getHazardList" resultType="ax.kl.entity.DangerSourceInfo">
 
         SELECT
         di.SourceId,di.SourceName,di.Longt,di.Lat

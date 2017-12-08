@@ -12,7 +12,7 @@
 
     <select id="GetRoleList" resultMap="BaseResultMap">
         SELECT * FROM TB_SYS_MANAGERROLE WHERE IsDel='0'
-        <if test="searchName != null or searchName !='' ">
+        <if test="searchName != null and searchName !='' ">
             AND RoleName LIKE CONCAT(CONCAT('%',#{searchName}),'%')
         </if>
 
