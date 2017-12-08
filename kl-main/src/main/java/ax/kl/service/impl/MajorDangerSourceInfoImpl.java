@@ -1,6 +1,6 @@
 package ax.kl.service.impl;
 
-import ax.kl.entity.MajorHazard;
+import ax.kl.entity.DangerSourceInfo;
 import ax.kl.mapper.MajorDangerSourceInfoMapper;
 import ax.kl.service.MajorDangerSourceInfoService;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -24,7 +24,7 @@ public class MajorDangerSourceInfoImpl implements MajorDangerSourceInfoService {
      * @return
      */
     @Override
-    public Page<MajorHazard> getMajorInfo(Page page, String companyName, String sourceNmae,String rank) {
+    public Page<DangerSourceInfo> getMajorInfo(Page page, String companyName, String sourceNmae,String rank) {
         page.setRecords(MajorDangerSourceInfoMapper.getMajorInfo(page, companyName, sourceNmae,rank));
         return page;
     }
