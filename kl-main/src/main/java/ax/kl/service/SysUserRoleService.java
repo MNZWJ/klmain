@@ -1,13 +1,13 @@
 package ax.kl.service;
 
-import ax.kl.entity.UserRole;
+import ax.kl.entity.SysUserRole;
 
 import java.util.List;
 
 /**
  * @author Administrator
  */
-public interface UserRoleService {
+public interface SysUserRoleService {
 
      /* 删除角色菜单
      * @param roleId
@@ -28,6 +28,6 @@ public interface UserRoleService {
      * @param UserId
      * @return
      */
-    List<UserRole> getRoleInfo(String UserId);
+    List<SysUserRole> getRoleInfo(String UserId);
 
 }
