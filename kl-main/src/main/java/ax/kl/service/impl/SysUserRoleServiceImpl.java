@@ -1,10 +1,10 @@
 package ax.kl.service.impl;
 
 
-import ax.kl.entity.UserRole;
+import ax.kl.entity.SysUserRole;
 import ax.kl.mapper.SysDictionaryMapper;
-import ax.kl.mapper.UserRoleMapper;
-import ax.kl.service.UserRoleService;
+import ax.kl.mapper.SysUserRoleMapper;
+import ax.kl.service.SysUserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,11 +13,11 @@ import java.util.List;
 
 @Transactional
 @Service
-public class UserRoleServiceImpl implements UserRoleService {
+public class SysUserRoleServiceImpl implements SysUserRoleService {
 
 
     @Autowired
-    private UserRoleMapper userRoleMapper;
+    private SysUserRoleMapper userRoleMapper;
 
     @Autowired
     private SysDictionaryMapper sysDictionaryMapper;
@@ -28,7 +28,7 @@ public class UserRoleServiceImpl implements UserRoleService {
      * @return
      */
     @Override
-    public List<UserRole> getRoleInfo(String UserId){
+    public List<SysUserRole> getRoleInfo(String UserId){
         return userRoleMapper.getRoleInfo(UserId);
     }
 

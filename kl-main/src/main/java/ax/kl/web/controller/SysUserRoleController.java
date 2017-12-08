@@ -1,7 +1,7 @@
 package ax.kl.web.controller;
 
-import ax.kl.entity.UserRole;
-import ax.kl.service.UserRoleService;
+import ax.kl.entity.SysUserRole;
+import ax.kl.service.SysUserRoleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,15 +17,15 @@ import java.util.List;
 @Controller
 @RequestMapping("/UserRole")
 @Api(value =  "/UserRole",tags = "人员角色管理")
-public class UserRoleController {
+public class SysUserRoleController {
 
     @Autowired
-    UserRoleService UserRoleService;
+    SysUserRoleService UserRoleService;
 
     @ApiOperation(value = "人员角色菜单维护页面")
     @RequestMapping(value="/UserRole",method= RequestMethod.GET)
     public String doView(){
-        return "/UserRole/UserRole";
+        return "/SysUserRole/UserRole";
     }
 
 
@@ -43,7 +43,7 @@ public class UserRoleController {
     @ApiOperation(value = "获取人员ID对应的角色")
     @RequestMapping(value = "/GetRoleInfo",method = RequestMethod.GET)
     @ResponseBody
-    public List<UserRole> GetRoleInfo(@RequestParam String id ){
+    public List<SysUserRole> GetRoleInfo(@RequestParam String id ){
         return UserRoleService.getRoleInfo(id);
     }
 
