@@ -1,5 +1,6 @@
 var sourceId = "";
 var scanHeight="";
+var sourceId = "null";
 $(function () {
     //获取浏览器高度
     scanHeight = $(window).height();
@@ -9,8 +10,8 @@ $(function () {
     $("#chemicalsTab").on("shown.bs.tab", function (e) {
         $('#chemistryTable').bootstrapTable("refresh");
     });
-    initTable();
 
+    initTable();
     //模态窗关闭事件
     $('#myModal').on('hidden.bs.modal', function () {
         $('#myTab a[href="#sourceInfo"]').tab('show')
@@ -38,7 +39,7 @@ function initMap() {
     map.setMaxZoom(18);
 
 
-    loadSourceList(hazardSearch());
+    searchSourcr();
     getCompanyList();
     mini.get("searchRank").load("/SysDictionary/getDataDictList?typeId=" + MajorHazardRank);
 }
@@ -95,10 +96,13 @@ function loadSourceList(courceList) {
 //危险源点击事件
 function onMarkClick(e) {
     sourceId = e.target.customData.sourceId;
+    chemicalsTableLoda(sourceId);//化学品列表数据
+    $("#chemistryTable").bootstrapTable("refresh");
     $.ajax({
-        type: 'post',
-        url: '/MajorHazard/getMajorHazard',
+        type: 'get',
+        url: '/DangerSource/getDSourceInfo',
         data: {sourceId: sourceId},
+        contentType : 'application/json;charset=utf-8',
         success: function (result) {
             //清空表单
             $(':input', '#sourceInfo')
@@ -106,11 +110,11 @@ function onMarkClick(e) {
                 .val('')
                 .removeAttr('checked')
                 .removeAttr('selected');
-            for (var p in result[0]) {
+            for (var p in result) {
 
-                $("#sourceInfo").find(":input[name='" + p + "']").val(result[0][p]);
+                $("#sourceInfo").find(":input[name='" + p + "']").val(result[p]);
 
-            }
+            };
         },
         error: function () {
             BootstrapDialog.alert({
@@ -127,8 +131,6 @@ function onMarkClick(e) {
         }
 
     });
-
-
     $('#myModal').modal('show');
 }
 
@@ -176,15 +178,10 @@ function openwindow() {
     }, 4);
 
 }
-
-//查询企业type=true 查询;type=false 复位
-function searchSourceList(type) {
-    if (!type)
-        clearSearch();
-    loadSourceList(hazardSearch());
+//查询
+function searchSourcr() {
+    loadSourceList(getSource());
 }
-
-
 //清空查询条件
 function clearSearch() {
     mini.get("searchCompanyName").setValue('');
@@ -192,18 +189,18 @@ function clearSearch() {
     mini.get("searchRank").setValue('');
 }
 
-
-function hazardSearch() {
+//获取所有危险源
+function getSource() {
     var sourceList = [];
     var companyName = mini.get("searchCompanyName").getText();
-    var courceName = mini.get("searchSourceNmae").getValue();
+    var sourceName = mini.get("searchSourceNmae").getValue();
     var rank = mini.get("searchRank").getValue();
-//    var area = mini.get("qx").getValue();
     $.ajax({
-        type: 'post',
-        url: '/MajorHazard/getMajorHazard',
+        type: 'get',
+        url: '/DangerSource/getSourceCoordinate',
         async: false,
-        data: {companyName: companyName, sourceName: courceName, rank: rank},
+        data: {companyName: companyName, sourceName: sourceName, rank: rank},
+        contentType : 'application/json;charset=utf-8',
         success: function (result) {
             sourceList = result;
         }
@@ -215,24 +212,30 @@ function hazardSearch() {
 function initTable() {
     //化学品表格
     $('#chemistryTable').bootstrapTable({
+        height: 'auto',
         height: scanHeight *4/7,
         striped: true,      //是否显示行间隔色
         cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
         method: 'get',//请求方式
-        url: '/MajorHazard/getChemicalsInfoListBySourceId',//请求url
-
+        pagination: 'false',//显示分页条
+        paginationLoop: 'false',//启用分页条无限循环功能
+        url: '/DangerSource/getChemicalsInfoListTable',//请求url
+        pageNumber: 1,                       //初始化加载第一页，默认第一页
+        pageSize: 10,                       //每页的记录行数（*）
+        pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
+        sidePagination: 'server',//'server'或'client'服务器端分页
+        toolbar: '#toolbar',                //工具按钮用哪个容器
         clickToSelect: true,//是否启用点击选中行
         showRefresh: false,//是否显示 刷新按钮
-        queryParams: function (pageReqeust) {
-            pageReqeust.sourceId = sourceId;
-            return pageReqeust;
-        },
+        queryParams: queryParams,
+        queryParamsType: '', //默认值为 'limit' ,在默认情况下 传给服务端的参数为：offset,limit,sort
+        idField:"chemId",
         rowStyle: function () {//自定义行样式
             return "bootTableRow";
         },
+        onLoadSuccess:function(result){
+        },
         onLoadError: function () {
-
-
             BootstrapDialog.alert({
                 title: '错误',
                 size: BootstrapDialog.SIZE_SMALL,
@@ -244,7 +247,6 @@ function initTable() {
 
             });
         },
-
         columns: [
             {
 
@@ -273,4 +275,29 @@ function initTable() {
                 width: '50%'
             }]
     });
+}
+
+function queryParams(pageReqeust) {
+    pageReqeust.sourceId = sourceId;
+    return pageReqeust;
+}
+
+/**
+ * 获取化学品列表数据
+ * @param sourceId
+ */
+function chemicalsTableLoda(sourceId) {
+    $.ajax({
+        type: 'get',
+        url: '/DangerSource/getChemicalsInfoListBySourceId',
+        async: false,
+        data:{sourceId:sourceId},
+        contentType : 'application/json;charset=utf-8',
+        success:function (result) {
+            $('#chemistryTable').load(result);
+        },
+        error:function (e) {
+
+        }
+    })
 }

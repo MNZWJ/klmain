@@ -2,10 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ax.kl.mapper.SysRoleUserMapper">
     <resultMap id="RoleUser" type="ax.kl.entity.SysRoleUser">
-        <id column="UserId" property="UserId"/>
-        <result column="RoleId" property="RoleId"/>
-        <result column="code" property="code"/>
-        <result column="icon" property="icon"/>
+        <id column="UserId" property="userId"/>
+        <result column="RoleId" property="roleId"/>
+        <result column="Code" property="code"/>
+        <result column="Icon" property="icon"/>
     </resultMap>
     <select id="getUserTreeList" resultType="ax.kl.entity.TreeModel">
         SELECT UserId AS id,DeptId AS ParentId,UserName AS text,'0' AS code,'glyphicon glyphicon-user' AS icon FROM TB_SYS_BUSINESSUSER

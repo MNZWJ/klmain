@@ -1,6 +1,6 @@
 package ax.kl.mapper;
 
-import ax.kl.entity.MajorHazard;
+import ax.kl.entity.DangerSourceInfo;
 import com.baomidou.mybatisplus.plugins.Page;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -13,6 +13,6 @@ public interface MajorDangerSourceInfoMapper {
      * @param
      * @return 重大危险源实体
      */
-    List<MajorHazard> getMajorInfo(Page page, @Param("companyName") String companyName, @Param("sourceNmae") String sourceNmae,@Param("rank") String rank);
+    List<DangerSourceInfo> getMajorInfo(Page page, @Param("companyName") String companyName, @Param("sourceNmae") String sourceNmae,@Param("rank") String rank);
 
 }

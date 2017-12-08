@@ -12,7 +12,7 @@ import lombok.Data;
 @Data
 @TableName("TB_SYS_MANAGERROLEUSER")
 @ApiModel(value = "人员角色管理表")
-public class UserRole {
+public class SysUserRole {
 
     @TableId("Id")
     private String id;

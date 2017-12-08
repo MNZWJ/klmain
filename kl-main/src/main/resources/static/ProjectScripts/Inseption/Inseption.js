@@ -1,5 +1,5 @@
 var companyId = "";
-var scanHeight="";
+var scanHeight = "";
 $(function () {
     //获取浏览器高度
     scanHeight = $(window).height();
@@ -24,7 +24,12 @@ $(function () {
     $('#myModal').on('hidden.bs.modal', function () {
         $('#myTab a[href="#companyInfo"]').tab('show')
     });
+
+    //initEcharts();
+
+
 });
+
 //初始化地图
 function initMap() {
     map = new BMap.Map("map");          // 创建地图实例
@@ -54,10 +59,10 @@ function initMap() {
 }
 
 //初始化表格
-function initTable(){
+function initTable() {
     //化学品表格
     $('#chemistryTable').bootstrapTable({
-        height: scanHeight *4/7,
+        height: scanHeight * 4 / 7,
         striped: true,      //是否显示行间隔色
         cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
         method: 'get',//请求方式
@@ -119,7 +124,7 @@ function initTable(){
 
     //危险源表格
     $('#riskTable').bootstrapTable({
-        height: scanHeight *4/7,
+        height: scanHeight * 4 / 7,
         striped: true,      //是否显示行间隔色
         cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
         method: 'get',//请求方式
@@ -191,7 +196,7 @@ function initTable(){
 
     //危险关联工艺
     $('#companyArtTable').bootstrapTable({
-        height: scanHeight *4/7,
+        height: scanHeight * 4 / 7,
         striped: true,      //是否显示行间隔色
         cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
         method: 'get',//请求方式
@@ -253,7 +258,6 @@ function initTable(){
 
 
 }
-
 
 
 //获取企业集合
@@ -390,7 +394,7 @@ function searchCompanyList() {
             searchCompanyName: searchCompanyName,
             searchIndustryCode: searchIndustryCode,
             searchScaleCode: searchScaleCode,
-            searchTypeCode:searchTypeCode
+            searchTypeCode: searchTypeCode
         },
         url: '/Inspection/getCompanyList',
         success: function (result) {
@@ -414,5 +418,85 @@ function clearSearch() {
     mini.get("searchIndustryCode").setValue('');
     mini.get("searchScaleCode").setValue('');
     mini.get("searchTypeCode").setValue('');
+
+}
+
+//初始化图表
+function initEcharts() {
+    $.ajax({
+       type:'post',
+       url:'/Inspection/getIndustryCompanyInfo',
+        success:function(result){
+            var data=[];
+            var legendData=[];
+            $.each(result,function(i,n){
+               data.push({name:n.typeName,type:'bar',barMaxWidth:40,stack:n.stack,data:n.numList.split(",")});
+                legendData.push(n.typeName);
+            });
+
+            var option = {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                        type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                    }
+                },
+                color: ["#ad382c", "#ef8938", "#dfb728", "#204c8f","#00544a", "#6ca748"],
+                legend: {
+                    data: legendData,
+                    textStyle: {
+                        color: '#fff',
+                        fontSize: 20
+                    }
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '10%',
+                    containLabel: true
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: ["氯碱工业", "石油和天然气开采", "化学矿山", "合成氨工业"],
+                        axisLabel: {
+                            textStyle: {
+                                color: '#fff',
+                                fontSize: 20
+                            }
+                        }
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value',
+                        axisLabel: {
+                            textStyle: {
+                                color: '#fff',
+                                fontSize: 20
+                            }
+                        }
+                    }
+                ],
+                dataZoom: [
+                    {
+                        show: "true",
+                        start: 0,
+                        end: 100,
+
+                        textStyle:{
+                            color:'#fff'
+                        }
+                    }
+                ],
+                series: data
+            };
+
+            var myChart = echarts.init(document.getElementById('industryCompanyInfo'));
+            myChart.setOption(option);
+
+        }
+    });
+
 
 }

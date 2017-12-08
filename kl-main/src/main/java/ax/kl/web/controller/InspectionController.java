@@ -1,10 +1,8 @@
 package ax.kl.web.controller;
 
 
-import ax.kl.entity.ChemicalsInfo;
-import ax.kl.entity.CompanyArt;
-import ax.kl.entity.CompanyInfo;
-import ax.kl.entity.MajorHazard;
+
+import ax.kl.entity.*;
 import ax.kl.service.InspectionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -54,7 +52,7 @@ public class InspectionController {
     @RequestMapping("/getDangerSourceList")
     @ApiOperation(value = "通过id获取危险源")
     @ResponseBody
-    public List<MajorHazard> getDangerSourceList(@RequestParam("companyId") String companyId) {
+    public List<DangerSourceInfo> getDangerSourceList(@RequestParam("companyId") String companyId) {
 
         return inspectionService.getDangerSourceList(companyId);
     }
@@ -74,5 +72,13 @@ public class InspectionController {
     public List<CompanyArt> getCompanyArtList(@RequestParam("companyId")String companyId){
         return inspectionService.getCompanyArtList(companyId);
     }
+
+    @RequestMapping("/getIndustryCompanyInfo")
+    @ApiOperation(value="获取企业行业分布情况")
+    @ResponseBody
+    public List<IndustryCompanyInfo> getIndustryCompanyInfo(){
+        return inspectionService.getIndustryCompanyInfo();
+    }
+
 
 }

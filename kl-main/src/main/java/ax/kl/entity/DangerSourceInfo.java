@@ -12,7 +12,7 @@ import lombok.Data;
  */
 @Data
 @TableName("TB_BASE_DANGERSOURCE_INFO")
-public class MajorHazard {
+public class DangerSourceInfo {
 
 
     /**主键*/

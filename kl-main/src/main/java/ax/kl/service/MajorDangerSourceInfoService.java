@@ -1,6 +1,6 @@
 package ax.kl.service;
 
-import ax.kl.entity.MajorHazard;
+import ax.kl.entity.DangerSourceInfo;
 import com.baomidou.mybatisplus.plugins.Page;
 import org.apache.ibatis.annotations.Param;
 
@@ -10,5 +10,5 @@ public interface MajorDangerSourceInfoService {
      * @param
      * @return
      */
-    Page<MajorHazard> getMajorInfo(Page page, @Param("companyName") String companyName, @Param("sourceNmae") String sourceNmae, @Param("rank") String rank);
+    Page<DangerSourceInfo> getMajorInfo(Page page, @Param("companyName") String companyName, @Param("sourceNmae") String sourceNmae, @Param("rank") String rank);
 }

@@ -1,7 +1,7 @@
 package ax.kl.mapper;
 
 
-import ax.kl.entity.UserRole;
+import ax.kl.entity.SysUserRole;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -12,7 +12,7 @@ import java.util.List;
  * @author Administrator
  */
 @Repository
-public interface UserRoleMapper extends BaseMapper<UserRole> {
+public interface SysUserRoleMapper extends BaseMapper<SysUserRole> {
 
 
     /**
@@ -33,7 +33,7 @@ public interface UserRoleMapper extends BaseMapper<UserRole> {
      * @param UserId(人员ID)
      * @return
      */
-    List<UserRole> getRoleInfo(@Param("UserId") String UserId);
+    List<SysUserRole> getRoleInfo(@Param("UserId") String UserId);
 
 
 }

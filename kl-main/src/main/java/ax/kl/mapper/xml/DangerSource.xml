@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ax.kl.mapper.DangerSourceMapper">
+
+    <resultMap id="ChemicalsInfo" type="ax.kl.entity.ChemicalsInfo">
+        <id column="ChemId" property="chemId"/>
+        <result column="ChemName" property="chemName"/>
+        <result column="CAS" property="cAS"/>
+    </resultMap>
+
+    <select id="getSourceCoordinate" resultType="ax.kl.entity.DangerSourceInfo">
+        SELECT d.SourceId,d.SourceName,d.Longt,d.Lat,da.DictName AS 'Rank'
+        FROM TB_BASE_DANGERSOURCE_INFO d JOIN TB_BASE_COMPANY_INFO c ON d.CompanyId=c.CompanyId
+        JOIN TB_SYS_DATADICT da ON d.Rank=da.DictId WHERE 1 = 1
+        <if test="companyName != null and companyName != ''">
+            AND c.companyName LIKE '%'+ #{companyName} + '%'
+        </if>
+        <if test="sourceName != null and sourceName != ''">
+            AND d.sourceName LIKE '%'+ #{sourceName} + '%'
+        </if>
+        <if test="rank != null and rank != ''">
+            AND d.rank = #{rank}
+        </if>
+    </select>
+
+    <select id="getDSourceInfo" resultType="ax.kl.entity.DangerSourceInfo">
+        SELECT d.SourceId,d.UniqueCode,c.CompanyName AS 'CompanyId',d.SourceName,d.RValue,sd.DictName AS 'Rank',
+        d.RecordNo,d.Validity,d1.DictName AS 'Status',d.Longt,d.Lat,d.OutPersonCount,d.DeathToll,d.RecordDate,
+        (SELECT STUFF((SELECT ','+dic.DictName FROM TB_REL_DRESOURCE_ACCIDENTYPE t JOIN TB_SYS_DATADICT dic ON
+        t.TypeId = dic.DictId WHERE t.SourceId=#{sourceId} FOR XML PATH ('')),1,1,'')) AS AccidentType
+        FROM TB_BASE_DANGERSOURCE_INFO d LEFT JOIN TB_BASE_COMPANY_INFO c ON d.CompanyId=c.CompanyId LEFT JOIN
+        TB_SYS_DATADICT sd ON d.Rank=sd.DictId LEFT JOIN TB_SYS_DATADICT d1 ON d.Status = d1.DictId WHERE d.sourceId = #{sourceId}
+    </select>
+
+    <select id="getChemicalsInfoListBySourceId" resultMap="ChemicalsInfo">
+        SELECT ci.* FROM TB_BASE_DANGERSOURCE_INFO di
+        JOIN TB_BASE_PROCESS_UNIT pu ON di.SourceId=pu.SourceId
+        JOIN TB_BASE_EQUIP_INFO ei ON pu.UnitId=ei.UnitId
+        JOIN TB_REL_EQUIP_CHEMICAL cc ON ei.EquipId=cc.EquipId
+        JOIN TB_BASE_CHEMICAL_INFO ci ON cc.ChemId=ci.ChemId
+        WHERE di.SourceId=#{sourceId}
+    </select>
+</mapper>

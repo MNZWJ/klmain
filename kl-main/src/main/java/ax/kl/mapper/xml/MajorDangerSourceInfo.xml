@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ax.kl.mapper.MajorDangerSourceInfoMapper">
     <!--通用查询映射结果-->
-    <resultMap id="BaseResultMap" type="ax.kl.entity.MajorHazard">
+    <resultMap id="BaseResultMap" type="ax.kl.entity.DangerSourceInfo">
         <id column="SourceId" property="sourceId"/>
         <result column="UniqueCode" property="uniqueCode"/>
         <result column="CompanyId" property="companyId"/>
@@ -19,7 +19,7 @@
         <result column="DeathToll" property="deathToll"/>
         <result column="RecordDate" property="recorDate"/>
     </resultMap>
-    <select id="getMajorInfo" resultType="ax.kl.entity.MajorHazard">
+    <select id="getMajorInfo" resultType="ax.kl.entity.DangerSourceInfo">
         SELECT
         ci.CompanyName AS CompanyId,
         di.SourceId,

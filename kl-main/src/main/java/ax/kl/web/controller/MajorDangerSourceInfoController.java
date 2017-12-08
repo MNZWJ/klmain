@@ -1,6 +1,6 @@
 package ax.kl.web.controller;
 
-import ax.kl.entity.MajorHazard;
+import ax.kl.entity.DangerSourceInfo;
 import ax.kl.service.MajorDangerSourceInfoService;
 import com.baomidou.mybatisplus.plugins.Page;
 import io.swagger.annotations.Api;
@@ -46,7 +46,7 @@ public class MajorDangerSourceInfoController {
         page.setCurrent(pageNumber);
         page.setSize(pageSize);
 
-        Page<MajorHazard> list = MajorDangerSourceInfoService.getMajorInfo(page,companyName,sourceNmae,rank);
+        Page<DangerSourceInfo> list = MajorDangerSourceInfoService.getMajorInfo(page,companyName,sourceNmae,rank);
         Map<String,Object> map=new HashMap<>();
         map.put("total",list.getTotal());
         map.put("rows",list.getRecords());
