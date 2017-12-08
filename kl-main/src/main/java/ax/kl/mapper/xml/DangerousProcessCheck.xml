@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ax.kl.mapper.DangerousProcessCheckMapper">
+
+
+    <!--获取危险化学品工艺-->
+    <select id="getProcessList" resultType="ax.kl.entity.CompanyInfo">
+SELECT
+	CompanyName,
+	Area,
+	dd.DictName AS CompanyType,
+	MonitorUnit,
+	ff.DictName AS TechnologyName
+FROM
+	TB_BASE_COMPANY_INFO cc
+LEFT JOIN TB_SYS_DATADICT dd ON dd.DictId = cc.TypeCode
+LEFT JOIN TB_REL_COMPANY_ART pp ON pp.CompanyId = cc.CompanyId
+LEFT JOIN TB_SYS_DATADICT ff ON ff.DictId = pp.TechnologyId
+WHERE cc.CompanyId IS NOT NULL
+        <if test="companyName != null and companyName !='' ">
+            AND cc.CompanyId=#{companyName}
+        </if>
+        <if test="risk != null and risk !='' ">
+            AND TechnologyId=#{risk}
+        </if>
+    </select>
+
+
+</mapper>
