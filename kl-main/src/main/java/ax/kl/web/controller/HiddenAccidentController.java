@@ -46,13 +46,13 @@ public class HiddenAccidentController {
     @ApiOperation(value="获取隐患治理信息")
     @RequestMapping(value = "/getHiddenInfo",method = RequestMethod.GET)
     @ResponseBody
-    public Map<String,Object>  getHiddenInfo(@RequestParam Map<String,String> param,@RequestParam("sourceId") String sourceId){
+    public Map<String,Object>  getHiddenInfo(@RequestParam Map<String,String> param,@RequestParam("sourceId") String sourceId,@RequestParam("searchName")String searchName){
         int pageSize=Integer.parseInt(param.get("pageSize"));
         int pageNumber=Integer.parseInt(param.get("pageNumber"));
         Page page=new Page();
         page.setCurrent(pageNumber);
         page.setSize(pageSize);
-        Page<HiddenAccident> list = hiddenAccidentService.getHiddenInfo(page,sourceId);
+        Page<HiddenAccident> list = hiddenAccidentService.getHiddenInfo(page,sourceId,searchName);
         Map<String,Object> map=new HashMap<>();
         map.put("total",list.getTotal());
         map.put("rows",list.getRecords());

@@ -26,6 +26,6 @@ public interface HiddenAccidentService {
      * @param sourceId
      * @return
      */
-    Page<HiddenAccident> getHiddenInfo(Page page,String sourceId);
+    Page<HiddenAccident> getHiddenInfo(Page page,String sourceId,String searchName);
 
 }

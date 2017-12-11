@@ -1,5 +1,6 @@
 var companyId = "";
 var scanHeight = "";
+var flagTable=0;
 $(function () {
     //获取浏览器高度
     scanHeight = $(window).height();
@@ -19,7 +20,7 @@ $(function () {
         $('#companyArtTable').bootstrapTable("refresh");
     });
 
-    initTable();
+
     //模态窗关闭事件
     $('#myModal').on('hidden.bs.modal', function () {
         $('#myTab a[href="#companyInfo"]').tab('show')
@@ -306,6 +307,11 @@ function loadCompanyList(companyList) {
 
 //企业点击事件
 function onMarkClick(e) {
+    if(flagTable==0){
+        initTable();
+        flagTable=1;
+    }
+
     companyId = e.target.customData.companyId;
 
     $.ajax({
