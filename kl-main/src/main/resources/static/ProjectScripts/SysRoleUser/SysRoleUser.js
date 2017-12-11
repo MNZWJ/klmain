@@ -161,7 +161,7 @@ function roleTBonClich(roleId) {
             //初始化treeView
             var listNode= new Array();
             $.each(result,function(i,n){
-                listNode[i]=($("#tree").treeview("getNode",n.UserId));
+                listNode[i]=($("#tree").treeview("getNode",n.userId));
             });
             $.each(listNode,function(i,n){
                 $("#tree").treeview('checkNode', [n,{ silent: true }]);//选中节点
@@ -190,7 +190,7 @@ function saveRoleMenu() {
         type: 'POST',
         url: '/ManagerRoleUser/saveRoleUser',
         async:false,
-        data:{RoleId:roleId,UserId:userId},
+        data:{roleId:roleId,userId:userId},
         success: function (result) {
             if(result)
                 alert("保存成功！");

@@ -48,6 +48,7 @@ public class DangerSourceServiceImpl implements DangerSourceService {
 
     /**
      * 获取重大危险源关联化学品
+     * 分页
      * @param sourceId 危险源Id
      * @return
      */
@@ -57,6 +58,14 @@ public class DangerSourceServiceImpl implements DangerSourceService {
         return page;
     }
 
-    ;
+    ;    /**
+     * 获取重大危险源关联化学品
+     * @param sourceId 危险源Id
+     * @return
+     */
+    @Override
+    public List<ChemicalsInfo> getChemicalsInfoListBySourceId(String sourceId) {
+        return dangerSourceMapper.getChemicalsInfoListBySourceId(sourceId);
+    }
 }
 
