@@ -83,4 +83,19 @@ public class InspectionServiceImpl implements InspectionService {
     public List<IndustryCompanyInfo> getIndustryCompanyInfo() {
         return inspectionMapper.getIndustryCompanyInfo();
     }
+
+    @Override
+    public List<Map<String,String>> getCompanyTypeData() {
+        return inspectionMapper.getCompanyTypeData();
+    }
+
+    @Override
+    public List<Map<String, String>> getScaleCodeData() {
+        return inspectionMapper.getScaleCodeData();
+    }
+
+    @Override
+    public List<IndustryCompanyInfo> getCompanyDirectAirData() {
+        return inspectionMapper.getCompanyDirectAirData();
+    }
 }

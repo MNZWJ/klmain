@@ -59,4 +59,24 @@ public interface InspectionService {
      */
     List<IndustryCompanyInfo> getIndustryCompanyInfo();
 
+
+    /**
+     * 获取企业类型
+     * @return
+     */
+    List<Map<String,String>> getCompanyTypeData();
+
+
+    /**
+     * 加载企业规模数据
+     * @return
+     */
+    List<Map<String,String>> getScaleCodeData();
+
+    /**
+     * 获取企业行政分布情况
+     * @return
+     */
+    List<IndustryCompanyInfo> getCompanyDirectAirData();
+
 }
