@@ -1,6 +1,5 @@
 var sourceId = "";
 var scanHeight="";
-var sourceId = "null";
 $(function () {
     //获取浏览器高度
     scanHeight = $(window).height();
@@ -212,7 +211,6 @@ function getSource() {
 function initTable() {
     //化学品表格
     $('#chemistryTable').bootstrapTable({
-        height: 'auto',
         height: scanHeight *4/7,
         striped: true,      //是否显示行间隔色
         cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
@@ -266,7 +264,11 @@ function initTable() {
                 halign: 'center',
                 width: '40%',
                 cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis'}};
+                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                },
+                formatter: function (value, row, index) {
+                    return '<span title="'+value+'">'+value+'</span>'
+
                 }
             }, {
                 field: 'cAS',
