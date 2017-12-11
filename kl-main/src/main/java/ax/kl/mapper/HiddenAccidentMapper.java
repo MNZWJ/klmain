@@ -35,6 +35,6 @@ public interface HiddenAccidentMapper extends BaseMapper<DangerSourceInfo> {
      * @param sourceId
      * @return
      */
-    List<HiddenAccident> getHiddenInfo(Page page, @Param("sourceId")String sourceId);
+    List<HiddenAccident> getHiddenInfo(Page page, @Param("sourceId")String sourceId,@Param("searchName")String searchName);
 
 }

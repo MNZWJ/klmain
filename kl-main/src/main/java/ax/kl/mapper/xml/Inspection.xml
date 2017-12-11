@@ -5,7 +5,7 @@
     <!--加载企业列表-->
     <select id="getCompanyList" resultType="ax.kl.entity.CompanyInfo">
         SELECT DISTINCT
-        bci.*
+        bci.CompanyId,bci.CompanyName,bci.Longt,bci.Lat
         FROM
         TB_BASE_COMPANY_INFO bci
         <if test="searchIndustryCode !=null and searchIndustryCode.length>0  ">

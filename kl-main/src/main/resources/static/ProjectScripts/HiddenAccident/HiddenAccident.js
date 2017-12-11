@@ -1,160 +1,49 @@
 var sourceId = "";
+var scanHeight=0;
+var tableFlag=0;
+var searchName="";
 $(function () {
     //获取浏览器高度
-    var scanHeight = $(window).height();
+    scanHeight = $(window).height();
 
     $("#map").height(scanHeight);
     initMap();
 
 
-    //化学品表格
-    $('#hiddenRiskTable').bootstrapTable({
-        height: scanHeight *4/7,
-        striped: true,      //是否显示行间隔色
-        cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
-        method: 'get',//请求方式
-        url: '/HiddenAccident/getHiddenInfo',//请求url
-        pagination: 'true',//显示分页条
-        paginationLoop: 'true',//启用分页条无限循环功能
-        pageNumber: 1,                       //初始化加载第一页，默认第一页
-        pageSize: 5,                       //每页的记录行数（*）
-        pageList: [5, 10, 15, 20],        //可供选择的每页的行数（*）
-        sidePagination: 'server',//'server'或'client'服务器端分页
-        queryParamsType: '', //默认值为 'limit' ,在默认情况下 传给服务端的参数为：offset,limit,sort
-        // 设置为 ''  在这种情况下传给服务器的参数为：pageSize,pageNumber
-        clickToSelect: true,//是否启用点击选中行
-        showRefresh: false,//是否显示 刷新按钮
-        queryParams: function (pageReqeust) {
-            pageReqeust.sourceId = sourceId;
 
-            return pageReqeust;
-        },
-        rowStyle: function () {//自定义行样式
-            return "bootTableRow";
-        },
-        onLoadError: function () {
-
-
-            BootstrapDialog.alert({
-                title: '错误',
-                size: BootstrapDialog.SIZE_SMALL,
-                message: '表格加载失败！',
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定', // <-- Default value is 'OK',
-
-            });
-        },
-
-        columns: [
-            {
-
-                title: '序号',
-                formatter: function (value, row, index) {
-                    var page = $('#hiddenRiskTable').bootstrapTable('getOptions');
-                    return (page.pageNumber - 1) * page.pageSize + index + 1;
-
-                },
-                width: '80px'
-            }
-            ,
-
-            {
-
-                field: 'companyName',
-                title: '公司名称',
-                halign: 'center',
-                width: '180px',
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                }
-            }, {
-                field: 'hiddenDanager',
-                title: '隐患描述',
-                halign: 'center',
-                width: '200px',
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                },
-                formatter: function (value, row, index) {
-                   return '<span title="'+value+'">'+value+'</span>'
-
-                }
-            }, {
-                field: 'area',
-                title: '行政区划',
-                halign: 'center',
-                width: '120px',
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                }
-            }, {
-                field: 'industry',
-                title: '行业分类',
-                halign: 'center',
-                width: '120px',
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                }
-            }, {
-                field: 'superviseDept',
-                title: '隐患监管部门',
-                halign: 'center',
-                width: '140px',
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                }
-            }, {
-                field: 'source',
-                title: '隐患类别',
-                halign: 'center',
-                width: '100px',
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                }
-            }, {
-                field: 'rank',
-                title: '隐患级别',
-                halign: 'center',
-                width: '100px',
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                }
-            }, {
-                field: 'upReportDate',
-                title: '上报日期',
-                halign: 'center',
-                width: '100px',
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                }
-            }, {
-                field: 'reformTerm',
-                title: '整改期限',
-                halign: 'center',
-                width: '100px',
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                }
-            }, {
-                field: 'rectification',
-                title: '整改情况',
-                halign: 'center',
-                width: '100px',
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                }
-            }
-            ]
-    });
 
 
 
     //模态窗关闭事件
     $('#myModal').on('hidden.bs.modal', function () {
-        $('#myTab a[href="#companyInfo"]').tab('show')
+        $("#toolbar").hide();
+        searchName="";
     });
+
+
+
+    //初始化公司查询选择框
+    $.ajax({
+       type:'get',
+       url:'/Inspection/getCompanyList',
+       success:function (result) {
+           var optionString = "<option value=''></option>";
+           $.each(result,function(i,n){
+               optionString += "<option value=\'"+ n.companyName +"\'>" + n.companyName + "</option>";
+           });
+
+           var myobj = document.getElementById('searchName');
+           if (myobj.options.length == 0)
+           {
+               $("#searchName").html(optionString);
+               $("#searchName").selectpicker('refresh');
+           }
+
+           $('.dropdown-menu, .inner').css('max-height','280px')
+
+       } 
+    });
+
 });
 
 //初始化地图
@@ -223,8 +112,17 @@ function loadHazardList(hazardList) {
 //危险源点击事件
 function onMarkClick(e) {
     sourceId = e.target.customData.sourceId;
+    searchName="";
+    $("#toolbar").hide();
+    if(tableFlag==0){
+        initTable();
+        tableFlag=1;
+    }else{
+        $('#hiddenRiskTable').bootstrapTable("refresh");
+    }
+
     $('#myModal').modal('show');
-    $('#hiddenRiskTable').bootstrapTable("refresh");
+
 
 
 }
@@ -314,4 +212,171 @@ function clearSearch() {
     mini.get("searchRank").setValue('');
     mini.get("searchRankHidden").setValue('');
 
+}
+
+// 打开统计详情
+function openwindows (){
+
+    $("#toolbar").show();
+    sourceId = '';
+    searchName="";
+    if(tableFlag==0){
+        initTable();
+        tableFlag=1;
+    }else{
+        $('#hiddenRiskTable').bootstrapTable("refresh");
+    }
+    $('#myModal').modal('show');
+
+}
+//初始化表格
+function initTable(){
+    //化学品表格
+    $('#hiddenRiskTable').bootstrapTable({
+        height: scanHeight *4/7,
+        striped: true,      //是否显示行间隔色
+        cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+        method: 'get',//请求方式
+        url: '/HiddenAccident/getHiddenInfo',//请求url
+        pagination: 'true',//显示分页条
+        paginationLoop: 'true',//启用分页条无限循环功能
+        pageNumber: 1,                       //初始化加载第一页，默认第一页
+        pageSize: 5,                       //每页的记录行数（*）
+        pageList: [5, 10, 15, 20],        //可供选择的每页的行数（*）
+        sidePagination: 'server',//'server'或'client'服务器端分页
+        queryParamsType: '', //默认值为 'limit' ,在默认情况下 传给服务端的参数为：offset,limit,sort
+        // 设置为 ''  在这种情况下传给服务器的参数为：pageSize,pageNumber
+        clickToSelect: true,//是否启用点击选中行
+        showRefresh: false,//是否显示 刷新按钮
+        queryParams: function (pageReqeust) {
+            pageReqeust.sourceId = sourceId;
+            pageReqeust.searchName=searchName;
+            return pageReqeust;
+        },
+        rowStyle: function () {//自定义行样式
+            return "bootTableRow";
+        },
+        onLoadError: function () {
+
+
+            BootstrapDialog.alert({
+                title: '错误',
+                size: BootstrapDialog.SIZE_SMALL,
+                message: '表格加载失败！',
+                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+                closable: false, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                buttonLabel: '确定', // <-- Default value is 'OK',
+
+            });
+        },
+
+        columns: [
+            {
+
+                title: '序号',
+                formatter: function (value, row, index) {
+                    var page = $('#hiddenRiskTable').bootstrapTable('getOptions');
+                    return (page.pageNumber - 1) * page.pageSize + index + 1;
+
+                },
+                width: '80px'
+            }
+            ,
+
+            {
+
+                field: 'companyName',
+                title: '公司名称',
+                halign: 'center',
+                width: '180px',
+                cellStyle: function (value, row, index, field) {
+                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                }
+            }, {
+                field: 'hiddenDanager',
+                title: '隐患描述',
+                halign: 'center',
+                width: '200px',
+                cellStyle: function (value, row, index, field) {
+                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                },
+                formatter: function (value, row, index) {
+                    return '<span title="'+value+'">'+value+'</span>'
+
+                }
+            }, {
+                field: 'area',
+                title: '行政区划',
+                halign: 'center',
+                width: '120px',
+                cellStyle: function (value, row, index, field) {
+                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                }
+            }, {
+                field: 'industry',
+                title: '行业分类',
+                halign: 'center',
+                width: '120px',
+                cellStyle: function (value, row, index, field) {
+                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                }
+            }, {
+                field: 'superviseDept',
+                title: '隐患监管部门',
+                halign: 'center',
+                width: '140px',
+                cellStyle: function (value, row, index, field) {
+                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                }
+            }, {
+                field: 'source',
+                title: '隐患类别',
+                halign: 'center',
+                width: '100px',
+                cellStyle: function (value, row, index, field) {
+                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                }
+            }, {
+                field: 'rank',
+                title: '隐患级别',
+                halign: 'center',
+                width: '100px',
+                cellStyle: function (value, row, index, field) {
+                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                }
+            }, {
+                field: 'upReportDate',
+                title: '上报日期',
+                halign: 'center',
+                width: '100px',
+                cellStyle: function (value, row, index, field) {
+                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                }
+            }, {
+                field: 'reformTerm',
+                title: '整改期限',
+                halign: 'center',
+                width: '100px',
+                cellStyle: function (value, row, index, field) {
+                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                }
+            }, {
+                field: 'rectification',
+                title: '整改情况',
+                halign: 'center',
+                width: '100px',
+                cellStyle: function (value, row, index, field) {
+                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                }
+            }
+        ]
+    });
+}
+
+//按照企业名字进行查询
+function searchHiddenAccident(){
+    searchName=$("#searchName").selectpicker('val');
+    sourceId="";
+    $('#hiddenRiskTable').bootstrapTable("refresh");
 }
