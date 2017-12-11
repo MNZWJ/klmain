@@ -1,4 +1,4 @@
-var sourceId = "null";
+var sourceId = "";
 $(function () {
     //获取浏览器高度
     var scanHeight = $(window).height();
@@ -263,7 +263,11 @@ function initTable() {
                 halign: 'center',
                 width: '40%',
                 cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis'}};
+                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                },
+                formatter: function (value, row, index) {
+                    return '<span title="'+value+'">'+value+'</span>'
+
                 }
             }, {
                 field: 'cAS',

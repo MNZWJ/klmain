@@ -63,7 +63,14 @@ $(function () {
                 title: '化学品名称',
                 halign: 'center',
                 align: 'left',
-                width: '13.57%'
+                width: '13.57%',
+                cellStyle: function (value, row, index, field) {
+                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                },
+                formatter: function (value, row, index) {
+                    return '<span title="'+value+'">'+value+'</span>'
+
+                }
             }, {
                 field: 'cAS',
                 title: 'CAS',
@@ -86,14 +93,27 @@ $(function () {
                 field: 'sourceName',
                 title: '危险源名称',
                 halign: 'center',
-                align: 'left',
-                width: '13.57%'
+                width: '13.57%',
+                cellStyle: function (value, row, index, field) {
+                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                },
+                formatter: function (value, row, index) {
+                    return '<span title="'+value+'">'+value+'</span>'
+
+                }
             },{
                 field: 'companyName',
                 title: '企业名称',
                 halign: 'center',
                 align: 'left',
-                width: '13.57%'
+                width: '13.57%',
+                cellStyle: function (value, row, index, field) {
+                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                },
+                formatter: function (value, row, index) {
+                    return '<span title="'+value+'">'+value+'</span>'
+
+                }
             },{
                 field: 'area',
                 title: '行政区域',

@@ -12,13 +12,6 @@
     <script src="../../ProjectScripts/Chemicals/Chemicals.js"></script>
 
     <style>
-        /*固定表格行高*/
-        .bootTableRow {
-            white-space: nowrap;
-            overflow: hidden;
-            height: 120px;
-            max-height: 120px;
-        }
         /**查询框右边距*/
         .form-group{
             margin-right: 20px;
@@ -30,9 +23,9 @@
 <body>
 <div class="container-fluid">
     <div class="row" style="display: flex">
-        <div class="col-xs-12">
+        <div class="col-xs-12" style="overflow: auto">
 
-            <table id="table" class="table  table-striped table-bordered table-hover">
+            <table id="table" class="table  table-striped table-bordered table-hover" style="table-layout: fixed;">
             </table>
             <div id="toolbar" class="toolbar" role="toolbar">
                 <form class="form-inline" role="form">
