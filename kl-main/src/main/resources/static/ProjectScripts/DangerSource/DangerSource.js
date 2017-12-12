@@ -379,7 +379,7 @@ function loadDSAccidenType(){
 
             var option = {
 
-                color: ['#fbf31f', '#ffffff','#24ffb5','#22529b'],
+                color: [ "#00544a", "#6ca748","a5a5a5"],
 
 
 
@@ -467,7 +467,7 @@ function loadSourceRank(){
 
             var option = {
 
-                color: ['#22529b', '#24ffb5'],
+                color: ["#ed2d2d", "#ff881f", "#ffe01f", "#0e77ab"],
 
 
 
@@ -526,7 +526,7 @@ function loadSourceRank(){
 //加载各行业重大危险源分布情况
 function loadIndustryCompany(){
     $.ajax({
-        type: 'post',
+        type: 'get',
         url: '/DangerSource/getDSIndustry',
         success: function (result) {
             var data = [];
@@ -552,7 +552,7 @@ function loadIndustryCompany(){
                                 type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
                             }
                         },
-                        color: ["#ad382c", "#ef8938", "#dfb728", "#204c8f", "#00544a", "#6ca748"],
+                        color: ["#ed2d2d", "#ff881f", "#ffe01f", "#0e77ab", "#00544a", "#6ca748","a5a5a5"],
                         legend: {
                             data: legendData,
                             textStyle: {
@@ -645,7 +645,7 @@ function loadDSDistribution(){
                                 type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
                             }
                         },
-                        color: ["#ad382c", "#ef8938", "#dfb728", "#204c8f", "#00544a", "#6ca748"],
+                        color: ["#ed2d2d", "#ff881f", "#ffe01f", "#0e77ab", "#00544a", "#6ca748","a5a5a5"],
                         legend: {
                             data: legendData,
                             textStyle: {
