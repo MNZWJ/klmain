@@ -8,5 +8,8 @@ var MajorHazardRank = '8ea8562f-e58b-461c-9485-a967bc5e29ca';
 var IndustryCodeDictId='29485cb6-bf2e-4892-ab3a-083ffbb2e6f9';
 //企业类型
 var TypeCodeDictId='22bd341b-5ea1-4364-a4cf-8496f3132492';
+//垦利行政区域
+var DirectAreaDictId='8b4524ce-15cf-404a-8182-a7e8a8d68343';
 //危险化工工艺
 var RiskProcessDictId = '7531554a-38a9-4470-a0d5-ceb18b71ebb8';
+

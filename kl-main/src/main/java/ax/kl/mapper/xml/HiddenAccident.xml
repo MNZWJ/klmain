@@ -42,6 +42,9 @@
         <if test="sourceId!=null and sourceId!=''">
             WHERE di.SourceId=#{sourceId}
         </if>
+        <if test="searchName!=null and searchName!=''">
+            WHERE ci.CompanyName LIKE concat(concat('%',#{searchName}),'%')
+        </if>
     </select>
 
 

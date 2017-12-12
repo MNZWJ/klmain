@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author: ZhenpengSu
@@ -58,5 +59,23 @@ public interface InspectionMapper extends BaseMapper<CompanyInfo> {
      * @return
      */
     List<IndustryCompanyInfo> getIndustryCompanyInfo();
+
+    /**
+     * 获取企业类型
+     * @return
+     */
+    List<Map<String,String>> getCompanyTypeData();
+
+    /**
+     * 加载企业规模数据
+     * @return
+     */
+    List<Map<String,String>> getScaleCodeData();
+
+    /**
+     * 获取企业行政分布情况
+     * @return
+     */
+    List<IndustryCompanyInfo> getCompanyDirectAirData();
 
 }

@@ -5,7 +5,7 @@
     <!--加载企业列表-->
     <select id="getCompanyList" resultType="ax.kl.entity.CompanyInfo">
         SELECT DISTINCT
-        bci.*
+        bci.CompanyId,bci.CompanyName,bci.Longt,bci.Lat
         FROM
         TB_BASE_COMPANY_INFO bci
         <if test="searchIndustryCode !=null and searchIndustryCode.length>0  ">
@@ -18,7 +18,7 @@
         </if>
         <if test="searchIndustryCode !=null and searchIndustryCode.length>0">
             AND bcis.IndustryId IN
-            <foreach collection="searchIndustryCode" open="(" item="item" separator="," close=")" index="index" >
+            <foreach collection="searchIndustryCode" open="(" item="item" separator="," close=")" index="index">
                 #{item}
             </foreach>
         </if>
@@ -26,7 +26,7 @@
             AND bci.ScaleCode =#{searchScaleCode}
         </if>
         <if test="searchTypeCode!=null and searchTypeCode!=''">
-            AND  bci.TypeCode=#{searchTypeCode}
+            AND bci.TypeCode=#{searchTypeCode}
         </if>
 
 
@@ -81,7 +81,7 @@
     </select>
 
     <!--查询各行业企业分布情况-->
-    <select id="getIndustryCompanyInfo" resultType="ax.kl.entity.IndustryCompanyInfo" >
+    <select id="getIndustryCompanyInfo" resultType="ax.kl.entity.IndustryCompanyInfo">
         SELECT
 	sd2.DictId AS TypeId,
 	sd2.DictName AS TypeName,
@@ -163,6 +163,108 @@ UNION
 
     </select>
 
+    <!--获取企业类型数据-->
+    <select id="getCompanyTypeData" resultType="java.util.HashMap">
+		SELECT	bci.TypeCode,	sd.DictName,	COUNT (bci.CompanyId) AS num FROM
+	TB_BASE_COMPANY_INFO bci JOIN TB_SYS_DATADICT sd ON bci.TypeCode = sd.DictId
+	GROUP BY 	bci.TypeCode,	sd.DictName
+	</select>
+
+	<!--加载企业规模占比-->
+	<select id="getScaleCodeData" resultType="java.util.Map">
+		SELECT
+			bci.ScaleCode,
+			sd.DictName,
+			COUNT (bci.CompanyId) AS num
+		FROM
+			TB_BASE_COMPANY_INFO bci
+		JOIN TB_SYS_DATADICT sd ON bci.ScaleCode = sd.DictId
+		GROUP BY
+			bci.ScaleCode,
+			sd.DictName,sd.DictOrder
+		ORDER BY sd.DictOrder
+	</select>
+	
+	
+	<!--获取企业行政分布数据-->
+	<select id="getCompanyDirectAirData" resultType="ax.kl.entity.IndustryCompanyInfo">
+		SELECT
+	sd2.DictId AS TypeId,
+	sd2.DictName AS TypeName,
+	sd2.DictOrder,
+	'类型' AS Stack,
+	STUFF(
+		(
+			SELECT
+				',' + CAST (
+					COUNT (bci.CompanyId) AS VARCHAR
+				)
+			FROM
+				TB_SYS_DATADICT sd
+			LEFT JOIN TB_BASE_COMPANY_INFO bci ON (
+				sd.DictId = bci.DirectArea
+				AND bci.TypeCode = sd2.DictId
+			)
+			WHERE
+				sd.TypeId = '8b4524ce-15cf-404a-8182-a7e8a8d68343'
+			GROUP BY
+				sd.DictId,
+				sd.DictName,
+				sd.DictOrder
+			ORDER BY
+				sd.DictOrder FOR xml path ('')
+		),
+		1,
+		1,
+		''
+	) AS NumList
+FROM
+	TB_SYS_DATADICT sd2
+WHERE
+	sd2.TypeId IN (
+		'22bd341b-5ea1-4364-a4cf-8496f3132492'
+	)
+
+UNION
+SELECT
+	sd2.DictId AS TypeId,
+	sd2.DictName AS TypeName,
+	sd2.DictOrder,
+	'规模' AS Stack,
+	STUFF(
+		(
+			SELECT
+				',' + CAST (
+					COUNT (bci.CompanyId) AS VARCHAR
+				)
+			FROM
+				TB_SYS_DATADICT sd
+			LEFT JOIN TB_BASE_COMPANY_INFO bci ON (
+				sd.DictId = bci.DirectArea
+				AND bci.ScaleCode = sd2.DictId
+			)
+			WHERE
+				sd.TypeId = '8b4524ce-15cf-404a-8182-a7e8a8d68343'
+			GROUP BY
+				sd.DictId,
+				sd.DictName,
+				sd.DictOrder
+			ORDER BY
+				sd.DictOrder FOR xml path ('')
+		),
+		1,
+		1,
+		''
+	) AS NumList
+FROM
+	TB_SYS_DATADICT sd2
+WHERE
+	sd2.TypeId IN (
+		'c101f4c7-f8cd-4daa-a9fd-a274c69277a5'
+	)
+ORDER BY
+		sd2.DictOrder
+	</select>
 
 
 </mapper>

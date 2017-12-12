@@ -32,6 +32,7 @@ public class InspectionController {
     @ApiOperation(value = "获取主页面")
     @RequestMapping(value = "/Inspection", method = RequestMethod.GET)
     public String doView(Model model) {
+
         return "/Inspection/Inspection";
     }
 
@@ -78,6 +79,29 @@ public class InspectionController {
     @ResponseBody
     public List<IndustryCompanyInfo> getIndustryCompanyInfo(){
         return inspectionService.getIndustryCompanyInfo();
+    }
+
+
+    @RequestMapping("/getCompanyTypeData")
+    @ApiOperation(value="获取企业类型")
+    @ResponseBody
+    public List<Map<String,String>> getCompanyTypeData(){
+        return inspectionService.getCompanyTypeData();
+    }
+
+
+    @RequestMapping("/getScaleCodeData")
+    @ApiOperation(value="获取企业规模数据")
+    @ResponseBody
+    public List<Map<String,String>> getScaleCodeData(){
+        return inspectionService.getScaleCodeData();
+    }
+
+    @RequestMapping("/getCompanyDirectAirData")
+    @ApiOperation(value="获取企业行政分布情况")
+    @ResponseBody
+    public List<IndustryCompanyInfo> getCompanyDirectAirData(){
+        return inspectionService.getCompanyDirectAirData();
     }
 
 
