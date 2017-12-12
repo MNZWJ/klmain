@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.plugins.Page;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 重大危险源监控图
@@ -44,4 +45,28 @@ public interface DangerSourceMapper {
      * @return 化学品实体
      */
     List<ChemicalsInfo> getChemicalsInfoListBySourceId(@Param("sourceId") String sourceId);
+
+    /**
+     * 获取重大危险源等级数量
+     * @return
+     */
+    List<Map<String,String>> getSourceRankCount();
+
+    /**
+     * 可能引发的事故类型数量
+     * @return
+     */
+    List<Map<String,String>> getDSAccidenType();
+
+    /**
+     * 重大危险源分布情况
+     * @return
+     */
+    List<Map<String,String>> getDSDistribution();
+
+    /**
+     * 各行业重大危险源分布情况
+     * @return
+     */
+    List<Map<String,String>> getDSIndustry();
 }
