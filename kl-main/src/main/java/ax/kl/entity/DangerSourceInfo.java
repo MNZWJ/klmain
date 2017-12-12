@@ -74,4 +74,9 @@ public class DangerSourceInfo {
     /**登记日期*/
     @TableField(value = "RecordDate")
     private String recordDate;
+    /**
+     * 隐患条数
+     */
+    @TableField(value = "num")
+    private String num;
 }
