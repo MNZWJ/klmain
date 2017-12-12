@@ -67,5 +67,42 @@ public class DangerSourceServiceImpl implements DangerSourceService {
     public List<ChemicalsInfo> getChemicalsInfoListBySourceId(String sourceId) {
         return dangerSourceMapper.getChemicalsInfoListBySourceId(sourceId);
     }
+
+    /**
+     * 获取重大危险源等级数量
+     * @return
+     */
+    @Override
+    public List<Map<String,String>> getSourceRankCount(){
+        return dangerSourceMapper.getSourceRankCount();
+    }
+
+    /**
+     * 可能引发的事故类型数量
+     * @return
+     */
+    @Override
+    public List<Map<String,String>> getDSAccidenType(){
+        return dangerSourceMapper.getDSAccidenType();
+    }
+
+    /**
+     * 重大危险源分布情况
+     * @return
+     */
+    @Override
+    public List<Map<String,String>> getDSDistribution(){
+        return dangerSourceMapper.getDSDistribution();
+    }
+
+    /**
+     * 各行业重大危险源分布情况
+     * @return
+     */
+    @Override
+    public List<Map<String,String>> getDSIndustry(){
+        return dangerSourceMapper.getDSIndustry();
+    };
+
 }
 
