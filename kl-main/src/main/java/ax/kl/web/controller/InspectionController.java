@@ -63,7 +63,10 @@ public class InspectionController {
     @ApiOperation(value="获取化学品信息")
     @ResponseBody
     public List<ChemicalsInfo> getChemicalsInfoList(@RequestParam("companyId") String companyId){
-        return inspectionService.getChemicalsInfoList(companyId);
+
+        List<ChemicalsInfo> list=inspectionService.getChemicalsInfoList(companyId);
+
+        return list;
     }
 
 
