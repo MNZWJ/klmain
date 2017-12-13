@@ -13,6 +13,25 @@ public interface MajorDangerSourceInfoMapper {
      * @param
      * @return 重大危险源实体
      */
-    List<MajorHazard> getMajorInfo(Page page, @Param("companyName") String companyName, @Param("sourceNmae") String sourceNmae,@Param("rank") String rank);
+    List<MajorHazard> getMajorInfo(Page page, @Param("companyName") String companyName, @Param("sourceName") String sourceName,@Param("rank") String rank);
+
+    /**
+     * 获取待导出的危险源总数
+     * @param companyName
+     * @param sourceName
+     * @param rank
+     * @return
+     */
+    int getExportMajorCount(@Param("companyName") String companyName, @Param("sourceName") String sourceName,@Param("rank") String rank);
+
+    /**
+     * 获取待导出的危险源列表
+     * @param companyName
+     * @param sourceName
+     * @param rank
+     * @return
+     */
+    List<MajorHazard> getExportMajor(@Param("pageIndex") int pageIndex,@Param("pageSize") int pageSize,
+                                     @Param("companyName") String companyName, @Param("sourceName") String sourceName,@Param("rank") String rank);
 
 }

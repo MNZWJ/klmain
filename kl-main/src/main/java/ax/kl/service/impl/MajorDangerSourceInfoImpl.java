@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.plugins.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  *
  */
@@ -28,4 +30,26 @@ public class MajorDangerSourceInfoImpl implements MajorDangerSourceInfoService {
         page.setRecords(MajorDangerSourceInfoMapper.getMajorInfo(page, companyName, sourceNmae,rank));
         return page;
     }
+
+    /**
+     * 获取待导出的危险源总数
+     * @param companyName
+     * @param sourceNmae
+     * @param rank
+     * @return
+     */
+    public int getExportMajorCount( String companyName, String sourceNmae, String rank){
+        return  this.MajorDangerSourceInfoMapper.getExportMajorCount(companyName,sourceNmae,rank);
+    }
+
+    /**
+     * 获取待导出的危险源列表
+     * @param companyName
+     * @param sourceNmae
+     * @param rank
+     * @return
+     */
+   public  List<MajorHazard> getExportMajor(int pageIndex,int pageSize,String companyName, String sourceNmae,String rank){
+       return this.MajorDangerSourceInfoMapper.getExportMajor(pageIndex,pageSize,companyName,sourceNmae,rank);
+   }
 }
