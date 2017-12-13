@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
@@ -104,6 +105,34 @@ public class LoginController {
         return ResultUtil.success("登录成功！");
     }
 
+    @ApiOperation(value = "退出系统")
+    @RequestMapping(value = "/ExitSystem", method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult login(HttpServletRequest request){
+        request.getSession().removeAttribute("sessionuser");
+        request.getSession().removeAttribute("MenuList");
+        return ResultUtil.success("退出成功！");
+    }
+
+
+    @ApiOperation(value = "修改密码")
+    @RequestMapping(value = "/savePwd", method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult savePwd(@RequestParam String oldPwd,@RequestParam String newPwd,HttpServletRequest request){
+        oldPwd = PublicTools.decodeBase64(oldPwd);
+        newPwd = PublicTools.decodeBase64(newPwd);
+        oldPwd = PublicTools.byteArr2HexStr(DESEncryptTools.encrypt(oldPwd.getBytes()));
+        newPwd = PublicTools.byteArr2HexStr(DESEncryptTools.encrypt(newPwd.getBytes()));
+
+        String userId = ((SessionUserData)request.getSession().getAttribute("sessionuser")).getUserId();
+
+        int num = this.SysUserService.checkUserByIdPwd(userId,oldPwd);
+        if(num<=0){
+            return ResultUtil.error(01,"原密码不正确！");
+        }
+        this.SysUserService.updatePwd(userId,oldPwd,newPwd);
+        return ResultUtil.success("修改成功！");
+    }
 
 
 }

@@ -3,6 +3,7 @@ package ax.kl.web.controller;
 
 
 import ax.kl.common.Auth;
+import ax.kl.common.SessionUserData;
 import ax.kl.entity.SysMenu;
 import ax.kl.service.SysMenuService;
 import io.swagger.annotations.Api;
@@ -41,11 +42,13 @@ public class MainViewController {
     @RequestMapping(value="/Index",method= RequestMethod.GET)
     public String doView (Model model, HttpServletRequest request) {
         List<SysMenu> menuList= (List<SysMenu>) request.getSession().getAttribute("MenuList");
+        SessionUserData userData = (SessionUserData) request.getSession().getAttribute("sessionuser");
         //List<SysMenu> menuList = this.SysMenuService.GetMenusList();
         List<SysMenu> rootMenu=menuList.stream().filter(s-> "1".equals(s.getMenuLevel())).collect(Collectors.toList());
         Map<String,List<SysMenu>> secondMenu=menuList.stream().filter(s-> "2".equals(s.getMenuLevel())).collect(Collectors.groupingBy(SysMenu::getParentMenuId));
         model.addAttribute("rootMenu",rootMenu);
         model.addAttribute("secondMenu",secondMenu);
+        model.addAttribute("userName",userData.getUserName());
         return  "MainView/Index";
     }
 
