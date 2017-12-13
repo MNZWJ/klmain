@@ -14,7 +14,6 @@
     <script src="../../Scripts/bootstrape-select/js/i18n/defaults-zh_CN.js"></script>
     <script src="../../Scripts/bootstrap-treeview/bootstrap-treeview.js"></script>
     <script src="../../Scripts/bootstrap-table/extensions/export/bootstrap-table-export.js"></script>
-
     <style>
         /*固定表格行高*/
         .bootTableRow {
@@ -30,7 +29,13 @@
             padding: 6px 0 6px 0px;
             vertical-align: top;
         }
-
+        .form-control input {
+            padding-right: 20px;
+        }
+        .container-fluid {
+            margin-left: 5px;
+            margin-right: 5px;
+        }
         .tdLable {
             height: 40px;
             text-align: right;
@@ -45,6 +50,10 @@
             position:relative;
             float:left;
         }
+        .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
+            width: 180px;
+            padding-right: 20px;
+        }
     </style>
 
 </head>
@@ -52,7 +61,8 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-xs-14  table-repositive" >
-            <table id="MajorTable" class="table  table-striped table-bordered table-hover">
+            <table id="MajorTable" class="table  table-striped table-bordered table-hover"
+                   style="table-layout: fixed;">
             </table>
             <div id="sysorgToolbar" class="toolbar" role="toolbar">
                 <form class="form-inline" role="form">
@@ -61,8 +71,8 @@
                         <select placeholder="请选择" class="selectpicker" style="width: 115px;" data-style="btn-default" id="searchCompanyName" data-live-search="true">                                                >
                         </select>
                         <label class="xs-only" for="searchSourceNmae">危险源名称：</label>
-                        <input id="searchSourceNmae" class="form-control" style="width: 115px;"/>
-                        <label class="xs-only" for="searchRank">危险源等级：</label>
+                        <input id="searchSourceNmae" class="form-control"placeholder="请输入危险源名称" style="width: 140px;"/>
+                        <label class="xs-only" for="searchRank" style="padding-left:20px">危险源等级：</label>
                         <select placeholder="请选择" style="width: 115px;" data-style="btn-default" id="searchRank">                                                >
                         </select>
                     </div>

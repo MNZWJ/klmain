@@ -2,12 +2,9 @@ var chemName = "";
 var equipName = "";
 var companyName = "";
 $(function () {
-
     //获取浏览器高度
     var scanHeight = $(window).height();
-
-//    $("#treeDiv").height(scanHeight);
-
+    init();
     $('#table').bootstrapTable({
         height: scanHeight,
         striped: true,      //是否显示行间隔色
@@ -63,31 +60,31 @@ $(function () {
                 title: '化学品名称',
                 halign: 'center',
                 align: 'left',
-                width: '13.57%'
+                /*width: '13.57%'*/
             }, {
                 field: 'cAS',
                 title: 'CAS',
                 halign: 'center',
                 align: 'left',
-                width: '13.57%'
+              /*  width: '13.57%'*/
             }, {
                 field: 'equipName',
                 title: '设备名称',
                 halign: 'center',
                 align: 'left',
-                width: '13.57%'
+           /*     width: '13.57%'*/
             }, {
                 field: 'unitName',
                 title: '工艺单元名称',
                 halign: 'center',
                 align: 'left',
-                width: '13.57%'
+         /*       width: '13.57%'*/
             },{
                 field: 'sourceName',
                 title: '危险源名称',
                 halign: 'center',
                 align: 'left',
-                width: '13.57%',
+            /*    width: '13.57%',*/
                 cellStyle: function (value, row, index, field) {
                     return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
                 },
@@ -99,24 +96,44 @@ $(function () {
                 title: '企业名称',
                 halign: 'center',
                 align: 'left',
-                width: '13.57%',
+           /*     width: '13.57%',*/
                 cellStyle: function (value, row, index, field) {
                     return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
                 },
                 formatter: function (value, row, index) {
                     return '<span title="'+value+'">'+value+'</span>'
-
                 }
             },{
                 field: 'area',
                 title: '行政区域',
                 halign: 'center',
                 align: 'left',
-                width: '13.57%'
+            /*    width: '13.57%'*/
             }]
     });
 });
-
+function init() {
+    getCompanyList();
+}
+//获取企业集合
+function getCompanyList() {
+    $.ajax({
+        type: 'get',
+        async: false,
+        url: '/EnterpriseInfo/getCompanyList',
+        success: function (result) {
+            var companyList = eval(result);
+            $.each(companyList, function (i) {
+                $('#companyName').append("<option value='" + companyList[i].companyId + "'>" + companyList[i].companyName + "</option>");
+            });
+            $('#companyName').selectpicker('val','',{ noneSelectedText:"==请选择=="});
+            $('#companyName .selectpicker').selectpicker('refresh',{});
+        },
+        error: function () {
+            alert("请求失败");
+        }
+    });
+}
 //表格返回参数方法
 function queryParams(pageReqeust) {
     pageReqeust.chemName = chemName;
@@ -153,3 +170,4 @@ function exportExcel(){
         +"&equipName="+equipName+"&companyName="+companyName;
     window.top.location.href=url;
 }
+
