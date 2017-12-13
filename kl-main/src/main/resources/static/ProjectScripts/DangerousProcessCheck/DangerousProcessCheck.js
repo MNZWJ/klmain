@@ -26,13 +26,11 @@ $(function () {
         pageSize: 10,                       //每页的记录行数（*）
         pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
         showRefresh: true,//是否显示 刷新按钮
-        showExport: true,                     //是否显示导出
-        exportDataType: "basic",              //basic', 'all', 'selected'.
         sortStable: true,//设置为 true 将获得稳定的排序，我们会添加_position属性到 row 数据中。
         selectItemName: 'state',
         idField: 'companyId',
         rowStyle: function () {//自定义行样式
-            return "processTableRow";
+            return "bootTableRow";
         },
         onLoadError: function () {
             BootstrapDialog.alert({
@@ -131,7 +129,6 @@ function searchMenus() {
     searchRisk = $("#searchRisk").selectpicker('val');
     $("#processTable").bootstrapTable("refresh",{});
 }
-
 //清空查询条件
 function clearRole() {
     $('#searchRisk').selectpicker('val','');
@@ -139,8 +136,15 @@ function clearRole() {
 }
 //表格返回参数方法
 function queryParams(pageReqeust) {
-    debugger;
     pageReqeust.companyName = searchCompanyName;
     pageReqeust.risk = searchRisk;
     return pageReqeust;
+}
+//导出Excel
+function exportExcel(){
+    searchCompanyName = searchCompanyName==null?"":searchCompanyName;
+    searchRisk = searchRisk==null?"":searchRisk;
+    var url = "/DangerousProcessCheck/exportExcel?companyName="+searchCompanyName
+        +"&risk="+searchRisk;
+    window.top.location.href=url;
 }
