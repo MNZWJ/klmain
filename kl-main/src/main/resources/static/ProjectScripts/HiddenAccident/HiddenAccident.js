@@ -2,6 +2,7 @@ var sourceId = "";
 var scanHeight=0;
 var tableFlag=0;
 var searchName="";
+
 $(function () {
     //获取浏览器高度
     scanHeight = $(window).height();
@@ -83,7 +84,6 @@ function getHazardList() {
         url: '/HiddenAccident/getHazardList',
         success: function (result) {
             hazardList = result;
-
         },
         error: function () {
             alert("请求失败");
@@ -96,22 +96,38 @@ function getHazardList() {
 function loadHazardList(hazardList) {
     map.clearOverlays();
     $.each(hazardList, function (i, n) {
-        var tempPoint = new BMap.Point(n.longt, n.lat);
-        var marker = new BMap.Marker(wgs2bd(tempPoint), {
-            title: n.sourceName
 
+        var imagUrl = "";
+        switch (true) {
+            case n.rank==SourceDangerIdOne:
+                imagUrl = "../../Images/Common/红色.png"; break;
+            case n.rank==SourceDangerIdTwo  :
+                imagUrl = "../../Images/Common/橙色.png"; break;
+            case n.rank==SourceDangerIdThree  :
+                imagUrl = "../../Images/Common/黄色.png"; break;
+            case n.rank==SourceDangerIdFour :
+                imagUrl = "../../Images/Common/蓝色.png"; break;
+            default: imagUrl = "../../Images/Common/绿色.png"; break;
+        }
+        var html = '<a title="' + n.sourceName + '" onclick="onMarkClick(\''+n.sourceId+'\')"><div style="position: absolute; padding: 0pt; width: 51px; height: 25px; line-height:25px; overflow: hidden;background-size:51px 25px;background-image:url(' + imagUrl + ');text-align:center" ><span style="font-weight:bold;font-size:14px;color: #000;" >' + n.num + '</span>';
+        + '</div></a>';
+        var tempPoint = new BMap.Point(n.longt, n.lat);
+        var marker = new BMapLib.RichMarker(html, wgs2bd(tempPoint), {
+
+            "anchor": new BMap.Size(-20, -3),
+            "enableDragging": false
         });
 
         map.addOverlay(marker);
-        marker.customData = {sourceId: n.sourceId};
-        marker.addEventListener("onclick", onMarkClick);
+
+
     });
 
 }
 
 //危险源点击事件
 function onMarkClick(e) {
-    sourceId = e.target.customData.sourceId;
+    sourceId = e;
     searchName="";
     $("#toolbar").hide();
     if(tableFlag==0){

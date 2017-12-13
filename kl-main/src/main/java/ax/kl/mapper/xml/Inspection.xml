@@ -57,7 +57,7 @@
     </select>
 
     <!--查询企业下的化学品信息-->
-    <select id="getChemicalsInfoList" resultType="ax.kl.entity.CompanyInfo">
+    <select id="getChemicalsInfoList" resultType="ax.kl.entity.ChemicalsInfo">
         SELECT DISTINCT ci.* FROM TB_BASE_DANGERSOURCE_INFO di
         JOIN TB_BASE_PROCESS_UNIT pu ON di.SourceId=pu.SourceId
         JOIN TB_BASE_EQUIP_INFO ei ON pu.UnitId=ei.UnitId

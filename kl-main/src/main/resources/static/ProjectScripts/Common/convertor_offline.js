@@ -3,6 +3,15 @@ var a = 6378245.0;
 var ee = 0.00669342162296594323;
 var x_pi = 3.14159265358979324 * 3000.0 / 180.0;
 
+function wgs2bd_XY(pointX,pointY) {//(lat,longt)
+    var wgs2gcjData = wgs2gcj(pointX, pointY);
+    var gcj2bdData = gcj2bd(wgs2gcjData[0], wgs2gcjData[1]);
+    return [gcj2bdData[1], gcj2bdData[0]];//[longt,lat]
+}
+
+
+
+
 function wgs2bd(point) {
 	var wgs2gcjData = wgs2gcj(point.lat, point.lng);
 	var gcj2bdData = gcj2bd(wgs2gcjData[0], wgs2gcjData[1]);

@@ -50,7 +50,7 @@
 
         .titleSpan {
             position: relative;
-            top: 18px;
+            top: 12px;
             font-family: 微软雅黑;
             font-size: 14px;
             color: #fff;
@@ -59,21 +59,171 @@
         .titleImg {
             position: relative;
             top: 13px;
+            display: inline-block;
         }
 
         .container-fluid {
             min-height: 100%;
         }
 
+
+
+
+
     </style>
     <script>
+        var menuId='${secondMenu[rootMenu[0].menuId][0].menuId}';
         $(function () {
             var scanHeight = $(window).height();
             var titleHeight = $("#title").height();
             $("#frame").height(scanHeight - titleHeight);
+
+            //默认跳转
+            $("#frame").attr("src", "${secondMenu[rootMenu[0].menuId][0].URL}");
+
+            $("#E881EC1A-BD29-605D-B2AF-C9263502349A").next().hover(function (e) {
+
+                $("#E881EC1A-BD29-605D-B2AF-C9263502349A").find("div").css("background-image","url(../../Images/MainView/（选中）备查巡查图标.png)")
+
+                }, function() {
+                    recoverIcon();
+                }
+            );
+            $("#E881EC1A-BD29-605D-B2AF-C9263502349A").hover(function (e) {
+
+                    $("#E881EC1A-BD29-605D-B2AF-C9263502349A").find("div").css("background-image","url(../../Images/MainView/（选中）备查巡查图标.png)")
+
+                }, function() {
+                    recoverIcon();
+                }
+            );
+            $("#48436811-7D15-41F3-A887-B8AAB499AE4E").next().hover(function (e) {
+
+                    $("#48436811-7D15-41F3-A887-B8AAB499AE4E").find("div").css("background-image","url(../../Images/MainView/（选中）风险分布档案.png)")
+
+                }, function() {
+                recoverIcon();
+                }
+            );
+            $("#48436811-7D15-41F3-A887-B8AAB499AE4E").hover(function (e) {
+
+                    $("#48436811-7D15-41F3-A887-B8AAB499AE4E").find("div").css("background-image","url(../../Images/MainView/（选中）风险分布档案.png)")
+
+                }, function() {
+                    recoverIcon();
+                }
+            );
+            $("#1D746E71-F4F2-4CEB-9625-8A00A31EEA30").next().hover(function (e) {
+
+                    $("#1D746E71-F4F2-4CEB-9625-8A00A31EEA30").find("div").css("background-image","url(../../Images/MainView/（选中）风险云图图标.png)")
+
+                }, function() {
+                recoverIcon();
+                }
+            );
+            $("#1D746E71-F4F2-4CEB-9625-8A00A31EEA30").hover(function (e) {
+
+                    $("#1D746E71-F4F2-4CEB-9625-8A00A31EEA30").find("div").css("background-image","url(../../Images/MainView/（选中）风险云图图标.png)")
+
+                }, function() {
+                    recoverIcon();
+                }
+            );
+            $("#5A256541-3258-4DBC-931F-954E11B36A62").hover(function (e) {
+
+                    $("#5A256541-3258-4DBC-931F-954E11B36A62").find("div").css("background-image","url(../../Images/MainView/（选中）风险预警.png)")
+
+                }, function() {
+                recoverIcon();
+                }
+            );
+            $("#44072209-1E4A-49E7-BA77-E79902B28AE9").hover(function (e) {
+
+                    $("#44072209-1E4A-49E7-BA77-E79902B28AE9").find("div").css("background-image","url(../../Images/MainView/（选中）数据采集监控1.png)")
+
+                }, function() {
+                recoverIcon();
+                }
+            );
+            $("#19C4C1CD-F83A-4A85-9A22-5F939FEAEB1F").next().hover(function (e) {
+
+                    $("#19C4C1CD-F83A-4A85-9A22-5F939FEAEB1F").find("div").css("background-image","url(../../Images/MainView/（选中）基本信息.png)")
+
+                }, function() {
+                recoverIcon();
+                }
+            );
+            $("#19C4C1CD-F83A-4A85-9A22-5F939FEAEB1F").hover(function (e) {
+
+                    $("#19C4C1CD-F83A-4A85-9A22-5F939FEAEB1F").find("div").css("background-image","url(../../Images/MainView/（选中）基本信息.png)")
+
+                }, function() {
+                    recoverIcon();
+                }
+            );
+            $("#A2DDFF84-1000-46F3-BF20-B8C4F6B09310").next().hover(function (e) {
+
+                    $("#A2DDFF84-1000-46F3-BF20-B8C4F6B09310").find("div").css("background-image","url(../../Images/MainView/系统设置选中.png)")
+
+                }, function() {
+                recoverIcon();
+                }
+            );
+            $("#A2DDFF84-1000-46F3-BF20-B8C4F6B09310").hover(function (e) {
+
+                    $("#A2DDFF84-1000-46F3-BF20-B8C4F6B09310").find("div").css("background-image","url(../../Images/MainView/系统设置选中.png)")
+
+                }, function() {
+                    recoverIcon();
+                }
+            );
+
+
+
+
+
         });
 
+
+        function recoverIcon () {
+
+            if(menuId!="E881EC1A-BD29-605D-B2AF-C9263502349A"){
+                $("#E881EC1A-BD29-605D-B2AF-C9263502349A").find("div").css({"background-image":"url(../../Images/MainView/备查巡查图标.png)","background-size":"100% 100%"});
+            }
+            if(menuId!="48436811-7D15-41F3-A887-B8AAB499AE4E"){
+                $("#48436811-7D15-41F3-A887-B8AAB499AE4E").find("div").css({"background-image":"url(../../Images/MainView/风险分布档案图标.png)","background-size":"100% 100%"});
+
+            }
+            if(menuId!="1D746E71-F4F2-4CEB-9625-8A00A31EEA30"){
+                $("#1D746E71-F4F2-4CEB-9625-8A00A31EEA30").find("div").css({"background-image":"url(../../Images/MainView/风险云图.png)","background-size":"100% 100%"});
+
+            }
+            if(menuId!="5A256541-3258-4DBC-931F-954E11B36A62"){
+                $("#5A256541-3258-4DBC-931F-954E11B36A62").find("div").css({"background-image":"url(../../Images/MainView/风险预警图标.png)","background-size":"100% 100%"});
+
+            }
+            if(menuId!="44072209-1E4A-49E7-BA77-E79902B28AE9"){
+                $("#44072209-1E4A-49E7-BA77-E79902B28AE9").find("div").css({"background-image":"url(../../Images/MainView/数据采集监控1.png)","background-size":"100% 100%"});
+
+            }
+            if(menuId!="19C4C1CD-F83A-4A85-9A22-5F939FEAEB1F"){
+                $("#19C4C1CD-F83A-4A85-9A22-5F939FEAEB1F").find("div").css({"background-image":"url(../../Images/MainView/基本信息图标.png)","background-size":"100% 100%"});
+
+            }
+            if(menuId!="A2DDFF84-1000-46F3-BF20-B8C4F6B09310"){
+                $("#A2DDFF84-1000-46F3-BF20-B8C4F6B09310").find("div").css({"background-image":"url(../../Images/MainView/系统设置图标.png)","background-size":"100% 100%"});
+
+            }
+
+
+        }
+
+
+
+        //跳转方法
         function jumpUrl(url, x) {
+            menuId=x;
+
             $("#frame").attr("src", url);
 
             if(x.tagName=="A"||x.tagName=="a"){
@@ -112,19 +262,45 @@
                         <#list rootMenu as item>
                         <li class="dropdown" style="">
                             <#assign onclick = "">
-                            <#if item.menuName=="事故隐患">
-                                <#assign  onclick = "onmousedown=\"jumpUrl('${(item.URL)!}',this)\"">
-                            </#if>
-                            <div style="width: 106px;height: 96px;text-align: center;cursor: pointer;" ${onclick}>
+                            <#assign imageUrl = "../../Images/MainView/事故应急支持图标.png">
 
-                                <img class="titleImg" src="../../Images/MainView/事故应急支持图标.png" height="50"
-                                     width="50"/><br/>
+                            <#if item.menuName=="危险源分布">
+                                <#assign  imageUrl = "../../Images/MainView/（选中）备查巡查图标.png">
+                            </#if>
+                            <#if item.menuName=="安全监控">
+                                <#assign  imageUrl = "../../Images/MainView/风险预警图标.png">
+                            </#if>
+                            <#if item.menuName=="备查巡查">
+                                <#assign  imageUrl = "../../Images/MainView/风险分布档案图标.png">
+                            </#if>
+                            <#if item.menuName=="风险云图及预警">
+                                <#assign  imageUrl = "../../Images/MainView/风险云图.png">
+                            </#if>
+                            <#if item.menuName=="事故隐患">
+                                <#assign  onclick = "onmousedown=\"jumpUrl('${(item.URL)!}','${(item.menuId)}')\"">
+                                <#assign  imageUrl = "../../Images/MainView/风险预警图标.png">
+                            </#if>
+                            <#if item.menuName=="统计分析">
+                                <#assign  imageUrl = "../../Images/MainView/数据采集监控1.png">
+                            </#if>
+                            <#if item.menuName=="基本信息">
+                                <#assign  imageUrl = "../../Images/MainView/基本信息图标.png">
+                            </#if>
+                            <#if item.menuName=="系统设置">
+                                <#assign  imageUrl = "../../Images/MainView/系统设置图标.png">
+                            </#if>
+
+
+                            <div id="${(item.menuId)!}" style="width: 106px;height: 96px;text-align: center;cursor: pointer;" ${onclick}>
+
+                                <div class="titleImg" style="background-image: url(${imageUrl});background-size: 100% 100%;width: 50px;height: 50px;"
+                                > </div><br/>
                                 <span class="titleSpan">${(item.menuName)!}</span>
                             </div>
                             <#if (secondMenu[item.menuId]!?size > 0)>
                             <ul class="dropdown-menu">
                                 <#list (secondMenu[item.menuId])! as menu>
-                                <li><a onmousedown="jumpUrl('${(menu.URL)!}',this)">${menu.menuName}</a></li>
+                                <li><a onmousedown="jumpUrl('${(menu.URL)!}','${(item.menuId)}')">${menu.menuName}</a></li>
                             </#list>
 
                             </ul>
