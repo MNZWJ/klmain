@@ -64,9 +64,7 @@ public class InspectionController {
     @ResponseBody
     public List<ChemicalsInfo> getChemicalsInfoList(@RequestParam("companyId") String companyId){
 
-        List<ChemicalsInfo> list=inspectionService.getChemicalsInfoList(companyId);
-
-        return list;
+        return inspectionService.getChemicalsInfoList(companyId);
     }
 
 

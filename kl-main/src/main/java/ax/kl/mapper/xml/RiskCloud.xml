@@ -6,12 +6,11 @@
     <select id="getHazardList" resultType="ax.kl.entity.DangerSourceInfo">
 
         SELECT
-        di.SourceId,di.SourceName,di.Longt,di.Lat,COUNT(hd.DangerId) AS num,
+        di.SourceId,di.SourceName,di.Longt,di.Lat,
         di.Rank
         FROM
         TB_BASE_DANGERSOURCE_INFO di
         JOIN TB_BASE_COMPANY_INFO ci ON di.CompanyId=ci.CompanyId
-        JOIN  TB_BASE_HIDDEN_DANGER hd ON di.SourceId=hd.DangerSource
 
         WHERE
         di.SourceId IS NOT NULL
@@ -25,30 +24,11 @@
         <if test="searchRank!=null and searchRank!= ''">
             AND di.Rank = #{searchRank}
         </if>
-        <if test="searchRankHidden!=null and searchRankHidden!= ''">
-            AND hd.Rank=#{searchRankHidden}
-        </if>
-        AND  hd.DangerId IS NOT NULL
-        AND isnull(hd.Rectification,'')!='已整改'
         GROUP BY di.SourceId,di.SourceName,di.Longt,di.Lat,di.Rank
 
 
     </select>
 
-    <!--获取隐患信息-->
-    <select id="getHiddenInfo" resultType="ax.kl.entity.HiddenAccident">
-        SELECT hd.*,di.SourceName,ci.CompanyName FROM TB_BASE_HIDDEN_DANGER hd
-        JOIN TB_BASE_DANGERSOURCE_INFO di ON hd.DangerSource=di.SourceId
-        JOIN TB_BASE_COMPANY_INFO ci ON di.CompanyId=ci.CompanyId
-        <if test="sourceId!=null and sourceId!=''">
-            WHERE di.SourceId=#{sourceId}
-        </if>
-        <if test="searchName!=null and searchName!=''">
-            WHERE ci.CompanyName LIKE concat(concat('%',#{searchName}),'%')
-        </if>
-
-        AND isnull(hd.Rectification,'')!='已整改'
-    </select>
 
 
 </mapper>
