@@ -39,4 +39,24 @@ public class SysUserServiceImpl implements SysUserService {
         }
         return sysUser;
     }
+
+    /**
+     * 根据用户ID和密码校验用户是否存在
+     * @param userId
+     * @param pwd
+     * @return
+     */
+    public int checkUserByIdPwd(String userId,String pwd){
+        return this.SysUserMapper.checkUserByIdPwd(userId,pwd);
+    }
+
+    /**
+     * 更新密码
+     * @param userId
+     * @param oldPwd
+     * @param newPwd
+     */
+    public void updatePwd(String userId,String oldPwd, String newPwd){
+        this.SysUserMapper.updatePwd(userId,oldPwd,newPwd);
+    }
 }
