@@ -33,8 +33,6 @@ $(function () {
         pageSize: 10,                       //每页的记录行数（*）
         pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
         showRefresh: true,//是否显示 刷新按钮
-        showExport: true,                     //是否显示导出
-        exportDataType: "basic",              //basic', 'all', 'selected'.
         sortStable: true,//设置为 true 将获得稳定的排序，我们会添加_position属性到 row 数据中。
         selectItemName: 'state',
         idField: 'companyId',
@@ -439,3 +437,13 @@ function initTable() {
     });
 }
 
+//导出Excel
+function exportExcel(){
+    companyId = companyId==null?"":companyId;
+    searchScaleCode = searchScaleCode==null?"":searchScaleCode;
+    searchTypeCode = searchTypeCode==null?"":searchTypeCode;
+    searchIndustryCode = searchIndustryCode==null?"":searchIndustryCode;
+    var url = "/EnterpriseInfo/exportExcel?companyName="+companyId
+        +"&scaleCode="+searchScaleCode+"&typeCode="+searchTypeCode+"&industryId="+searchIndustryCode;
+    window.top.location.href=url;
+}

@@ -100,4 +100,33 @@ public class EnterpriseInfoServiceImpl implements EnterpriseInfoService {
     public List<CompanyArt> getCompanyArtList(String companyId) {
         return enterpriseInfoMapper.getCompanyArtList(companyId);
     }
+
+    /**
+     * 获取待导出的企业信息总数
+     * @param companyName
+     * @param scaleCode
+     * @param typeCode
+     * @param industryId
+     * @return
+     */
+    @Override
+    public int getExportMajorCount( String companyName, String scaleCode, String typeCode,String industryId){
+        return  this.enterpriseInfoMapper.getExportMajorCount(companyName,scaleCode,typeCode,industryId);
+    }
+
+    /**
+     * 获取待导出的企业信息列表
+     * @param pageIndex
+     * @param pageSize
+     * @param companyName
+     * @param scaleCode
+     * @param typeCode
+     * @param industryId
+     * @return
+     */
+    @Override
+    public  List<CompanyInfo> getExportMajor(int pageIndex,int pageSize,String companyName, String scaleCode, String typeCode,String industryId){
+        return this.enterpriseInfoMapper.getExportMajor(pageIndex,pageSize,companyName,scaleCode,typeCode,industryId);
+    }
+
 }
