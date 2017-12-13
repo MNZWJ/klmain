@@ -113,7 +113,7 @@ public class EnterpriseInfoController {
             // 在内存中保持100行，超过100行将被刷新到磁盘
             SXSSFWorkbook wb = new SXSSFWorkbook(100);
             //1.1创建合并单元格对象
-            CellRangeAddress callRangeAddress = new CellRangeAddress(0,0,0,4);//起始行,结束行,起始列,结束列
+            CellRangeAddress callRangeAddress = new CellRangeAddress(0,0,0,9);//起始行,结束行,起始列,结束列
             //1.2头标题样式
             CellStyle headStyle = createCellStyle(wb,(short)16);
             //1.3列标题样式

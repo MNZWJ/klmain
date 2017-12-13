@@ -34,7 +34,7 @@ $(function () {
         selectItemName: 'state',
         idField: 'sourceId',
         rowStyle: function () {//自定义行样式
-            return "MajorTableRow";
+            return "bootTableRow";
         },
         onLoadError: function () {
             BootstrapDialog.alert({

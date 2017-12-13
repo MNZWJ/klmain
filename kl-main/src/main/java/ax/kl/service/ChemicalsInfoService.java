@@ -19,4 +19,22 @@ public interface ChemicalsInfoService {
      * @return
      */
     Page<ChemicalsInfo> getChemicalsList(Page page, Map<String, String> param);
+
+    /**
+     * 获取待导出的化学品信息总数
+     * @param chemName
+     * @param equipName
+     * @param companyName
+     * @return
+     */
+    int getExportMajorCount(String chemName, String equipName, String companyName);
+
+    /**
+     * 获取待导出的化学品信息列表
+     * @param chemName
+     * @param equipName
+     * @param companyName
+     * @return
+     */
+    List<ChemicalsInfo> getExportMajor(int pageIndex, int pageSize, String chemName, String equipName, String companyName);
 }
