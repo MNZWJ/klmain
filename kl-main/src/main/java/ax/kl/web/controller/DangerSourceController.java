@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.plugins.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -87,4 +88,32 @@ public class DangerSourceController {
         map.put("rows",list);
         return map;
     }
+
+    @RequestMapping(value = "/getSourceRankCount")
+    @ApiOperation(value = "获取重大危险源等级数量")
+    @ResponseBody
+    public List<Map<String,String>> getSourceRankCount(){
+        return dangerSourceService.getSourceRankCount();
+    }
+
+    @RequestMapping(value = "/getDSAccidenType")
+    @ApiOperation(value = "/getDSAccidenType",tags = "可能引发的事故类型数量")
+    @ResponseBody
+    public List<Map<String,String>> getDSAccidenType(){
+        return dangerSourceService.getDSAccidenType();
+    }
+
+    @RequestMapping(value = "/getDSDistribution")
+    @ApiOperation(value = "/getDSDistribution",tags = "重大危险源分布情况")
+    @ResponseBody
+    public List<Map<String,String>> getDSDistribution(){
+        return dangerSourceService.getDSDistribution();
+    }
+
+    @RequestMapping(value = "/getDSIndustry")
+    @ApiOperation(value = "/getDSIndustry",tags = "各行业重大危险源分布情况")
+    @ResponseBody
+    public List<Map<String,String>> getDSIndustry(){
+        return dangerSourceService.getDSIndustry();
+    };
 }

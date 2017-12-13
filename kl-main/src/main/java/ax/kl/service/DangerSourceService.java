@@ -42,4 +42,28 @@ public interface DangerSourceService {
      * @return
      */
     List<ChemicalsInfo> getChemicalsInfoListBySourceId(String sourceId);
+
+    /**
+     * 获取重大危险源等级数量
+     * @return
+     */
+    List<Map<String,String>> getSourceRankCount();
+
+    /**
+     * 获得重大危险源可能引发的事故类型数量
+     * @return
+     */
+    List<Map<String,String>> getDSAccidenType();
+
+    /**
+     * 重大危险源分布情况
+     * @return
+     */
+    List<Map<String,String>> getDSDistribution();
+
+    /**
+     * 各行业重大危险源分布情况
+     * @return
+     */
+    List<Map<String,String>> getDSIndustry();
 }

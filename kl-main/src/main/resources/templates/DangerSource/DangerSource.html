@@ -38,6 +38,9 @@
             padding: 6px 0 6px 0px;
             vertical-align: top;
         }
+        .fixed-table-body{
+            height: 80%;
+        }
 
         .tdLable {
             height: 40px;
@@ -47,8 +50,7 @@
         #legend {
             position: absolute;
             right: 18px;
-            top: 20px;
-            width: 114px;
+            top: 110px;
             height: 115px;
             cursor: pointer;
             background-size: 100% 100%;
@@ -73,6 +75,47 @@
         }
         .form-group {
             padding: 10px 0;
+        }
+
+        .btn_echarts {
+            position: absolute;
+            top: 10px;
+            right: 12px;
+            width: 150px;
+            height: 95px;
+            background-size: 100% 100%;
+            cursor: pointer;
+        }
+
+        #echartsPage {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 99999;
+            background-color: #0e2a42;
+        }
+
+        #titleSpan {
+            position: absolute;
+            top: 1%;
+            left: 0;
+            right: 0;
+            margin: auto;
+            font-size: 34px;
+            font-weight: bold;
+            font-family: 微软雅黑;
+            text-align: center;
+            color: #fff;
+
+        }
+
+        #bigDiv {
+            margin-top: 7%;
+            height: 43%;
+            width: 100%;
+
         }
     </style>
 
@@ -197,8 +240,121 @@
     </table>
 
 </div>
+
+<div id="echartsPage" style="display: none;">
+    <div id="titleSpan" class="titleSpan">
+        <span>重大危险源统计</span>
+    </div>
+
+    <img src="../../Images/Common/左上线.png" style="width: 60%;height: 60%;position: absolute;top: 3.8%;z-index:-1;">
+    <img src="../../Images/Common/右下线.png"
+         style="width: 50%;height: 50%;position: absolute;bottom: 0;right: 0;z-index:-1;">
+    <div style="width: 25px;height: 25px;background-image: url('../../Images/Common/close.png');background-size:100% 100%;cursor: pointer;position: absolute;top: 8px;right: 10px;z-index: 999999"
+         onclick="closePage()"></div>
+
+
+    <div style="width: 65%;height: 100%;position: absolute;">
+
+
+        <div id="bigDiv" style="overflow-y: visible;">
+
+
+            <div id="titleDivColor"
+                 style="margin-top:5%;margin-left:8%;height: 30px;line-height: 30px;color: #fff; width: 88%;background-color: #0a4164">
+                <span style="font-size: 24px;margin-left: 10px;">重大危险源分布情况</span>
+            </div>
+            <div style="margin-left:8%;width: 88%;height: 80%;">
+                <div id="directAreaCompanyInfo" style="width: 100%;height: 100%;"></div>
+            </div>
+
+        </div>
+
+
+        <div style="height: 43%;width: 100%;">
+            <div id="titleDivColor1"
+                 style="margin-left:8%;height: 30px;line-height: 30px;color: #fff; width: 88%;background-color: #0a4164">
+                <span style="font-size: 24px;margin-left: 10px;">各行业重大危险源分布情况</span>
+            </div>
+            <div style="margin-left:8%;width: 88%;height: 80%;">
+                <div id="industryCompanyInfo" style="width: 100%;height: 100%;"></div>
+            </div>
+        </div>
+    </div>
+    <div style="position: absolute;left: 65%;width: 30%;height: 100%;text-align: center">
+        <div style="height: 7%;width: 100%;">
+            <div style="margin:0 auto;padding-top:5%;">
+                <div style="width: 25px;height: 25px;vertical-align:bottom;background-image: url('../../Images/Common/时钟.png');background-size: 100% 100%;display: inline-block;"></div>
+                <span id="showTime" style="color: #fff;font-size: 16px;">0000-00-00 00:00:00</span>
+            </div>
+        </div>
+
+
+        <div style="overflow-y: visible;margin-top:5.82%;height: 15%; width: 100%;">
+            <div style="margin-left:8%;height: 30px;line-height: 30px;color: #fff; width: 88%;background-color: #0a4164">
+                <span style="font-size: 24px;margin-left: 10px;">垦利区重大危险源总数</span>
+            </div>
+            <div style="margin-left:8%;width: 88%;height: 70%;text-align: center;font-size: 2em;line-height: 1.9em;color: #fef601;">
+                <div id="numOne"
+                     style="display: inline-block;width: 10%;height: 80%;background-color: #22529b;vertical-align: middle;font-size: 2.1em">
+                    1
+                </div>
+                <div id="numTwo"
+                     style="display: inline-block;width: 10%;height: 80%;background-color: #22529b;vertical-align: middle;font-size: 2.1em">
+                    1
+                </div>
+                <div id="numThree"
+                     style="display: inline-block;width: 10%;height: 80%;background-color: #22529b;vertical-align: middle;font-size: 2.1em">
+                    1
+                </div>
+                <div id="numFour"
+                     style="display: inline-block;width: 10%;height: 80%;background-color: #22529b;vertical-align: middle;font-size: 2.1em">
+                    1
+                </div>
+                <div id="numFive"
+                     style="display: inline-block;width: 10%;height: 80%;background-color: #22529b;vertical-align: middle;font-size: 2.1em">
+                    1
+                </div>
+                <div id="numSix"
+                     style="display: inline-block;width: 10%;height: 80%;background-color: #22529b;vertical-align: middle;font-size: 2.1em">
+                    1
+                </div>
+                <div style="display: inline-block;width: 10%;height: 80%;color:#fff;vertical-align: middle">
+                    个
+                </div>
+
+
+            </div>
+
+        </div>
+
+        <div style="overflow-y: visible;height: 34%; width: 100%;">
+
+
+            <div style="margin-left:8%;height: 30px;line-height: 30px;color: #fff; width: 88%;background-color: #0a4164">
+                <span style="font-size: 24px;margin-left: 10px;">重大危险源等级占比</span>
+            </div>
+            <div style="margin-left:8%;width: 88%;height: 80%;">
+                <div id="sourceRankEchart" style="height: 100%;width: 100%;"></div>
+            </div>
+
+        </div>
+        <div style="overflow-y: visible;height: 34%; width: 100%;">
+
+
+            <div style="margin-left:8%;height: 30px;line-height: 30px;color: #fff; width: 88%;background-color: #0a4164">
+                <span style="font-size: 24px;margin-left: 10px;">可能引发事故类型占比</span>
+            </div>
+            <div style="margin-left:8%;width: 88%;height: 80%;">
+                <div id="DSAccidenTypeEchart" style="height: 100%;width: 100%;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--统计图表的图标-->
+<div class="btn_echarts" style="background-image: url(../../Images/Common/统计图表.png)" onclick="openwindows()">
+</div>
 <!--图例-->
-<div id="legend" style="background-image: url(../../Images/Common/背景.png); background-size: 100% 100%;width: 140px">
+<div id="legend" style="background-image: url(../../Images/Common/背景.png); background-size: 100% 100%;width:140px">
     <table id="ttd" style="width: 100%; height: 100%;">
 
         <tr style="height: 16px;">
@@ -363,7 +519,7 @@
 
 <script type="text/javascript"
         src="http://api.map.baidu.com/api?v=2.0&ak=EC1491j5jGKwgMZHeUuoTGZUhn7uvqti"></script>
-
+<script src="../../Scripts/Echarts/echarts-3.8.4/echarts.min.js"></script>
 <script src="../../ProjectScripts/Common/common.js"></script>
 <script src="../../ProjectScripts/Common/MapConfig.js"></script>
 <script src="../../ProjectScripts/Common/convertor_offline.js"></script>
