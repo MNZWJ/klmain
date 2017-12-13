@@ -1,5 +1,6 @@
 package ax.kl.web.controller;
 
+import ax.kl.common.Auth;
 import ax.kl.entity.SysOrganise;
 import ax.f4j.model.JsonResult;
 import ax.f4j.model.ResultUtil;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+@Auth
 @Controller
 @Api(value="/SysOrganise", tags = {"组织机构维护"})
 @RequestMapping("/SysOrganise")

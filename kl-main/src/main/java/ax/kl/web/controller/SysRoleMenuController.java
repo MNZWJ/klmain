@@ -1,5 +1,6 @@
 package ax.kl.web.controller;
 
+import ax.kl.common.Auth;
 import ax.kl.entity.SysRoleMenu;
 import ax.kl.service.SysRoleMenuService;
 import io.swagger.annotations.Api;
@@ -16,6 +17,7 @@ import java.util.List;
  * @author wangbiao
  * Date 2017/11/28
  */
+@Auth
 @CrossOrigin
 @Controller
 @RequestMapping("/ManagerRoleMenu")

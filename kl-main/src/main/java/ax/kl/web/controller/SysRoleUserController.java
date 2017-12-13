@@ -1,5 +1,6 @@
 package ax.kl.web.controller;
 
+import ax.kl.common.Auth;
 import ax.kl.entity.SysRoleUser;
 import ax.kl.entity.TreeModel;
 import ax.kl.service.SysRoleUserService;
@@ -15,6 +16,7 @@ import java.util.List;
  * @author wangbiao
  * Date 2017/11/28
  */
+@Auth
 @CrossOrigin
 @Controller
 @RequestMapping("/ManagerRoleUser")

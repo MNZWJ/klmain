@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
  * Date: Created in 9:33 2017/11/15
  * @Modified By:
  */
+@Auth
 @CrossOrigin
 @Controller
 @RequestMapping("/MainView")
@@ -39,8 +40,8 @@ public class MainViewController {
     @ApiOperation(value = "获取主页面")
     @RequestMapping(value="/Index",method= RequestMethod.GET)
     public String doView (Model model, HttpServletRequest request) {
-       // List<SysMenu> menuList= (List<SysMenu>) request.getSession().getAttribute("MenuList");
-        List<SysMenu> menuList = this.SysMenuService.GetMenusList();
+        List<SysMenu> menuList= (List<SysMenu>) request.getSession().getAttribute("MenuList");
+        //List<SysMenu> menuList = this.SysMenuService.GetMenusList();
         List<SysMenu> rootMenu=menuList.stream().filter(s-> "1".equals(s.getMenuLevel())).collect(Collectors.toList());
         Map<String,List<SysMenu>> secondMenu=menuList.stream().filter(s-> "2".equals(s.getMenuLevel())).collect(Collectors.groupingBy(SysMenu::getParentMenuId));
         model.addAttribute("rootMenu",rootMenu);

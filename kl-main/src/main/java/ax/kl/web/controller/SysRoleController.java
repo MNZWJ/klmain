@@ -1,5 +1,6 @@
 package ax.kl.web.controller;
 
+import ax.kl.common.Auth;
 import ax.kl.entity.SysRole;
 import com.baomidou.mybatisplus.plugins.Page;
 import ax.f4j.model.JsonResult;
@@ -20,7 +21,7 @@ import java.util.Map;
  * Date: Created in 9:19 2017/11/23
  * @Modified By:
  */
-
+@Auth
 @CrossOrigin
 @Controller
 @RequestMapping("/SysRole")
