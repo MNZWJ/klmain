@@ -1,6 +1,6 @@
 package ax.kl.web.controller;
 
-import ax.kl.entity.MajorHazard;
+import ax.kl.entity.DangerSourceInfo;
 import ax.kl.service.MajorDangerSourceInfoService;
 import com.baomidou.mybatisplus.plugins.Page;
 import io.swagger.annotations.Api;
@@ -59,7 +59,7 @@ public class MajorDangerSourceInfoController {
         page.setCurrent(pageNumber);
         page.setSize(pageSize);
 
-        Page<MajorHazard> list = MajorDangerSourceInfoService.getMajorInfo(page,companyName,sourceNmae,rank);
+        Page<DangerSourceInfo> list = MajorDangerSourceInfoService.getMajorInfo(page,companyName,sourceNmae,rank);
         Map<String,Object> map=new HashMap<>();
         map.put("total",list.getTotal());
         map.put("rows",list.getRecords());
@@ -111,7 +111,7 @@ public class MajorDangerSourceInfoController {
             contentStyle.setWrapText(true);//设置自动换行
             contentStyle.setVerticalAlignment(VerticalAlignment.CENTER);//垂直居中
 
-            List<MajorHazard> list = new ArrayList<MajorHazard>();
+            List<DangerSourceInfo> list = new ArrayList<DangerSourceInfo>();
             // 数据库中存储的数据行
             int page_size = 10000;
             // 求数据库中待导出数据的总行数

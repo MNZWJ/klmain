@@ -60,9 +60,22 @@ public class CompanyInfo {
   @TableField("ScaleCode")
   @ApiModelProperty("企业规模，字典")
   private String scaleCode;
-  @TableField("TypeCode")
+  @TableField(value = "TypeCode")
   @ApiModelProperty("企业类型，字典")
   private String typeCode;
+  @ApiModelProperty("危险工艺Id")
+  @TableField(value = "TechnologyId",exist =false)
+  private String technologyId;
 
+  @ApiModelProperty("危险工艺名称")
+  @TableField(value = "TechnologyName",exist =false)
+  private String technologyName;
 
+  @ApiModelProperty("重点监控单元")
+  @TableField(value = "MonitorUnit",exist =false)
+  private String monitorUnit;
+
+  @TableField(value = "CompanyType",exist =false)
+  @ApiModelProperty("企业类型名称，字典")
+  private String companyType;
 }

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ax.kl.mapper.RiskCloudMapper">
+
+    <!--加载危险源列表-->
+    <select id="getHazardList" resultType="ax.kl.entity.DangerSourceInfo">
+
+        SELECT
+        di.SourceId,di.SourceName,di.Longt,di.Lat,
+        di.Rank
+        FROM
+        TB_BASE_DANGERSOURCE_INFO di
+        JOIN TB_BASE_COMPANY_INFO ci ON di.CompanyId=ci.CompanyId
+
+        WHERE
+        di.SourceId IS NOT NULL
+
+        <if test="searchCompanyName!=null and searchCompanyName!= ''">
+            AND ci.CompanyName LIKE CONCAT('%',CONCAT(#{searchCompanyName},'%'))
+        </if>
+        <if test="searchSourceName!=null and searchSourceName!= ''">
+            AND di.SourceName LIKE CONCAT('%',CONCAT(#{searchSourceName},'%'))
+        </if>
+        <if test="searchRank!=null and searchRank!= ''">
+            AND di.Rank = #{searchRank}
+        </if>
+        GROUP BY di.SourceId,di.SourceName,di.Longt,di.Lat,di.Rank
+
+
+    </select>
+
+
+
+</mapper>

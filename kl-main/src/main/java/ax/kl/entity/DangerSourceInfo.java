@@ -12,7 +12,7 @@ import lombok.Data;
  */
 @Data
 @TableName("TB_BASE_DANGERSOURCE_INFO")
-public class MajorHazard {
+public class DangerSourceInfo {
 
 
     /**主键*/
@@ -74,4 +74,9 @@ public class MajorHazard {
     /**登记日期*/
     @TableField(value = "RecordDate")
     private String recordDate;
+    /**
+     * 隐患条数
+     */
+    @TableField(value = "num")
+    private String num;
 }

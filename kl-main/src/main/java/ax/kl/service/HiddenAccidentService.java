@@ -1,7 +1,7 @@
 package ax.kl.service;
 
 import ax.kl.entity.HiddenAccident;
-import ax.kl.entity.MajorHazard;
+import ax.kl.entity.DangerSourceInfo;
 import com.baomidou.mybatisplus.plugins.Page;
 
 import java.util.List;
@@ -19,13 +19,13 @@ public interface HiddenAccidentService {
      * 加载危险源列表
      * @return
      */
-    List<MajorHazard> getHazardList(Map<String,String> param);
+    List<DangerSourceInfo> getHazardList(Map<String,String> param);
 
     /**
      * 加载隐患信息
      * @param sourceId
      * @return
      */
-    Page<HiddenAccident> getHiddenInfo(Page page,String sourceId);
+    Page<HiddenAccident> getHiddenInfo(Page page,String sourceId,String searchName);
 
 }

@@ -1,6 +1,6 @@
 package ax.kl.service;
 
-import ax.kl.entity.MajorHazard;
+import ax.kl.entity.DangerSourceInfo;
 import com.baomidou.mybatisplus.plugins.Page;
 
 import java.util.List;
@@ -11,7 +11,7 @@ public interface MajorDangerSourceInfoService {
      * @param
      * @return
      */
-    Page<MajorHazard> getMajorInfo(Page page, String companyName, String soureName,String rank);
+    Page<DangerSourceInfo> getMajorInfo(Page page, String companyName, String soureName,String rank);
 
     /**
      * 获取待导出的危险源总数
@@ -29,6 +29,5 @@ public interface MajorDangerSourceInfoService {
      * @param rank
      * @return
      */
-    List<MajorHazard> getExportMajor(int pageIndex,int pageSize,String companyName, String soureName,String rank);
-
+    List<DangerSourceInfo> getExportMajor(int pageIndex,int pageSize,String companyName, String soureName,String rank);
 }

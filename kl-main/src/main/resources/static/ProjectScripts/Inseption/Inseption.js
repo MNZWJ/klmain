@@ -1,5 +1,6 @@
 var companyId = "";
-var scanHeight="";
+var scanHeight = "";
+var flagTable=0;
 $(function () {
     //获取浏览器高度
     scanHeight = $(window).height();
@@ -19,12 +20,15 @@ $(function () {
         $('#companyArtTable').bootstrapTable("refresh");
     });
 
-    initTable();
+
     //模态窗关闭事件
     $('#myModal').on('hidden.bs.modal', function () {
         $('#myTab a[href="#companyInfo"]').tab('show')
     });
+
+
 });
+
 //初始化地图
 function initMap() {
     map = new BMap.Map("map");          // 创建地图实例
@@ -54,10 +58,10 @@ function initMap() {
 }
 
 //初始化表格
-function initTable(){
+function initTable() {
     //化学品表格
     $('#chemistryTable').bootstrapTable({
-        height: scanHeight *4/7,
+        height: scanHeight * 4 / 7,
         striped: true,      //是否显示行间隔色
         cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
         method: 'get',//请求方式
@@ -119,7 +123,7 @@ function initTable(){
 
     //危险源表格
     $('#riskTable').bootstrapTable({
-        height: scanHeight *4/7,
+        height: scanHeight * 4 / 7,
         striped: true,      //是否显示行间隔色
         cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
         method: 'get',//请求方式
@@ -191,7 +195,7 @@ function initTable(){
 
     //危险关联工艺
     $('#companyArtTable').bootstrapTable({
-        height: scanHeight *4/7,
+        height: scanHeight * 4 / 7,
         striped: true,      //是否显示行间隔色
         cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
         method: 'get',//请求方式
@@ -255,7 +259,6 @@ function initTable(){
 }
 
 
-
 //获取企业集合
 function getCompanyList() {
     var companyList = [];
@@ -265,6 +268,17 @@ function getCompanyList() {
         url: '/Inspection/getCompanyList',
         success: function (result) {
             companyList = result;
+            var countNum=companyList.length+'';
+            while(countNum.length<6){
+                countNum='0'+countNum;
+            }
+            $("#numOne").html(countNum[0]);
+            $("#numTwo").html(countNum[1]);
+            $("#numThree").html(countNum[2]);
+            $("#numFour").html(countNum[3]);
+            $("#numFive").html(countNum[4]);
+            $("#numSix").html(countNum[5]);
+
             mini.get("searchCompanyName").setData(companyList);
         },
         error: function () {
@@ -293,6 +307,11 @@ function loadCompanyList(companyList) {
 
 //企业点击事件
 function onMarkClick(e) {
+    if(flagTable==0){
+        initTable();
+        flagTable=1;
+    }
+
     companyId = e.target.customData.companyId;
 
     $.ajax({
@@ -390,7 +409,7 @@ function searchCompanyList() {
             searchCompanyName: searchCompanyName,
             searchIndustryCode: searchIndustryCode,
             searchScaleCode: searchScaleCode,
-            searchTypeCode:searchTypeCode
+            searchTypeCode: searchTypeCode
         },
         url: '/Inspection/getCompanyList',
         success: function (result) {
@@ -415,4 +434,399 @@ function clearSearch() {
     mini.get("searchScaleCode").setValue('');
     mini.get("searchTypeCode").setValue('');
 
+}
+
+//初始化图表
+function initEcharts() {
+
+    //各行业企业分布情况
+    loadIndustryCompany();
+    //加载企业类型占比
+    loadCompanyType();
+    //加载企业规模占比
+    loadScaleCode();
+    //加载企业行政区划分布情况
+    loadDirectAreaCompany();
+
+}
+
+//加载企业规模占比
+function loadScaleCode(){
+
+    $.ajax({
+        type:'post',
+        url:'/Inspection/getScaleCodeData',
+        success:function(result){
+            var legendData=[];
+            var data=[];
+            $.each(result,function(i,n){
+                legendData.push(n['DictName']);
+                data.push({value:n['num'],name:n['DictName']});
+            });
+            var dataStyle = {
+                normal: {
+                    label: {
+                        show: false
+                    },
+                    labelLine: {
+                        show: false
+                    },
+                    shadowBlur: 40,
+                    shadowColor: 'rgba(40, 40, 40,0.5)',
+                }
+            };
+
+            var option = {
+
+                color: ['#fbf31f', '#ffffff','#24ffb5','#22529b'],
+
+
+
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b}: {c} ({d}%)"
+                },
+                legend: {
+                    orient: 'vertical',
+                    x: '2%',
+                    top: '30%',
+                    data: legendData,
+                    textStyle:{
+                        color:'#fff'
+                    }
+                },
+                series: [{
+                    name: '企业规模占比',
+                    type: 'pie',
+                    radius: ['65%', '85%'],
+                    avoidLabelOverlap: false,
+                    itemStyle: dataStyle,
+                    label: {
+                        normal: {
+                            show: false,
+                            position: 'center'
+                        },
+                        emphasis: {
+                            show: true,
+                            formatter: function(param) {
+                                return param.percent.toFixed(0) + '%';
+                            },
+                            textStyle: {
+                                fontSize: '30',
+                                fontWeight: 'bold',
+                                color:'#fff'
+                            }
+                        }
+                    },
+                    labelLine: {
+                        normal: {
+                            show: true
+                        }
+                    },
+                    data: data
+                }]
+            };
+            var companyTypeEchart =echarts.init(document.getElementById("scaleCodeEchart"));
+            companyTypeEchart.setOption(option);
+        }
+    });
+
+}
+
+
+
+//加载企业类型占比
+function loadCompanyType(){
+
+    $.ajax({
+        type:'post',
+        url:'/Inspection/getCompanyTypeData',
+        success:function(result){
+            var legendData=[];
+            var data=[];
+            $.each(result,function(i,n){
+                legendData.push(n['DictName']);
+                data.push({value:n['num'],name:n['DictName']});
+            });
+            var dataStyle = {
+                normal: {
+                    label: {
+                        show: false
+                    },
+                    labelLine: {
+                        show: false
+                    },
+                    shadowBlur: 40,
+                    shadowColor: 'rgba(40, 40, 40,0.5)',
+                }
+            };
+
+            var option = {
+
+                color: ['#22529b', '#24ffb5'],
+
+
+
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b}: {c} ({d}%)"
+                },
+                legend: {
+                    orient: 'vertical',
+                    x: '2%',
+                    top: '30%',
+                    data: legendData,
+                    textStyle:{
+                        color:'#fff'
+                    }
+                },
+                series: [{
+                    name: '企业类型占比',
+                    type: 'pie',
+                    radius: ['65%', '85%'],
+                    avoidLabelOverlap: false,
+                    itemStyle: dataStyle,
+                    label: {
+                        normal: {
+                            show: false,
+                            position: 'center'
+                        },
+                        emphasis: {
+                            show: true,
+                            formatter: function(param) {
+                                return param.percent.toFixed(0) + '%';
+                            },
+                            textStyle: {
+                                fontSize: '30',
+                                fontWeight: 'bold',
+                                color:'#fff'
+                            }
+                        }
+                    },
+                    labelLine: {
+                        normal: {
+                            show: true
+                        }
+                    },
+                    data: data
+                }]
+            };
+            var companyTypeEchart =echarts.init(document.getElementById("companyTypeEchart"));
+            companyTypeEchart.setOption(option);
+        }
+    });
+
+}
+
+
+//加载各行业企业分布情况
+function loadIndustryCompany(){
+    $.ajax({
+        type: 'post',
+        url: '/Inspection/getIndustryCompanyInfo',
+        success: function (result) {
+            var data = [];
+            var legendData = [];
+            $.each(result, function (i, n) {
+                data.push({name: n.typeName, type: 'bar', barMaxWidth: 40, stack: n.stack, data: n.numList.split(",")});
+                legendData.push(n.typeName);
+            });
+
+            $.ajax({
+                type: 'get',
+                url: "/SysDictionary/getDataDictList?typeId=" + IndustryCodeDictId,
+                success: function (dataResult) {
+                    var xData = [];
+                    $.each(dataResult, function (i, n) {
+                        xData.push(n.dictName);
+                    });
+
+                    var option = {
+                        tooltip: {
+                            trigger: 'axis',
+                            axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                                type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                            }
+                        },
+                        color: ["#ad382c", "#ef8938", "#dfb728", "#204c8f", "#00544a", "#6ca748"],
+                        legend: {
+                            data: legendData,
+                            textStyle: {
+                                color: '#fff',
+                                fontSize: 20
+                            }
+                        },
+                        grid: {
+                            left: '3%',
+                            right: '4%',
+                            bottom: '10%',
+                            containLabel: true
+                        },
+                        xAxis: [
+                            {
+                                type: 'category',
+                                data: xData,
+                                axisLabel: {
+                                    textStyle: {
+                                        color: '#fff',
+                                        fontSize: 20
+                                    }
+                                }
+                            }
+                        ],
+                        yAxis: [
+                            {
+                                type: 'value',
+                                axisLabel: {
+                                    textStyle: {
+                                        color: '#fff',
+                                        fontSize: 20
+                                    }
+                                }
+                            }
+                        ],
+                        dataZoom: [
+                            {
+                                show: "true",
+                                start: 0,
+                                end: 100,
+
+                                textStyle: {
+                                    color: '#fff'
+                                }
+                            }
+                        ],
+                        series: data
+                    };
+
+                    var myChart = echarts.init(document.getElementById('industryCompanyInfo'));
+                    myChart.setOption(option);
+                }
+            });
+
+
+        }
+    });
+}
+
+
+//加载各行业行政分布情况
+function loadDirectAreaCompany(){
+    $.ajax({
+        type: 'post',
+        url: '/Inspection/getCompanyDirectAirData',
+        success: function (result) {
+            var data = [];
+            var legendData = [];
+            $.each(result, function (i, n) {
+                data.push({name: n.typeName, type: 'bar', barMaxWidth: 40, stack: n.stack, data: n.numList.split(",")});
+                legendData.push(n.typeName);
+            });
+
+            $.ajax({
+                type: 'get',
+                url: "/SysDictionary/getDataDictList?typeId=" + DirectAreaDictId,
+                success: function (dataResult) {
+                    var xData = [];
+                    $.each(dataResult, function (i, n) {
+                        xData.push(n.dictName);
+                    });
+
+                    var option = {
+                        tooltip: {
+                            trigger: 'axis',
+                            axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                                type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                            }
+                        },
+                        color: ["#ad382c", "#ef8938", "#dfb728", "#204c8f", "#00544a", "#6ca748"],
+                        legend: {
+                            data: legendData,
+                            textStyle: {
+                                color: '#fff',
+                                fontSize: 20
+                            }
+                        },
+                        grid: {
+                            left: '3%',
+                            right: '4%',
+                            bottom: '10%',
+                            containLabel: true
+                        },
+                        xAxis: [
+                            {
+                                type: 'category',
+                                data: xData,
+                                axisLabel: {
+                                    textStyle: {
+                                        color: '#fff',
+                                        fontSize: 20
+                                    }
+                                }
+                            }
+                        ],
+                        yAxis: [
+                            {
+                                type: 'value',
+                                axisLabel: {
+                                    textStyle: {
+                                        color: '#fff',
+                                        fontSize: 20
+                                    }
+                                }
+                            }
+                        ],
+                        dataZoom: [
+                            {
+                                show: "true",
+                                start: 0,
+                                end: 100,
+
+                                textStyle: {
+                                    color: '#fff'
+                                }
+                            }
+                        ],
+                        series: data
+                    };
+
+                    var myChart = echarts.init(document.getElementById('directAreaCompanyInfo'));
+                    myChart.setOption(option);
+                }
+            });
+
+
+        }
+    });
+}
+var timeMethod="";
+//打开统计图页面
+function openwindows() {
+    $('#echartsPage').show();
+    timeMethod=setInterval(function(){
+        $("#showTime").html(convert(new Date()));
+    },1000);
+
+    initEcharts();
+}
+
+//关闭统计图页面
+function closePage(){
+    if(timeMethod!=""){
+        clearInterval(timeMethod);
+    }
+    $('#echartsPage').hide();
+}
+
+
+//转换日期格式
+function convert(date) {
+    var today = new Date(date);
+    var month = today.getMonth() + 1 > 9 ? (today.getMonth() + 1) : "0" + (today.getMonth() + 1);
+    var day = today.getDate() > 9 ? today.getDate() : "0" + today.getDate();
+    var hours = today.getHours() > 9 ? today.getHours() : "0" + today.getHours();
+    var minutes = today.getMinutes() > 9 ? today.getMinutes() : "0" + today.getMinutes();
+    var seconds = today.getSeconds() > 9 ? today.getSeconds() : "0" + today.getSeconds();
+
+    return today.getFullYear() + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
 }

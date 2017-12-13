@@ -28,5 +28,24 @@ public class ChemicalsInfo {
     @ApiModelProperty("CAS")
     private String cAS;
 
+    @TableField("EquipName")
+    @ApiModelProperty("设备名称")
+    private String equipName;
+
+    @TableField("UnitName")
+    @ApiModelProperty("工艺单元名称")
+    private String unitName;
+
+    @TableField("SourceName")
+    @ApiModelProperty("危险源名称")
+    private String sourceName;
+
+    @TableField("CompanyName")
+    @ApiModelProperty("企业名称")
+    private String companyName;
+
+    @TableField("Area")
+    @ApiModelProperty("行政区域")
+    private String area;
 
 }

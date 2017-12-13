@@ -49,7 +49,7 @@
     </sql>
 
     <!--重大危险源信息的备查-->
-    <select id="getMajorInfo" resultType="ax.kl.entity.MajorHazard">
+    <select id="getMajorInfo" resultType="ax.kl.entity.DangerSourceInfo">
         SELECT  <include refid="queryList"/>
     </select>
 
@@ -73,7 +73,7 @@
     </select>
 
     <!--获取待导出的重大危险源列表-->
-    <select id="getExportMajor" resultType="ax.kl.entity.MajorHazard">
+    <select id="getExportMajor" resultType="ax.kl.entity.DangerSourceInfo">
         select tt.* from (
         select top ${pageSize} row_number() over(ORDER BY ci.CompanyId) as rownum,
         <include refid="queryList"/>

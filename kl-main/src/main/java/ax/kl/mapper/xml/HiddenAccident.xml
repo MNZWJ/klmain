@@ -3,10 +3,11 @@
 <mapper namespace="ax.kl.mapper.HiddenAccidentMapper">
 
     <!--加载危险源列表-->
-    <select id="getHazardList" resultType="ax.kl.entity.MajorHazard">
+    <select id="getHazardList" resultType="ax.kl.entity.DangerSourceInfo">
 
         SELECT
-        di.SourceId,di.SourceName,di.Longt,di.Lat
+        di.SourceId,di.SourceName,di.Longt,di.Lat,COUNT(hd.DangerId) AS num,
+        di.Rank
         FROM
         TB_BASE_DANGERSOURCE_INFO di
         JOIN TB_BASE_COMPANY_INFO ci ON di.CompanyId=ci.CompanyId
@@ -29,7 +30,7 @@
         </if>
         AND  hd.DangerId IS NOT NULL
         AND isnull(hd.Rectification,'')!='已整改'
-        GROUP BY di.SourceId,di.SourceName,di.Longt,di.Lat
+        GROUP BY di.SourceId,di.SourceName,di.Longt,di.Lat,di.Rank
 
 
     </select>
@@ -42,6 +43,11 @@
         <if test="sourceId!=null and sourceId!=''">
             WHERE di.SourceId=#{sourceId}
         </if>
+        <if test="searchName!=null and searchName!=''">
+            WHERE ci.CompanyName LIKE concat(concat('%',#{searchName}),'%')
+        </if>
+
+        AND isnull(hd.Rectification,'')!='已整改'
     </select>
 
 
