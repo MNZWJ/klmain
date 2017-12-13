@@ -1,5 +1,6 @@
 package ax.kl.web.controller;
 
+import ax.kl.common.Auth;
 import ax.kl.entity.SysDataDict;
 import ax.kl.entity.TreeModel;
 import ax.kl.service.SysDictionaryService;
@@ -24,6 +25,7 @@ import java.util.Map;
  * Date: Created in 14:18 2017/11/17
  * @Modified By:
  */
+@Auth
 @CrossOrigin
 @Controller
 @RequestMapping("/SysDictionary")

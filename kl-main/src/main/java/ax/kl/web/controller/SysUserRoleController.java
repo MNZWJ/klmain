@@ -1,5 +1,6 @@
 package ax.kl.web.controller;
 
+import ax.kl.common.Auth;
 import ax.kl.entity.SysUserRole;
 import ax.kl.service.SysUserRoleService;
 import io.swagger.annotations.Api;
@@ -13,6 +14,7 @@ import java.util.List;
  * @author maxiaolong
  * 人员角色管理
  */
+@Auth
 @CrossOrigin
 @Controller
 @RequestMapping("/UserRole")

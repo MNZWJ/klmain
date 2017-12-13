@@ -1,6 +1,7 @@
 package ax.kl.web.controller;
 
 
+import ax.kl.common.Auth;
 import ax.kl.entity.SysMenu;
 import ax.kl.entity.TreeModel;
 import ax.kl.service.SysMenuService;
@@ -24,6 +25,7 @@ import java.util.Map;
  * Date: Created in 11:14 2017/11/13
  * @Modified By:
  */
+@Auth
 @CrossOrigin
 @Controller
 

@@ -2,6 +2,7 @@ package ax.kl.web.controller;
 
 import ax.f4j.model.JsonResult;
 import ax.f4j.model.ResultUtil;
+import ax.kl.common.Auth;
 import ax.kl.entity.SysOrganise;
 import ax.kl.entity.TreeModel;
 import ax.kl.service.SysBusinessUserService;
@@ -17,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+@Auth
 @CrossOrigin
 @RequestMapping("/SysBusinessUser")
 @Api(value = "/SysBusinessUser",tags ={"人员维护"})
