@@ -55,4 +55,25 @@ public interface EnterpriseInfoService {
      */
     List<CompanyArt> getCompanyArtList(String companyId);
 
+    /**
+     * 获取待导出的企业信息总数
+     * @param companyName
+     * @param scaleCode
+     * @param typeCode
+     * @param industryId
+     * @return
+     */
+    int getExportMajorCount(String companyName, String scaleCode, String typeCode,String industryId);
+
+    /**
+     * 获取待导出的企业信息列表
+     * @param pageIndex
+     * @param pageSize
+     * @param companyName
+     * @param scaleCode
+     * @param typeCode
+     * @param industryId
+     * @return
+     */
+    List<CompanyInfo> getExportMajor(int pageIndex,int pageSize,String companyName, String scaleCode, String typeCode,String industryId);
 }
