@@ -63,10 +63,6 @@ $(function () {
         }, {
             field: 'state',
             checkbox: true
-        }, {
-            field: 'area',
-            title: '行政区域',
-            halign: 'center'
         },
             {
                 field: 'companyName',
@@ -114,6 +110,10 @@ $(function () {
                 title: '企业类型',
                 halign: 'center',
                 align:'center'
+            }, {
+                field: 'area',
+                title: '行政区域',
+                halign: 'center'
             }
         ]
     });
@@ -240,7 +240,6 @@ function queryParams(pageReqeust) {
 }
 //企业点击事件弹出查看窗
 function look(companyId) {
-    debugger;
     var row=$("#enterpriseTable").bootstrapTable("getRowByUniqueId",companyId);
     company=row.companyId;
          $.ajax({
@@ -275,7 +274,6 @@ function look(companyId) {
     }
 //初始化表格
 function initTable() {
-    debugger;
     //获取浏览器高度
     var scanHeight = $(window).height();
     //化学品表格
@@ -357,6 +355,7 @@ function initTable() {
         columns: [
             {
                 title: '序号',
+                width: '5%',
                 formatter: function (value, row, index) {
                     return index + 1;
                 }
