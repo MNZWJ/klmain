@@ -143,3 +143,13 @@ function clean() {
     $("#equipName").val("");
     $("#companyName").val("");
 }
+
+//导出Excel
+function exportExcel(){
+    chemName = chemName==null?"":chemName;
+    equipName = equipName==null?"":equipName;
+    companyName = companyName==null?"":companyName;
+    var url = "/Chemicals/exportExcel?chemName="+chemName
+        +"&equipName="+equipName+"&companyName="+companyName;
+    window.top.location.href=url;
+}

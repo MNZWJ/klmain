@@ -2,9 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ax.kl.mapper.EnterpriseInfoMapper">
 
-        <!--获取企业信息列表-->
+        <!--企业信息备查-->
         <select id="getCompanyInfoList" resultType="ax.kl.entity.CompanyInfo">
-            SELECT
+            SELECT  <include refid="queryList"/>
+        </select>
+
+        <sql id="queryList">
             Area,
             aa.CompanyId,
             CompanyName,
@@ -39,7 +42,7 @@
             <if test="industryId != null and industryId !='' ">
                 AND bb.IndustryId=#{industryId}
             </if>
-        </select>
+        </sql>
 
     <!--加载企业列表-->
     <select id="getCompanyList" resultType="ax.kl.entity.CompanyInfo">
@@ -67,6 +70,7 @@
             AND  bci.TypeCode=#{searchTypeCode}
         </if>
     </select>
+
     <!--通过Id查询企业信息-->
     <select id="getCompanyInfo" resultType="ax.kl.entity.CompanyInfo">
         SELECT 	CompanyId,	UniqueCode,	CompanyName,	Area,	LegalPerson,	ContactWay,(
@@ -113,4 +117,34 @@
         cr.CompanyId = #{companyId}
     </select>
 
+    <!--获取待导出的企业信息的总数-->
+    <select id="getExportMajorCount" resultType="int">
+        SELECT
+        COUNT (*)
+        FROM
+        TB_BASE_COMPANY_INFO aa
+        LEFT JOIN TB_REL_COMPANY_INDUSTRY bb ON aa.CompanyId = bb.CompanyId
+        WHERE
+        aa.CompanyId IS NOT NULL
+        <if test="companyName != null and companyName !='' ">
+            AND aa.CompanyId=#{companyName}
+        </if>
+        <if test="scaleCode != null and scaleCode !='' ">
+            AND aa.ScaleCode=#{scaleCode}
+        </if>
+        <if test="typeCode != null and typeCode !='' ">
+            AND aa.TypeCode=#{typeCode}
+        </if>
+        <if test="industryId != null and industryId !='' ">
+            AND bb.IndustryId=#{industryId}
+        </if>
+    </select>
+
+    <!--获取待导出的企业信息列表-->
+    <select id="getExportMajor" resultType="ax.kl.entity.CompanyInfo">
+        select tt.* from (
+        select top ${pageSize} row_number() over(ORDER BY aa.CompanyId) as rownum,
+        <include refid="queryList"/>
+        ) tt where tt.rownum &gt; #{pageIndex}
+    </select>
 </mapper>

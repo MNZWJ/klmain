@@ -57,4 +57,26 @@ public interface EnterpriseInfoMapper extends BaseMapper<CompanyInfo> {
      */
     List<CompanyArt> getCompanyArtList(@Param("companyId")String companyId);
 
+    /**
+     * 获取待导出的企业信息总数
+     * @param companyName
+     * @param scaleCode
+     * @param typeCode
+     * @param industryId
+     * @return
+     */
+    int getExportMajorCount(@Param("companyName") String companyName, @Param("scaleCode") String scaleCode, @Param("typeCode") String typeCode, @Param("industryId")String industryId);
+
+    /**
+     * 获取待导出的企业信息列表
+     * @param pageIndex
+     * @param pageSize
+     * @param companyName
+     * @param scaleCode
+     * @param typeCode
+     * @param industryId
+     * @return
+     */
+    List<CompanyInfo> getExportMajor(@Param("pageIndex") int pageIndex,@Param("pageSize") int pageSize, @Param("companyName") String companyName, @Param("scaleCode") String scaleCode, @Param("typeCode") String typeCode, @Param("industryId")String industryId);
+
 }

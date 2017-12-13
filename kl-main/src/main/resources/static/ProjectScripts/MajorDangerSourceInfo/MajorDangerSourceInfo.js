@@ -33,8 +33,9 @@ $(function () {
         sortStable: true,//设置为 true 将获得稳定的排序，我们会添加_position属性到 row 数据中。
         selectItemName: 'state',
         idField: 'sourceId',
+        uniqueId:'sourceId',
         rowStyle: function () {//自定义行样式
-            return "MajorTableRow";
+            return "bootTableRow";
         },
         onLoadError: function () {
             BootstrapDialog.alert({
@@ -62,16 +63,29 @@ $(function () {
         }, {
             field: 'companyId',
             title: '企业名称',
-            halign: 'center'
+            halign: 'center',
+            cellStyle: function (value, row, index, field) {
+                return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+            },
+            formatter: function (value, row, index) {
+                return '<span title="'+value+'">'+value+'</span>'
+
+            }
         },{
                 field: 'sourceName',
                 title: '危险源名称',
-                halign: 'center'
+                halign: 'center',
+            cellStyle: function (value, row, index, field) {
+                return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+            },
+            formatter: function (value, row, index) {
+                return '<span title="'+value+'">'+value+'</span>'
+            }
             }, {
                 field: 'rValue',
                 title: 'R值',
                 halign: 'center',
-                align: 'center'
+                align: 'center',
             }, {
                 field: 'rank',
                 title: '危险源等级',
@@ -82,13 +96,21 @@ $(function () {
                 field: 'recordNo',
                 title: '备案编号',
                 halign: 'center',
-                align: 'center'
+                align: 'center',
+                cellStyle: function (value, row, index, field) {
+                return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+            },
+                formatter: function (value, row, index) {
+                    return '<span title="'+value+'">'+value+'</span>'
+
+                }
             },
             {
                 field: 'validity',
                 title: '有效期',
                 halign: 'center',
-                align: 'center'
+                align: 'center',
+                width:'90px'
             },
             {
                 field: 'status',
@@ -99,7 +121,14 @@ $(function () {
             {
                 field: 'accidentType',
                 title: '可能引发的事故类型',
-                halign: 'center'
+                halign: 'center',
+                cellStyle: function (value, row, index, field) {
+                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                },
+                formatter: function (value, row, index) {
+                    return '<span title="'+value+'">'+value+'</span>'
+
+                }
             },
             {
                 field: 'deathToll',
@@ -111,7 +140,14 @@ $(function () {
                 field: 'recordDate',
                 title: '登记日期',
                 halign: 'center',
-                align: 'center'
+                align: 'center',
+                cellStyle: function (value, row, index, field) {
+                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                },
+                formatter: function (value, row, index) {
+                    return '<span title="'+value+'">'+value+'</span>'
+
+                }
             },
             {
                 field: 'outPersonCount',
