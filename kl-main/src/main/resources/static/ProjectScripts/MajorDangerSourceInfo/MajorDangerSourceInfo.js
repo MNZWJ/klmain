@@ -151,7 +151,6 @@ function MajorAangerous() {
 }
 //查询
 function searchMenus() {
-    debugger;
     searchCompanyName = $("#searchCompanyName").selectpicker('val');
     searchSourceNmae = $("#searchSourceNmae").val();
     searchRank = $("#searchRank").selectpicker('val');
@@ -159,7 +158,6 @@ function searchMenus() {
 }
 //表格返回参数方法
 function queryParams(pageReqeust) {
-    debugger;
     pageReqeust.companyName = searchCompanyName;
     pageReqeust.sourceNmae = searchSourceNmae;
     pageReqeust.rank=searchRank;
@@ -190,5 +188,14 @@ function getCompanyList() {
             alert("请求失败");
         }
     });
+}
+
+//导出Excel
+function exportExcel(){
+    searchCompanyName = searchCompanyName==null?"":searchCompanyName;
+    searchRank = searchRank==null?"":searchRank;
+    var url = "/MajorDangerSourceInfo/exportExcel?companyName="+searchCompanyName
+    +"&sourceName="+searchSourceNmae+"&rank="+searchRank;
+    window.top.location.href=url;
 }
 
