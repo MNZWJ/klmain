@@ -20,7 +20,13 @@
 
     <script src="../../ProjectScripts/Common/common.js"></script>
     <style>
-
+        /*固定表格行高*/
+        .bootTableRow {
+            white-space: nowrap;
+            overflow: hidden;
+            height: 120px;
+            max-height: 120px;
+        }
     </style>
 
 </head>
@@ -35,7 +41,7 @@
                     <label class="xs-only" for="searchCompanyName">企业名称：</label>
                     <select placeholder="请选择" class="selectpicker" style="width: 115px;" data-style="btn-default" id="searchCompanyName" data-live-search="true">                                                >
                     </select>
-                    <label class="xs-only" for="searchRisk">危险化工工艺名称：</label>
+                    <label class="xs-only" for="searchRisk">危险工艺名称：</label>
                     <select placeholder="请选择"class="selectpicker" style="width: 115px;" data-style="btn-default" id="searchRisk">                                                >
                     </select>
                     <button class="btn btn-default" type="button" onclick="searchMenus()">
@@ -44,8 +50,10 @@
                     <button class="btn btn-danger" type="button" onclick="clearRole()">
                         <span class="glyphicon glyphicon-minus"></span> 清空
                     </button>
+                    <button class="btn btn-success" type="button" onclick="exportExcel()">
+                        <span class="glyphicon glyphicon-export"></span> 导出
+                    </button>
                 </form>
-
             </div>
         </div>
     </div>
