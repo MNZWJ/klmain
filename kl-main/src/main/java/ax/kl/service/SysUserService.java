@@ -20,4 +20,20 @@ public interface SysUserService {
      * @return
      */
     SysUser getUserInfoByLoginName(String loginName);
+
+    /**
+     * 根据用户ID和密码校验用户是否存在
+     * @param userId
+     * @param pwd
+     * @return
+     */
+    int checkUserByIdPwd(String userId,String pwd);
+
+    /**
+     * 更新密码
+     * @param userId
+     * @param oldPwd
+     * @param newPwd
+     */
+    void updatePwd(String userId,String oldPwd, String newPwd);
 }

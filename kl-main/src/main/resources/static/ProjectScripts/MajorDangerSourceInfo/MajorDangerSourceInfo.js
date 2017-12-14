@@ -28,13 +28,12 @@ $(function () {
         pageSize: 10,                       //每页的记录行数（*）
         pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
         showRefresh: true,//是否显示 刷新按钮
-        showExport: true,                     //是否显示导出
-        exportDataType: "basic",              //basic', 'all', 'selected'.
         sortStable: true,//设置为 true 将获得稳定的排序，我们会添加_position属性到 row 数据中。
         selectItemName: 'state',
         idField: 'sourceId',
+        uniqueId:'sourceId',
         rowStyle: function () {//自定义行样式
-            return "MajorTableRow";
+            return "bootTableRow";
         },
         onLoadError: function () {
             BootstrapDialog.alert({
@@ -52,72 +51,117 @@ $(function () {
             field: 'number1',
             halign: 'center',
             align: 'center',
+            width: '2%',
             formatter: function (value, row, index) {
                 var page = $('#MajorTable').bootstrapTable('getOptions');
                 return (page.pageNumber - 1) * page.pageSize + index + 1;
             }
         }, {
             field: 'state',
-            checkbox: true
+            checkbox: true,
+            width:'2%'
         }, {
             field: 'companyId',
             title: '企业名称',
-            halign: 'center'
-        },{
-                field: 'sourceName',
-                title: '危险源名称',
-                halign: 'center'
-            }, {
-                field: 'rValue',
-                title: 'R值',
-                halign: 'center',
-                align: 'center'
-            }, {
-                field: 'rank',
-                title: '危险源等级',
-                halign: 'center',
-                align: 'center'
+            halign: 'center',
+            width:'10%',
+            cellStyle: function (value, row, index, field) {
+                return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
             },
-            {
+            formatter: function (value, row, index) {
+                return '<span title="'+value+'">'+value+'</span>'
+
+            }
+        },{
+            field: 'sourceName',
+            title: '危险源名称',
+            halign: 'center',
+            width:'10%',
+            cellStyle: function (value, row, index, field) {
+                return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+            },
+            formatter: function (value, row, index) {
+                return '<span title="'+value+'">'+value+'</span>'
+            }
+        }, {
+            field: 'rValue',
+            title: 'R值',
+            halign: 'center',
+            align: 'center',
+            width:'2%'
+        }, {
+            field: 'rank',
+            title: '危险源等级',
+            halign: 'center',
+            align: 'center',
+            width:'4%'
+        },
+           /* {
                 field: 'recordNo',
                 title: '备案编号',
                 halign: 'center',
-                align: 'center'
-            },
+                align: 'center',
+                width:'15%',
+                /!* cellStyle: function (value, row, index, field) {
+                 return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+             },
+                 formatter: function (value, row, index) {
+                     return '<span title="'+value+'">'+value+'</span>'
+                 }*!/
+            },*/
             {
                 field: 'validity',
                 title: '有效期',
                 halign: 'center',
-                align: 'center'
+                align: 'center',
+                width:'4%'
+
             },
             {
                 field: 'status',
                 title: '状态',
                 halign: 'center',
-                align: 'center'
+                align: 'center',
+                width:'3%'
             },
             {
                 field: 'accidentType',
-                title: '可能引发的事故类型',
-                halign: 'center'
+                title: '事故类型',
+                halign: 'center',
+                width:'5%',
+               /*  cellStyle: function (value, row, index, field) {
+                     return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                 },
+                 formatter: function (value, row, index) {
+                     return '<span title="'+value+'">'+value+'</span>'
+                 }*/
             },
             {
                 field: 'deathToll',
-                title: '可能引发事故死亡人数',
+                title: '事故死亡人数',
                 halign: 'center',
-                align: 'right'
+                align: 'right',
+                width:'4%'
             },
             {
                 field: 'recordDate',
                 title: '登记日期',
                 halign: 'center',
-                align: 'center'
+                align: 'center',
+                width:'4%'
+                /* cellStyle: function (value, row, index, field) {
+                     return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                 },
+                 formatter: function (value, row, index) {
+                     return '<span title="'+value+'">'+value+'</span>'
+                 }*/
             },
             {
                 field: 'outPersonCount',
-                title: '厂区边界外500米范围内人数估值',
+                title: '500米人数估值',
                 halign: 'center',
-                align: 'right'
+                align: 'right',
+                width:'5%',
             }
         ]
     });
@@ -131,7 +175,6 @@ function init() {
 }
 //获取重大危险源等级
 function MajorAangerous() {
-    debugger;
     $.ajax({
         type: 'get',
         async: false,
@@ -195,7 +238,7 @@ function exportExcel(){
     searchCompanyName = searchCompanyName==null?"":searchCompanyName;
     searchRank = searchRank==null?"":searchRank;
     var url = "/MajorDangerSourceInfo/exportExcel?companyName="+searchCompanyName
-    +"&sourceName="+searchSourceNmae+"&rank="+searchRank;
+        +"&sourceName="+searchSourceNmae+"&rank="+searchRank;
     window.top.location.href=url;
 }
 

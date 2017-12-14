@@ -10,9 +10,13 @@
         <result column="CompanyName" property="companyName"/>
         <result column="Area" property="area"/>
     </resultMap>
-
+    <!--化学品信息备查-->
     <select id="getChemicalsList" resultMap="ChemicalsList">
-        SELECT c.ChemId,c.ChemName,c.CAS,ei.EquipName,pu.UnitName,di.SourceName,ci.CompanyName,ci.Area
+        SELECT  <include refid="queryList"/>
+    </select>
+
+    <sql id="queryList">
+        c.ChemId,c.ChemName,c.CAS,ei.EquipName,pu.UnitName,di.SourceName,ci.CompanyName,ci.Area
         FROM TB_BASE_CHEMICAL_INFO c
         LEFT JOIN TB_REL_EQUIP_CHEMICAL rc ON c.ChemId = rc.ChemId
         JOIN TB_BASE_EQUIP_INFO ei ON rc.EquipId=ei.EquipId
@@ -28,5 +32,37 @@
         <if test="companyName !=null and companyName!=''">
             AND ci.companyName LIKE '%'+ #{companyName} + '%'
         </if>
+    </sql>
+
+    <!--获取待导出的化学品信息的总数-->
+    <select id="getExportMajorCount" resultType="int">
+        SELECT
+        COUNT (*)
+        FROM
+        TB_BASE_CHEMICAL_INFO c
+        LEFT JOIN TB_REL_EQUIP_CHEMICAL rc ON c.ChemId = rc.ChemId
+        JOIN TB_BASE_EQUIP_INFO ei ON rc.EquipId = ei.EquipId
+        JOIN TB_BASE_PROCESS_UNIT pu ON ei.UnitId = pu.UnitId
+        JOIN TB_BASE_DANGERSOURCE_INFO di ON pu.SourceId = di.SourceId
+        JOIN TB_BASE_COMPANY_INFO ci ON di.CompanyId = ci.CompanyId
+        WHERE
+        ci.CompanyId IS NOT NULL
+        <if test="chemName !=null and chemName!=''">
+            AND c.chemName LIKE '%'+ #{chemName} + '%'
+        </if>
+        <if test="equipName !=null and equipName!=''">
+            AND ei.equipName LIKE '%'+ #{equipName} + '%'
+        </if>
+        <if test="companyName !=null and companyName!=''">
+            AND ci.companyName LIKE '%'+ #{companyName} + '%'
+        </if>
+    </select>
+
+    <!--获取待导出的化学品信息列表-->
+    <select id="getExportMajor" resultType="ax.kl.entity.ChemicalsInfo">
+        select tt.* from (
+        select top ${pageSize} row_number() over(ORDER BY ci.CompanyId) as rownum,
+        <include refid="queryList"/>
+        ) tt where tt.rownum &gt; #{pageIndex}
     </select>
 </mapper>

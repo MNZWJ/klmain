@@ -15,8 +15,10 @@
     <script src="../../ProjectScripts/Common/common.js"></script>
     <style>
         .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
-            width: 150px;
+            width: 180px;
+            padding-right: 20px;
         }
+
         /*固定表格行高*/
         .bootTableRow {
             white-space: nowrap;
@@ -24,47 +26,32 @@
             height: 120px;
             max-height: 120px;
         }
-        #form table tr td {
-            min-height: 20px;
-            padding: 6px 0 6px 0px;
-            vertical-align: top;
+        /**查询框右边距*/
+        .form-group{
+            margin-right: 20px;
         }
-
-        .tdLable {
-            height: 40px;
-            text-align: right;
+        .form {
+            padding-top: 10px;
         }
-
-        #legend {
-            position: absolute;
-            right: 18px;
-            top: 140px;
-            width: 114px;
-            height: 115px;
-            cursor: pointer;
-            background-size: 100% 100%;
-        }
-
-        .legenddiv {
-            width: 18px;
-            height: 10px;
-            background-color: #0f0;
-            float: left;
-            margin-left: 14px;
-            margin-top: 5px;
-        }
-
-        .titlePng {
-            position: absolute;
-            top: 0.5px;
-            left: 40%;
-            width: 320px;
-            height: 38px;
-            background-size: 100% 100%;
-        }
-
         .form-group {
-            padding: 10px 0;
+            margin-bottom: 15px;
+        }
+        .nav {
+            margin-bottom: 10px;
+        }
+
+        .container-fluid {
+            margin-left: 5px;
+            margin-right: 5px;
+        }
+
+        .col-md-4 {
+            width: 37%;
+            height: auto;
+            padding-bottom: 2px;
+        }
+        .col-md-6 {
+            padding-bottom: 10px;
         }
 
     </style>
@@ -94,6 +81,9 @@
                     </button>
                     <button class="btn btn-danger" type="button" onclick="clearRole()">
                         <span class="glyphicon glyphicon-minus"></span> 清空
+                    </button>
+                    <button class="btn btn-success" type="button" onclick="exportExcel()">
+                        <span class="glyphicon glyphicon-export"></span> 导出
                     </button>
                 </form>
             </div>

@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- *
+ *@author  mxl
  */
 @Service
-public class MajorDangerSourceInfoImpl implements MajorDangerSourceInfoService {
+public class MajorDangerSourceInfoServiceImpl implements MajorDangerSourceInfoService {
 
     @Autowired
     MajorDangerSourceInfoMapper MajorDangerSourceInfoMapper;
@@ -38,6 +38,7 @@ public class MajorDangerSourceInfoImpl implements MajorDangerSourceInfoService {
      * @param rank
      * @return
      */
+    @Override
     public int getExportMajorCount( String companyName, String sourceNmae, String rank){
         return  this.MajorDangerSourceInfoMapper.getExportMajorCount(companyName,sourceNmae,rank);
     }
@@ -49,6 +50,7 @@ public class MajorDangerSourceInfoImpl implements MajorDangerSourceInfoService {
      * @param rank
      * @return
      */
+    @Override
    public  List<DangerSourceInfo> getExportMajor(int pageIndex,int pageSize,String companyName, String sourceNmae,String rank){
        return this.MajorDangerSourceInfoMapper.getExportMajor(pageIndex,pageSize,companyName,sourceNmae,rank);
    }

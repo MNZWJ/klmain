@@ -76,6 +76,7 @@ public class CompanyInfo {
   private String monitorUnit;
 
   @TableField(value = "CompanyType",exist =false)
-  @ApiModelProperty("企业类型名称，字典")
+  @ApiModelProperty("企业性质名称，字典")
   private String companyType;
+
 }
