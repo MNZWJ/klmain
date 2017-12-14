@@ -128,7 +128,7 @@ function getBoundary() {
         //5. 给目标行政区划添加边框，其实就是给目标行政区划添加一个没有填充物的遮罩层
         var ply = new BMap.Polygon(rs.boundaries[0], { strokeColor: "#ff8000", strokeWeight: 4, fillColor: "", enableMassClear: false });
         map.addOverlay(ply);
-        addXQ(bdary);
+        //addXQ(bdary);
         //map.setViewport(ply.getPath());    //调整视野
     });
 }

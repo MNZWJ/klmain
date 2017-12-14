@@ -79,4 +79,28 @@ public class DangerSourceInfo {
      */
     @TableField(value = "num")
     private String num;
+
+    /**
+     * 装置设施环境不符合个数
+     */
+    @TableField("ConditionFlag")
+    private long conditionFlag;
+
+    /**
+     * 法律保护区不符合个数
+     */
+    @TableField("ProtectionFlag")
+    private long protectionFlag;
+    /**
+     * 工艺单元火灾爆炸指数（已计算）
+     */
+    @TableField("UnitNum")
+    private double UnitNum;
+
+    /**
+     * 危险颜色等级
+     */
+    @TableField("colorFlag")
+    private String colorFlag;
+
 }
