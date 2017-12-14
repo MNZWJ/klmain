@@ -15,7 +15,7 @@ import java.util.List;
  * @version 创建时间：${date} ${time}
  */
 @Service
-public class DangerousProcessCheckImpl implements DangerousProcessCheckService {
+public class DangerousProcessCheckServiceImpl implements DangerousProcessCheckService {
     @Autowired
     DangerousProcessCheckMapper DangerousProcessCheckMapper;
     /**
