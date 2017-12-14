@@ -6,12 +6,20 @@
     <select id="getHazardList" resultType="ax.kl.entity.DangerSourceInfo">
 
         SELECT
-        di.SourceId,di.SourceName,di.Longt,di.Lat,
-        di.Rank
+        di.SourceId,
+        di.SourceName,
+        di.Longt,
+        di.Lat,
+        di.Rank,
+        SUM(CASE WHEN fc.Conformance='不符合' THEN 1 ELSE 0 END) AS ConditionFlag,
+        SUM(CASE WHEN lp.Conformance='不符合' THEN 1 ELSE 0 END) AS ProtectionFlag,
+        MAX( (isnull(pu.FEI,0) +isnull(pu.AfterFEI,0))/2 ) AS UnitNum
         FROM
         TB_BASE_DANGERSOURCE_INFO di
-        JOIN TB_BASE_COMPANY_INFO ci ON di.CompanyId=ci.CompanyId
-
+        JOIN TB_BASE_COMPANY_INFO ci ON di.CompanyId = ci.CompanyId
+        LEFT JOIN TB_BASE_DR_FACILITIES_CONDITION fc ON di.SourceId=fc.SourceId
+        LEFT JOIN TB_BASE_DR_LEGAL_PROTECTION lp ON di.SourceId=lp.SourceId
+        LEFT JOIN TB_BASE_PROCESS_UNIT pu ON di.SourceId=pu.SourceId
         WHERE
         di.SourceId IS NOT NULL
 
@@ -24,9 +32,37 @@
         <if test="searchRank!=null and searchRank!= ''">
             AND di.Rank = #{searchRank}
         </if>
-        GROUP BY di.SourceId,di.SourceName,di.Longt,di.Lat,di.Rank
+
+        GROUP BY
+        di.SourceId,
+        di.SourceName,
+        di.Longt,
+        di.Lat,
+        di.Rank
 
 
+
+    </select>
+
+    <!--获取工艺单元信息-->
+    <select id="getProcessUnitData" resultType="ax.kl.entity.ProcessUnit">
+        SELECT
+	      pu.*, (ISNULL(pu.FEI, 0) + ISNULL(pu.AfterFEI, 0))/2 AS RealFEI
+        FROM
+	      TB_BASE_PROCESS_UNIT pu
+        WHERE
+	      pu.SourceId = #{sourceId}
+    </select>
+
+    <!--获取周边环境信息-->
+    <select id="getConditionList" resultType="ax.kl.entity.FacilitiesCondition">
+        SELECT * from TB_BASE_DR_FACILITIES_CONDITION WHERE SourceId=#{sourceId}
+    </select>
+
+
+    <!--获取周边环境信息-->
+    <select id="getProtectionList" resultType="ax.kl.entity.LegalProtection">
+        SELECT * from TB_BASE_DR_LEGAL_PROTECTION WHERE SourceId=#{sourceId}
     </select>
 
 
