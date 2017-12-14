@@ -671,6 +671,12 @@ function loadIndustryCompany(){
                                         color: '#fff',
                                         fontSize: 20
                                     }
+                                },
+
+                                axisLine:{
+                                    lineStyle:{
+                                        color:'#fff'
+                                    }
                                 }
                             }
                         ],
@@ -681,6 +687,11 @@ function loadIndustryCompany(){
                                     textStyle: {
                                         color: '#fff',
                                         fontSize: 20
+                                    }
+                                },
+                                axisLine:{
+                                    lineStyle:{
+                                        color:'#fff'
                                     }
                                 }
                             }
@@ -762,6 +773,11 @@ function loadDirectAreaCompany(){
                                         color: '#fff',
                                         fontSize: 20
                                     }
+                                },
+                                axisLine:{
+                                    lineStyle:{
+                                        color:'#fff'
+                                    }
                                 }
                             }
                         ],
@@ -772,6 +788,11 @@ function loadDirectAreaCompany(){
                                     textStyle: {
                                         color: '#fff',
                                         fontSize: 20
+                                    }
+                                },
+                                axisLine:{
+                                    lineStyle:{
+                                        color:'#fff'
                                     }
                                 }
                             }
