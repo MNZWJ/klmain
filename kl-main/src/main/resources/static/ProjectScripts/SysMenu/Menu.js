@@ -1,10 +1,11 @@
 var parentId = "";
 var searchName = "";
 var treeNode="";
+var scanHeight="";
 $(function () {
 
     //获取浏览器高度
-    var scanHeight = $(window).height();
+    scanHeight = $(window).height();
 
     $("#treeDiv").height(scanHeight);
 
@@ -35,81 +36,8 @@ $(function () {
             $("#tree").treeview("selectNode",  [ treeNode[0]]);
         }
     });
-    $('#table').bootstrapTable({
-        height: scanHeight,
-        striped: true,      //是否显示行间隔色
-        cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
-        method: 'get',//请求方式
-        url: '/menu/menuList',//请求url
-        pagination: 'true',//显示分页条
-        paginationLoop: 'true',//启用分页条无限循环功能
-        pageNumber: 1,                       //初始化加载第一页，默认第一页
-        pageSize: 10,                       //每页的记录行数（*）
-        pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
-        toolbar: '#toolbar',                //工具按钮用哪个容器
-        clickToSelect: true,//是否启用点击选中行
-        sidePagination: 'server',//'server'或'client'服务器端分页
-        showRefresh: 'true',//是否显示 刷新按钮
-        clickToSelect: false,    //是否启用点击选中行
-        queryParams: queryParams,
-        queryParamsType: '', //默认值为 'limit' ,在默认情况下 传给服务端的参数为：offset,limit,sort
-        // 设置为 ''  在这种情况下传给服务器的参数为：pageSize,pageNumber
-        rowStyle: function () {//自定义行样式
-            return "bootTableRow";
-        },
-        onLoadError:function(){
 
-
-            BootstrapDialog.alert({
-                title: '错误',
-                size:BootstrapDialog.SIZE_SMALL,
-                message: '表格加载失败！',
-                type: BootstrapDialog.TYPE_DANGER , // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定', // <-- Default value is 'OK',
-
-            });
-        },
-        onClickRow:function(row, $element){
-
-            $("#table").bootstrapTable("uncheckAll");
-            $("#table").bootstrapTable("checkBy",{field:'MenuId',values:[row.MenuId]})
-        },
-        columns: [
-            {
-
-                title: '序号',
-                formatter: function (value, row, index) {
-                    var page = $('#table').bootstrapTable('getOptions');
-
-                    return (page.pageNumber - 1) * page.pageSize + index + 1;
-                }
-            }
-            ,
-            {
-                field:'state',
-                checkbox: true
-            },
-            {
-
-                field: 'MenuName',
-                title: '菜单名称',
-                halign: 'center',
-                width: '30%'
-            }, {
-                field: 'URL',
-                title: '菜单地址',
-                halign: 'center',
-                width: '50%'
-            }, {
-                field: 'MenuLevel',
-                title: '菜单等级',
-                halign: 'center',
-                width: '20%'
-            }]
-    });
-
+    initTable();
 
     //绑定保存按钮提交事件
     $("#btn_save").on("click", function () {
@@ -192,6 +120,7 @@ $(function () {
 
             });
 
+
         }
     });
     //绑定验证
@@ -211,6 +140,85 @@ $(function () {
     });
 
 });
+
+//初始化表格
+function initTable(){
+    $('#table').bootstrapTable("destroy");
+    $('#table').bootstrapTable({
+        height: scanHeight,
+        striped: true,      //是否显示行间隔色
+        cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+        method: 'get',//请求方式
+        url: '/menu/menuList',//请求url
+        pagination: 'true',//显示分页条
+        paginationLoop: 'true',//启用分页条无限循环功能
+        pageNumber: 1,                       //初始化加载第一页，默认第一页
+        pageSize: 10,                       //每页的记录行数（*）
+        pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
+        toolbar: '#toolbar',                //工具按钮用哪个容器
+        clickToSelect: true,//是否启用点击选中行
+        sidePagination: 'server',//'server'或'client'服务器端分页
+        showRefresh: 'true',//是否显示 刷新按钮
+        clickToSelect: false,    //是否启用点击选中行
+        queryParams: queryParams,
+        queryParamsType: '', //默认值为 'limit' ,在默认情况下 传给服务端的参数为：offset,limit,sort
+        // 设置为 ''  在这种情况下传给服务器的参数为：pageSize,pageNumber
+        rowStyle: function () {//自定义行样式
+            return "bootTableRow";
+        },
+        onLoadError:function(){
+
+
+            BootstrapDialog.alert({
+                title: '错误',
+                size:BootstrapDialog.SIZE_SMALL,
+                message: '表格加载失败！',
+                type: BootstrapDialog.TYPE_DANGER , // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+                closable: false, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                buttonLabel: '确定', // <-- Default value is 'OK',
+
+            });
+        },
+        onClickRow:function(row, $element){
+
+            $("#table").bootstrapTable("uncheckAll");
+            $("#table").bootstrapTable("checkBy",{field:'MenuId',values:[row.MenuId]})
+        },
+        columns: [
+            {
+
+                title: '序号',
+                formatter: function (value, row, index) {
+                    var page = $('#table').bootstrapTable('getOptions');
+
+                    return (page.pageNumber - 1) * page.pageSize + index + 1;
+                }
+            }
+            ,
+            {
+                field:'state',
+                checkbox: true
+            },
+            {
+
+                field: 'MenuName',
+                title: '菜单名称',
+                halign: 'center',
+                width: '30%'
+            }, {
+                field: 'URL',
+                title: '菜单地址',
+                halign: 'center',
+                width: '50%'
+            }, {
+                field: 'MenuLevel',
+                title: '菜单等级',
+                halign: 'center',
+                width: '20%'
+            }]
+    });
+}
 
 //表格返回参数方法
 function queryParams(pageReqeust) {
@@ -641,4 +649,18 @@ function moveOrder(x){
     })
 
 
+}
+
+//适应页面大小
+function resizePage(){
+
+
+    //获取浏览器高度
+    scanHeight = $(window).height();
+
+
+    $("#treeDiv").height($(window).height());
+
+
+    initTable();
 }

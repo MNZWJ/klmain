@@ -16,12 +16,12 @@ var sysOrgs = {};
 var users = [];
 
 var loginNameG="";
-
+var scanHeight="";
 //开启页面直接加载
 $(function () {
 
     //获取浏览器高度
-    var scanHeight = $(window).height();
+    scanHeight = $(window).height();
     $("#treeDiv").height(scanHeight);
     $.ajax({
         type: 'post',
@@ -57,112 +57,7 @@ $(function () {
         }
     });
 
-    $('#userTable').bootstrapTable({
-        height: scanHeight,
-        striped: true,      //是否显示行间隔色
-        cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
-        method: 'get',//请求方式
-        url: '/SysBusinessUser/getBusinessUserList',//请求url
-        pagination: 'true',//显示分页条
-        paginationLoop: 'true',//启用分页条无限循环功能
-        pageNumber: 1,                       //初始化加载第一页，默认第一页
-        pageSize: 5,                       //每页的记录行数（*）
-        pageList: [5, 10, 25, 50, 100],        //可供选择的每页的行数（*）
-        toolbar: '#userToolbar',                //工具按钮用哪个容器
-        clickToSelect: false,//是否启用点击选中行
-        sidePagination: 'server',//'server'或'client'服务器端分页
-        showRefresh: 'true',//是否显示 刷新按钮
-        queryParams: queryParams,//返回到前台的参数集
-        queryParamsType: '', //默认值为 'limit' ,在默认情况下 传给服务端的参数为：offset,limit,sort
-        // 设置为 ''  在这种情况下传给服务器的参数为：pageSize,pageNumber
-        sortStable: true,//设置为 true 将获得稳定的排序，我们会添加_position属性到 row 数据中。
-        selectItemName: 'state',
-        idField: 'userId',
-        uniqueId:'userId',
-        rowStyle: function () {//自定义行样式
-            return "bootTableRow";
-        },
-        onLoadError: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                message: '表格加载失败！',
-                size: BootstrapDialog.SIZE_SMALL,
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定', // <-- Default value is 'OK',
-
-            });
-        },
-        onClickRow: function (row, $element) {
-
-            $("#userTable").bootstrapTable("uncheckAll");
-            $("#userTable").bootstrapTable("checkBy", {field: 'userId', values: [row.userId]})
-        },
-
-        columns: [
-            {
-                title: '序号',
-                field: 'number1',
-                formatter: function (value, row, index) {
-                    var page = $('#userTable').bootstrapTable('getOptions');
-
-                    return (page.pageNumber - 1) * page.pageSize + index + 1;
-                }
-            }
-            ,
-            {
-                field: 'state',
-                checkbox: true
-            },
-            {
-                field: 'userName',
-                title: '姓名',
-                halign: 'center',
-                align: 'center',
-                width: '35%',
-                formatter: function (value, rowData, rowIndex) {
-                    users.push(rowData);
-                    return "<a href='javascript:look(\""+rowData.userId+"\")'>" + value + "</a>";
-                }
-            },
-            {
-                field: 'sex',
-                title: '性别',
-                halign: 'center',
-                align: 'center',
-                width: '20%',
-                formatter: function (value, row, index) {
-                    if (value == "1") {
-                        return "男";
-                    } else {
-                        return "女";
-                    }
-                }
-
-            },
-
-            {
-
-                field: 'deptId',
-                title: '部门',
-                halign: 'center',
-                align: 'center',
-                width: '40%',
-                formatter: function (value, row, index) {
-                    $.each(sysOrgs, function (i, n) {
-                        if (value == n.organiseId) {
-                            sType = n.organiseName;
-
-                        }
-                    });
-                    //返回对应类型名
-                    return sType;
-
-                }
-            }
-        ]
-    });
+    initTable();
 
 
     formValidator();
@@ -300,6 +195,11 @@ function queryParams(pageReqeust) {
 function formValidator() {
 //表单验证
     $("#userForm").bootstrapValidator({
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
         /**
          * 表单域配置
          */
@@ -347,6 +247,118 @@ function searchUsers() {
     searchName = $("#searchName").val();
     $("#userTable").bootstrapTable("refresh", {});
 }
+
+//初始化表格
+function initTable(){
+    $("#userTable").bootstrapTable("destroy");
+    $('#userTable').bootstrapTable({
+        height: scanHeight,
+        striped: true,      //是否显示行间隔色
+        cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+        method: 'get',//请求方式
+        url: '/SysBusinessUser/getBusinessUserList',//请求url
+        pagination: 'true',//显示分页条
+        paginationLoop: 'true',//启用分页条无限循环功能
+        pageNumber: 1,                       //初始化加载第一页，默认第一页
+        pageSize: 5,                       //每页的记录行数（*）
+        pageList: [5, 10, 25, 50, 100],        //可供选择的每页的行数（*）
+        toolbar: '#userToolbar',                //工具按钮用哪个容器
+        clickToSelect: false,//是否启用点击选中行
+        sidePagination: 'server',//'server'或'client'服务器端分页
+        showRefresh: 'true',//是否显示 刷新按钮
+        queryParams: queryParams,//返回到前台的参数集
+        queryParamsType: '', //默认值为 'limit' ,在默认情况下 传给服务端的参数为：offset,limit,sort
+        // 设置为 ''  在这种情况下传给服务器的参数为：pageSize,pageNumber
+        sortStable: true,//设置为 true 将获得稳定的排序，我们会添加_position属性到 row 数据中。
+        selectItemName: 'state',
+        idField: 'userId',
+        uniqueId:'userId',
+        rowStyle: function () {//自定义行样式
+            return "bootTableRow";
+        },
+        onLoadError: function () {
+            BootstrapDialog.alert({
+                title: '错误',
+                message: '表格加载失败！',
+                size: BootstrapDialog.SIZE_SMALL,
+                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+                closable: false, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                buttonLabel: '确定', // <-- Default value is 'OK',
+
+            });
+        },
+        onClickRow: function (row, $element) {
+
+            $("#userTable").bootstrapTable("uncheckAll");
+            $("#userTable").bootstrapTable("checkBy", {field: 'userId', values: [row.userId]})
+        },
+
+        columns: [
+            {
+                title: '序号',
+                field: 'number1',
+                formatter: function (value, row, index) {
+                    var page = $('#userTable').bootstrapTable('getOptions');
+
+                    return (page.pageNumber - 1) * page.pageSize + index + 1;
+                }
+            }
+            ,
+            {
+                field: 'state',
+                checkbox: true
+            },
+            {
+                field: 'userName',
+                title: '姓名',
+                halign: 'center',
+                align: 'center',
+                width: '35%',
+                formatter: function (value, rowData, rowIndex) {
+                    users.push(rowData);
+                    return "<a href='javascript:look(\""+rowData.userId+"\")'>" + value + "</a>";
+                }
+            },
+            {
+                field: 'sex',
+                title: '性别',
+                halign: 'center',
+                align: 'center',
+                width: '20%',
+                formatter: function (value, row, index) {
+                    if (value == "1") {
+                        return "男";
+                    } else {
+                        return "女";
+                    }
+                }
+
+            },
+
+            {
+
+                field: 'deptId',
+                title: '部门',
+                halign: 'center',
+                align: 'center',
+                width: '40%',
+                formatter: function (value, row, index) {
+                    $.each(sysOrgs, function (i, n) {
+                        if (value == n.organiseId) {
+                            sType = n.organiseName;
+
+                        }
+                    });
+                    //返回对应类型名
+                    return sType;
+
+                }
+            }
+        ]
+    });
+}
+
 
 
 //新增人员
@@ -638,4 +650,14 @@ function  look(userId) {
     $("#isLogin").attr("disabled", "disabled");
 
     $("#btn_save").hide();
+}
+
+//适应页面大小
+function resizePage(){
+
+
+    //获取浏览器高度
+    scanHeight = $(window).height();
+    $("#treeDiv").height(scanHeight);
+    initTable();
 }
