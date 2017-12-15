@@ -7,7 +7,7 @@ $(function () {
     //获取浏览器高度
     scanHeight = $(window).height();
 
-    $("#map").height(scanHeight);
+    // $("#map").height(scanHeight);
     initMap();
 
 
@@ -109,7 +109,7 @@ function loadHazardList(hazardList) {
                 imagUrl = "../../Images/Common/蓝色.png"; break;
             default: imagUrl = "../../Images/Common/绿色.png"; break;
         }
-        var html = '<a title="' + n.sourceName + '" onclick="onMarkClick(\''+n.sourceId+'\')"><div style="position: absolute; padding: 0pt; width: 51px; height: 25px; line-height:25px; overflow: hidden;background-size:51px 25px;background-image:url(' + imagUrl + ');text-align:center" ><span style="font-weight:bold;font-size:14px;color: #000;" >' + n.num + '</span>';
+        var html = '<a title="' + n.sourceName + '" onclick="onMarkClick(\''+n.sourceId+'\',\''+n.sourceName+'\')"><div style="position: absolute; padding: 0pt; width: 51px; height: 25px; line-height:25px; overflow: hidden;background-size:51px 25px;background-image:url(' + imagUrl + ');text-align:center" ><span style="font-weight:bold;font-size:14px;color: #000;" >' + n.num + '</span>';
         + '</div></a>';
         var tempPoint = new BMap.Point(n.longt, n.lat);
         var marker = new BMapLib.RichMarker(html, wgs2bd(tempPoint), {
@@ -126,9 +126,10 @@ function loadHazardList(hazardList) {
 }
 
 //危险源点击事件
-function onMarkClick(e) {
+function onMarkClick(e,name) {
     sourceId = e;
     searchName="";
+    $("#myModalLabel").html(name);
     $("#toolbar").hide();
     if(tableFlag==0){
         initTable();
@@ -247,6 +248,7 @@ function openwindows (){
 }
 //初始化表格
 function initTable(){
+    $("#hiddenRiskTable").bootstrapTable("destroy");
     //化学品表格
     $('#hiddenRiskTable').bootstrapTable({
         height: scanHeight *4/7,
@@ -395,4 +397,13 @@ function searchHiddenAccident(){
     searchName=$("#searchName").selectpicker('val');
     sourceId="";
     $('#hiddenRiskTable').bootstrapTable("refresh");
+}
+
+//适应页面大小
+function resizePage(){
+
+
+    //获取浏览器高度
+    scanHeight = $(window).height();
+    tableFlag==0;
 }

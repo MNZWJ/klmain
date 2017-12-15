@@ -6,7 +6,7 @@ $(function () {
     //获取浏览器高度
     scanHeight = $(window).height();
 
-    $("#map").height(scanHeight);
+    // $("#map").height(scanHeight);
     initMap();
 
 

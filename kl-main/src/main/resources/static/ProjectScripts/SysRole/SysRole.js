@@ -1,8 +1,95 @@
 var roleSearchName = "";
+var scanHeight="";
 $(function () {
     //获取浏览器高度
-    var scanHeight = $(window).height();
+    scanHeight = $(window).height();
 
+    initTable();
+
+
+    formValidator();
+
+    //绑定保存按钮提交事件
+    $("#btn_save").on("click", function () {
+        //获取表单对象
+        var bootstrapValidator = $("#roleForm").data('bootstrapValidator');
+        //手动触发验证
+        bootstrapValidator.validate();
+
+        if (bootstrapValidator.isValid()) {
+            //表单提交的方法、比如ajax提交
+            //获取表单中的值
+            var dict = {};
+            var dictList = $('#roleForm').serializeArray();
+            $.each(dictList, function () {
+                dict[this.name] = this.value
+            });
+
+            $.ajax({
+                type: 'post',
+                url: '/SysRole/saveOrUpdateRole',
+                data: JSON.stringify(dict),
+                contentType: 'application/json',
+                success: function (result) {
+                    if (result.code == 0) {
+
+                        BootstrapDialog.alert({
+
+                            title: "提示",
+                            message: "保存成功！",
+                            size: BootstrapDialog.SIZE_SMALL,
+                            type: BootstrapDialog.TYPE_SUCCESS, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+
+                            callback: function () {
+
+                                $('#myModal').modal('hide');
+                                $("#roleTable").bootstrapTable("refresh");
+                            }
+                        });
+
+
+                    }
+                },
+                error: function () {
+
+
+                    BootstrapDialog.alert({
+                        title: '错误',
+                        message: '保存失败！',
+                        size: BootstrapDialog.SIZE_SMALL,
+                        type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+
+                        closable: false, // <-- Default value is false
+                        draggable: true, // <-- Default value is false
+                        buttonLabel: '确定', // <-- Default value is 'OK',
+
+                    });
+
+
+                }
+
+
+            });
+
+        }
+    });
+    //模态窗关闭事件
+    $('#myModal').on('hidden.bs.modal', function () {
+        //清空表单
+        $(':input', '#roleForm')
+            .not(':button, :submit, :reset')
+            .val('')
+            .removeAttr('checked')
+            .removeAttr('selected');
+        $("#roleForm").data('bootstrapValidator').destroy();
+        $('#roleForm').data('bootstrapValidator', null);
+        formValidator();
+    });
+
+});
+//初始化表格
+function initTable(){
+    $("#roleTable").bootstrapTable("destroy");
     $('#roleTable').bootstrapTable({
         height: scanHeight,
         striped: true,      //是否显示行间隔色
@@ -94,88 +181,8 @@ $(function () {
             }
         ]
     });
+}
 
-
-    formValidator();
-
-    //绑定保存按钮提交事件
-    $("#btn_save").on("click", function () {
-        //获取表单对象
-        var bootstrapValidator = $("#roleForm").data('bootstrapValidator');
-        //手动触发验证
-        bootstrapValidator.validate();
-
-        if (bootstrapValidator.isValid()) {
-            //表单提交的方法、比如ajax提交
-            //获取表单中的值
-            var dict = {};
-            var dictList = $('#roleForm').serializeArray();
-            $.each(dictList, function () {
-                dict[this.name] = this.value
-            });
-
-            $.ajax({
-                type: 'post',
-                url: '/SysRole/saveOrUpdateRole',
-                data: JSON.stringify(dict),
-                contentType: 'application/json',
-                success: function (result) {
-                    if (result.code == 0) {
-
-                        BootstrapDialog.alert({
-
-                            title: "提示",
-                            message: "保存成功！",
-                            size: BootstrapDialog.SIZE_SMALL,
-                            type: BootstrapDialog.TYPE_SUCCESS, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-
-                            callback: function () {
-
-                                $('#myModal').modal('hide');
-                                $("#roleTable").bootstrapTable("refresh");
-                            }
-                        });
-
-
-                    }
-                },
-                error: function () {
-
-
-                    BootstrapDialog.alert({
-                        title: '错误',
-                        message: '保存失败！',
-                        size: BootstrapDialog.SIZE_SMALL,
-                        type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-
-                        closable: false, // <-- Default value is false
-                        draggable: true, // <-- Default value is false
-                        buttonLabel: '确定', // <-- Default value is 'OK',
-
-                    });
-
-
-                }
-
-
-            });
-
-        }
-    });
-    //模态窗关闭事件
-    $('#myModal').on('hidden.bs.modal', function () {
-        //清空表单
-        $(':input', '#roleForm')
-            .not(':button, :submit, :reset')
-            .val('')
-            .removeAttr('checked')
-            .removeAttr('selected');
-        $("#roleForm").data('bootstrapValidator').destroy();
-        $('#roleForm').data('bootstrapValidator', null);
-        formValidator();
-    });
-
-});
 
 //表格返回参数方法
 function queryParams(pageReqeust) {
@@ -346,6 +353,11 @@ function del() {
 function formValidator() {
 //表单验证
     $("#roleForm").bootstrapValidator({
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
         /**
          * 表单域配置
          */
@@ -414,4 +426,14 @@ function formValidator() {
             }
         }
     });
+}
+//适应页面大小
+function resizePage(){
+
+
+    //获取浏览器高度
+    scanHeight = $(window).height();
+
+
+    initTable();
 }
