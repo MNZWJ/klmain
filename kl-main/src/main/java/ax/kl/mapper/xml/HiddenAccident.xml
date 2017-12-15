@@ -50,5 +50,30 @@
         AND isnull(hd.Rectification,'')!='已整改'
     </select>
 
+    <!--获取所有事故隐患-->
+    <select id="getHiddenAllInfo" resultType="ax.kl.entity.HiddenAccident">
+        SELECT hd.*,di.SourceName FROM TB_BASE_HIDDEN_DANGER hd
+        JOIN TB_BASE_DANGERSOURCE_INFO di ON hd.DangerSource=di.SourceId
+        WHERE 1=1
+        <if test="dangerSource !=null and dangerSource!=''">
+            AND di.SourceName LIKE '%' + #{dangerSource} +'%'
+        </if>
+        <if test="hiddenDanger !=null and hiddenDanger!=''">
+            AND hd.hiddenDanager LIKE '%' + #{hiddenDanger} +'%'
+        </if>
+        ORDER BY UpReportDate DESC
+    </select>
 
+    <select id="getSourceForName" resultType="java.util.Map">
+        SELECT SourceId,SourceName FROM TB_BASE_DANGERSOURCE_INFO
+    </select>
+    
+    <insert id="insertHiddenDanger" parameterType="java.util.List">
+        INSERT INTO TB_BASE_HIDDEN_DANGER (DangerId,DangerSource,HiddenDanager,Area,Industry,SuperviseDept,
+        Source,Category,Rank,UpReportDate,ReformTerm,Rectification) VALUES 
+        <foreach collection="list" item="item" index="index" separator=",">
+            (NEWID(),#{item.dangerSource},#{item.hiddenDanager},#{item.area},#{item.industry},#{item.superviseDept},
+            #{item.source},#{item.category},#{item.rank},#{item.upReportDate},#{item.reformTerm},#{item.rectification})
+        </foreach>
+    </insert>
 </mapper>
