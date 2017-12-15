@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author: ZhenpengSu
@@ -37,4 +38,24 @@ public interface HiddenAccidentMapper extends BaseMapper<DangerSourceInfo> {
      */
     List<HiddenAccident> getHiddenInfo(Page page, @Param("sourceId")String sourceId,@Param("searchName")String searchName);
 
+    /**
+     * 获取所有隐患信息 无过滤-分页
+     * @param page
+     * @return
+     */
+    List<HiddenAccident> getHiddenAllInfo(@Param("page") Page page,@Param("dangerSource")String dangerSource,@Param("hiddenDanger")String hiddenDanger);
+
+    /**
+     * 获取重大危险源信息
+     * @return
+     */
+    List<Map<String,String>> getSourceForName();
+
+    /**
+     * 插入事故隐患
+     * @param list
+     * @return
+     */
+    int insertHiddenDanger(@Param("list")List<HiddenAccident> list);
 }
+
