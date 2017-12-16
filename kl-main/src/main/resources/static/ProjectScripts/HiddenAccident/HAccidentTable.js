@@ -261,7 +261,7 @@ function FileInput () {
         //导入文件上传完成之后的事件
         $("#file").on("fileuploaded", function (event, data, previewId, index) {
             $("#myModal").modal("hide");
-            //$("#table").bootstrapTable("refresh", {})
+            $("#table").bootstrapTable("refresh", {})
             clearDiv();
             //$('#file').fileinput('clear');
             BootstrapDialog.alert({

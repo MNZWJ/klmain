@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ax.kl.mapper.EquipTypeMapper">
+    <select id="getEquipTypeTreeList" resultType="ax.kl.entity.TreeModel">
+        SELECT TypeCode AS Id,PCode as parentId,TypeName AS text,LeveCode AS code FROM  TB_BASE_EQUIP_TYPE ORDER BY TypeCode
+    </select>
+    
+    <select id="getEquipTypeTable" resultType="ax.kl.entity.EquipType">
+        SELECT * FROM TB_BASE_EQUIP_TYPE WHERE PCode = #{parentId} ORDER BY TypeOrder ASC
+    </select>
+    
+    <select id="validateTypeCode" resultType="int">
+        SELECT COUNT(*) FROM TB_BASE_EQUIP_TYPE WHERE TypeCode = #{typeCode}
+    </select>
+
+    <!--获取排序-->
+    <select id="getMaxOrder" resultType="int">
+        SELECT CASE WHEN MAX(TypeOrder) IS null THEN 0 ELSE MAX(TypeOrder)+1 END FROM TB_BASE_EQUIP_TYPE
+    </select>
+
+    <!--插入设备类型-->
+    <insert id="insertEquip" parameterType="ax.kl.entity.EquipType">
+        INSERT INTO TB_BASE_EQUIP_TYPE (TypeCode,TypeName,PCode,LeveCode,TypeOrder)
+        VALUES(#{typeCode},#{typeName},#{pCode},#{leveCode},#{typeOrder})
+    </insert>
+
+    <update id="updateEquip">
+        UPDATE TB_BASE_EQUIP_TYPE SET TypeName = #{typeName} WHERE TypeCode=#{typeCode}
+    </update>
+
+    <delete id="deleteEquip">
+        DELETE FROM TB_BASE_EQUIP_TYPE WHERE TypeCode IN
+        <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+
+            #{item}
+
+        </foreach>
+    </delete>
+
+    <!--上一条数据-->
+    <select id="getUpdate" resultType="ax.kl.entity.EquipType">
+        SELECT TOP 1 * FROM TB_BASE_EQUIP_TYPE WHERE PCode=#{pCode} AND TypeOrder &lt; #{typeOrder} ORDER BY TypeOrder DESC
+    </select>
+
+    <!--下一条数据-->
+    <select id="getDowndate" resultType="ax.kl.entity.EquipType">
+        SELECT TOP 1 * FROM TB_BASE_EQUIP_TYPE WHERE PCode=#{pCode} AND TypeOrder &gt; #{typeOrder} ORDER BY TypeOrder ASC
+    </select>
+
+    <update id="upDateOrderSort">
+        UPDATE TB_BASE_EQUIP_TYPE SET TypeOrder=#{typeOrder1} WHERE  TypeCode=#{typeCode1}
+        UPDATE TB_BASE_EQUIP_TYPE SET TypeOrder=#{typeOrder2} WHERE  TypeCode=#{typeCode2}
+    </update>
+</mapper>
