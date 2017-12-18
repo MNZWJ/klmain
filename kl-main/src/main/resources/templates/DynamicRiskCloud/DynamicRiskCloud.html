@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <#include "/Common/Layout.html" />
     <link rel="stylesheet" href="../../ProjectStyle/Common/MapConfig.css">
     <link rel="stylesheet" href="../../Scripts/bootstrap-table/bootstrap-table.min.css"/>
@@ -137,15 +138,12 @@
 
 
     </style>
-
-
 </head>
 <body>
-
 <div id="map" style="width: 100%;height: 100%;"></div>
 <!--标题-->
 <div class="titlePng" style="background-image: url(../../Images/Common/title.png);text-align: center;padding-top: 1px;">
-    <span style="font-weight:500;font-size: 20px;color: #ffffff;font-family: 微软雅黑;">固有风险云图</span>
+    <span style="font-weight:500;font-size: 20px;color: #ffffff;font-family: 微软雅黑;">动态风险云图</span>
 </div>
 <!--查询框-->
 <div class="windowdiv">
@@ -293,7 +291,7 @@
 
                             <div class="row" style="text-align: center;">
                                 <div  style="font-size: 22px;display: inline-block;height: 30px;line-height: 30px;font-weight: bold;margin: 5px 0;">
-                                    <span id="sourceLevel"></span>级重大危险源
+                                    <a href="#" onclick="showTable()" style="color: #000;"><span id="sourceLevel"></span>事故隐患</a>
                                 </div>
 
                             </div>
@@ -316,10 +314,9 @@
 
             </div>
             <div class="modal-footer">
-                <!--<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>-->
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
 
-                <img id="condition" onclick="openCondition()" style="width: 40px;height: 40px;margin-right: 20px;cursor: pointer;" src="../../Images/Common/法律规定距离灰.png">
-                <img id="protection" onclick="openProtection()" style="width: 40px;height: 40px;cursor: pointer;" src="../../Images/Common/法律规定距离红.png">
+
             </div>
         </div>
     </div>
@@ -327,31 +324,26 @@
 
 
 <!--模态窗-->
-<div class="modal fade" id="conditionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop='static'
+<div class="modal fade bs-example-modal-lg" id="hiddenAccidentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     data-backdrop='static'
      data-target=".bs-example-modal-lg">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content" style="width: 660px;">
+    <div class="modal-dialog modal-lg" role="document" >
+        <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
-                <h4 class="modal-title" id="conditionModalLabel"></h4>
+                <h4 class="modal-title" id="hiddenAccidentModalLabel">事故隐患详情</h4>
             </div>
-            <div class="modal-body" >
+            <div class="modal-body" style="overflow-y: visible;">
 
+                <div  style="overflow:auto;">
 
-                    <table id="table" class="table  table-striped table-bordered table-hover"
-                           >
-                        <colgroup>
-                            <col width="6%">
-                            <col width="30%">
-                            <col width="30%">
-                            <col width="20%">
-                            <col width="20%">
-                            <col width="25%">
+                    <table id="hiddenRiskTable" class="table  table-striped table-bordered table-hover"
+                           style="table-layout: fixed;">
 
-                        </colgroup>
                     </table>
+                </div>
 
 
             </div>
@@ -364,6 +356,9 @@
 </div>
 
 
+
+
+
 <script type="text/javascript"
         src="http://api.map.baidu.com/api?v=2.0&ak=XxlIAKZ2PK3DK9IQNiUv3htcMHalddLO"></script>
 <script type="text/javascript" src="http://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script>
@@ -371,7 +366,6 @@
 
 <script src="../../ProjectScripts/Common/MapConfig.js"></script>
 <script src="../../ProjectScripts/Common/convertor_offline.js"></script>
-<script src="../../ProjectScripts/RiskCloud/RiskCloud.js"></script>
+<script src="../../ProjectScripts/DynamicRiskCloud/DynamicRiskCloud.js"></script>
 </body>
-
 </html>

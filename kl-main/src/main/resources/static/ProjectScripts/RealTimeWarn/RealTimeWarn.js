@@ -14,7 +14,7 @@ $(function () {
         }
     });
 
-    connect();
+    // connect();
 });
 
 //初始化表格
@@ -416,6 +416,13 @@ function resizePage() {
 
 
     initTable();
+    $.ajax({
+        type: 'post',
+        url: '/RealTimeWarn/getRealTimeWarnData',
+        success: function (result) {
+            $("#table").bootstrapTable("load", result);
+        }
+    });
 }
 
 

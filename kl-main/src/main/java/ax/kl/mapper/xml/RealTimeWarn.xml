@@ -24,7 +24,7 @@ LEFT JOIN TB_BASE_DR_FACILITIES_CONDITION fc ON di.SourceId=fc.SourceId
 LEFT JOIN TB_BASE_DR_LEGAL_PROTECTION lp ON di.SourceId=lp.SourceId
 LEFT JOIN TB_BASE_HIDDEN_DANGER hd ON (di.SourceId=hd.DangerSource AND hd.Rectification='未整改')
 LEFT JOIN TB_SYS_DATADICT sd ON  di.Rank=sd.DictId
-LEFT JOIN TB_REALTIME_ALARM_DATA ad ON (ad.UniqueCode LIKE di.UniqueCode+'%' AND ad.Status='0')
+LEFT JOIN TB_REALTIME_ALARM_DATA ad ON (ad.UniqueCode LIKE di.UniqueCode+'%' AND ad.Status='1')
 
 GROUP BY
 	ci.CompanyName,
