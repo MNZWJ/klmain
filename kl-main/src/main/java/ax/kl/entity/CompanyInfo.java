@@ -79,4 +79,11 @@ public class CompanyInfo {
   @ApiModelProperty("企业性质名称，字典")
   private String companyType;
 
+  @TableField(value = "CertificateAlarm",exist = false)
+  @ApiModelProperty("证书预警")
+  private String certificateAlarm;
+
+  @TableField(value = "RealtimeAlarm",exist = false)
+  @ApiModelProperty("设备预警")
+  private String realtimeAlarm;
 }
