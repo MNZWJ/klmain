@@ -42,7 +42,7 @@ public class EquipTypeServiceImpl implements EquipTypeService{
      */
     @Override
     public Page<EquipType> getEquipTypeTable(Page page,String parentId){
-        page.setRecords(equipTypeMapper.getEquipTypeTable(parentId));
+        page.setRecords(equipTypeMapper.getEquipTypeTable(page,parentId));
         return page;
     }
 
