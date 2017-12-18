@@ -103,4 +103,23 @@ public class DangerSourceInfo {
     @TableField("colorFlag")
     private String colorFlag;
 
+    /**
+     * 重大隐患数量
+     */
+    @TableField("MajorHidden")
+    private long majorHidden;
+
+    /**
+     * 一般隐患数量
+     */
+    @TableField("GeneralHidden")
+    private long generalHidden;
+
+    /**
+     * 报警数量
+     */
+    @TableField("RiskWarn")
+    private long riskWarn;
+
+
 }

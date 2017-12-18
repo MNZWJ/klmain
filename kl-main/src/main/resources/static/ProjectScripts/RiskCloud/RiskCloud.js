@@ -2,6 +2,8 @@ var headPoints = [];
 var hazardList = [];
 var sourceId="";
 var scanHeight=0;
+//是否初始化表格标志位
+var tableFlag=0;
 $(function () {
     //获取浏览器高度
     scanHeight = $(window).height();
@@ -380,88 +382,95 @@ function loadHeatMapData(hazardList) {
 
 //打开周边环境信息
 function openCondition(){
-    $("#conditionModalLabel").html("周边环境信息");
-    $('#table').bootstrapTable('destroy');
-    //化学品表格
-    $('#table').bootstrapTable({
-        height: scanHeight * 4 / 7,
-        striped: true,      //是否显示行间隔色
-        cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
-        method: 'get',//请求方式
-        url: '/RiskCloud/getConditionList',//请求url
 
-        clickToSelect: true,//是否启用点击选中行
-        showRefresh: false,//是否显示 刷新按钮
-        queryParams: function (pageReqeust) {
-            pageReqeust.sourceId = sourceId;
+    if(tableFlag==0){
+        $("#conditionModalLabel").html("周边环境信息");
+        $('#table').bootstrapTable('destroy');
+        //化学品表格
+        $('#table').bootstrapTable({
+            height: scanHeight * 4 / 7,
+            striped: true,      //是否显示行间隔色
+            cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+            method: 'get',//请求方式
+            url: '/RiskCloud/getConditionList',//请求url
 
-            return pageReqeust;
-        },
-        rowStyle: function () {//自定义行样式
-            return "bootTableRow";
-        },
-        onLoadError: function () {
+            clickToSelect: true,//是否启用点击选中行
+            showRefresh: false,//是否显示 刷新按钮
+            queryParams: function (pageReqeust) {
+                pageReqeust.sourceId = sourceId;
 
-
-            BootstrapDialog.alert({
-                title: '错误',
-                size: BootstrapDialog.SIZE_SMALL,
-                message: '表格加载失败！',
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定', // <-- Default value is 'OK',
-
-            });
-        },
-
-        columns: [
-            {
-
-                title: '序号',
-                formatter: function (value, row, index) {
+                return pageReqeust;
+            },
+            rowStyle: function () {//自定义行样式
+                return "bootTableRow";
+            },
+            onLoadError: function () {
 
 
-                    return index + 1;
-                },
+                BootstrapDialog.alert({
+                    title: '错误',
+                    size: BootstrapDialog.SIZE_SMALL,
+                    message: '表格加载失败！',
+                    type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+                    closable: false, // <-- Default value is false
+                    draggable: true, // <-- Default value is false
+                    buttonLabel: '确定', // <-- Default value is 'OK',
 
-            }
-            ,
+                });
+            },
 
-            {
+            columns: [
+                {
 
-                field: 'facilities',
-                title: '装置设施名称',
-                halign: 'center',
+                    title: '序号',
+                    formatter: function (value, row, index) {
 
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis'}};
+
+                        return index + 1;
+                    },
+
                 }
-            }, {
-                field: 'environment',
-                title: '周边环境名称',
-                halign: 'center',
+                ,
 
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis'}};
-                }
-            }, {
-                field: 'realDistance',
-                title: '实际距离',
-                halign: 'center'
+                {
 
-            }, {
-                field: 'standardDistance',
-                title: '标准要求',
-                halign: 'center'
+                    field: 'facilities',
+                    title: '装置设施名称',
+                    halign: 'center',
 
-            }, {
-                field: 'conformance',
-                title: '与标准符合性',
-                halign: 'center'
+                    cellStyle: function (value, row, index, field) {
+                        return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis'}};
+                    }
+                }, {
+                    field: 'environment',
+                    title: '周边环境名称',
+                    halign: 'center',
 
-            }]
-    });
+                    cellStyle: function (value, row, index, field) {
+                        return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis'}};
+                    }
+                }, {
+                    field: 'realDistance',
+                    title: '实际距离',
+                    halign: 'center'
+
+                }, {
+                    field: 'standardDistance',
+                    title: '标准要求',
+                    halign: 'center'
+
+                }, {
+                    field: 'conformance',
+                    title: '与标准符合性',
+                    halign: 'center'
+
+                }]
+        });
+    }else{
+        $('#table').bootstrapTable("refresh");
+    }
+
+
 
     $("#conditionModal").modal('show');
 }
@@ -470,79 +479,93 @@ function openCondition(){
 function openProtection(){
     $("#conditionModalLabel").html("法律保护区与信息");
     $('#table').bootstrapTable('destroy');
-    //化学品表格
-    $('#table').bootstrapTable({
-        height: scanHeight * 4 / 7,
-        striped: true,      //是否显示行间隔色
-        cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
-        method: 'get',//请求方式
-        url: '/RiskCloud/getProtectionList',//请求url
-
-        clickToSelect: true,//是否启用点击选中行
-        showRefresh: false,//是否显示 刷新按钮
-        queryParams: function (pageReqeust) {
-            pageReqeust.sourceId = sourceId;
-
-            return pageReqeust;
-        },
-        rowStyle: function () {//自定义行样式
-            return "bootTableRow";
-        },
-        onLoadError: function () {
 
 
-            BootstrapDialog.alert({
-                title: '错误',
-                size: BootstrapDialog.SIZE_SMALL,
-                message: '表格加载失败！',
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定', // <-- Default value is 'OK',
+    if(tableFlag==0) {
+        $('#table').bootstrapTable({
+            height: scanHeight * 4 / 7,
+            striped: true,      //是否显示行间隔色
+            cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+            method: 'get',//请求方式
+            url: '/RiskCloud/getProtectionList',//请求url
 
-            });
-        },
+            clickToSelect: true,//是否启用点击选中行
+            showRefresh: false,//是否显示 刷新按钮
+            queryParams: function (pageReqeust) {
+                pageReqeust.sourceId = sourceId;
 
-        columns: [
-            {
+                return pageReqeust;
+            },
+            rowStyle: function () {//自定义行样式
+                return "bootTableRow";
+            },
+            onLoadError: function () {
 
-                title: '序号',
-                formatter: function (value, row, index) {
+
+                BootstrapDialog.alert({
+                    title: '错误',
+                    size: BootstrapDialog.SIZE_SMALL,
+                    message: '表格加载失败！',
+                    type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+                    closable: false, // <-- Default value is false
+                    draggable: true, // <-- Default value is false
+                    buttonLabel: '确定', // <-- Default value is 'OK',
+
+                });
+            },
+
+            columns: [
+                {
+
+                    title: '序号',
+                    formatter: function (value, row, index) {
 
 
-                    return index + 1;
-                },
+                        return index + 1;
+                    },
 
-            }
-            ,
-
-            {
-
-                field: 'protectArea',
-                title: '法律保护区',
-                halign: 'center',
-
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis'}};
                 }
-            }, {
-                field: 'environment',
-                title: '周边环境说明',
-                halign: 'center',
+                ,
 
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis'}};
-                }
-            }, {
-                field: 'conformance',
-                title: '与规定复合型',
-                halign: 'center',
+                {
 
-            }]
-    });
+                    field: 'protectArea',
+                    title: '法律保护区',
+                    halign: 'center',
 
+                    cellStyle: function (value, row, index, field) {
+                        return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis'}};
+                    }
+                }, {
+                    field: 'environment',
+                    title: '周边环境说明',
+                    halign: 'center',
+
+                    cellStyle: function (value, row, index, field) {
+                        return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis'}};
+                    }
+                }, {
+                    field: 'conformance',
+                    title: '与规定复合型',
+                    halign: 'center',
+
+                }]
+        });
+    }else{
+        $('#table').bootstrapTable("refresh");
+    }
     $("#conditionModal").modal('show');
 }
 
 
 
+//适应页面大小
+function resizePage(){
+
+
+    //获取浏览器高度
+    scanHeight = $(window).height();
+
+    tableFlag=0;
+
+}
