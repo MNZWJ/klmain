@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ax.kl.mapper.DynamicRiskCloudMapper">
+
+    <!--加载危险源列表-->
+    <select id="getHazardList" resultType="ax.kl.entity.DangerSourceInfo">
+
+        SELECT
+        di.SourceId,
+        di.SourceName,
+        di.Longt,
+        di.Lat,
+        SUM(CASE WHEN hd.Rank='重大隐患' THEN 1 ELSE 0 END) AS MajorHidden,
+        SUM(CASE WHEN hd.Rank='一般隐患' THEN 1 ELSE 0 END) AS GeneralHidden,
+        SUM(CASE WHEN ad.AlarmCode IS not NULL THEN 1 ELSE 0 END) AS RiskWarn
+        FROM
+        TB_BASE_DANGERSOURCE_INFO di
+        JOIN TB_BASE_COMPANY_INFO ci ON di.CompanyId = ci.CompanyId
+        LEFT JOIN TB_BASE_HIDDEN_DANGER hd ON (di.SourceId= hd.DangerSource AND hd.Rectification='已整改')
+        LEFT JOIN TB_REALTIME_ALARM_DATA ad ON  (ad.UniqueCode LIKE di.UniqueCode+'%' AND ad.Status='1')
+        WHERE
+        di.SourceId IS NOT NULL
+
+        <if test="searchCompanyName!=null and searchCompanyName!= ''">
+            AND ci.CompanyName LIKE CONCAT('%',CONCAT(#{searchCompanyName},'%'))
+        </if>
+        <if test="searchSourceName!=null and searchSourceName!= ''">
+            AND di.SourceName LIKE CONCAT('%',CONCAT(#{searchSourceName},'%'))
+        </if>
+        <if test="searchRank!=null and searchRank!= ''">
+            AND di.Rank = #{searchRank}
+        </if>
+
+        GROUP BY
+        di.SourceId,
+        di.SourceName,
+        di.Longt,
+        di.Lat
+
+
+
+    </select>
+
+    <!--获取工艺单元信息-->
+    <select id="getProcessUnitData" resultType="java.util.Map">
+        SELECT
+	pu.UnitName,pu.UnitId,
+
+	SUM(case WHEN ad.IDCode='ZT' THEN 1 ELSE 0 END) AS qiti
+FROM
+	TB_BASE_PROCESS_UNIT pu
+LEFT JOIN TB_REALTIME_ALARM_DATA ad ON ad.UniqueCode LIKE pu.UniqueCode+'%'
+ WHERE
+        pu.SourceId = #{sourceId}
+GROUP BY pu.UnitName,pu.UnitId
+
+    </select>
+
+
+
+
+
+
+</mapper>
