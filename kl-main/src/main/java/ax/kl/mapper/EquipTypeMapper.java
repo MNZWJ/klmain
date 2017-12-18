@@ -25,9 +25,10 @@ public interface EquipTypeMapper {
     /**
      * 设备类型列表
      * @param parentId
+     * @param page
      * @return
      */
-    List<EquipType> getEquipTypeTable(@Param("parentId")String parentId);
+    List<EquipType> getEquipTypeTable(Page page,@Param("parentId")String parentId);
 
     /**
      * 验证设备编码存在
