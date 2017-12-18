@@ -14,7 +14,7 @@ $(function () {
         }
     });
 
-
+    connect();
 });
 
 //初始化表格
@@ -66,7 +66,7 @@ function initTable() {
                 },
                 colspan: 1,
                 rowspan: 3,
-                width: '50px'
+                width: 'auto'
             }
                 ,
 
@@ -77,7 +77,7 @@ function initTable() {
                     title: '企业',
                     halign: 'center',
                     align: 'center',
-                    width: '16%',
+
                     valign: "middle",
                     colspan: 1,
                     rowspan: 3,
@@ -94,15 +94,15 @@ function initTable() {
                     title: '重大危险源',
                     halign: 'center',
                     align: 'center',
-                    width: '16%',
+
                     valign: "middle",
                     colspan: 1,
                     rowspan: 3,
                     cellStyle: function (value, row, index, field) {
-                        return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                        return {classes: '', css: {'white-space': 'nowrap', "word-wrap":"break-word;",'text-overflow': 'ellipsis','overflow': 'hidden'}};
                     },
                     formatter: function (value, row, index) {
-                        return '<span title="'+value+'">'+value+'</span>'
+                        return '<span style="width: 100px;" title="'+value+'">'+value+'</span>'
 
                     }
                 },
@@ -111,15 +111,18 @@ function initTable() {
                     title: '固有风险',
                     valign: "middle",
                     align: "center",
-                     // width: '30%',
+                     width: 'auto',
                     colspan: 5,
-                    rowspan: 1
+                    rowspan: 1,
+                    cellStyle: function (value, row, index, field) {
+                        return {classes: '', css: {'min-width':'30%'}};
+                    }
                 }, {
                 field: 'sourceName',
                 title: '动态风险',
                 valign: "middle",
                 align: "center",
-                 // width: '30%',
+
                 colspan: 5,
                 rowspan: 1
             }],
@@ -130,7 +133,7 @@ function initTable() {
 
                     valign: "middle",
                     align: "center",
-                    // width: '20%',
+
                     colspan: 1,
                     rowspan: 2,
                     formatter:function(value,row,index){
@@ -161,7 +164,7 @@ function initTable() {
                         }else if(FEI>=128&&FEI<=158 || row.rank=="四级"){
                             color="#0e77ab";
                         }
-                        return {classes: '', css: {'background-color': color}};
+                        return {classes: '', css: {'background-color': color,'min-width':'20%'}};
                     }
                 }, {
 
@@ -169,7 +172,7 @@ function initTable() {
                 field: 'rank',
                 valign: "middle",
                 align: "center",
-                // width: '25%',
+
                 colspan: 1,
                 rowspan: 2,
 
@@ -184,7 +187,7 @@ function initTable() {
                     }else if(value=="四级"){
                         color="#0e77ab";
                     }
-                    return {classes: '', css: {'background-color': color}};
+                    return {classes: '', css: {'background-color': color,'min-width':'50%'}};
                 }
             }, {
 
@@ -192,7 +195,7 @@ function initTable() {
                 field: 'fEI',
                 valign: "middle",
                 align: "center",
-                // width: '25%',
+
                 colspan: 1,
                 rowspan: 2,
                 formatter:function(value,row,index){
@@ -232,7 +235,7 @@ function initTable() {
                 title: '不符合项',
                 valign: "middle",
                 align: "center",
-                // width: '30%',
+
                 colspan: 2,
                 rowspan: 1
             }, {
@@ -240,7 +243,7 @@ function initTable() {
                 title: '风险',
                 valign: "middle",
                 align: "center",
-                // width: '25%',
+
                 colspan: 1,
                 rowspan: 2,
                 formatter:function(value,row,index){
@@ -277,7 +280,7 @@ function initTable() {
                 title: '事故隐患',
                 valign: "middle",
                 align: "center",
-                // width: '25%',
+
                 colspan: 2,
                 rowspan: 1
             }, {
@@ -286,7 +289,7 @@ function initTable() {
                 field:'airStatusNum',
                 valign: "middle",
                 align: "center",
-                // width: '25%',
+
                 colspan: 1,
                 rowspan: 2,
                 cellStyle:function cellStyle(value, row, index, field) {
@@ -305,7 +308,7 @@ function initTable() {
                 field:'processUnitNum',
                 valign: "middle",
                 align: "center",
-                // width: '25%',
+
                 colspan: 1,
                 rowspan: 2,
                 cellStyle:function cellStyle(value, row, index, field) {
@@ -325,7 +328,7 @@ function initTable() {
                     field:'conditionNum',
                     valign: "middle",
                     align: "center",
-                    // width: '50%',
+
                     colspan: 1,
                     rowspan: 1,
 
@@ -345,7 +348,7 @@ function initTable() {
                     field:'protectionNum',
                     valign: "middle",
                     align: "center",
-                    // width: '50%',
+
                     colspan: 1,
                     rowspan: 1,
                     cellStyle:function cellStyle(value, row, index, field) {
@@ -364,7 +367,7 @@ function initTable() {
                     field:'generalHidden',
                     valign: "middle",
                     align: "center",
-                    // width: '50%',
+
                     colspan: 1,
                     rowspan: 1,
                     cellStyle:function cellStyle(value, row, index, field) {
@@ -383,7 +386,7 @@ function initTable() {
                     field:'majorHidden',
                     valign: "middle",
                     align: "center",
-                    // width: '50%',
+
                     colspan: 1,
                     rowspan: 1,
                     cellStyle:function cellStyle(value, row, index, field) {
@@ -414,3 +417,36 @@ function resizePage() {
 
     initTable();
 }
+
+
+/////////////////////////////////////
+// var stompClient = null;
+//
+// function connect() {
+//     var socket = new SockJS('/endpointSang');
+//     stompClient = Stomp.over(socket);
+//     stompClient.connect({}, function (frame) {
+//
+//         console.log('Connected:' + frame);
+//         stompClient.subscribe('/topic/getResponse', function (response) {
+//             showResponse(JSON.parse(response.body).name);
+//         })
+//     });
+// }
+// function disconnect() {
+//     if (stompClient != null) {
+//         stompClient.disconnect();
+//     }
+//
+//     console.log('Disconnected');
+// }
+//
+// function showResponse(message) {
+//     alert(message);
+// }
+// function sendName() {
+//
+//     var name = '123';
+//     console.log('name:' + name);
+//     stompClient.send("/welcome", {}, JSON.stringify({'name': name}));
+// }
