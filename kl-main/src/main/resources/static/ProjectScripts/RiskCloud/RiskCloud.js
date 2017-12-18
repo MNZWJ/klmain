@@ -424,7 +424,7 @@ function openCondition(){
 
                     return index + 1;
                 },
-                width: '40px',
+
             }
             ,
 
@@ -433,7 +433,7 @@ function openCondition(){
                 field: 'facilities',
                 title: '装置设施名称',
                 halign: 'center',
-                width: '150px',
+
                 cellStyle: function (value, row, index, field) {
                     return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis'}};
                 }
@@ -441,25 +441,25 @@ function openCondition(){
                 field: 'environment',
                 title: '周边环境名称',
                 halign: 'center',
-                width: '150px',
+
                 cellStyle: function (value, row, index, field) {
                     return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis'}};
                 }
             }, {
                 field: 'realDistance',
                 title: '实际距离',
-                halign: 'center',
-                width: '90px'
+                halign: 'center'
+
             }, {
                 field: 'standardDistance',
                 title: '标准要求',
-                halign: 'center',
-                width: '90px'
+                halign: 'center'
+
             }, {
                 field: 'conformance',
                 title: '与标准符合性',
-                halign: 'center',
-                width: '100px'
+                halign: 'center'
+
             }]
     });
 
@@ -512,7 +512,7 @@ function openProtection(){
 
                     return index + 1;
                 },
-                width: '40px',
+
             }
             ,
 
@@ -521,7 +521,7 @@ function openProtection(){
                 field: 'protectArea',
                 title: '法律保护区',
                 halign: 'center',
-                width: '150px',
+
                 cellStyle: function (value, row, index, field) {
                     return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis'}};
                 }
@@ -529,7 +529,7 @@ function openProtection(){
                 field: 'environment',
                 title: '周边环境说明',
                 halign: 'center',
-                width: '150px',
+
                 cellStyle: function (value, row, index, field) {
                     return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis'}};
                 }
@@ -537,7 +537,7 @@ function openProtection(){
                 field: 'conformance',
                 title: '与规定复合型',
                 halign: 'center',
-                width: '100px'
+
             }]
     });
 
