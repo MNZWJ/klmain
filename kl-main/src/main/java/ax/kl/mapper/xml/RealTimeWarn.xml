@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ax.kl.mapper.RealTimeWarnMapper">
+
+    <!--获取实时预警数据-->
+    <select id="getRealTimeWarnData" resultType="ax.kl.entity.RealTimeWarn">
+        SELECT
+	ci.CompanyName,
+	di.SourceId,
+	di.SourceName,
+	sd.DictName AS Rank,
+	MAX( (ISNULL(pu.FEI, 0)+ISNULL(pu.AfterFEI, 0))/2 ) AS FEI,
+	SUM(CASE WHEN fc.Conformance='不符合' THEN 1 ELSE 0 END ) AS ConditionNum,
+	SUM(CASE WHEN lp.Conformance='不符合' THEN 1 ELSE 0 END ) AS ProtectionNum,
+	SUM(CASE WHEN hd.Rank='一般隐患' THEN 1 ELSE 0 END) AS GeneralHidden,
+	SUM(CASE WHEN hd.Rank='重大隐患' THEN 1 ELSE 0 END) AS MajorHidden,
+	SUM(CASE WHEN ad.IDCode='ZB' THEN 1 ELSE 0 END ) AS ProcessUnitNum,
+	SUM(CASE WHEN ad.IDCode='ZT' THEN 1 ELSE 0 END ) AS AirStatusNum
+FROM
+	TB_BASE_COMPANY_INFO ci
+RIGHT JOIN TB_BASE_DANGERSOURCE_INFO di ON ci.CompanyId = di.CompanyId
+LEFT JOIN TB_BASE_PROCESS_UNIT pu ON di.SourceId = pu.SourceId
+LEFT JOIN TB_BASE_DR_FACILITIES_CONDITION fc ON di.SourceId=fc.SourceId
+LEFT JOIN TB_BASE_DR_LEGAL_PROTECTION lp ON di.SourceId=lp.SourceId
+LEFT JOIN TB_BASE_HIDDEN_DANGER hd ON (di.SourceId=hd.DangerSource AND hd.Rectification='未整改')
+LEFT JOIN TB_SYS_DATADICT sd ON  di.Rank=sd.DictId
+LEFT JOIN TB_REALTIME_ALARM_DATA ad ON (ad.UniqueCode LIKE di.UniqueCode+'%' AND ad.Status='0')
+
+GROUP BY
+	ci.CompanyName,
+	di.SourceId,
+	di.SourceName,
+	sd.DictName
+    </select>
+</mapper>
