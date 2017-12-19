@@ -174,7 +174,7 @@
     <span style="color: #fff; font-size: 12px; font-family: 微软雅黑; font-weight: 700; margin-left: 0; width: 12px;">企业信息查询</span>
 </div>
 
-<!--模态窗口-->
+<!--模态窗-->
 <div class="modal fade bs-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      data-backdrop='static'
      data-target=".bs-example-modal-lg">
@@ -186,43 +186,38 @@
                 </button>
                 <h4 class="modal-title" id="myModalLabel"></h4>
             </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-xs-10 col-xs-offset-1">
-                        <ul id="myTab" class="nav nav-tabs">
-                            <li class="active">
-                                <a href="#cerInfo" data-toggle="tab">
-                                    企业证书超期
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#equipInfo" id="chemicalsTab" data-toggle="tab">
-                                    设备报警信息</a>
-                            </li>
-                        </ul>
-                        <div class="tab-content">
-                            <div class="tab-pane fade" id="cerInfo">
-                                <table id="cerTable" class="table  table-striped table-bordered table-hover"
-                                >
-
-                                </table>
-                            </div>
-                            <div class="tab-pane fade" id="equipInfo">
-                                <table id="equipTable" class="table  table-striped table-bordered table-hover"
-                                >
-
-                                </table>
-                            </div>
-
-
-                        </div>
-
-
-                    </div>
-
+            <div class="panel panel-default" id="cerDiv">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion"
+                           href="#cerInfo">
+                            证书运行预警
+                        </a>
+                    </h4>
                 </div>
-
+                <div class="panel-body" id="cerInfo">
+                    <table id="cerTable" class="table  table-striped table-bordered table-hover"
+                    >
+                    </table>
+                </div>
             </div>
+            <div class="panel panel-default" id="equipDiv">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion"
+                           href="#equipInfo">
+                            设备实时预警
+                        </a>
+                    </h4>
+                </div>
+                <div id="equipInfo" class="panel-collapse collapse">
+                    <table id="equipTable" class="table  table-striped table-bordered table-hover"
+                    >
+
+                    </table>
+                </div>
+            </div>
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
 

@@ -1,16 +1,15 @@
 var companyId = "";
 var scanHeight = "";
 var flagTable=0;
+//判断模态窗是否有数据：0 未加载,1 有数据,2 无数据
+var cerdiv = 0;
+var equipdiv= 0;
 $(function () {
     //获取浏览器高度
     scanHeight = $(window).height();
 
     // $("#map").height(scanHeight);
     initMap();
-    //模态窗关闭事件
-    $('#myModal').on('hidden.bs.modal', function () {
-        $('#myTab a[href="#companyInfo"]').tab('show')
-    });
 });
 
 //初始化地图
@@ -43,14 +42,13 @@ function initMap() {
 //初始化表格
 function initTable() {
     //证书表格
-    $("#cerTable").bootstrapTable("destroy");
     $('#cerTable').bootstrapTable({
         height: scanHeight * 4 / 7,
         striped: true,      //是否显示行间隔色
         cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
         method: 'get',//请求方式
         url: '/OverdueAlarm/getCertificateAlarm',//请求url
-
+        undefinedText: '-',
         clickToSelect: false,//是否启用点击选中行
         showRefresh: false,//是否显示刷新按钮
         queryParams: function (pageReqeust) {
@@ -61,7 +59,12 @@ function initTable() {
             return "bootTableRow";
         },
         onLoadSuccess:function(date){
-
+            if (date.length == 0){
+                cerdiv=2;
+            }else {
+                cerdiv=1;
+            }
+            showDiv();
         },
         onLoadError: function () {
             BootstrapDialog.alert({
@@ -95,6 +98,7 @@ function initTable() {
                     return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
                 },
                 formatter: function (value, row, index) {
+                    value = value ==undefined?'-':value;
                     return '<span title="'+value+'">'+value+'</span>'
                 }
             }, {
@@ -106,6 +110,7 @@ function initTable() {
                     return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
                 },
                 formatter: function (value, row, index) {
+                    value = value ==undefined?'-':value;
                     return '<span title="'+value+'">'+value+'</span>'
                 }
             },{
@@ -114,9 +119,11 @@ function initTable() {
                 halign: 'center',
                 width: '20%',
                 cellStyle: function (value, row, index, field) {
+                    value = value ==undefined?'-':value;
                     return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
                 },
                 formatter: function (value, row, index) {
+                    value = value ==undefined?'-':value;
                     return '<span title="'+value+'">'+value+'</span>'
                 }
             },{
@@ -128,6 +135,7 @@ function initTable() {
                     return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
                 },
                 formatter: function (value, row, index) {
+                    value = value ==undefined?'-':value;
                     return '<span title="'+value+'">'+value+'</span>'
                 }
             },{
@@ -138,6 +146,7 @@ function initTable() {
                     return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
                 },
                 formatter: function (value, row, index) {
+                    value = value ==undefined?'-':value;
                     return '<span title="'+value+'">'+value+'</span>'
                 }
             }]
@@ -149,7 +158,7 @@ function initTable() {
         cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
         method: 'get',//请求方式
         url: '/OverdueAlarm/getRealtimeAlarm',//请求url
-
+        undefinedText: '-',
         clickToSelect: false,//是否启用点击选中行
         showRefresh: false,//是否显示 刷新按钮
         queryParams: function (pageReqeust) {
@@ -158,6 +167,14 @@ function initTable() {
         },
         rowStyle: function () {//自定义行样式
             return "bootTableRow";
+        },
+        onLoadSuccess:function (date) {
+            if (date.length == 0){
+                equipdiv=2;
+            }else {
+                equipdiv=1;
+            }
+            showDiv();
         },
         onLoadError: function () {
             BootstrapDialog.alert({
@@ -191,6 +208,7 @@ function initTable() {
                     return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
                 },
                 formatter: function (value, row, index) {
+                    value = value ==undefined?'-':value;
                     return '<span title="'+value+'">'+value+'</span>'
                 }
             }, {
@@ -202,6 +220,7 @@ function initTable() {
                     return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
                 },
                 formatter: function (value, row, index) {
+                    value = value ==undefined?'-':value;
                     return '<span title="'+value+'">'+value+'</span>'
                 }
             },{
@@ -213,6 +232,7 @@ function initTable() {
                     return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
                 },
                 formatter: function (value, row, index) {
+                    value = value ==undefined?'-':value;
                     return '<span title="'+value+'">'+value+'</span>'
                 }
             },{
@@ -224,6 +244,7 @@ function initTable() {
                     return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
                 },
                 formatter: function (value, row, index) {
+                    value = value ==undefined?'-':value;
                     return '<span title="'+value+'">'+value+'</span>'
                 }
             }]
@@ -253,6 +274,8 @@ function loadCompanyList(companyList) {
 //企业点击事件
 function onMarkClick(e) {
     companyId = e.target.customData.companyId;
+    $("#equipDiv").hide();
+    $("#cerDiv").hide();
     if(flagTable==0){
         initTable();
         flagTable=1;
@@ -260,7 +283,50 @@ function onMarkClick(e) {
         $("#cerTable").bootstrapTable("refresh",{query:{companyId:companyId}});
         $("#equipTable").bootstrapTable("refresh",{query:{companyId:companyId}});
     }
+}
+
+function showDiv() {
+    if (cerdiv==0||equipdiv==0){
+        return;
+    }
+    if (cerdiv==1&&equipdiv==1){
+        $("#equipDiv").show();
+        $("#cerDiv").show();
+        $('#cerInfo').collapse('show');
+        $('#equipInfo').collapse('hide');
+        //折叠框显示事件
+        $('#cerInfo').on('shown.bs.collapse', function () {
+            $('#equipInfo').collapse('hide');
+        });
+        //折叠框显示事件
+        $('#equipInfo').on('shown.bs.collapse', function () {
+            $('#cerInfo').collapse('hide');
+        });
+    } else if (cerdiv==1&&equipdiv==2){
+        $("#cerDiv").show();
+        $('#cerInfo').collapse('show');
+    } else if (cerdiv==2&&equipdiv==1){
+        $("#equipDiv").show();
+        $('#equipInfo').collapse('show');
+    } else if (cerdiv==2&&equipdiv==2){
+        BootstrapDialog.alert({
+            title: '提示',
+            size: BootstrapDialog.SIZE_SMALL,
+            message: '当前企业无预警！',
+            type: BootstrapDialog.TYPE_WARNING, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+            closable: false, // <-- Default value is false
+            draggable: true, // <-- Default value is false
+            buttonLabel: '确定', // <-- Default value is 'OK',
+
+        });
+        cerdiv = 0;
+        equipdiv =0;
+        return;
+    }
+    cerdiv = 0;
+    equipdiv =0;
     $('#myModal').modal('show');
+
 }
 
 //关闭查询框
