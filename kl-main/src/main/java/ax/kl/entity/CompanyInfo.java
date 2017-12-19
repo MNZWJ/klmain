@@ -108,4 +108,11 @@ public class CompanyInfo {
   @ApiModelProperty("有效期，字典")
   private String validity;
 
+  @TableField(value = "CertificateAlarm",exist = false)
+  @ApiModelProperty("证书预警")
+  private String certificateAlarm;
+
+  @TableField(value = "RealtimeAlarm",exist = false)
+  @ApiModelProperty("设备预警")
+  private String realtimeAlarm;
 }
