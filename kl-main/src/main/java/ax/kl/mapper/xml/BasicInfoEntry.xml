@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ax.kl.mapper.BasicInfoEntryMapper">
+
+    <!--新增企业信息-->
+    <insert id="saveData" parameterType="ax.kl.entity.CompanyInfo">
+        INSERT INTO TB_BASE_COMPANY_INFO ( CompanyId,
+        CompanyName,        UniqueCode,        Area,        LegalPerson,        ContactWay,        SafeManageRank,
+        StandardRank,        OperatingState,        Longt,        Lat,        ScaleCode,        TypeCode,
+        DirectArea        )        VALUES        (       #{companyId},
+        #{ companyName },#{ uniqueCode },#{ area },#{ legalPerson },#{ contactWay },#{ safeManageRank }, #{ standardRank },
+         #{ operatingState }, #{ longt },#{ lat },#{ scaleCode },#{ typeCode },#{ directArea }        )
+    </insert>
+
+    <!--更新企业信息-->
+    <update id="updateData" parameterType="ax.kl.entity.CompanyInfo">
+        UPDATE TB_BASE_COMPANY_INFO
+        SET CompanyName =#{ companyName }, UniqueCode =#{ uniqueCode }, Area =#{ area }, LegalPerson =#{ legalPerson },
+        ContactWay =#{ contactWay }, SafeManageRank =#{ safeManageRank }, StandardRank =#{ standardRank },
+        OperatingState =#{ operatingState }, Longt =#{ longt }, Lat =#{ lat }, ScaleCode =#{ scaleCode },
+        TypeCode =#{ typeCode }, DirectArea =#{ directArea }
+        WHERE
+        CompanyId =#{ companyId }
+    </update>
+
+    <!--保存企业行业-->
+    <insert id="saveQYHYData" >
+        DELETE FROM TB_REL_COMPANY_INDUSTRY  WHERE  CompanyId=#{ companyId }
+
+        INSERT INTO TB_REL_COMPANY_INDUSTRY (RelId, CompanyId, IndustryId)
+        VALUES
+        <foreach collection="industry" item="item" open="" separator="," close="" index="index">
+            (
+            NEWID() ,#{ companyId },#{ item }
+            )
+        </foreach>
+    </insert>
+
+    <!--保存危险工艺单元-->
+    <insert id="saveProcessData">
+        DELETE  FROM  	TB_REL_COMPANY_ART  WHERE  	CompanyId=#{ companyId }
+
+        INSERT INTO TB_REL_COMPANY_ART ( RelationId,CompanyId, TechnologyId,
+        MonitorUnit  )        VALUES
+        <foreach collection="processTable" item="item" index="index" separator=",">
+            ( NEWID() ,#{companyId },#{ item.technologyId }  ,#{ item.monitorUnit }  )
+        </foreach>
+    </insert>
+
+    <!--保存证书-->
+    <insert id="saveCertData" parameterType="java.util.List">
+        DELETE  FROM  TB_BASE_COMPANY_CERTIFICATE  WHERE   CompanyId=#{ companyId }
+
+        INSERT INTO TB_BASE_COMPANY_CERTIFICATE (
+        CertId,CompanyId,CertType, CertNo,StartDate, Validity
+        )        VALUES
+        <foreach collection="certTable" item="item" separator="," index="index">
+            (
+            NEWID() ,#{ companyId },#{ item.certType },#{ item.certNo },#{ item.startDate },#{ item.validity }
+            )
+        </foreach>
+    </insert>
+
+    <!--通过Id查询企业信息-->
+    <select id="getCompanyInfo" resultType="ax.kl.entity.CompanyInfo">
+        SELECT    *,STUFF((	SELECT	',' + IndustryId	FROM   TB_REL_COMPANY_INDUSTRY ci
+			WHERE	aa.CompanyId = ci.CompanyId FOR xml path ('')),	1,	1,	''
+	) AS industryCode    FROM	TB_BASE_COMPANY_INFO aa	  WHERE  aa.CompanyId=#{companyId}
+    </select>
+
+    <!--删除企业信息-->
+    <delete id="delCompanyInfo" parameterType="ax.kl.entity.CompanyInfo">
+        DELETE  FROM  TB_BASE_COMPANY_CERTIFICATE WHERE  CompanyId IN
+        <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+            #{item}
+        </foreach>  DELETE  FROM  TB_REL_COMPANY_ART WHERE  CompanyId IN
+        <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+            #{item}
+        </foreach>  DELETE  FROM  TB_REL_COMPANY_INDUSTRY WHERE  CompanyId IN
+        <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        DELETE  FROM  TB_BASE_COMPANY_INFO WHERE  CompanyId IN
+        <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!--通过ID查询企业证书信息-->
+    <select id="getCompanyCertList" resultType="ax.kl.entity.CompanyInfo">
+       SELECT  *   FROM	TB_BASE_COMPANY_CERTIFICATE   WHERE   CompanyId=#{companyId}
+    </select>
+
+</mapper>
