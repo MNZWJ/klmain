@@ -32,7 +32,7 @@ public class OverdueAlarmController {
     @ApiOperation(value = "/IndexView",tags = "超期运行预警主页面")
     @RequestMapping("/IndexView")
     public String doView(){
-        return "/OverdueAlarm/IndexView";
+        return "/OverdueAlarm/OverdueAlarm";
     }
 
     @ApiOperation(value = "/getAlarmCompanyList",tags = "获取企业预警集合")
