@@ -4,13 +4,16 @@ import ax.f4j.model.JsonResult;
 import ax.f4j.model.ResultUtil;
 import ax.kl.entity.CompanyInfo;
 import ax.kl.service.BasicInfoEntryService;
+import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Created by mxl
@@ -62,5 +65,17 @@ public class BasicInfoEntryController {
     @ResponseBody
     public List<CompanyInfo> getCompanyCertList(@RequestParam String companyId) {
         return basicInfoEntryService.getCompanyCertList(companyId);
+    }
+
+    @ApiOperation("验证编码的唯一性")
+    @RequestMapping(value = "/validateTypeCode",method = RequestMethod.POST)
+    @ResponseBody
+    public JSONObject validateTypeCode(@RequestParam Map<String,String> param){
+        String typecode = param.get("uniqueCode");
+        Map<String,String> map =new HashMap<>(1);
+        boolean result = basicInfoEntryService.validateTypeCode(typecode);
+        JSONObject obj=new JSONObject();
+        obj.put("valid",result);
+        return obj;
     }
 }

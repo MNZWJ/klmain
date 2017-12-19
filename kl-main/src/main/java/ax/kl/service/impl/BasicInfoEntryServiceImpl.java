@@ -29,36 +29,41 @@ public class BasicInfoEntryServiceImpl implements BasicInfoEntryService {
      */
     @Override
     public String  saveOrUpdateData(String  cmd){
-        System.out.print(cmd);
         JSONObject jsstr = JSONObject.parseObject(cmd);
-        System.out.println("jsStr:"+jsstr);
         CompanyInfo form=(CompanyInfo)JSONObject.toJavaObject(jsstr.getJSONObject("form"),CompanyInfo.class);
-        System.out.println("form:"+form);
         List<CompanyInfo> processTable=(List<CompanyInfo>)JSONObject.parseArray(jsstr.getString("processTable"),CompanyInfo.class);
-        System.out.println("processTable:"+processTable);
         List<CompanyInfo> certTable=(List<CompanyInfo>)JSONObject.parseArray(jsstr.getString("certTable"),CompanyInfo.class);
-        System.out.println("certTable:"+certTable);
-
         if("".equals(form.getCompanyId()) ||form.getCompanyId()==null){
             String CompanyId= UUID.randomUUID().toString();
             System.out.println("CompanyId:"+CompanyId);
             form.setCompanyId(CompanyId);
             this.basicInfoEntryMapper.saveData(form);
             String IndustryCode=form.getIndustryCode();
-            String []industry=IndustryCode.split(",");
-            String companyId = form.getCompanyId();
-            this.basicInfoEntryMapper.saveQYHYData(industry,companyId);
-            this.basicInfoEntryMapper.saveProcessData(processTable,CompanyId);
-            this.basicInfoEntryMapper.saveCertData(certTable,CompanyId);
+            if(IndustryCode!=null) {
+                String[] industry = IndustryCode.split(",");
+                this.basicInfoEntryMapper.saveQYHYData(industry, CompanyId);
+            }
+            if(processTable.size()>0) {
+                this.basicInfoEntryMapper.saveProcessData(processTable, CompanyId);
+            }
+            if(certTable.size()>0) {
+                this.basicInfoEntryMapper.saveCertData(certTable, CompanyId);
+            }
             return CompanyId;
         }else{
-            String IndustryCode=form.getIndustryCode();
-            String []industry=IndustryCode.split(",");
             String companyId = form.getCompanyId();
-            this.basicInfoEntryMapper.updateData(form);
-            this.basicInfoEntryMapper.saveQYHYData(industry,companyId);
-            this.basicInfoEntryMapper.saveProcessData(processTable,companyId);
-            this.basicInfoEntryMapper.saveCertData(certTable,companyId);
+            String IndustryCode=form.getIndustryCode();
+            if(IndustryCode!=null) {
+                String[] industry = IndustryCode.split(",");
+                this.basicInfoEntryMapper.updateData(form);
+                this.basicInfoEntryMapper.saveQYHYData(industry, companyId);
+            }
+            if(processTable.size()>0) {
+                this.basicInfoEntryMapper.saveProcessData(processTable, companyId);
+            }
+            if(certTable.size()>0) {
+                this.basicInfoEntryMapper.saveCertData(certTable, companyId);
+            }
             return "";
         }
     }
@@ -83,6 +88,10 @@ public class BasicInfoEntryServiceImpl implements BasicInfoEntryService {
         return basicInfoEntryMapper.getCompanyCertList(companyId);
     }
 
+    /**
+     * 通过ID删除公司信息
+     * @param idLists
+     */
     @Override
     @Transactional
     public void delCompanyInfo(String[] idLists) {
@@ -90,5 +99,16 @@ public class BasicInfoEntryServiceImpl implements BasicInfoEntryService {
         basicInfoEntryMapper.delCompanyInfo(idLists);
     }
 
+    /**
+     * 验证编码的唯一性
+     * @param typeCode
+     * @return true 不存在，false 存在
+     */
+    @Override
+    public boolean validateTypeCode(String typeCode){
+        int num = basicInfoEntryMapper.validateTypeCode(typeCode);
+        boolean re = num == 0;
+        return re;
+    };
 
 }
