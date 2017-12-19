@@ -22,7 +22,8 @@ public interface OverdueAlarmMapper {
      */
     List<CompanyInfo> getAlarmCompanyList(@Param("searchCompanyName") String searchCompanyName,
                                           @Param("searchScaleCode") String searchScaleCode,
-                                          @Param("searchTypeCode") String searchTypeCode);
+                                          @Param("searchTypeCode") String searchTypeCode,
+                                          @Param("searchAlarm") String searchAlarm);
 
     /**
      * 获取已超期证书列表

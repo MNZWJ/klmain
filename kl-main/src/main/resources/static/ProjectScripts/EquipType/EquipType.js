@@ -339,7 +339,8 @@ function equipDel() {
             type: BootstrapDialog.TYPE_WARNING, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
 
             closable: false, // <-- Default value is false
-            draggable: true, // <-- Default value is false
+            draggable: true, //
+            // <-- Default value is false
             buttonLabel: '确定', // <-- Default value is 'OK',
 
         });

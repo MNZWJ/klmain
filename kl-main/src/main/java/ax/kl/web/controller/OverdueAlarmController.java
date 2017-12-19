@@ -42,6 +42,7 @@ public class OverdueAlarmController {
         String searchCompanyName = "";
         String searchScaleCode = "";
         String searchTypeCode = "";
+        String searchAlarm = "";
         if (map.containsKey("searchCompanyName")){
             searchCompanyName = map.get("searchCompanyName");
         }
@@ -51,7 +52,10 @@ public class OverdueAlarmController {
         if (map.containsKey("searchTypeCode")){
             searchTypeCode = map.get("searchTypeCode");
         }
-        return overdueAlarmService.getAlarmCompanyList(searchCompanyName,searchScaleCode,searchTypeCode);
+        if (map.containsKey("searchAlarm")){
+            searchAlarm = map.get("searchAlarm");
+        }
+        return overdueAlarmService.getAlarmCompanyList(searchCompanyName,searchScaleCode,searchTypeCode,searchAlarm);
     }
 
     @ApiOperation(value = "/getCertificateAlarm",tags = "获取企业超期证书")

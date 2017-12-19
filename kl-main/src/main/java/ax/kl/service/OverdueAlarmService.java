@@ -18,7 +18,7 @@ public interface OverdueAlarmService {
      * 获取企业预警信息
      * @return
      */
-    List<CompanyInfo> getAlarmCompanyList(String searchCompanyName, String searchScaleCode, String searchTypeCode);
+    List<CompanyInfo> getAlarmCompanyList(String searchCompanyName, String searchScaleCode, String searchTypeCode,String searchAlarm);
 
     /**
      * 获取已超期证书列表
