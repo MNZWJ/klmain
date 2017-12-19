@@ -68,6 +68,9 @@ $(function () {
                 field: 'companyName',
                 title: '企业名称',
                 halign: 'center',
+                cellStyle: function (value, row, index, field) {
+                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                },
                 formatter: function (value, rowData, rowIndex) {
                     users.push(rowData);
                     return "<a href='javascript:look(\""+rowData.companyId+"\")'>" + value + "</a>";
@@ -96,11 +99,21 @@ $(function () {
                 field: 'operatingState',
                 title: '经营状态',
                 halign: 'center'
-            },   {
+            }, {
                 field: 'industryCode',
                 title: '所属行业',
-                halign: 'center'
-            },   {
+                halign: 'center',
+                cellStyle: function (value, row, index, field) {
+                    return {
+                        classes: '',
+                        css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis', 'overflow': 'hidden'}
+                    };
+                },
+                formatter: function (value, row, index) {
+                    return '<span title="' + value + '">' + value + '</span>'
+                }
+            },
+            {
                 field: 'scaleCode',
                 title: '企业规模',
                 halign: 'center',
@@ -113,6 +126,16 @@ $(function () {
             }, {
                 field: 'area',
                 title: '行政区域',
+                halign: 'center',
+                cellStyle: function (value, row, index, field) {
+                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                },
+                formatter: function (value, row, index) {
+                    return '<span title="'+value+'">'+value+'</span>'
+                }
+            }, {
+                field: 'directArea',
+                title: '直属区域',
                 halign: 'center'
             }
         ]

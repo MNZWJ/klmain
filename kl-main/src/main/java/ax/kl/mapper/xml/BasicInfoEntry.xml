@@ -91,4 +91,8 @@
        SELECT  *   FROM	TB_BASE_COMPANY_CERTIFICATE   WHERE   CompanyId=#{companyId}
     </select>
 
+    <!--验证编码的唯一性-->
+    <select id="validateTypeCode" resultType="int">
+        SELECT COUNT(*) FROM TB_BASE_COMPANY_INFO WHERE UniqueCode = #{typeCode}
+    </select>
 </mapper>

@@ -83,6 +83,9 @@ $(function () {
                 field: 'companyName',
                 title: '企业名称',
                 halign: 'center',
+                cellStyle: function (value, row, index, field) {
+                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                },
                 formatter: function (value, rowData, rowIndex) {
                     users.push(rowData);
                     return "<a href='javascript:look(\""+rowData.companyId+"\")'>" + value + "</a>";
@@ -114,7 +117,13 @@ $(function () {
             },   {
                 field: 'industryCode',
                 title: '所属行业',
-                halign: 'center'
+                halign: 'center',
+                cellStyle: function (value, row, index, field) {
+                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                },
+                formatter: function (value, row, index) {
+                    return '<span title="'+value+'">'+value+'</span>'
+                }
             },   {
                 field: 'scaleCode',
                 title: '企业规模',
@@ -128,7 +137,14 @@ $(function () {
             }, {
                 field: 'area',
                 title: '行政区域',
-                halign: 'center'
+                halign: 'center',
+                cellStyle: function (value, row, index, field) {
+                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                },
+                formatter: function (value, row, index) {
+                    return '<span title="'+value+'">'+value+'</span>'
+
+                }
             },
             {
                 field: 'directArea',
@@ -899,45 +915,11 @@ function companyDel() {
 function formValidator() {
 //表单验证
     $("#companyForm").bootstrapValidator({
-        excluded: [':disabled', ':hidden', ':not(:visible)'],
-        feedbackIcons: {
-            valid: 'glyphicon glyphicon-ok',
-            invalid: 'glyphicon glyphicon-remove',
-            validating: 'glyphicon glyphicon-refresh'
-        },
-        live: 'enabled',
-        message: 'This value is not valid',
-        submitButtons: 'button[type="submit"]',
-        submitHandler: null,
-        trigger: null,
-        threshold: null,
-        /**
-         * 表单域配置
-         */
         fields: {
             //多个重复
             companyName: {
-                //隐藏或显示 该字段的验证
                 enabled: true,
-                //错误提示信息
-                message: 'This value is not valid',
-                /**
-                 * 定义错误提示位置  值为CSS选择器设置方式
-                 * 例如：'#firstNameMeg' '.lastNameMeg' '[data-stripe="exp-month"]'
-                 */
-                container: null,
-                /**
-                 * 定义验证的节点，CSS选择器设置方式，可不必须是name值。
-                 * 若是id，class, name属性，<fieldName>为该属性值
-                 * 若是其他属性值且有中划线链接，<fieldName>转换为驼峰格式  selector: '[data-stripe="exp-month"]' =>  expMonth
-                 */
-                selector: null,
-                /**
-                 * 定义触发验证方式（也可在fields中为每个字段单独定义），默认是live配置的方式，数据改变就改变
-                 * 也可以指定一个或多个（多个空格隔开） 'focus blur keyup'
-                 */
-                trigger: null,
-                // 定义每个验证规则
+                message: '输入有误',
                 validators: {
                     //多个重复
                     //官方默认验证参照  http://bv.doc.javake.cn/validators/
@@ -957,7 +939,7 @@ function formValidator() {
                     }
                 }
             },
-   /*         typeCode: {
+          /*  typeCode: {
                 validators: {
                     notEmpty: {
                         message: '请选择企业类型'
@@ -965,13 +947,32 @@ function formValidator() {
                 }
             },*/
             uniqueCode: {
+                //隐藏或显示 该字段的验证
+                enabled: true,
+                threshold: 0,
+                //有3字符以上才发送ajax请求，（input中输入一个字符，插件会向服务器发送一次，设置限制，6字符以上才开始）
+                //错误提示信息
+                message: '输入有误',
                 validators: {
                     notEmpty: {
                         message: '唯一编码不能为空'
+                    }, stringLength: {
+                        min: 0,
+                        max: 30,
+                        message: '唯一编码过长'
                     },
+                    regexp: {
+                        regexp: /[^\]@=/'\"$%&^*{}<>\\\\[:\;]+/,
+                        message: '输入值中含有非法字符'
+                    },
+                    remote:{
+                        url:'/BasicInfoEntry/validateTypeCode',
+                        message: '唯一编码已存在',
+                        type: 'POST'
+                    }
                 }
             },
-          /*  industryCode: {
+           /* industryCode: {
                 validators: {
                     notEmpty: {
                         message: '企业行业不能为空'

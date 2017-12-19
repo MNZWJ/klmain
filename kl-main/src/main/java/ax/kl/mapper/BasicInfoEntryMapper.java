@@ -69,4 +69,12 @@ public interface BasicInfoEntryMapper {
      */
     void delCompanyInfo(String[] idLists);
 
+
+    /**
+     * 验证编码的唯一性
+     * @param typeCode
+     * @return
+     */
+    int validateTypeCode(@Param("typeCode")String typeCode);
+
 }

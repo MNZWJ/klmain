@@ -42,6 +42,7 @@
             LEFT JOIN TB_SYS_DATADICT gg ON aa.StandardRank = gg.DictId
             LEFT JOIN TB_SYS_DATADICT hh ON aa.OperatingState = hh.DictId
             LEFT JOIN TB_SYS_DATADICT ii ON aa.DirectArea = ii.dictId
+            LEFT JOIN TB_REL_COMPANY_INDUSTRY bb ON aa.CompanyId = bb.CompanyId
             WHERE
             aa.CompanyId IS NOT NULL
             <if test="companyName != null and companyName !='' ">
