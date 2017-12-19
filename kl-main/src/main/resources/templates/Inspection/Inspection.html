@@ -119,11 +119,13 @@
 
         }
 
-        #bigDiv {
-            margin-top: 7%;
-            height: 43%;
-            width: 100%;
 
+
+        .numConpany {
+            display: inline-block;
+            width: 30px;
+            height: 75%;
+            background-color: #22529b;
         }
 
 
@@ -133,7 +135,7 @@
 </head>
 <body>
 
-<div id="map" style="width: 100%;height: 200px;"></div>
+<div id="map" style="width: 100%;height: 100%;"></div>
 <!--标题-->
 <div class="titlePng" style="background-image: url(../../Images/Common/title.png);text-align: center;padding-top: 1px;">
     <span style="font-weight:500;font-size: 20px;color: #ffffff;font-family: 微软雅黑;">化工企业分布图</span>
@@ -448,72 +450,69 @@
          onclick="closePage()"></div>
 
 
-    <div style="width: 65%;height: 100%;position: absolute;">
+    <div style="width: 65%;height: 100%;position: relative;float: left;padding-top: 6%">
 
 
-        <div id="bigDiv" style="overflow-y: visible;">
+        <div  style="overflow-y: visible;height: 48%;width: 100%;">
 
 
             <div id="titleDivColor"
-                 style="margin-top:5%;margin-left:8%;height: 30px;line-height: 30px;color: #fff; width: 88%;background-color: #0a4164">
+                 style="margin-left:8%;height: 30px;line-height: 30px;color: #fff; width: 88%;background-color: #0a4164">
                 <span style="font-size: 24px;margin-left: 10px;">企业分布情况</span>
             </div>
-            <div style="margin-left:8%;width: 88%;height: 80%;">
+            <div style="margin-left:8%;width: 88%;height: 88%;">
                 <div id="directAreaCompanyInfo" style="width: 100%;height: 100%;"></div>
             </div>
 
         </div>
 
 
-        <div style="height: 43%;width: 100%;">
+        <div style="height: 48%;width: 100%;">
             <div id="titleDivColor1"
                  style="margin-left:8%;height: 30px;line-height: 30px;color: #fff; width: 88%;background-color: #0a4164">
                 <span style="font-size: 24px;margin-left: 10px;">各行业企业分布情况</span>
             </div>
-            <div style="margin-left:8%;width: 88%;height: 80%;">
+            <div style="margin-left:8%;width: 88%;height: 88%;">
                 <div id="industryCompanyInfo" style="width: 100%;height: 100%;"></div>
             </div>
         </div>
     </div>
-    <div style="position: absolute;left: 65%;width: 30%;height: 100%;text-align: center">
-        <div style="height: 7%;width: 100%;">
-            <div style="margin:0 auto;padding-top:5%;">
-                <div style="width: 25px;height: 25px;vertical-align:bottom;background-image: url('../../Images/Common/时钟.png');background-size: 100% 100%;display: inline-block;"></div>
-                <span id="showTime" style="color: #fff;font-size: 16px;">0000-00-00 00:00:00</span>
-            </div>
+
+    <div style="height: 7%;position: absolute;top: 5%;left: 70%;">
+        <div style="margin:0 auto;">
+            <div style="width: 25px;height: 25px;vertical-align:bottom;background-image: url('../../Images/Common/时钟.png');background-size: 100% 100%;display: inline-block;"></div>
+            <span id="showTime" style="color: #fff;font-size: 16px;">0000-00-00 00:00:00</span>
         </div>
+    </div>
+
+    <div style="position: relative;width: 30%;height: 100%;text-align: center;float: left;padding-top: 6%">
 
 
-        <div style="overflow-y: visible;margin-top:5.82%;height: 15%; width: 100%;">
-            <div style="margin-left:8%;height: 30px;line-height: 30px;color: #fff; width: 88%;background-color: #0a4164">
+
+        <div style="overflow-y: visible;height: 18%; width: 100%;">
+            <div style="margin-left:8%;height: 30px;line-height: 30px;color: #fff; width: 88%;background-color: #0a4164;text-align: left">
                 <span style="font-size: 24px;margin-left: 10px;">垦利区企业总数</span>
             </div>
-            <div style="margin-left:8%;width: 88%;height: 70%;text-align: center;font-size: 2em;line-height: 1.9em;color: #fef601;">
-                <div id="numOne"
-                     style="display: inline-block;width: 10%;height: 80%;background-color: #22529b;vertical-align: middle;font-size: 2.1em">
+            <div style="margin-left:8%;width: 88%;height: 65%;text-align: center;font-size: 32px;color: #fef601;margin-top: 2%">
+                <div id="numOne" class="numConpany">
                     1
                 </div>
-                <div id="numTwo"
-                     style="display: inline-block;width: 10%;height: 80%;background-color: #22529b;vertical-align: middle;font-size: 2.1em">
+                <div id="numTwo" class="numConpany">
                     1
                 </div>
-                <div id="numThree"
-                     style="display: inline-block;width: 10%;height: 80%;background-color: #22529b;vertical-align: middle;font-size: 2.1em">
+                <div id="numThree" class="numConpany">
                     1
                 </div>
-                <div id="numFour"
-                     style="display: inline-block;width: 10%;height: 80%;background-color: #22529b;vertical-align: middle;font-size: 2.1em">
+                <div id="numFour" class="numConpany">
                     1
                 </div>
-                <div id="numFive"
-                     style="display: inline-block;width: 10%;height: 80%;background-color: #22529b;vertical-align: middle;font-size: 2.1em">
+                <div id="numFive" class="numConpany">
                     1
                 </div>
-                <div id="numSix"
-                     style="display: inline-block;width: 10%;height: 80%;background-color: #22529b;vertical-align: middle;font-size: 2.1em">
+                <div id="numSix" class="numConpany">
                     1
                 </div>
-                <div style="display: inline-block;width: 10%;height: 80%;color:#fff;vertical-align: middle">
+                <div style="display: inline-block;width: 30px;height: 75%;color:#fff;">
                     家
                 </div>
 
@@ -522,10 +521,10 @@
 
         </div>
 
-        <div style="overflow-y: visible;height: 34%; width: 100%;">
+        <div style="overflow-y: visible;height: 40%; width: 100%;">
 
 
-            <div style="margin-left:8%;height: 30px;line-height: 30px;color: #fff; width: 88%;background-color: #0a4164">
+            <div style="margin-left:8%;height: 30px;line-height: 30px;color: #fff; width: 88%;background-color: #0a4164;text-align: left">
                 <span style="font-size: 24px;margin-left: 10px;">企业类型占比</span>
             </div>
             <div style="margin-left:8%;width: 88%;height: 80%;">
@@ -533,10 +532,10 @@
             </div>
 
         </div>
-        <div style="overflow-y: visible;height: 34%; width: 100%;">
+        <div style="overflow-y: visible;height: 40%; width: 100%;">
 
 
-            <div style="margin-left:8%;height: 30px;line-height: 30px;color: #fff; width: 88%;background-color: #0a4164">
+            <div style="margin-left:8%;height: 30px;line-height: 30px;color: #fff; width: 88%;background-color: #0a4164;text-align: left">
                 <span style="font-size: 24px;margin-left: 10px;">企业规模占比</span>
             </div>
             <div style="margin-left:8%;width: 88%;height: 80%;">

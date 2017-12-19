@@ -1,10 +1,11 @@
 var typeId = "";
 var dictSearchName = "";
 var treeNode = "";
+var scanHeight="";
 $(function () {
 
     //获取浏览器高度
-    var scanHeight = $(window).height();
+    scanHeight = $(window).height();
     $("#treeDiv").height(scanHeight);
     $.ajax({
         type: 'post',
@@ -36,91 +37,7 @@ $(function () {
         }
     });
 
-    $('#dictTable').bootstrapTable({
-        height: scanHeight,
-        striped: true,      //是否显示行间隔色
-        cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
-        method: 'get',//请求方式
-        url: '/SysDictionary/getDictList',//请求url
-        pagination: 'true',//显示分页条
-        paginationLoop: 'true',//启用分页条无限循环功能
-        pageNumber: 1,                       //初始化加载第一页，默认第一页
-        pageSize: 10,                       //每页的记录行数（*）
-        pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
-        toolbar: '#dictToolbar',                //工具按钮用哪个容器
-        clickToSelect: false,//是否启用点击选中行
-        sidePagination: 'server',//'server'或'client'服务器端分页
-        showRefresh: 'true',//是否显示 刷新按钮
-        queryParams: queryParams,
-        queryParamsType: '', //默认值为 'limit' ,在默认情况下 传给服务端的参数为：offset,limit,sort
-        // 设置为 ''  在这种情况下传给服务器的参数为：pageSize,pageNumber
-        sortStable: true,//设置为 true 将获得稳定的排序，我们会添加_position属性到 row 数据中。
-        selectItemName: 'state',
-        idField: 'dictId',
-        rowStyle: function () {//自定义行样式
-            return "bootTableRow";
-        },
-        onLoadError: function () {
-
-
-            BootstrapDialog.alert({
-                title: '错误',
-                message: '表格加载失败！',
-                size: BootstrapDialog.SIZE_SMALL,
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定', // <-- Default value is 'OK',
-
-            });
-        },
-        onClickRow:function(row, $element){
-
-            $("#dictTable").bootstrapTable("uncheckAll");
-            $("#dictTable").bootstrapTable("checkBy",{field:'dictId',values:[row.dictId]})
-        },
-        columns: [
-            {
-
-                title: '序号',
-                field: 'number1',
-                formatter: function (value, row, index) {
-                    var page = $('#dictTable').bootstrapTable('getOptions');
-
-                    return (page.pageNumber - 1) * page.pageSize + index + 1;
-                }
-            }
-            ,
-            {
-                field: 'state',
-                checkbox: true
-            },
-
-            {
-
-                field: 'dictName',
-                title: '字典名称',
-                halign: 'center',
-                align: 'center',
-                width: '60%'
-            },
-            {
-                field: 'isUsed',
-                title: '是否启用',
-                halign: 'center',
-                align: 'center',
-                width: '30%',
-                formatter: function (value, row, index) {
-                    if (value == "1") {
-                        
-                        return "是";
-                    } else {
-                        return "否";
-                    }
-                }
-            }
-        ]
-    });
+    initTable();
 
     formValidator();
     //绑定保存按钮提交事件
@@ -241,6 +158,11 @@ function queryParams(pageReqeust) {
 function formValidator() {
 //表单验证
     $("#dictForm").bootstrapValidator({
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
         /**
          * 表单域配置
          */
@@ -288,6 +210,97 @@ function formValidator() {
         }
     });
 }
+
+//初始化表格
+function initTable(){
+    $("#dictTable").bootstrapTable("destroy");
+    $('#dictTable').bootstrapTable({
+        height: scanHeight,
+        striped: true,      //是否显示行间隔色
+        cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+        method: 'get',//请求方式
+        url: '/SysDictionary/getDictList',//请求url
+        pagination: 'true',//显示分页条
+        paginationLoop: 'true',//启用分页条无限循环功能
+        pageNumber: 1,                       //初始化加载第一页，默认第一页
+        pageSize: 10,                       //每页的记录行数（*）
+        pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
+        toolbar: '#dictToolbar',                //工具按钮用哪个容器
+        clickToSelect: false,//是否启用点击选中行
+        sidePagination: 'server',//'server'或'client'服务器端分页
+        showRefresh: 'true',//是否显示 刷新按钮
+        queryParams: queryParams,
+        queryParamsType: '', //默认值为 'limit' ,在默认情况下 传给服务端的参数为：offset,limit,sort
+        // 设置为 ''  在这种情况下传给服务器的参数为：pageSize,pageNumber
+        sortStable: true,//设置为 true 将获得稳定的排序，我们会添加_position属性到 row 数据中。
+        selectItemName: 'state',
+        idField: 'dictId',
+        rowStyle: function () {//自定义行样式
+            return "bootTableRow";
+        },
+        onLoadError: function () {
+
+
+            BootstrapDialog.alert({
+                title: '错误',
+                message: '表格加载失败！',
+                size: BootstrapDialog.SIZE_SMALL,
+                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+                closable: false, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                buttonLabel: '确定', // <-- Default value is 'OK',
+
+            });
+        },
+        onClickRow:function(row, $element){
+
+            $("#dictTable").bootstrapTable("uncheckAll");
+            $("#dictTable").bootstrapTable("checkBy",{field:'dictId',values:[row.dictId]})
+        },
+        columns: [
+            {
+
+                title: '序号',
+                field: 'number1',
+                formatter: function (value, row, index) {
+                    var page = $('#dictTable').bootstrapTable('getOptions');
+
+                    return (page.pageNumber - 1) * page.pageSize + index + 1;
+                }
+            }
+            ,
+            {
+                field: 'state',
+                checkbox: true
+            },
+
+            {
+
+                field: 'dictName',
+                title: '字典名称',
+                halign: 'center',
+                align: 'center',
+                width: '60%'
+            },
+            {
+                field: 'isUsed',
+                title: '是否启用',
+                halign: 'center',
+                align: 'center',
+                width: '30%',
+                formatter: function (value, row, index) {
+                    if (value == "1") {
+
+                        return "是";
+                    } else {
+                        return "否";
+                    }
+                }
+            }
+        ]
+    });
+}
+
 
 //按名称查询
 function searchMenus() {
@@ -564,4 +577,17 @@ function moveOrder(x) {
     })
 
 
+}
+//适应页面大小
+function resizePage(){
+
+
+    //获取浏览器高度
+    scanHeight = $(window).height();
+
+
+    $("#treeDiv").height($(window).height());
+
+
+    initTable();
 }

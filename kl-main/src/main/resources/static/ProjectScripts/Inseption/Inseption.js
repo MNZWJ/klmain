@@ -5,7 +5,7 @@ $(function () {
     //获取浏览器高度
     scanHeight = $(window).height();
 
-    $("#map").height(scanHeight);
+    // $("#map").height(scanHeight);
     initMap();
 
     $("#myTabDrop1").on("shown.bs.tab", function (e) {
@@ -59,6 +59,7 @@ function initMap() {
 
 //初始化表格
 function initTable() {
+    $("#chemistryTable").bootstrapTable("destroy");
     //化学品表格
     $('#chemistryTable').bootstrapTable({
         height: scanHeight * 4 / 7,
@@ -120,7 +121,7 @@ function initTable() {
                 width: '50%'
             }]
     });
-
+    $("#riskTable").bootstrapTable("destroy");
     //危险源表格
     $('#riskTable').bootstrapTable({
         height: scanHeight * 4 / 7,
@@ -192,7 +193,7 @@ function initTable() {
                 width: '30%'
             }]
     });
-
+    $("#companyArtTable").bootstrapTable("destroy");
     //危险关联工艺
     $('#companyArtTable').bootstrapTable({
         height: scanHeight * 4 / 7,
@@ -450,9 +451,15 @@ function initEcharts() {
 
 }
 
+var scaleCodeChart=null;
+var scaleCodeOption=null;
 //加载企业规模占比
 function loadScaleCode(){
 
+    if(scaleCodeChart!=null){
+        scaleCodeChart.dispose();
+        scaleCodeChart=null;
+    }
     $.ajax({
         type:'post',
         url:'/Inspection/getScaleCodeData',
@@ -476,7 +483,7 @@ function loadScaleCode(){
                 }
             };
 
-            var option = {
+            scaleCodeOption = {
 
                 color: ['#fbf31f', '#ffffff','#24ffb5','#22529b'],
 
@@ -526,17 +533,23 @@ function loadScaleCode(){
                     data: data
                 }]
             };
-            var companyTypeEchart =echarts.init(document.getElementById("scaleCodeEchart"));
-            companyTypeEchart.setOption(option);
+            scaleCodeChart =echarts.init(document.getElementById("scaleCodeEchart"));
+            scaleCodeChart.setOption(scaleCodeOption);
         }
     });
 
 }
 
 
-
+var companyTypeChart=null;
+var companyTypeOption=null;
 //加载企业类型占比
 function loadCompanyType(){
+
+    if(companyTypeChart!=null){
+        companyTypeChart.dispose();
+        companyTypeChart=null;
+    }
 
     $.ajax({
         type:'post',
@@ -561,7 +574,7 @@ function loadCompanyType(){
                 }
             };
 
-            var option = {
+            companyTypeOption = {
 
                 color: ['#22529b', '#24ffb5'],
 
@@ -611,16 +624,22 @@ function loadCompanyType(){
                     data: data
                 }]
             };
-            var companyTypeEchart =echarts.init(document.getElementById("companyTypeEchart"));
-            companyTypeEchart.setOption(option);
+            companyTypeChart =echarts.init(document.getElementById("companyTypeEchart"));
+            companyTypeChart.setOption(companyTypeOption);
         }
     });
 
 }
 
+var industryCompanyCharts=null;
 
+var industryCompanyOption=null;
 //加载各行业企业分布情况
 function loadIndustryCompany(){
+    if(industryCompanyCharts!=null){
+        industryCompanyCharts.dispose();
+        industryCompanyCharts=null;
+    }
     $.ajax({
         type: 'post',
         url: '/Inspection/getIndustryCompanyInfo',
@@ -641,7 +660,7 @@ function loadIndustryCompany(){
                         xData.push(n.dictName);
                     });
 
-                    var option = {
+                    industryCompanyOption = {
                         tooltip: {
                             trigger: 'axis',
                             axisPointer: {            // 坐标轴指示器，坐标轴触发有效
@@ -710,8 +729,8 @@ function loadIndustryCompany(){
                         series: data
                     };
 
-                    var myChart = echarts.init(document.getElementById('industryCompanyInfo'));
-                    myChart.setOption(option);
+                    industryCompanyCharts = echarts.init(document.getElementById('industryCompanyInfo'));
+                    industryCompanyCharts.setOption(industryCompanyOption);
                 }
             });
 
@@ -720,9 +739,15 @@ function loadIndustryCompany(){
     });
 }
 
-
+var directAreaCompanyChart=null;
+var directAreaCompanyOption=null;
 //加载各行业行政分布情况
 function loadDirectAreaCompany(){
+    if(directAreaCompanyChart!=null){
+        directAreaCompanyChart.dispose();
+        directAreaCompanyChart=null;
+    }
+
     $.ajax({
         type: 'post',
         url: '/Inspection/getCompanyDirectAirData',
@@ -743,7 +768,7 @@ function loadDirectAreaCompany(){
                         xData.push(n.dictName);
                     });
 
-                    var option = {
+                    directAreaCompanyOption = {
                         tooltip: {
                             trigger: 'axis',
                             axisPointer: {            // 坐标轴指示器，坐标轴触发有效
@@ -811,8 +836,8 @@ function loadDirectAreaCompany(){
                         series: data
                     };
 
-                    var myChart = echarts.init(document.getElementById('directAreaCompanyInfo'));
-                    myChart.setOption(option);
+                    directAreaCompanyChart = echarts.init(document.getElementById('directAreaCompanyInfo'));
+                    directAreaCompanyChart.setOption(directAreaCompanyOption);
                 }
             });
 
@@ -851,3 +876,23 @@ function convert(date) {
 
     return today.getFullYear() + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
 }
+//适应页面大小
+function resizePage(){
+    if(scaleCodeChart!=null){
+        scaleCodeChart.resize();
+    }
+    if(companyTypeChart!=null){
+        companyTypeChart.resize();
+    }
+    if(industryCompanyCharts!=null){
+        industryCompanyCharts.resize();
+    }
+    if(directAreaCompanyChart!=null){
+        directAreaCompanyChart.resize();
+    }
+
+    //获取浏览器高度
+    scanHeight = $(window).height();
+    flagTable=0;
+}
+

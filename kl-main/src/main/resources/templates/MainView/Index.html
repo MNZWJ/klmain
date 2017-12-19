@@ -344,6 +344,11 @@
         //表单验证
         function formValidator() {
             $("#pwdForm").bootstrapValidator({
+                feedbackIcons: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
                 /**
                  * 表单域配置
                  */
@@ -395,11 +400,117 @@
                                 max: 50,
                                 message: '新密码的长度过长'
                             },
+                            identical: {//相同
+                                field: 'newPwd',
+                                message: '两次密码不一致'
+                            },
+                            different: {//不能和旧密码相同
+                                field: 'oldPwd',
+                                message: '不能和旧密码相同'
+                            }
                         }
                     }
                 }
             });
         }
+        var fullPage=false;
+        //收起菜单栏
+        function hideTopMenu(e){
+            fullPage=true;
+            e.focus();
+            $("#title").hide();
+            $("#hideMenu").hide();
+            $("#openMenu").show();
+
+            $("#frame").height($(window).height());
+            window.frames['frame'].resizePage();
+        }
+
+        //展开菜单栏
+        function openTopMenu(e){
+            fullPage=false;
+            e.focus();
+            $("#title").show();
+            $("#hideMenu").show();
+            $("#openMenu").hide();
+            var scanHeight = $(window).height();
+            var titleHeight = $("#title").height();
+            $("#frame").height(scanHeight - titleHeight);
+            window.frames['frame'].resizePage();
+        }
+
+        $(document).on('keydown', function(e) {
+            var e = event || window.event || arguments.callee.caller.arguments[0];
+            if (e && e.keyCode == 122) { //捕捉F11键盘动作
+                e.preventDefault(); //阻止F11默认动作
+                var el = document.documentElement;
+                var rfs = el.requestFullScreen || el.webkitRequestFullScreen || el.mozRequestFullScreen || el.msRequestFullScreen; //定义不同浏览器的全屏API
+                //执行全屏
+                if (typeof rfs != "undefined" && rfs) {
+                    rfs.call(el);
+                } else if (typeof window.ActiveXObject != "undefined") {
+                    var wscript = new ActiveXObject("WScript.Shell");
+                    if (wscript != null) {
+                        wscript.SendKeys("{F11}");
+                    }
+                }
+                //监听不同浏览器的全屏事件，并件执行相应的代码
+                document.addEventListener("webkitfullscreenchange", function() { //
+
+                    if (document.webkitIsFullScreen) {
+                        //全屏后要执行的代码
+                        resizePage();
+                    } else {
+                        //退出全屏后执行的代码
+                        resizePage();
+                    }
+                }, false);
+
+                document.addEventListener("fullscreenchange", function() {
+                    if (document.fullscreen) {
+                        //全屏后执行的代码
+                        resizePage();
+                    } else {
+                        //退出全屏后要执行的代码
+                        resizePage();
+                    }
+                }, false);
+
+                document.addEventListener("mozfullscreenchange", function() {
+                    if (document.mozFullScreen) {
+                        //全屏后要执行的代码
+                        resizePage();
+                    } else {
+                        //退出全屏后要执行的代码
+                        resizePage();
+                    }
+                }, false);
+
+                document.addEventListener("msfullscreenchange", function() {
+                    if (document.msFullscreenElement) {
+                        //全屏后要执行的代码
+                        resizePage();
+                    } else {
+                        //退出全屏后要执行的代码
+                        resizePage();
+                    }
+                }, false);
+            }
+        });
+
+        //浏览器大小改变方法
+        function resizePage(){
+            if(fullPage){
+                $("#frame").height($(window).height());
+            }else{
+                var scanHeight = $(window).height();
+                var titleHeight = $("#title").height();
+                $("#frame").height(scanHeight - titleHeight);
+                window.frames['frame'].resizePage();
+            }
+
+        }
+
 
     </script>
 </head>
@@ -480,27 +591,35 @@
     <div class="col-md-1">
         <div style="width:100% ;text-align: left;">
             <img src="../../Images/MainView/usericon.png"
-                 style="height:14px;width: 14px;margin-top: 15px;"/>
-            <span style="position: relative;top: 10px;font-family: 微软雅黑;
+                 style="height:14px;width: 14px;margin-top: 12px;position: relative"/>
+            <span style="position: relative;top: 7px;font-family: 微软雅黑;
             font-size: 12px;color: #fff;" >${userName}</span>
         </div>
         <div style="width:100% ;text-align: left;cursor: pointer " onclick="editPwd();">
             <img src="../../Images/MainView/passwordicon.png"
-                 style="height:14px;width: 14px;margin-top: 12px;"/>
-            <span style="position: relative;top: 7px;font-family: 微软雅黑;
+                 style="height:14px;width: 14px;margin-top: 5px;position: relative"/>
+            <span style="position: relative;top: 3px;font-family: 微软雅黑;
             font-size: 12px;color: #fff;">修改密码</span>
         </div>
         <div style="width:100% ;text-align: left;cursor: pointer" onclick="exitSystem();">
             <img src="../../Images/MainView/endicon2.png"
-                 style="height:14px;width: 14px;margin-top: 10px;"/>
-            <span style="position: relative;top: 6px;font-family: 微软雅黑;
+                 style="height:14px;width: 14px;margin-top: 7px;position: relative"/>
+            <span style="position: relative;top:4px;font-family: 微软雅黑;
             font-size: 12px;color: #fff;">注销系统</span>
         </div>
 
+        <div style="">
+            <img id="hideMenu" onclick="hideTopMenu(this)" src="../../Images/MainView/收起.png"
+                 style="width: 15px;height: 18px;top:10px;cursor: pointer;position: relative"/>
+        </div>
+
     </div>
+
 </div>
-<div class="row" style="display: flex;">
-    <iframe id="frame" style="width: 100%;height: 100%;" marginwidth="0" frameborder="0"></iframe>
+<div class="row" style="display: flex;position: relative">
+ <!--   <img id="hideMenu" onclick="hideTopMenu(this)" src="../../Images/MainView/收起1.png" style="position: absolute;top:0;right: 4%;width: 15px;height: 18px;cursor: pointer;"/>-->
+            <img id="openMenu" onclick="openTopMenu(this)" src="../../Images/MainView/展开.png" style="position: absolute;top:0;right: 4%;width: 15px;height: 18px;cursor: pointer;display: none"/>
+            <iframe id="frame" name="frame" style="width: 100%;height: 100%;" marginwidth="0" frameborder="0"></iframe>
 </div>
 </div>
 

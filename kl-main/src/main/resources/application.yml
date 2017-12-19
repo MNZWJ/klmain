@@ -16,10 +16,10 @@ spring:
     suffix: .html
 
   datasource:
-    name: CoalExam
-#    url: jdbc:mysql://10.206.1.248:3306/tst?allowMultiQueries=true
-#    username: root
-#    password: agy!tst2017S
+    name: klmain
+#    url: jdbc:sqlserver://10.206.1.201; instanceName=ANXIN_KL;DatabaseName=kl-main
+#    username: sa
+#    password: Qdayser_201
     url: jdbc:sqlserver://qdjxd.gnway.cc:11433; DatabaseName=kl-main
     username: sa
     password: sa
