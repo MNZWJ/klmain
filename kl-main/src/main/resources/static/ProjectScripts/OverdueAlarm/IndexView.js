@@ -37,6 +37,8 @@ function initMap() {
     mini.get("searchCompanyName").load("/Inspection/getCompanyList");
     mini.get("searchScaleCode").load("/SysDictionary/getDataDictList?typeId=" + ScaleCodeDictId);
     mini.get("searchTypeCode").load("/SysDictionary/getDataDictList?typeId=" + TypeCodeDictId);
+    var jsonData = [{ 'id': '0', 'text': '预警'}, { 'id': '1', 'text': '未预警' }];
+    mini.get("alarm").load(jsonData);
 }
 
 //初始化表格
@@ -285,6 +287,9 @@ function onMarkClick(e) {
     }
 }
 
+/**
+ * 列表加载后初始化模态窗
+ */
 function showDiv() {
     if (cerdiv==0||equipdiv==0){
         return;
@@ -379,13 +384,15 @@ function searchCompanyList() {
     var searchCompanyName = mini.get("searchCompanyName").getText();
     var searchScaleCode = mini.get("searchScaleCode").getValue();
     var searchTypeCode = mini.get("searchTypeCode").getValue();
+    var searchAlarm = mini.get("alarm").getValue();
     $.ajax({
         type: 'get',
         async: false,
         data: {
             searchCompanyName: searchCompanyName,
             searchScaleCode: searchScaleCode,
-            searchTypeCode: searchTypeCode
+            searchTypeCode: searchTypeCode,
+            searchAlarm: searchAlarm
         },
         url: '/OverdueAlarm/getAlarmCompanyList',
         success: function (result) {

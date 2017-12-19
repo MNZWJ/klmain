@@ -4,13 +4,16 @@
 
     <!--加载企业列表-->
     <select id="getAlarmCompanyList" resultType="ax.kl.entity.CompanyInfo">
+        SELECT  * FROM (
         SELECT bci.CompanyId,bci.CompanyName,bci.Longt,bci.Lat,
         MIN (ISNULL(datediff(day,GETDATE(),bcc.Validity),1)) AS 'CertificateAlarm',
-        (MAX (ISNULL(rad.Status,0))+ COUNT(rad.EquipCode)) AS 'RealtimeAlarm'
+        (MAX (ISNULL(rad.Status,0))+ COUNT(rad.RealId)) AS 'RealtimeAlarm'
         FROM TB_BASE_COMPANY_INFO bci
         LEFT JOIN TB_BASE_COMPANY_CERTIFICATE bcc ON bcc.CompanyId=bci.CompanyId
         LEFT JOIN TB_REALTIME_ALARM_DATA rad ON rad.EquipCode LIKE bci.UniqueCode + '%'
-        WHERE bci.CompanyId IS NOT NULL
+        WHERE (rad.Status != 0 OR rad.Status IS NULL)
+        AND LEN(bci.Longt) !=0
+        AND LEN(bci.Lat) != 0
         <if test="searchCompanyName!=null and searchCompanyName!=''">
             AND bci.CompanyName LIKE CONCAT('%',CONCAT(#{searchCompanyName},'%'))
         </if>
@@ -20,9 +23,17 @@
         <if test="searchTypeCode!=null and searchTypeCode!=''">
             AND bci.TypeCode=#{searchTypeCode}
         </if>
-        GROUP BY bci.CompanyId,bci.CompanyName,bci.Longt,bci.Lat,rad.EquipCode
+        GROUP BY bci.CompanyId,bci.CompanyName,bci.Longt,bci.Lat,rad.RealId) AS t
+            WHERE LEN(t.Longt) !=0 AND LEN(t.Lat) != 0
+        <if test='searchAlarm == "0" '>
+            AND (t.CertificateAlarm &lt;= 0 OR t.RealtimeAlarm !=0)
+        </if>
+        <if test='searchAlarm == "1" '>
+            AND (t.CertificateAlarm &gt; 0 AND t.RealtimeAlarm =0)
+        </if>
     </select>
 
+    <!--证书超期-->
     <select id="getCertificateAlarm" resultType="ax.kl.entity.CompanyCertificate">
         SELECT bcc.CertId,bci.CompanyName AS 'CompanyId',sd.DictName AS 'CerType',
                 bcc.CertNo,bcc.StartDate,bcc.Validity
@@ -32,7 +43,8 @@
         WHERE datediff(day,GETDATE(),bcc.Validity) &lt;=0
         AND bcc.CompanyId= #{companyId}
     </select>
-    
+
+    <!--设备实时预警-->
     <select id="getRealtimeAlarm" resultType="ax.kl.entity.RealtimeAlarmData">
         SELECT (CASE WHEN be2.PCode=0 THEN be2.TypeName + '-' ELSE '' END)+be1.TypeName AS 'EquipType',
               rad.EquipCode,rad.AlarmDate,rad.RealValue,rad.Threshold
