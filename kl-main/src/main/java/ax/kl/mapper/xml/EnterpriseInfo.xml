@@ -8,6 +8,7 @@
         </select>
 
         <sql id="queryList">
+
             Area,
             aa.CompanyId,
             CompanyName,
@@ -31,7 +32,8 @@
             ''
             ) AS IndustryCode,
             dd.DictName AS ScaleCode,
-            ff.DictName AS TypeCode
+            ff.DictName AS TypeCode,
+            ii.dictName AS DirectArea
             FROM
             TB_BASE_COMPANY_INFO aa
             LEFT JOIN TB_SYS_DATADICT dd ON aa.ScaleCode = dd.DictId
@@ -39,6 +41,7 @@
             LEFT JOIN TB_SYS_DATADICT cc ON aa.SafeManageRank = cc.DictId
             LEFT JOIN TB_SYS_DATADICT gg ON aa.StandardRank = gg.DictId
             LEFT JOIN TB_SYS_DATADICT hh ON aa.OperatingState = hh.DictId
+            LEFT JOIN TB_SYS_DATADICT ii ON aa.DirectArea = ii.dictId
             WHERE
             aa.CompanyId IS NOT NULL
             <if test="companyName != null and companyName !='' ">
@@ -84,15 +87,46 @@
 
     <!--通过Id查询企业信息-->
     <select id="getCompanyInfo" resultType="ax.kl.entity.CompanyInfo">
-        SELECT 	CompanyId,	UniqueCode,	CompanyName,	Area,	LegalPerson,	ContactWay,(
-        SELECT STUFF((	SELECT	','+dt.DictName	FROM TB_REL_COMPANY_INDUSTRY bcis JOIN TB_SYS_DATADICT dt ON bcis.IndustryId=dt.DictId
-        WHERE	bcis.CompanyId = bci.CompanyId FOR xml path('')	),	1,	1,	'')) as	IndustryCode,
-        sd6.DictName as SafeManageRank,sd5.DictName as	StandardRank,sd4.DictName as OperatingState,	Longt,	Lat,	sd1.DictName as ScaleCode,sd3.DictName as	TypeCode
-        FROM	TB_BASE_COMPANY_INFO bci LEFT JOIN TB_SYS_DATADICT sd1 ON bci.ScaleCode = sd1.DictId
-        LEFT JOIN  TB_SYS_DATADICT sd3 ON bci.TypeCode=sd3.DictId
-        LEFT JOIN  TB_SYS_DATADICT sd4 ON bci.operatingState=sd4.DictId
-        LEFT JOIN  TB_SYS_DATADICT sd5 ON bci.standardRank=sd5.DictId
-        LEFT JOIN  TB_SYS_DATADICT sd6 ON bci.safeManageRank=sd6.DictId
+       SELECT
+	CompanyId,
+	UniqueCode,
+	CompanyName,
+	Area,
+	LegalPerson,
+	ContactWay,
+	(
+		SELECT
+			STUFF(
+				(
+					SELECT
+						',' + dt.DictName
+					FROM
+						TB_REL_COMPANY_INDUSTRY bcis
+					JOIN TB_SYS_DATADICT dt ON bcis.IndustryId = dt.DictId
+					WHERE
+						bcis.CompanyId = bci.CompanyId FOR xml path ('')
+				),
+				1,
+				1,
+				''
+			)
+	) AS IndustryCode,
+	sd6.DictName AS SafeManageRank,
+	sd5.DictName AS StandardRank,
+	sd4.DictName AS OperatingState,
+	Longt,
+	Lat,
+	sd1.DictName AS ScaleCode,
+	sd3.DictName AS TypeCode,
+	sd7.DictName AS DirectArea
+FROM
+	TB_BASE_COMPANY_INFO bci
+LEFT JOIN TB_SYS_DATADICT sd1 ON bci.ScaleCode = sd1.DictId
+LEFT JOIN TB_SYS_DATADICT sd3 ON bci.TypeCode = sd3.DictId
+LEFT JOIN TB_SYS_DATADICT sd4 ON bci.operatingState = sd4.DictId
+LEFT JOIN TB_SYS_DATADICT sd5 ON bci.standardRank = sd5.DictId
+LEFT JOIN TB_SYS_DATADICT sd6 ON bci.safeManageRank = sd6.DictId
+LEFT JOIN TB_SYS_DATADICT sd7 ON bci.DirectArea = sd7.DictId
         WHERE  bci.CompanyId=#{companyId}
     </select>
 
