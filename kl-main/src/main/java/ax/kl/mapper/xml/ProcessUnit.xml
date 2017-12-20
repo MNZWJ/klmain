@@ -5,11 +5,11 @@
 
     <!--通过名称获取工艺单元信息-->
     <select id="getProcessUnitList" resultType="ax.kl.entity.ProcessUnit">
-        SELECT UnitId unitId,UnitName unitName,SourceId sourceId,
-        FEI fEI,DangerRank dangerRank,AfterFEI afterFEI,
-        AfterDangerRank afterDangerRank
-          from TB_BASE_PROCESS_UNIT
-         WHERE 1=1
+        SELECT u.UnitId unitId,u.UnitName unitName,d.SourceId sourceId,
+                u.FEI fEI,u.DangerRank dangerRank,u.AfterFEI afterFEI,
+                u.AfterDangerRank afterDangerRank,o.CompanyName companyName
+          from TB_BASE_PROCESS_UNIT u,TB_BASE_DANGERSOURCE_INFO d,TB_BASE_COMPANY_INFO o
+         WHERE u.SourceId=d.SourceId and d.CompanyId=o.CompanyId
         <if test="unitName != null and unitName !='' ">
             AND UnitName LIKE CONCAT(CONCAT('%',#{unitName}),'%')
         </if>
