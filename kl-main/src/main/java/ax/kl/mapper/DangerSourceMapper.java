@@ -33,12 +33,11 @@ public interface DangerSourceMapper {
     DangerSourceInfo getDSourceInfo(@Param("sourceId") String sourceId);
 
     /**
-     * 获取危险源的化学品信息
-     * @param page
-     * @param sourceId 危险源Id
-     * @return 化学品实体
+     * 获取所有重大危险源
+     * @return 重大危险源
      */
-    List<ChemicalsInfo> getChemicalsInfoListBySourceId(Page page,@Param("sourceId") String sourceId);
+    List<DangerSourceInfo> getAllDSource();
+
     /**
      * 获取危险源的化学品信息
      * @param sourceId 危险源Id

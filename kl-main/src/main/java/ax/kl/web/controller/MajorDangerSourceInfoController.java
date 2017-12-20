@@ -47,14 +47,14 @@ public class MajorDangerSourceInfoController {
     @RequestMapping(value = "/getMajor", method = RequestMethod.GET)
     @ApiOperation(value = "获取重大危险源")
     @ResponseBody
-    public Map<String,Object> getMajor(@RequestParam Map<String, String> param,@RequestParam String companyName, @RequestParam String sourceNmae,@RequestParam String rank) {
+    public Map<String,Object> getMajor(@RequestParam Map<String, String> param) {
         int pageSize=Integer.parseInt(param.get("pageSize"));
         int pageNumber=Integer.parseInt(param.get("pageNumber"));
         Page page=new Page();
         page.setCurrent(pageNumber);
         page.setSize(pageSize);
 
-        Page<DangerSourceInfo> list = MajorDangerSourceInfoService.getMajorInfo(page,companyName,sourceNmae,rank);
+        Page<DangerSourceInfo> list = MajorDangerSourceInfoService.getMajorInfo(page,param);
         Map<String,Object> map=new HashMap<>();
         map.put("total",list.getTotal());
         map.put("rows",list.getRecords());

@@ -91,10 +91,10 @@ function getHazardList() {
     return hazardList;
 }
 
-
-//关闭查询框
 function openOrclose() {
 
+
+//关闭查询框
     $("#tab2").hide();
     var i = 92;
     var interval = setInterval(function () {

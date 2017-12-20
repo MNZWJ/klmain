@@ -37,7 +37,7 @@ public interface HiddenAccidentService {
      * @param hiddenDanger
      * @return
      */
-    Page<HiddenAccident> getHiddenAllInfo(Page page,String dangerSource,String hiddenDanger);
+    Page<HiddenAccident> getHiddenAllInfo(Page page,String dangerSource,String hiddenDanger,String rank,String rectification,String startdate,String enddate);
 
     /**
      * 字节流获取Excel数据并插入
