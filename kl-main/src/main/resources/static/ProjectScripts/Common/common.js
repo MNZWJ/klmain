@@ -28,3 +28,5 @@ var standardRankDictId = "3aed6882-2f35-4949-a9ab-e60a9fb6a049";
 var operatingStateDictId = "2ce1bda6-72ff-43e8-b5e0-ac846e2cc558";
 //证书类型
 var certTypeDictId = "5f56e334-4c7f-4ab6-9dea-94e826a2a5d4";
+//事故类型
+var acccidentTyptDictId = "61c44efb-ec19-4f92-9c47-507dee5b4bbe";

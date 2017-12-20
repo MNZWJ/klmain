@@ -41,7 +41,7 @@
             AND di.CompanyId=#{companyName}
         </if>
         <if test="sourceName != null and sourceName !='' ">
-            AND di.SourceName LIKE CONCAT(CONCAT('%',#{sourceNmae}),'%')
+            AND di.SourceName LIKE '%'+ #{sourceName} + '%'
         </if>
         <if test="rank != null and rank !='' ">
             AND di.Rank = #{rank}

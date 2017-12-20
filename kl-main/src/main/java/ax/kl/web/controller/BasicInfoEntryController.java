@@ -38,7 +38,6 @@ public class BasicInfoEntryController {
     @RequestMapping(value = "/saveData", method = RequestMethod.POST)
     @ResponseBody
     public JsonResult saveData(@RequestParam("cmd") String cmd) {
-        System.out.println("cmd:"+cmd);
         String CompanyId=this.basicInfoEntryService.saveOrUpdateData(cmd);
         return ResultUtil.success(CompanyId);
     }

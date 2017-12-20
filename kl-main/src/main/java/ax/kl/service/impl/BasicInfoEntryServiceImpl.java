@@ -33,9 +33,8 @@ public class BasicInfoEntryServiceImpl implements BasicInfoEntryService {
         CompanyInfo form=(CompanyInfo)JSONObject.toJavaObject(jsstr.getJSONObject("form"),CompanyInfo.class);
         List<CompanyInfo> processTable=(List<CompanyInfo>)JSONObject.parseArray(jsstr.getString("processTable"),CompanyInfo.class);
         List<CompanyInfo> certTable=(List<CompanyInfo>)JSONObject.parseArray(jsstr.getString("certTable"),CompanyInfo.class);
-        if("".equals(form.getCompanyId()) ||form.getCompanyId()==null){
+        if("".equals(processTable.get(0).getCompanyId()) ||processTable.get(0).getCompanyId()==null){
             String CompanyId= UUID.randomUUID().toString();
-            System.out.println("CompanyId:"+CompanyId);
             form.setCompanyId(CompanyId);
             this.basicInfoEntryMapper.saveData(form);
             String IndustryCode=form.getIndustryCode();
@@ -52,6 +51,7 @@ public class BasicInfoEntryServiceImpl implements BasicInfoEntryService {
             return CompanyId;
         }else{
             String companyId = form.getCompanyId();
+            form.setCompanyId(companyId);
             String IndustryCode=form.getIndustryCode();
             if(IndustryCode!=null) {
                 String[] industry = IndustryCode.split(",");

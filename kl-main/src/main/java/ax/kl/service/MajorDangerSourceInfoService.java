@@ -2,8 +2,10 @@ package ax.kl.service;
 
 import ax.kl.entity.DangerSourceInfo;
 import com.baomidou.mybatisplus.plugins.Page;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface MajorDangerSourceInfoService {
     /**
@@ -11,7 +13,7 @@ public interface MajorDangerSourceInfoService {
      * @param
      * @return
      */
-    Page<DangerSourceInfo> getMajorInfo(Page page, String companyName, String soureName,String rank);
+    Page<DangerSourceInfo> getMajorInfo(Page page,  Map<String, String> param);
 
     /**
      * 获取待导出的危险源总数

@@ -31,7 +31,7 @@ public interface BasicInfoEntryService {
 
 
     /**
-     * 删除人员
+     * 删除数据
      */
     void delCompanyInfo(String[] idLists);
 
