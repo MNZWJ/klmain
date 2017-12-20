@@ -2,12 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ax.kl.mapper.DangerSourceMapper">
 
+    <!--危险源化学品信息-->
     <resultMap id="ChemicalsInfo" type="ax.kl.entity.ChemicalsInfo">
         <id column="ChemId" property="chemId"/>
         <result column="ChemName" property="chemName"/>
         <result column="CAS" property="cAS"/>
     </resultMap>
 
+    <!--危险源坐标-->
     <select id="getSourceCoordinate" resultType="ax.kl.entity.DangerSourceInfo">
         SELECT d.SourceId,d.SourceName,d.Longt,d.Lat,da.DictName AS 'Rank'
         FROM TB_BASE_DANGERSOURCE_INFO d JOIN TB_BASE_COMPANY_INFO c ON d.CompanyId=c.CompanyId
@@ -23,6 +25,7 @@
         </if>
     </select>
 
+    <!--危险源详细信息-->
     <select id="getDSourceInfo" resultType="ax.kl.entity.DangerSourceInfo">
         SELECT d.SourceId,d.UniqueCode,c.CompanyName AS 'CompanyId',d.SourceName,d.RValue,sd.DictName AS 'Rank',
         d.RecordNo,d.Validity,d1.DictName AS 'Status',d.Longt,d.Lat,d.OutPersonCount,d.DeathToll,d.RecordDate,
@@ -38,15 +41,15 @@
           FROM TB_BASE_DANGERSOURCE_INFO
     </select>
 
+    <!--危险源化学品信息-->
     <select id="getChemicalsInfoListBySourceId" resultMap="ChemicalsInfo">
         SELECT ci.* FROM TB_BASE_DANGERSOURCE_INFO di
-        JOIN TB_BASE_PROCESS_UNIT pu ON di.SourceId=pu.SourceId
-        JOIN TB_BASE_EQUIP_INFO ei ON pu.UnitId=ei.UnitId
-        JOIN TB_REL_EQUIP_CHEMICAL cc ON ei.EquipId=cc.EquipId
-        JOIN TB_BASE_CHEMICAL_INFO ci ON cc.ChemId=ci.ChemId
+        JOIN TB_REL_DRESOURCE_CHEMICAL dc on dc.SourceId=di.SourceId
+        JOIN TB_BASE_CHEMICAL_INFO ci ON ci.ChemId=dc.ChemId
         WHERE di.SourceId=#{sourceId}
     </select>
 
+    <!--重大危险源各等级数量-->
     <select id="getSourceRankCount" resultType="java.util.Map">
         SELECT ISNULL(COUNT(di.SourceId),0) AS num,d.DictId,d.DictName
         FROM TB_BASE_DANGERSOURCE_INFO di
@@ -56,6 +59,7 @@
         ORDER BY d.DictOrder
     </select>
 
+    <!--可能引发的事故类型数量-->
     <select id="getDSAccidenType" resultType="java.util.Map">
         SELECT ISNULL(COUNT(di.SourceId),0) AS num,sd.DictName FROM TB_REL_DRESOURCE_ACCIDENTYPE da
         JOIN TB_BASE_DANGERSOURCE_INFO di ON da.SourceId=di.SourceId
@@ -64,7 +68,8 @@
         GROUP BY sd.DictId,sd.DictName,sd.DictOrder
         ORDER BY sd.DictOrder
     </select>
-    
+
+    <!--各区域重大危险源分布数量-->
     <select id="getDSDistribution" resultType="java.util.Map">
         SELECT sd2.DictId AS typeId,sd2.DictName AS typeName,sd2.dictOrder,'等级' AS stack,
         STUFF((SELECT ',' + CAST (COUNT (di.SourceId) AS VARCHAR)
@@ -93,6 +98,7 @@
         ORDER BY DictOrder
     </select>
 
+    <!--各行业重大危险源数量-->
     <select id="getDSIndustry" resultType="java.util.Map">
         SELECT sd2.DictId AS typeId,sd2.DictName AS typeName,sd2.dictOrder,'等级' AS stack,
         STUFF((SELECT ',' + CAST (COUNT (di.SourceId) AS VARCHAR)
