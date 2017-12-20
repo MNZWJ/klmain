@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ax.kl.mapper.DangerousAlarmStatisticMapper">
+
+    <!--获取今日报警类型占比-->
+    <select id="getAlarmTypeDay" resultType="java.util.Map">
+        SELECT sum(CASE
+	WHEN ad.RealId is not null THEN 1
+	ELSE 0
+END
+) as TypeNum,at.TypeName FROM TB_REALTIME_ALARM_DATA ad
+RIGHT JOIN TB_BASE_ALARM_TYPE at ON (at.TypeCode LIKE ad.AlarmCode+'%' AND ad.TargetCode='0')
+GROUP BY at.TypeName
+union
+SELECT sum(CASE
+	WHEN ad.RealId is not null THEN 1
+	ELSE 0
+END
+),mt.TargetName FROM TB_REALTIME_ALARM_DATA ad
+RIGHT JOIN TB_BASE_MONITOR_TARGET mt ON (ad.TargetCode LIKE mt.TargetCode+'%'  )
+WHERE len( mt.LevelCode)=6
+GROUP BY mt.TargetName
+    </select>
+    <!--获取今日企业报警次数-->
+    <select id="getCompanyAlarmData" resultType="java.util.Map">
+        SELECT ci.UniqueCode,ci.CompanyId,ci.CompanyName,SUM(CASE
+	WHEN ad.RealId is not null THEN 1
+	ELSE 0
+END
+) as AlarmNum FROM TB_BASE_COMPANY_INFO ci
+LEFT JOIN TB_REALTIME_ALARM_DATA ad on ad.EquipCode LIKE ci.UniqueCode+'%'
+GROUP BY ci.UniqueCode,ci.CompanyId,ci.CompanyName ORDER BY AlarmNum desc
+    </select>
+
+
+    <!--查询今日设备类型报警统计-->
+    <select id="getEquipTypeAlarmToday" resultType="java.util.Map" >
+        SELECT
+        mt.TargetName,
+	stuff((
+SELECT
+	',' + CAST ( SUM ( CASE WHEN ad.RealId IS NOT NULL THEN 1 ELSE 0 END ) AS VARCHAR )
+FROM
+	TB_REALTIME_ALARM_DATA ad
+	RIGHT JOIN TB_BASE_EQUIP_TYPE et ON ( ad.EquipType LIKE et.TypeCode + '%' AND ad.TargetCode LIKE mt.TargetCode+ '%' )
+WHERE
+	len( et.LeveCode ) = 6
+GROUP BY
+	et.TypeCode,
+	et.TypeName,
+	et.TypeOrder
+ORDER BY
+	et.TypeOrder FOR xml path ( '' )),
+	1,
+	1,
+	''
+	) as numList
+FROM
+	TB_BASE_MONITOR_TARGET mt
+	WHERE len(mt.LevelCode)=6
+    </select>
+	<!--获取设备类型-->
+	<select id="getEquipTypeList" resultType="java.util.Map">
+		SELECT TypeName FROM TB_BASE_EQUIP_TYPE et WHERE len(et.LeveCode)=6 ORDER BY et.TypeOrder
+
+	</select>
+	
+	<!--获取月度报警数据-->
+	<select id="getAlarmTypeMonth" resultType="java.util.Map" >
+		SELECT mt.TargetName,da.AlarmCount,da.AlarmDate
+FROM TB_STATIS_DAY_ALARM da
+JOIN TB_BASE_MONITOR_TARGET mt on da.AlarmType LIKE mt.TargetCode +'%'
+WHERE Len(mt.LevelCode)=6 AND da.IDCode='ZB'
+union
+SELECT at.TypeName,da.AlarmCount,da.AlarmDate
+FROM TB_STATIS_DAY_ALARM da
+JOIN TB_BASE_ALARM_TYPE at on da.AlarmType LIKE at.TypeCode +'%'
+WHERE Len(at.TypeCode)=6 AND da.IDCode='ZT'
+	</select>
+
+
+	<!--获取月度报警类型-->
+	<select id="getAlarmTypeList" resultType="java.util.Map" >
+		SELECT at.TypeName FROM TB_BASE_ALARM_TYPE at where len([at].TypeCode)=6
+			UNION ALL
+		SELECT mt.TargetName FROM TB_BASE_MONITOR_TARGET mt where len(mt.LevelCode)=6
+	</select>
+
+	<!--本月行业报警统计-->
+	<select id="getIndustryAlarmMonth" resultType="java.util.Map">
+		SELECT
+		sda.DictName,
+	STUFF(
+		(
+			SELECT
+				',' + taba.num
+			FROM
+				(
+					SELECT
+						CAST (
+							isnull(ma.AlarmNum, 0) AS VARCHAR
+						) AS num
+					FROM
+						TB_STATIS_INDUSTRY_MONTH_ALARM ma
+					RIGHT JOIN TB_BASE_ALARM_TYPE AT ON (
+						[at].TypeCode LIKE ma.AlarmType + '%'
+						AND ma.IDCode = 'ZT' AND ma.IndustryId=sda.DictId
+						AND ma.MonthDay=cast(year(getdate()) as Varchar)+'-'+cast( datename(month,getdate()) as Varchar)
+					)
+					WHERE
+						LEN([at].TypeCode) = 6
+					UNION ALL
+						SELECT
+							CAST (
+								isnull(ma.AlarmNum, 0) AS VARCHAR
+							)
+						FROM
+							TB_STATIS_INDUSTRY_MONTH_ALARM ma
+						RIGHT JOIN TB_BASE_MONITOR_TARGET mt ON (
+							mt.TargetCode LIKE ma.AlarmType + '%'
+							AND ma.IDCode = 'ZB' AND ma.IndustryId=sda.DictId
+							AND ma.MonthDay=cast(year(getdate()) as Varchar)+'-'+cast( datename(month,getdate()) as Varchar)
+						)
+						WHERE
+							LEN(mt.LevelCode) = 6
+				) AS taba FOR xml path ('')
+		),
+		1,
+		1,
+		''
+	) AS DataNum
+
+FROM TB_SYS_DATADICT sda WHERE sda.TypeId='29485cb6-bf2e-4892-ab3a-083ffbb2e6f9'
+	</select>
+
+	<!--本月行政区域报警情况统计-->
+	<select id="getAreaAlarmMonth" resultType="java.util.Map">
+		SELECT
+	dataTable.data,
+	STUFF(
+		(
+			SELECT
+				',' + CAST (
+					isnull(ma.AlarmCount, 0) AS VARCHAR
+				)
+			FROM
+				TB_SYS_DATADICT sd
+			LEFT JOIN TB_STATIS_AREA_MONTH_ALARM ma ON (
+				sd.DictId = ma.Area
+				AND ma.MonthDate = dataTable.data
+			)
+			WHERE
+				sd.TypeId = '8b4524ce-15cf-404a-8182-a7e8a8d68343'
+			GROUP BY
+				sd.DictOrder,
+				ma.AlarmCount
+			ORDER BY
+				sd.DictOrder FOR xml path ('')
+		),
+		1,
+		1,
+		''
+	) AS alarmNum
+FROM
+	(
+		SELECT
+			CAST (YEAR(getdate()) AS VARCHAR) + '-' + CAST (
+				datename(MONTH, getdate()) AS VARCHAR
+			) AS data
+		UNION
+			SELECT
+				CAST (datename(year,DATEADD(month, -1, getdate())) AS VARCHAR) + '-' + CAST (
+					datename(month,DATEADD(month, -1, getdate())) AS VARCHAR
+				)
+
+	)as dataTable
+ORDER BY dataTable.data desc
+	</select>
+
+
+
+
+</mapper>

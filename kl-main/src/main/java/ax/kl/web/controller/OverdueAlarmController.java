@@ -32,7 +32,7 @@ public class OverdueAlarmController {
     @ApiOperation(value = "/IndexView",tags = "超期运行预警主页面")
     @RequestMapping("/IndexView")
     public String doView(){
-        return "/OverdueAlarm/IndexView";
+        return "/OverdueAlarm/OverdueAlarm";
     }
 
     @ApiOperation(value = "/getAlarmCompanyList",tags = "获取企业预警集合")
@@ -42,6 +42,7 @@ public class OverdueAlarmController {
         String searchCompanyName = "";
         String searchScaleCode = "";
         String searchTypeCode = "";
+        String searchAlarm = "";
         if (map.containsKey("searchCompanyName")){
             searchCompanyName = map.get("searchCompanyName");
         }
@@ -51,7 +52,10 @@ public class OverdueAlarmController {
         if (map.containsKey("searchTypeCode")){
             searchTypeCode = map.get("searchTypeCode");
         }
-        return overdueAlarmService.getAlarmCompanyList(searchCompanyName,searchScaleCode,searchTypeCode);
+        if (map.containsKey("searchAlarm")){
+            searchAlarm = map.get("searchAlarm");
+        }
+        return overdueAlarmService.getAlarmCompanyList(searchCompanyName,searchScaleCode,searchTypeCode,searchAlarm);
     }
 
     @ApiOperation(value = "/getCertificateAlarm",tags = "获取企业超期证书")

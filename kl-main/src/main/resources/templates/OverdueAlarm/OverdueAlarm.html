@@ -99,11 +99,20 @@
                                     </tr>
                                     <tr>
                                         <td class="tdLable">
+                                            <span style="height: 30px; color: #333333; font-weight: bold; font-size: 12px;">是否预警：</span>
+                                        </td>
+                                        <td>
+                                            <input id="alarm" class="mini-combobox" style="width: 115px;"
+                                                   allowinput="false" shownullitem="true"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tdLable">
                                             <span style="height: 30px; color: #333333; font-weight: bold; font-size: 12px;">企业名称：</span>
                                         </td>
                                         <td>
                                             <input id="searchCompanyName" class="mini-combobox" style="width: 115px;"
-                                                   textfield="companyName" valuefield="companyName" allowInput="true"
+                                                   textfield="companyName" valuefield="companyName"
                                                    allowinput="false" shownullitem="true"/>
                                         </td>
                                     </tr>
@@ -191,7 +200,7 @@
                     <h4 class="panel-title">
                         <a data-toggle="collapse" data-parent="#accordion"
                            href="#cerInfo">
-                            证书运行预警
+                            证书到期报警
                         </a>
                     </h4>
                 </div>
@@ -206,7 +215,7 @@
                     <h4 class="panel-title">
                         <a data-toggle="collapse" data-parent="#accordion"
                            href="#equipInfo">
-                            设备实时预警
+                            设备运行报警
                         </a>
                     </h4>
                 </div>
@@ -232,6 +241,6 @@
 <script src="../../ProjectScripts/Common/common.js"></script>
 <script src="../../ProjectScripts/Common/MapConfig.js"></script>
 <script src="../../ProjectScripts/Common/convertor_offline.js"></script>
-<script src="../../ProjectScripts/OverdueAlarm/IndexView.js"></script>
+<script src="../../ProjectScripts/OverdueAlarm/OverdueAlarm.js"></script>
 </body>
 </html>

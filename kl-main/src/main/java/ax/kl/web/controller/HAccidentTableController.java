@@ -41,9 +41,31 @@ public class HAccidentTableController {
         int pageNumber=Integer.parseInt(param.get("pageNumber"));
         page.setCurrent(pageNumber);
         page.setSize(pageSize);
-        String hiddenDanger = param.get("hiddenDanger");
-        String dangerSource = param.get("dangerSource");
-        Page<HiddenAccident> list=hiddenAccidentService.getHiddenAllInfo(page,dangerSource,hiddenDanger);
+        String hiddenDanger ="";
+        String dangerSource ="";
+        String rank ="";
+        String rectification ="";
+        String startdate ="";
+        String enddate ="";
+        if (param.containsKey("hiddenDanger")){
+            hiddenDanger = param.get("hiddenDanger");
+        }
+        if (param.containsKey("dangerSource")){
+            dangerSource = param.get("dangerSource");
+        }
+        if (param.containsKey("rank")){
+            rank = param.get("rank");
+        }
+        if (param.containsKey("rectification")){
+            rectification = param.get("rectification");
+        }
+        if (param.containsKey("startdate")){
+            startdate = param.get("startdate");
+        }
+        if (param.containsKey("enddate")){
+            enddate = param.get("enddate");
+        }
+        Page<HiddenAccident> list=hiddenAccidentService.getHiddenAllInfo(page,dangerSource,hiddenDanger,rank,rectification,startdate,enddate);
         Map<String,Object> map=new HashMap<>();
         map.put("total",list.getTotal());
         map.put("rows",list.getRecords());

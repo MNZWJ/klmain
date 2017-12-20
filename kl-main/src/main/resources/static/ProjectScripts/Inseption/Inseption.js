@@ -688,7 +688,7 @@ function loadIndustryCompany(){
                                 axisLabel: {
                                     textStyle: {
                                         color: '#fff',
-                                        fontSize: 20
+                                        fontSize: 18
                                     }
                                 },
 
@@ -705,9 +705,10 @@ function loadIndustryCompany(){
                                 axisLabel: {
                                     textStyle: {
                                         color: '#fff',
-                                        fontSize: 20
+                                        fontSize: 18
                                     }
                                 },
+                                minInterval: 1,
                                 axisLine:{
                                     lineStyle:{
                                         color:'#fff'
@@ -716,6 +717,10 @@ function loadIndustryCompany(){
                             }
                         ],
                         dataZoom: [
+                            {
+                                type:'inside',
+
+                            },
                             {
                                 show: "true",
                                 start: 0,
@@ -823,6 +828,10 @@ function loadDirectAreaCompany(){
                             }
                         ],
                         dataZoom: [
+                            {
+                                type:'inside',
+
+                            },
                             {
                                 show: "true",
                                 start: 0,

@@ -17,7 +17,7 @@
         TB_BASE_DANGERSOURCE_INFO di
         JOIN TB_BASE_COMPANY_INFO ci ON di.CompanyId = ci.CompanyId
         LEFT JOIN TB_BASE_HIDDEN_DANGER hd ON (di.SourceId= hd.DangerSource AND hd.Rectification='已整改')
-        LEFT JOIN TB_REALTIME_ALARM_DATA ad ON  (ad.UniqueCode LIKE di.UniqueCode+'%' AND ad.Status='1')
+        LEFT JOIN TB_REALTIME_ALARM_DATA ad ON  (ad.EquipCode LIKE di.UniqueCode+'%' AND ad.Status='1')
         WHERE
         di.SourceId IS NOT NULL
 
@@ -46,10 +46,10 @@
         SELECT
 	pu.UnitName,pu.UnitId,
 
-	SUM(case WHEN ad.IDCode='ZT' THEN 1 ELSE 0 END) AS qiti
+	SUM(case WHEN ad.TargetCode='0' THEN 1 ELSE 0 END) AS qiti
 FROM
 	TB_BASE_PROCESS_UNIT pu
-LEFT JOIN TB_REALTIME_ALARM_DATA ad ON ad.UniqueCode LIKE pu.UniqueCode+'%'
+LEFT JOIN TB_REALTIME_ALARM_DATA ad ON ad.EquipCode LIKE pu.UniqueCode+'%'
  WHERE
         pu.SourceId = #{sourceId}
 GROUP BY pu.UnitName,pu.UnitId

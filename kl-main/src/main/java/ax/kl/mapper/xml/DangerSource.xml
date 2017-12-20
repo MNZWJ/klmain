@@ -76,20 +76,20 @@
         ORDER BY sd.DictOrder FOR xml path ('')),1,1,'') AS numList
         FROM TB_SYS_DATADICT sd2
         WHERE sd2.TypeId = '8ea8562f-e58b-461c-9485-a967bc5e29ca'
-        UNION
-        SELECT sd2.DictId AS typeId,sd2.DictName AS typeName,sd2.dictOrder,'类型' AS stack,
-        STUFF((SELECT ','+ CAST(COUNT(rda.RelationId) AS VARCHAR)
-        FROM TB_REL_DRESOURCE_ACCIDENTYPE rda
-        JOIN TB_BASE_DANGERSOURCE_INFO di ON rda.SourceId=di.SourceId
-        JOIN TB_BASE_COMPANY_INFO ci ON di.CompanyId=ci.CompanyId
-        JOIN TB_SYS_DATADICT sd ON rda.TypeId=sd.DictId
-        AND rda.TypeId=sd2.DictId
-        RIGHT JOIN TB_SYS_DATADICT sd1 ON sd1.DictId=ci.DirectArea
-        WHERE sd1.TypeId = '8b4524ce-15cf-404a-8182-a7e8a8d68343'
-        GROUP BY sd1.DictId FOR xml path('')),1,1,'') AS numList
-        FROM TB_SYS_DATADICT sd2
-        WHERE sd2.TypeId = '61c44efb-ec19-4f92-9c47-507dee5b4bbe'
-        GROUP BY sd2.DictId,sd2.DictName,sd2.DictOrder
+--         UNION
+--         SELECT sd2.DictId AS typeId,sd2.DictName AS typeName,sd2.dictOrder,'类型' AS stack,
+--         STUFF((SELECT ','+ CAST(COUNT(rda.RelationId) AS VARCHAR)
+--         FROM TB_REL_DRESOURCE_ACCIDENTYPE rda
+--         JOIN TB_BASE_DANGERSOURCE_INFO di ON rda.SourceId=di.SourceId
+--         JOIN TB_BASE_COMPANY_INFO ci ON di.CompanyId=ci.CompanyId
+--         JOIN TB_SYS_DATADICT sd ON rda.TypeId=sd.DictId
+--         AND rda.TypeId=sd2.DictId
+--         RIGHT JOIN TB_SYS_DATADICT sd1 ON sd1.DictId=ci.DirectArea
+--         WHERE sd1.TypeId = '8b4524ce-15cf-404a-8182-a7e8a8d68343'
+--         GROUP BY sd1.DictId FOR xml path('')),1,1,'') AS numList
+--         FROM TB_SYS_DATADICT sd2
+--         WHERE sd2.TypeId = '61c44efb-ec19-4f92-9c47-507dee5b4bbe'
+--         GROUP BY sd2.DictId,sd2.DictName,sd2.DictOrder
         ORDER BY DictOrder
     </select>
 
@@ -104,18 +104,18 @@
         ORDER BY sd.DictOrder FOR xml path ('')),1,1,'') AS numList
         FROM TB_SYS_DATADICT sd2
         WHERE sd2.TypeId = '8ea8562f-e58b-461c-9485-a967bc5e29ca'
-        UNION
-        SELECT sd2.DictId AS typeId,sd2.DictName AS typeName,sd2.dictOrder,'类型' AS stack,
-        STUFF((SELECT ',' + CAST (COUNT(da.SourceId) AS VARCHAR)
-        FROM TB_SYS_DATADICT sd
-        LEFT JOIN TB_REL_COMPANY_INDUSTRY ci ON ci.IndustryId = sd.DictId
-        LEFT JOIN TB_BASE_DANGERSOURCE_INFO di ON ci.CompanyId=di.CompanyId
-        LEFT JOIN TB_REL_DRESOURCE_ACCIDENTYPE da ON (da.SourceId=di.SourceId AND da.TypeId=sd2.DictId)
-        WHERE sd.TypeId = '29485cb6-bf2e-4892-ab3a-083ffbb2e6f9'
-        GROUP BY sd.DictId,sd.DictName,sd.DictOrder
-        ORDER BY sd.DictOrder FOR xml path ('')),1,1,'') AS NumList
-        FROM TB_SYS_DATADICT sd2
-        WHERE sd2.TypeId = '61c44efb-ec19-4f92-9c47-507dee5b4bbe'
+--         UNION
+--         SELECT sd2.DictId AS typeId,sd2.DictName AS typeName,sd2.dictOrder,'类型' AS stack,
+--         STUFF((SELECT ',' + CAST (COUNT(da.SourceId) AS VARCHAR)
+--         FROM TB_SYS_DATADICT sd
+--         LEFT JOIN TB_REL_COMPANY_INDUSTRY ci ON ci.IndustryId = sd.DictId
+--         LEFT JOIN TB_BASE_DANGERSOURCE_INFO di ON ci.CompanyId=di.CompanyId
+--         LEFT JOIN TB_REL_DRESOURCE_ACCIDENTYPE da ON (da.SourceId=di.SourceId AND da.TypeId=sd2.DictId)
+--         WHERE sd.TypeId = '29485cb6-bf2e-4892-ab3a-083ffbb2e6f9'
+--         GROUP BY sd.DictId,sd.DictName,sd.DictOrder
+--         ORDER BY sd.DictOrder FOR xml path ('')),1,1,'') AS NumList
+--         FROM TB_SYS_DATADICT sd2
+--         WHERE sd2.TypeId = '61c44efb-ec19-4f92-9c47-507dee5b4bbe'
         ORDER BY DictOrder
     </select>
 </mapper>

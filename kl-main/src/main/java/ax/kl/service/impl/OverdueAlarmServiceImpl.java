@@ -29,8 +29,8 @@ public class OverdueAlarmServiceImpl implements OverdueAlarmService {
      * @return
      */
     @Override
-    public List<CompanyInfo> getAlarmCompanyList(String searchCompanyName,String searchScaleCode,String searchTypeCode){
-        return overdueAlarmMapper.getAlarmCompanyList(searchCompanyName,searchScaleCode,searchTypeCode);
+    public List<CompanyInfo> getAlarmCompanyList(String searchCompanyName,String searchScaleCode,String searchTypeCode,String searchAlarm){
+        return overdueAlarmMapper.getAlarmCompanyList(searchCompanyName,searchScaleCode,searchTypeCode,searchAlarm);
     }
 
     /**

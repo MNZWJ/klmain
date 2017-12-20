@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ax.kl.mapper.MonitorTargetMapper">
+    <!--获取检测指标树-->
+    <select id="getTargetTree" resultType="ax.kl.entity.TreeModel">
+        SELECT TargetCode AS Id,PCode AS parentId,TargetName AS text,LevelCode AS code FROM TB_BASE_MONITOR_TARGET ORDER BY LevelCode
+    </select>
+
+    <!--获取检测指标树-->
+    <select id="getTargetTable" resultType="ax.kl.entity.MonitorTarget">
+        SELECT * FROM TB_BASE_MONITOR_TARGET WHERE PCode = #{pCode} ORDER BY LevelCode ASC
+    </select>
+
+    <!--验证编码存在-->
+    <select id="validateCode" resultType="int">
+        SELECT COUNT(*) FROM TB_BASE_MONITOR_TARGET WHERE TargetCode = #{targetCode}
+    </select>
+
+    <!--插入指标-->
+    <insert id="insertTarget" parameterType="ax.kl.entity.MonitorTarget">
+        INSERT INTO TB_BASE_MONITOR_TARGET (TargetCode,TargetName,PCode,LevelCode,Unit)
+        VALUES(#{targetCode},#{targetName},#{pCode},#{levelCode},#{unit})
+    </insert>
+
+    <!--修改指标-->
+    <update id="updateTarget" parameterType="ax.kl.entity.MonitorTarget">
+        UPDATE TB_BASE_MONITOR_TARGET SET TargetName = #{targetName},Unit=#{unit} WHERE TargetCode=#{targetCode}
+    </update>
+
+    <!--删-->
+    <update id="deleteTarget">
+        DELETE  FROM TB_BASE_MONITOR_TARGET  WHERE TargetCode IN
+        <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+</mapper>

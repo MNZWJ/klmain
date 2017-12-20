@@ -7,7 +7,7 @@ $(function () {
     $("#treeDiv").height(scanHeight);
     $.ajax({
         type: 'get',
-        url: '/EquipType/getEquipTypeTreeList',
+        url: '/MonitorTarget/getTargetTree',
         async: false,
         dataType: 'json',
         contentType : 'application/json;charset=utf-8',
@@ -21,7 +21,7 @@ $(function () {
                 onNodeSelected: function (event, data) {
                     treeNode = $("#tree").treeview("getSelected");
                     nodeId = data.id;
-                    $("#equipTable").bootstrapTable("refresh", {})
+                    $("#targetTable").bootstrapTable("refresh", {})
                 }
             });
             nodeId = result[0].id;
@@ -30,18 +30,18 @@ $(function () {
         }
     });
 
-    $('#equipTable').bootstrapTable({
+    $('#targetTable').bootstrapTable({
         height: scanHeight,
         striped: true,      //是否显示行间隔色
         cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
         method: 'get',//请求方式
-        url: '/EquipType/getEquipTypeTable',//请求url
+        url: '/MonitorTarget/getTargetTable',//请求url
         pagination: 'true',//显示分页条
         paginationLoop: 'true',//启用分页条无限循环功能
         pageNumber: 1,                       //初始化加载第一页，默认第一页
         pageSize: 10,                       //每页的记录行数（*）
         pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
-        toolbar: '#equipToolbar',                //工具按钮用哪个容器
+        toolbar: '#targetToolbar',                //工具按钮用哪个容器
         clickToSelect: false,//是否启用点击选中行
         undefinedText: '-', //当数据为 undefined 时显示的字符
         sidePagination: 'server',//'server'或'client'服务器端分页
@@ -51,8 +51,7 @@ $(function () {
         queryParamsType: '', //默认值为 'limit' ,在默认情况下 传给服务端的参数为：offset,limit,sort
         // 设置为 ''  在这种情况下传给服务器的参数为：pageSize,pageNumber
         sortStable: true,//设置为 true 将获得稳定的排序，我们会添加_position属性到 row 数据中。
-        selectItemName: 'typeName',
-        idField: 'typeCode',
+        idField: 'targetCode',
         onLoadError: function () {
             BootstrapDialog.alert({
                 title: '错误',
@@ -65,15 +64,15 @@ $(function () {
             });
         },
         onClickRow:function(row, $element){
-            $("#equipTable").bootstrapTable("uncheckAll");
-            $("#equipTable").bootstrapTable("checkBy",{field:'typeCode',values:[row.typeCode]})
+            $("#targetTable").bootstrapTable("uncheckAll");
+            $("#targetTable").bootstrapTable("checkBy",{field:'targetCode',values:[row.targetCode]})
         },
         columns: [
             {
                 title: '序号',
-                width: '10%',
+                width: '5%',
                 formatter: function (value, row, index) {
-                    var page = $('#equipTable').bootstrapTable('getOptions');
+                    var page = $('#targetTable').bootstrapTable('getOptions');
                     return (page.pageNumber - 1) * page.pageSize + index + 1;
                 }
             }
@@ -84,18 +83,25 @@ $(function () {
             },
             {
 
-                field: 'typeName',
-                title: '设备类型',
-                halign: 'center',
-                align: 'center',
-                width: '50%'
-            },
-            {
-                field: 'typeCode',
-                title: '设备类型编码',
+                field: 'targetName',
+                title: '指标名称',
                 halign: 'center',
                 align: 'center',
                 width: '40%'
+            },
+            {
+                field: 'targetCode',
+                title: '指标编码',
+                halign: 'center',
+                align: 'center',
+                width: '25%'
+            },
+            {
+                field: 'unit',
+                title: '指标编码',
+                halign: 'center',
+                align: 'center',
+                width: '25%'
             }
         ]
     });
@@ -105,49 +111,45 @@ $(function () {
     $("#btn_save").on("click", function () {
         //获取表单对象
         var type=$("#myModalLabel").text();
-        var bootstrapValidator = $("#equipForm").data('bootstrapValidator');
+        var bootstrapValidator = $("#targetForm").data('bootstrapValidator');
         //手动触发验证
         bootstrapValidator.validate();
         if (bootstrapValidator.isValid()) {
             //表单提交的方法、比如ajax提交
-            var eqList = $('#equipForm').serializeArray();
-            var eq = {};
-            $.each(eqList, function () {
-                eq[this.name] = this.value
+            var tarList = $('#targetForm').serializeArray();
+            var tar = {};
+            $.each(tarList, function () {
+                tar[this.name] = this.value
             });
             $.ajax({
                 type: 'post',
-                url: '/EquipType/saveEquipType',
-                data: JSON.stringify(eq),
+                url: '/MonitorTarget/saveTarget',
+                data: JSON.stringify(tar),
                 contentType: 'application/json',
                 success: function (result) {
-                    if (result) {
-                        BootstrapDialog.alert({
-                            title: "提示",
-                            message: "保存成功！",
-                            size: BootstrapDialog.SIZE_SMALL,
-                            type: BootstrapDialog.TYPE_SUCCESS, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                             callback: function () {
-                                var singleNode = {
-                                     text: eq.typeName,
-                                     id: eq.typeCode,
-                                     code: eq.leveCode
-                                 };
-                                if (type=="新增") {
-                                    $("#tree").treeview("addNode", [singleNode, treeNode]);
-                                }else {
-                                    var node =$('#tree').treeview('getNode',eq.typeCode);
-                                    $('#tree').treeview('updateNode', [node, singleNode, {silent: true}]);
-                                }
-                                 $('#myModal').modal('hide');
-                                 $("#equipTable").bootstrapTable("refresh");
-                             }
-                        });
-                    }
+                    BootstrapDialog.alert({
+                        title: "提示",
+                        message: "保存成功！",
+                        size: BootstrapDialog.SIZE_SMALL,
+                        type: BootstrapDialog.TYPE_SUCCESS, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+                        callback: function () {
+                            var singleNode = {
+                                text: tar.targetName,
+                                id: tar.targetCode,
+                                code: tar.levelCode
+                            };
+                            if (type=="新增") {
+                                $("#tree").treeview("addNode", [singleNode, treeNode]);
+                            }else {
+                                var node =$('#tree').treeview('getNode',tar.targetCode);
+                                $('#tree').treeview('updateNode', [node, singleNode, {silent: true}]);
+                            }
+                            $('#myModal').modal('hide');
+                            $("#targetTable").bootstrapTable("refresh");
+                        }
+                    });
                 },
                 error: function () {
-
-
                     BootstrapDialog.alert({
                         title: '错误',
                         message: '保存失败！',
@@ -172,37 +174,37 @@ $(function () {
 //模态窗关闭事件
     $('#myModal').on('hidden.bs.modal', function () {
         //清空表单
-        $(':input', '#equipForm')
+        $(':input', '#targetForm')
             .not(':button, :submit, :reset')
             .val('')
             .removeAttr('checked')
             .removeAttr('selected');
-        $("#equipForm").data('bootstrapValidator').destroy();
-        $('#equipForm').data('bootstrapValidator', null);
+        $("#targetForm").data('bootstrapValidator').destroy();
+        $('#targetForm').data('bootstrapValidator', null);
         formValidator();
 
-        if($('#typeCode').attr("readonly")!=undefined){
-            $('#typeCode').removeAttr("readonly");
+        if($('#targetCode').attr("readonly")!=undefined){
+            $('#targetCode').removeAttr("readonly");
         }
     });
 });
 
 //表格返回参数方法
 function queryParams(pageReqeust) {
-    pageReqeust.nodeId = nodeId;
+    pageReqeust.pCode = nodeId;
     return pageReqeust;
 }
 
 //form验证规则
 function formValidator() {
 //表单验证
-    $("#equipForm").bootstrapValidator({
+    $("#targetForm").bootstrapValidator({
         /**
          * 表单域配置
          */
         fields: {
             //多个重复
-            typeCode: {
+            targetCode: {
                 //隐藏或显示 该字段的验证
                 enabled: true,
                 threshold: 0,
@@ -212,35 +214,53 @@ function formValidator() {
                 // 定义每个验证规则
                 validators: {
                     notEmpty: {
-                        message: '设备名称编码不能为空'
+                        message: '指标编码不能为空'
                     },
                     stringLength: {
                         min: 0,
                         max: 10,
-                        message: '设备名称编码过长'
+                        message: '指标编码过长'
                     },
                     regexp: {
                         regexp: /[^\]@=/'\"$%&^*{}<>\\\\[:\;]+/,
                         message: '输入值中含有非法字符'
                     },
                     remote:{
-                        url:'/EquipType/validateTypeCode',
-                        message: '设备类型编码已存在',
+                        url:'/MonitorTarget/validateCode',
+                        message: '指标编码已存在',
                         type: 'POST'
                     }
                 },
             },
-            typeName: {
+            targetName: {
                 enabled: true,
                 message: '输入有误',
                 validators: {
                     notEmpty: {
-                        message: '设备名称不能为空'
+                        message: '指标名称不能为空'
                     },
                     stringLength: {
                         min: 0,
-                        max: 36,
-                        message: '设备名称过长'
+                        max: 50,
+                        message: '指标名称过长'
+                    },
+                    regexp: {
+                        regexp: /[^\]@=/'\"$%&^*{}<>\\\\[:\;]+/,
+                        message: '输入值中含有非法字符'
+                    }
+                }
+            },
+            unit: {
+                enabled: true,
+                message: '输入有误',
+                validators: {
+                    notEmpty: {
+                        message: '计量单位不能为空'
+                    },
+                    stringLength: {
+                        min: 0,
+                        max: 10,
+                        message: '指标名称过长'
                     },
                     regexp: {
                         regexp: /[^\]@=/'\"$%&^*{}<>\\\\[:\;]+/,
@@ -252,17 +272,17 @@ function formValidator() {
     });
 }
 
-//新增设备类型
+//新增
 function equipAdd() {
-    $('#equipForm')[0].reset();
+    $('#targetForm')[0].reset();
 
     //清空表单
-    $(':input', '#equipForm')
+    $(':input', '#targetForm')
         .not(':button, :submit, :reset')
         .val('')
         .removeAttr('checked')
         .removeAttr('selected');
-    $("#equipForm").data('bootstrapValidator').resetForm(false);
+    $("#targetForm").data('bootstrapValidator').resetForm(false);
     var node = $("#tree").treeview('getSelected');
     if (node.length <= 0) {
         BootstrapDialog.alert({
@@ -277,7 +297,7 @@ function equipAdd() {
         return false;
     }
     $("#pCode").val(node[0].id);
-    var maxCode = "000";
+    var maxCode = "00";
     $.each(node[0].nodes, function (i, n) {
         if (n.code > maxCode) {
             maxCode = n.code;
@@ -286,22 +306,22 @@ function equipAdd() {
 
     var code = node[0].code;
 
-    $("#leveCode").val(code + (Array(3).join(0) + (parseInt(maxCode.substring(maxCode.length - 3, maxCode.length)) + 1)).slice(-3));
+    $("#levelCode").val(code + (Array(2).join(0) + (parseInt(maxCode.substring(maxCode.length - 2, maxCode.length)) + 1)).slice(-2));
 
     $("#myModalLabel").text("新增");
     $('#myModal').modal('show');
-    $("#equipForm").data('bootstrapValidator').addField("typeCode");//添加编码验证
+    $("#targetForm").data('bootstrapValidator').addField("typeCode");//添加编码验证
 }
 
 //修改
 function equipEdit() {
     //清空表单
-    $(':input', '#equipForm')
+    $(':input', '#targetForm')
         .not(':button, :submit, :reset')
         .val('')
         .removeAttr('checked')
         .removeAttr('selected');
-    var rows = $("#equipTable").bootstrapTable("getSelections");//获取所有选中的行
+    var rows = $("#targetTable").bootstrapTable("getSelections");//获取所有选中的行
     if (rows.length != 1) {
 
         BootstrapDialog.alert({
@@ -320,16 +340,16 @@ function equipEdit() {
         $("#"+p).val(rows[0][p]);
     }
     $("#myModalLabel").text("修改");
-    $('#typeCode').attr("readonly","readonly");
+    $('#targetCode').attr("readonly","readonly");
     $('#myModal').modal('show');
-    $("#equipForm").data('bootstrapValidator').removeField("typeCode");//删除编码验证
+    $("#targetForm").data('bootstrapValidator').removeField("targetCode");//删除编码验证
 }
 
 /**
  * 删除设备
  */
 function equipDel() {
-    var rows = $("#equipTable").bootstrapTable("getSelections");//获取所有选中的行
+    var rows = $("#targetTable").bootstrapTable("getSelections");//获取所有选中的行
     if (rows.length <= 0) {
 
         BootstrapDialog.alert({
@@ -359,38 +379,38 @@ function equipDel() {
                 //选择ok后调用
                 var ids = "";
                 $.each(rows, function (i, n) {
-                    ids += n.typeCode + ",";
+                    ids += n.targetCode + ",";
                 });
                 ids = ids.substring(0, ids.length - 1);
                 var nodes = treeNode[0].nodes;
                 $.ajax({
                     type: 'post',
-                    url: '/EquipType/deleteEquip',
+                    url: '/MonitorTarget/deleteTarget',
                     data: {ids: ids},
                     success: function (result) {
-                            BootstrapDialog.alert({
-                                title: '提示',
-                                message: '删除成功！',
-                                size: BootstrapDialog.SIZE_SMALL,
-                                type: BootstrapDialog.TYPE_SUCCESS, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                                closable: false, // <-- Default value is false
-                                draggable: true, // <-- Default value is false
-                                buttonLabel: '确定', // <-- Default value is 'OK',
-                                callback: function (result) {
-                                    var nodeList = [];
-                                    $.each(rows, function (i, n) {
+                        BootstrapDialog.alert({
+                            title: '提示',
+                            message: '删除成功！',
+                            size: BootstrapDialog.SIZE_SMALL,
+                            type: BootstrapDialog.TYPE_SUCCESS, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+                            closable: false, // <-- Default value is false
+                            draggable: true, // <-- Default value is false
+                            buttonLabel: '确定', // <-- Default value is 'OK',
+                            callback: function (result) {
+                                var nodeList = [];
+                                $.each(rows, function (i, n) {
 
-                                        $.each(nodes, function (j, m) {
-                                            if (n.typeCode == m.id) {
-                                                nodeList.push(m);
-                                            }
-                                        });
+                                    $.each(nodes, function (j, m) {
+                                        if (n.targetCode == m.id) {
+                                            nodeList.push(m);
+                                        }
                                     });
-                                    $('#tree').treeview('removeNode', [nodeList, {silent: true}]);
-                                    $("#equipTable").bootstrapTable("refresh");
-                                }
+                                });
+                                $('#tree').treeview('removeNode', [nodeList, {silent: true}]);
+                                $("#targetTable").bootstrapTable("refresh");
+                            }
 
-                            });
+                        });
                     },
                     error: function () {
                         BootstrapDialog.alert({
@@ -409,68 +429,4 @@ function equipDel() {
             }
         }
     });
-}
-
-/**
- * 设备排序
- */
-function moveOrder(x) {
-
-    var rows = $("#equipTable").bootstrapTable('getSelections');
-    if (rows.length != 1) {
-
-        BootstrapDialog.alert({
-            title: '警告',
-            message: "请选择一条要移动的数据！",
-            size: BootstrapDialog.SIZE_SMALL,
-            type: BootstrapDialog.TYPE_WARNING, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-
-            closable: false, // <-- Default value is false
-            draggable: true, // <-- Default value is false
-            buttonLabel: '确定', // <-- Default value is 'OK',
-
-        });
-
-        return false;
-    }
-
-    $.ajax({
-        type: 'post',
-        url: '/EquipType/moveOrder',
-        data: {type: x, typeCode:rows[0].typeCode,typeOrder:rows[0].typeOrder,pCode:rows[0].pCode},
-        success: function (result) {
-            if (result.code == "0") {
-                BootstrapDialog.alert({
-                    title: '提示',
-                    message: result.msg,
-                    size: BootstrapDialog.SIZE_SMALL,
-                    type: BootstrapDialog.TYPE_SUCCESS, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-
-                    closable: false, // <-- Default value is false
-                    draggable: true, // <-- Default value is false
-                    buttonLabel: '确定', // <-- Default value is 'OK',
-                    callback: function (result) {
-                        $("#equipTable").bootstrapTable("refresh");
-                    }
-                });
-
-
-            } else {
-
-                BootstrapDialog.alert({
-                    title: '警告',
-                    message: result.msg,
-                    size: BootstrapDialog.SIZE_SMALL,
-                    type: BootstrapDialog.TYPE_WARNING, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-
-                    closable: false, // <-- Default value is false
-                    draggable: true, // <-- Default value is false
-                    buttonLabel: '确定', // <-- Default value is 'OK',
-
-                });
-            }
-        }
-    })
-
-
 }
