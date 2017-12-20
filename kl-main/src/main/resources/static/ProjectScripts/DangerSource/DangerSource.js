@@ -263,9 +263,7 @@ function initTable() {
                 title: '化学品名称',
                 halign: 'center',
                 width: '40%',
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                },
+                class: "bootTableRow",
                 formatter: function (value, row, index) {
                     return '<span title="'+value+'">'+value+'</span>'
 
