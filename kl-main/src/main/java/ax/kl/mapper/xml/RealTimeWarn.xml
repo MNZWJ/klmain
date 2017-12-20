@@ -4,32 +4,58 @@
 
     <!--获取实时预警数据-->
     <select id="getRealTimeWarnData" resultType="ax.kl.entity.RealTimeWarn">
-        SELECT
-	ci.CompanyName,
-	di.SourceId,
-	di.SourceName,
-	sd.DictName AS Rank,
-	MAX( (ISNULL(pu.FEI, 0)+ISNULL(pu.AfterFEI, 0))/2 ) AS FEI,
-	SUM(CASE WHEN fc.Conformance='不符合' THEN 1 ELSE 0 END ) AS ConditionNum,
-	SUM(CASE WHEN lp.Conformance='不符合' THEN 1 ELSE 0 END ) AS ProtectionNum,
-	SUM(CASE WHEN hd.Rank='一般隐患' THEN 1 ELSE 0 END) AS GeneralHidden,
-	SUM(CASE WHEN hd.Rank='重大隐患' THEN 1 ELSE 0 END) AS MajorHidden,
-	SUM(CASE WHEN ad.IDCode='ZB' THEN 1 ELSE 0 END ) AS ProcessUnitNum,
-	SUM(CASE WHEN ad.IDCode='ZT' THEN 1 ELSE 0 END ) AS AirStatusNum
+        WITH DangerSource AS ( SELECT
+	ci.CompanyName,di.*
 FROM
 	TB_BASE_COMPANY_INFO ci
-RIGHT JOIN TB_BASE_DANGERSOURCE_INFO di ON ci.CompanyId = di.CompanyId
-LEFT JOIN TB_BASE_PROCESS_UNIT pu ON di.SourceId = pu.SourceId
-LEFT JOIN TB_BASE_DR_FACILITIES_CONDITION fc ON di.SourceId=fc.SourceId
-LEFT JOIN TB_BASE_DR_LEGAL_PROTECTION lp ON di.SourceId=lp.SourceId
-LEFT JOIN TB_BASE_HIDDEN_DANGER hd ON (di.SourceId=hd.DangerSource AND hd.Rectification='未整改')
-LEFT JOIN TB_SYS_DATADICT sd ON  di.Rank=sd.DictId
-LEFT JOIN TB_REALTIME_ALARM_DATA ad ON (ad.UniqueCode LIKE di.UniqueCode+'%' AND ad.Status='1')
+RIGHT JOIN TB_BASE_DANGERSOURCE_INFO di ON ci.CompanyId = di.CompanyId ),
+ProcessUnit AS ( SELECT
+	pu.*
+FROM
+	DangerSource
+LEFT JOIN TB_BASE_PROCESS_UNIT pu ON DangerSource.SourceId = pu.SourceId ),
+Facilities AS ( SELECT
+	fc.*
+FROM
+	DangerSource
+LEFT JOIN TB_BASE_DR_FACILITIES_CONDITION fc ON DangerSource.SourceId = fc.SourceId ),
+Legal AS ( SELECT
+	lp.*
+FROM
+	DangerSource
+LEFT JOIN TB_BASE_DR_LEGAL_PROTECTION lp ON DangerSource.SourceId = lp.SourceId ),
+Hidden AS ( SELECT
+	hd.*
+FROM
+	DangerSource
+LEFT JOIN TB_BASE_HIDDEN_DANGER hd ON (
+	DangerSource.SourceId = hd.DangerSource
+	AND hd.Rectification = '未整改'
+) ),
+RealTimeAlarm AS ( SELECT
+	DangerSource.SourceId,ad.*
+FROM
+	DangerSource
+LEFT JOIN TB_REALTIME_ALARM_DATA ad ON (
+	ad.EquipCode LIKE DangerSource.UniqueCode + '%'
+	AND ad.Status = '1'
+) )
 
-GROUP BY
-	ci.CompanyName,
-	di.SourceId,
-	di.SourceName,
-	sd.DictName
+SELECT
+	ds.CompanyName AS CompanyName,
+	ds.SourceId,
+	ds.SourceName,
+	ISNULL((SELECT MAX((ISNULL(pu.FEI, 0)+ISNULL(pu.AfterFEI, 0))/2 ) FROM ProcessUnit pu WHERE pu.SourceId=ds.SourceId),0)AS FEI,
+	ISNULL((SELECT SUM(CASE WHEN fc.Conformance='不符合' then 1 ELSE 0 END) FROM Facilities fc WHERE ds.SourceId=fc.SourceId),0) AS ConditionNum,
+	ISNULL((SELECT SUM(CASE WHEN lg.Conformance='不符合' then 1 ELSE 0 END) FROM Legal lg WHERE ds.SourceId=lg.SourceId),0) AS ProtectionNum,
+	(SELECT COUNT(*) FROM Hidden hd WHERE hd.DangerSource=ds.SourceId AND hd.Rank='一般隐患') AS GeneralHidden,
+	(SELECT COUNT(*) FROM Hidden hd WHERE hd.DangerSource=ds.SourceId AND hd.Rank='重大隐患') AS MajorHidden,
+	(SELECT COUNT(*) FROM RealTimeAlarm ra WHERE ISNULL(ra.TargetCode, '1')='0') AS ProcessUnitNum,
+	(SELECT COUNT(*) FROM RealTimeAlarm ra WHERE ra.TargetCode='0') as AirStatusNum,
+	sd.DictName AS Rank
+
+FROM
+	DangerSource ds
+JOIN TB_SYS_DATADICT sd on ds.Rank=sd.DictId
     </select>
 </mapper>
