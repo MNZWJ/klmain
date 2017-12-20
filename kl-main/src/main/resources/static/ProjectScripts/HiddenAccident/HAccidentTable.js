@@ -1,10 +1,9 @@
-var hiddenDanger = "";
-var dangerSource = "";
 $(function () {
 
     //获取浏览器高度
     var scanHeight = $(window).height();
-
+    //初始化日期元件
+    loaddate();
     $('#table').bootstrapTable({
         height: scanHeight,
         striped: true,      //是否显示行间隔色
@@ -19,7 +18,7 @@ $(function () {
         toolbar: '#toolbar',                //工具按钮用哪个容器
         clickToSelect: false,//是否启用点击选中行
         sidePagination: 'server',//'server'或'client'服务器端分页
-        showRefresh: 'true',//是否显示 刷新按钮
+        showRefresh: false,//是否显示 刷新按钮
         queryParams: queryParams,
         queryParamsType: '', //默认值为 'limit' ,在默认情况下 传给服务端的参数为：offset,limit,sort
         idField:"dangerId",
@@ -189,12 +188,11 @@ $(function () {
             }
         ]
     });
+
 });
 
 //表格返回参数方法
 function queryParams(pageReqeust) {
-    pageReqeust.hiddenDanger = hiddenDanger;
-    pageReqeust.dangerSource = dangerSource;
     return pageReqeust;
 }
 
@@ -202,9 +200,14 @@ function queryParams(pageReqeust) {
  * 查询
  */
 function search() {
-    hiddenDanger = $("#hiddenDanger").val();
-    dangerSource = $("#dangerSource").val();
-    $("#table").bootstrapTable("refresh", {})
+    var hiddenDanger = $("#hiddenDanger").val();
+    var dangerSource = $("#dangerSource").val();
+    var rank = $("#rank").val();
+    var rectification = $("#rectification").val();
+    var startdate = $("#startdate").val();
+    var enddate = $("#enddate").val();
+    $("#table").bootstrapTable("refresh", {query:{hiddenDanger:hiddenDanger,dangerSource:dangerSource,rank:rank,
+        rectification:rectification,startdate:startdate,enddate:enddate}})
 }
 
 /**
@@ -222,8 +225,12 @@ function inputFile() {
  * 清空
  */
 function clean() {
-    $("#dangerSource").val("");
     $("#hiddenDanger").val("");
+    $("#dangerSource").val("");
+    $("#rank").val("");
+    $("#rectification").val("");
+    $("#startdate").val("");
+    $("#enddate").val("");
 }
 
 //初始化导入Div
@@ -286,4 +293,26 @@ function clearDiv() {
 }
 function downloadModel() {
     window.location.href= "./../../Temp/事故隐患导入模板.xlsx";
+}
+
+/**
+ * 初始化日期组件
+ */
+function loaddate() {
+    $('#startdateDiv').datetimepicker({
+        language: 'zh-CN',//显示中文
+        format: 'yyyy-mm-dd',//显示格式
+        minView: "month",//设置只显示到月份
+        initialDate: new Date(),
+        autoclose: true,//选中自动关闭
+        todayBtn: true//显示今日按钮
+    });
+    $('#enddateDiv').datetimepicker({
+        language: 'zh-CN',//显示中文
+        format: 'yyyy-mm-dd',//显示格式
+        minView: "month",//设置只显示到月份
+        initialDate: new Date(),
+        autoclose: true,//选中自动关闭
+        todayBtn: true//显示今日按钮
+    });
 }
