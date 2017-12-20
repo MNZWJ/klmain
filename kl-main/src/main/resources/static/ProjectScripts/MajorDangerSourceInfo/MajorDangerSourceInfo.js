@@ -48,10 +48,9 @@ $(function () {
         },
         columns: [{
             title: '序号',
-            field: 'number1',
             halign: 'center',
             align: 'center',
-            width: '2%',
+            width: '5%',
             formatter: function (value, row, index) {
                 var page = $('#MajorTable').bootstrapTable('getOptions');
                 return (page.pageNumber - 1) * page.pageSize + index + 1;
@@ -59,16 +58,17 @@ $(function () {
         }, {
             field: 'state',
             checkbox: true,
-            width:'2%'
+            width: '3%'
         }, {
             field: 'companyId',
             title: '企业名称',
             halign: 'center',
-            width:'10%',
+            width:'9%',
             cellStyle: function (value, row, index, field) {
                 return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
             },
             formatter: function (value, row, index) {
+                value = value==undefined?"":value;
                 return '<span title="'+value+'">'+value+'</span>'
 
             }
@@ -76,11 +76,12 @@ $(function () {
             field: 'sourceName',
             title: '危险源名称',
             halign: 'center',
-            width:'10%',
+            width:'9%',
             cellStyle: function (value, row, index, field) {
                 return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
             },
             formatter: function (value, row, index) {
+                value = value==undefined?"":value;
                 return '<span title="'+value+'">'+value+'</span>'
             }
         }, {
@@ -88,13 +89,13 @@ $(function () {
             title: 'R值',
             halign: 'center',
             align: 'center',
-            width:'2%'
+            width:'9%'
         }, {
             field: 'rank',
             title: '危险源等级',
             halign: 'center',
             align: 'center',
-            width:'4%'
+            width:'9%'
         },
            /* {
                 field: 'recordNo',
@@ -114,7 +115,7 @@ $(function () {
                 title: '有效期',
                 halign: 'center',
                 align: 'center',
-                width:'4%'
+                width:'9%'
 
             },
             {
@@ -122,13 +123,20 @@ $(function () {
                 title: '状态',
                 halign: 'center',
                 align: 'center',
-                width:'3%'
+                width:'9%',
+                cellStyle: function (value, row, index, field) {
+                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                },
+                formatter: function (value, row, index) {
+                    value = value==undefined?"":value;
+                    return '<span title="'+value+'">'+value+'</span>'
+                }
             },
             {
                 field: 'accidentType',
                 title: '事故类型',
                 halign: 'center',
-                width:'5%',
+                width:'9%',
                /*  cellStyle: function (value, row, index, field) {
                      return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
                  },
@@ -141,14 +149,14 @@ $(function () {
                 title: '事故死亡人数',
                 halign: 'center',
                 align: 'right',
-                width:'4%'
+                width:'9%'
             },
             {
                 field: 'recordDate',
                 title: '登记日期',
                 halign: 'center',
                 align: 'center',
-                width:'4%'
+                width:'9%'
                 /* cellStyle: function (value, row, index, field) {
                      return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
                  },
@@ -160,8 +168,7 @@ $(function () {
                 field: 'outPersonCount',
                 title: '500米人数估值',
                 halign: 'center',
-                align: 'right',
-                width:'5%',
+                align: 'right'
             }
         ]
     });
