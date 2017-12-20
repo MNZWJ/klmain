@@ -22,6 +22,9 @@ public class ProcessUnit {
     @TableId("UnitId")
     private String unitId;
 
+    //所属企业
+    private String companyName;
+
     @ApiModelProperty("唯一编码")
     @TableField("UniqueCode")
     private String uniqueCode;

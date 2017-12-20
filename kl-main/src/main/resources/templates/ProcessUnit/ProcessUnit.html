@@ -101,8 +101,8 @@
 <div class="modal fade bs-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      data-backdrop='static'      data-target=".bs-example-modal-lg">
     <div class="modal-dialog modal-lg" role="document" style="min-height: 80%;">
-        <div class="modal-content">
-            <div class="modal-header">
+        <div class="modal-content" style="width:800px;height:550px;margin:auto auto;">
+            <div class="modal-header" style="padding: 10px;">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -116,7 +116,7 @@
                             <div class="form-group" style="height:70px;">
                                 <label for="CompanyName" class="col-xs-10" style="padding-left: 0">所属企业</label>
                                 <select onchange="changeDangerSource(document.myForm)" id="CompanyName" name="CompanyName" class="selectpicker show-tick form-control"
-                                        data-live-search="false" data-live-search-style="begins" title="">
+                                        data-live-search="true" data-live-search-style="begins" title="">
 
                                 </select>
                             </div>
@@ -132,36 +132,48 @@
                                 <input type="text" name="UnitName" class="form-control" id="UnitName"
                                        placeholder="请输入工艺单元名称">
                             </div>
-                            <div class="form-group" style="height:65px;width: 40%;float:left;">
+                            <div class="form-group" style="height:65px;width: 45%;float:left;">
                                 <label for="FEI" style="padding-left: 0px;width: 100%;">
                                     火灾爆炸指数 F&EI</label>
                                 <input type="number" name="FEI" id="FEI" class="form-control"
                                        placeholder="请输入火灾爆炸指数F&EI"  style="width: 100%;">
                             </div>
-                            <div class="form-group"  style="height:65px;width: 40%; float:right;">
+                            <div class="form-group"  style="height:65px;width: 45%; float:right;">
                                 <label for="AfterFEI" style="padding-left: 0px;width: 100%;">
                                     补偿后的 F&EI</label>
                                 <input type="number" name="AfterFEI" class="form-control" id="AfterFEI"
                                        placeholder="请输入补偿后的F&EI"  style="width: 100%;">
                             </div>
-                            <div class="form-group" style="height:65px;width: 40%;float:left;">
+                            <div class="form-group" style="height:65px;width: 45%;float:left;">
                                 <label for="DangerRank" style="padding-left: 0px;width: 100%;">
                                     危险等级</label>
-                                <input type="number" name="DangerRank" class="form-control" id="DangerRank"
-                                       placeholder="请输入危险等级"  style="width: 100%;">
+                                <select  id="DangerRank"  style="width: 100%;" name="DangerRank" class="selectpicker show-tick form-control"
+                                        data-live-search="false" data-live-search-style="begins" title="">
+                                    <option value="最轻">最轻</option>
+                                    <option value="较轻">较轻</option>
+                                    <option value="中等">中等</option>
+                                    <option value="很大">很大</option>
+                                    <option value="非常大">非常大</option>
+                                </select>
                             </div>
 
-                            <div class="form-group" style="height:70px;width: 40%; float:right;">
+                            <div class="form-group" style="height:70px;width: 45%; float:right;">
                                 <label for="AfterDangerRank" style="padding-left: 0px;width: 100%;">
                                     补偿后的危险等级</label>
-                                <input type="number" name="AfterDangerRank" class="form-control" id="AfterDangerRank"
-                                       placeholder="请输入补偿后的危险等级"  style="width: 100%;">
+                                <select id="AfterDangerRank"  style="width: 100%;" name="AfterDangerRank" class="selectpicker show-tick form-control"
+                                        data-live-search="false" data-live-search-style="begins" title="">
+                                    <option value="最轻">最轻</option>
+                                    <option value="较轻">较轻</option>
+                                    <option value="中等">中等</option>
+                                    <option value="很大">很大</option>
+                                    <option value="非常大">非常大</option>
+                                </select>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer" style="padding: 7px;">
                 <button type="button" class="btn btn-default"  id="btn_save" >保存</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
             </div>

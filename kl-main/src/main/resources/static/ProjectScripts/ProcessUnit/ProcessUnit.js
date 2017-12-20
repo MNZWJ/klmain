@@ -197,8 +197,13 @@ function initTable(){
             field: 'state',
             checkbox: true
         },{
+            field: 'companyName',
+            title: '企业名称',
+            halign: 'center',
+            align:'center'
+        },{
             field: 'sourceId',
-            title: '所属危险源',
+            title: '危险源名称',
             halign: 'center',
             align:'center',
             formatter: function (value, row, index) {
@@ -224,14 +229,14 @@ function initTable(){
                 title: '火灾爆炸指数F&EI',
                 halign: 'center',
                 align:'center'
-            }, {
-                field: 'dangerRank',
-                title: '危险等级',
-                halign: 'center',
-                align:'center'
-            },  {
+            },   {
                 field: 'afterFEI',
                 title: '补偿后的F&EI',
+                halign: 'center',
+                align:'center'
+            },{
+                field: 'dangerRank',
+                title: '危险等级',
                 halign: 'center',
                 align:'center'
             },   {
@@ -286,6 +291,14 @@ function formValidator() {
                     }
                 }
             },
+            //设置企业验证
+            CompanyName: {
+                validators: {
+                    notEmpty: {
+                        message: '请选择企业'
+                    }
+                }
+            },
             //设置企业对应危险源验证
             SourceId: {
                 validators: {
@@ -306,7 +319,7 @@ function formValidator() {
             DangerRank: {
                 validators: {
                     notEmpty: {
-                        message: '请输入危险等级'
+                        message: '请选择危险等级'
                     }
                 }
             },
@@ -322,7 +335,7 @@ function formValidator() {
             AfterDangerRank: {
                 validators: {
                     notEmpty: {
-                        message: '请输入补偿后的危险等级'
+                        message: '请选择补偿后的危险等级'
                     }
                 }
             }
@@ -347,6 +360,7 @@ function changeDangerSource(thisForm){
 
     });
     $("#SourceId").selectpicker('refresh');
+    $("#SourceId").selectpicker('val','');
 }
 
 //新增组织机构
@@ -365,9 +379,15 @@ function unitAdd() {
     $("#unitForm").data('bootstrapValidator').resetForm(false);
     //刷新下拉菜单
     $("#CompanyName").selectpicker('refresh');
+    $('#CompanyName').selectpicker('val','');
     $("#SourceId").selectpicker('refresh');
 
     changeDangerSource(document.myForm);
+
+
+    $("#SourceId").selectpicker('val','');
+    $("#DangerRank").selectpicker('val','');
+    $("#AfterDangerRank").selectpicker('val','');
     //将此标签标题改为新增
     $("#myModalLabel").text("新增");
     //展示悬浮窗口
@@ -418,13 +438,14 @@ function unitEdit() {
 
     $("#UnitName").val(rows[0].unitName);
     $("#FEI").val(rows[0].fEI);
-    $("#DangerRank").val(rows[0].dangerRank);
+    $("#DangerRank").selectpicker('val', rows[0].dangerRank);
     $("#AfterFEI").val(rows[0].afterFEI);
-    $("#AfterDangerRank").val(rows[0].afterDangerRank);
+    $("#AfterDangerRank").selectpicker('val', rows[0].afterDangerRank);
     $('#SourceId').selectpicker('val', rows[0].sourceId);
     $("#myModalLabel").text("修改");
     $('#myModal').modal('show');
 }
+
 
 //删除字典
 function unitDel() {
