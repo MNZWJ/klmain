@@ -32,6 +32,12 @@
         TB_SYS_DATADICT sd ON d.Rank=sd.DictId LEFT JOIN TB_SYS_DATADICT d1 ON d.Status = d1.DictId WHERE d.sourceId = #{sourceId}
     </select>
 
+    <!--获取所有重大危险源-->
+    <select id="getAllDSource" resultType="ax.kl.entity.DangerSourceInfo">
+        SELECT *
+          FROM TB_BASE_DANGERSOURCE_INFO
+    </select>
+
     <select id="getChemicalsInfoListBySourceId" resultMap="ChemicalsInfo">
         SELECT ci.* FROM TB_BASE_DANGERSOURCE_INFO di
         JOIN TB_BASE_PROCESS_UNIT pu ON di.SourceId=pu.SourceId

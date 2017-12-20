@@ -58,6 +58,15 @@ public class DangerSourceServiceImpl implements DangerSourceService {
         return page;
     }
 
+    /**
+     * 获取所有重大危险源
+     * @return 重大危险源
+     */
+    @Override
+    public List<DangerSourceInfo> getAllDSource(){
+        return this.dangerSourceMapper.getAllDSource();
+    }
+
     ;    /**
      * 获取重大危险源关联化学品
      * @param sourceId 危险源Id

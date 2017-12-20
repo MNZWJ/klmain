@@ -48,6 +48,18 @@ public class DangerSourceController {
         return dangerSourceService.getSourceCoordinate(param);
     }
 
+
+    /**
+     * 获取所有危险源
+     * @return
+     */
+    @RequestMapping(value = "/getAllDSource", method = RequestMethod.GET)
+    @ApiOperation(value = "获取所有危险源")
+    @ResponseBody
+    public List<DangerSourceInfo> getAllDSource() {
+        return dangerSourceService.getAllDSource();
+    }
+
     /**
      * 获取重大危险源
      * @param sourceId

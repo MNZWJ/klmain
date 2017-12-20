@@ -36,6 +36,14 @@ public interface DangerSourceService {
      */
     Page<ChemicalsInfo> getChemicalsInfoListBySourceId(Page page,String sourceId);
 
+
+    /**
+     * 获取所有重大危险源
+     * @return 重大危险源
+     */
+    List<DangerSourceInfo> getAllDSource();
+
+
     /**
      * 获取重大危险源关联化学品
      * @param sourceId
