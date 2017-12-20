@@ -59,7 +59,19 @@
             AND di.SourceName LIKE '%' + #{dangerSource} +'%'
         </if>
         <if test="hiddenDanger !=null and hiddenDanger!=''">
-            AND hd.hiddenDanager LIKE '%' + #{hiddenDanger} +'%'
+            AND hd.HiddenDanager LIKE '%' + #{hiddenDanger} +'%'
+        </if>
+        <if test="rank !=null and rank!=''">
+            AND hd.Rank = #{rank}
+        </if>
+        <if test="rectification !=null and rectification!=''">
+            AND hd.Rectification = #{rectification}
+        </if>
+        <if test="startdate !=null and startdate!=''">
+            AND hd.UpReportDate &gt; = #{startdate}
+        </if>
+        <if test="enddate !=null and enddate!=''">
+            AND hd.UpReportDate &lt; = #{enddate}
         </if>
         ORDER BY UpReportDate DESC
     </select>

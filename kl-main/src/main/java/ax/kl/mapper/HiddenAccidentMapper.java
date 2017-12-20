@@ -43,7 +43,13 @@ public interface HiddenAccidentMapper extends BaseMapper<DangerSourceInfo> {
      * @param page
      * @return
      */
-    List<HiddenAccident> getHiddenAllInfo(@Param("page") Page page,@Param("dangerSource")String dangerSource,@Param("hiddenDanger")String hiddenDanger);
+    List<HiddenAccident> getHiddenAllInfo(@Param("page") Page page,
+                                          @Param("dangerSource")String dangerSource,
+                                          @Param("hiddenDanger")String hiddenDanger,
+                                          @Param("rank") String rank,
+                                          @Param("rectification")String rectification,
+                                          @Param("startdate")String startdate,
+                                          @Param("enddate")String enddate);
 
     /**
      * 获取重大危险源信息
