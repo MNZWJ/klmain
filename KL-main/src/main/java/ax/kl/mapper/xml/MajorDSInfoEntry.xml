@@ -53,10 +53,10 @@
     <insert id="saveData" parameterType="ax.kl.entity.DangerSourceInfo">
         INSERT INTO TB_BASE_DANGERSOURCE_INFO (
         SourceId,UniqueCode,CompanyId,SourceName,RValue,Rank,RecordNo,Validity,Longt,Lat,
-        OutPersonCount,DeathToll,RecordDate
+        OutPersonCount,DeathToll,RecordDate,Status
         )VALUES ( #{sourceId},#{uniqueCode},#{companyId},#{sourceName},#{rValue},#{rank},
-        #{recordNo},#{validity},#{longt},#{lat},#{outPersonCount},#{deathToll},#{recordDate}
-        )
+        #{recordNo},#{validity},#{longt},#{lat},#{outPersonCount},#{deathToll},#{recordDate},
+        #{status}        )
     </insert>
 
     <!--更新危险源信息-->
@@ -65,7 +65,7 @@
         SET   UniqueCode =#{ uniqueCode }, CompanyId =#{ companyId },
          SourceName =#{ sourceName }, RValue= #{ rValue }, Rank =#{ rank }, RecordNo =#{ recordNo },
           Validity =#{ validity }, Longt =#{ longt }, Lat =#{ lat }, OutPersonCount =#{ outPersonCount },
-           DeathToll =#{ deathToll }, RecordDate =#{ recordDate }
+           DeathToll =#{ deathToll }, RecordDate =#{ recordDate },Status=#{status}
         WHERE   SourceId =#{ sourceId }
     </update>
 
