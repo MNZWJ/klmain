@@ -127,5 +127,11 @@ public class DangerSourceInfo {
     @TableField("CompanyName")
     private String companyName;
 
+    /**
+     * 简称
+     */
+    @TableField("SimpleName")
+    private String simpleName;
+
 
 }

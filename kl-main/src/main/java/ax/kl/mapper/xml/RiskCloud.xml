@@ -6,6 +6,7 @@
     <select id="getHazardList" resultType="ax.kl.entity.DangerSourceInfo">
 
         SELECT
+        ci.SimpleName,
         ci.CompanyName,
         di.SourceId,
         di.SourceName,
@@ -35,6 +36,7 @@
         </if>
 
         GROUP BY
+        ci.SimpleName,
         ci.CompanyName,
         di.SourceId,
         di.SourceName,

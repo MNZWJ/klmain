@@ -473,10 +473,11 @@ function loadScaleCode(){
             var dataStyle = {
                 normal: {
                     label: {
-                        show: false
+                        show: true,
+                        postion:'innner'
                     },
                     labelLine: {
-                        show: false
+                        show: true
                     },
                     shadowBlur: 40,
                     shadowColor: 'rgba(40, 40, 40,0.5)',
@@ -485,54 +486,105 @@ function loadScaleCode(){
 
             scaleCodeOption = {
 
-                color: ['#fbf31f', '#ef8938','#24ffb5','#22529b'],
+                color: ['#fbf31f', '#ef8938','#ffe01f','#22529b'],
 
 
 
                 tooltip: {
                     trigger: 'item',
-                    formatter: "{a} <br/>{b}: {c} ({d}%)"
+                    formatter: "{b}: {c} ({d}%)"
                 },
-                legend: {
-                    orient: 'vertical',
-                    x: '2%',
-                    top: '30%',
-                    data: legendData,
-                    textStyle:{
-                        color:'#fff'
-                    }
-                },
+                // legend: {
+                //     orient: 'vertical',
+                //     x: '2%',
+                //     top: '20%',
+                //     data: legendData,
+                //     textStyle:{
+                //         color:'#fff'
+                //     }
+                // },
                 series: [{
-                    name: '企业规模占比',
+                    name: '企业类型占比',
                     type: 'pie',
-                    radius: ['65%', '85%'],
+                    //radius: ['65%', '85%'],
                     avoidLabelOverlap: false,
                     itemStyle: dataStyle,
-                    label: {
-                        normal: {
-                            show: false,
-                            position: 'center'
-                        },
-                        emphasis: {
-                            show: true,
-                            formatter: function(param) {
-                                return param.percent.toFixed(0) + '%';
-                            },
-                            textStyle: {
-                                fontSize: '30',
-                                fontWeight: 'bold',
-                                color:'#fff'
-                            }
-                        }
-                    },
-                    labelLine: {
-                        normal: {
-                            show: true
-                        }
-                    },
+                    // label: {
+                    //     normal: {
+                    //         show: false,
+                    //         position: 'center'
+                    //     },
+                    //     emphasis: {
+                    //         show: true,
+                    //         formatter: function(param) {
+                    //             return param.percent.toFixed(0) + '%';
+                    //         },
+                    //         textStyle: {
+                    //             fontSize: '30',
+                    //             fontWeight: 'bold',
+                    //             color:'#fff'
+                    //         }
+                    //     }
+                    // },
+                    // labelLine: {
+                    //     normal: {
+                    //         show: true
+                    //     }
+                    // },
                     data: data
                 }]
-            };
+            }
+
+            // scaleCodeOption = {
+            //
+            //     color: ['#fbf31f', '#ef8938','#24ffb5','#22529b'],
+            //
+            //
+            //
+            //     tooltip: {
+            //         trigger: 'item',
+            //         formatter: "{a} <br/>{b}: {c} ({d}%)"
+            //     },
+            //     legend: {
+            //         orient: 'vertical',
+            //         x: '2%',
+            //         top: '30%',
+            //         data: legendData,
+            //         textStyle:{
+            //             color:'#fff'
+            //         }
+            //     },
+            //     series: [{
+            //         name: '企业规模占比',
+            //         type: 'pie',
+            //         radius: ['65%', '85%'],
+            //         avoidLabelOverlap: false,
+            //         itemStyle: dataStyle,
+            //         label: {
+            //             normal: {
+            //                 show: false,
+            //                 position: 'center'
+            //             },
+            //             emphasis: {
+            //                 show: true,
+            //                 formatter: function(param) {
+            //                     return param.percent.toFixed(0) + '%';
+            //                 },
+            //                 textStyle: {
+            //                     fontSize: '30',
+            //                     fontWeight: 'bold',
+            //                     color:'#fff'
+            //                 }
+            //             }
+            //         },
+            //         labelLine: {
+            //             normal: {
+            //                 show: true
+            //             }
+            //         },
+            //         data: data
+            //     }]
+            // };
             scaleCodeChart =echarts.init(document.getElementById("scaleCodeEchart"));
             scaleCodeChart.setOption(scaleCodeOption);
         }
@@ -564,10 +616,10 @@ function loadCompanyType(){
             var dataStyle = {
                 normal: {
                     label: {
-                        show: false
+                        show: true
                     },
                     labelLine: {
-                        show: false
+                        show: true
                     },
                     shadowBlur: 40,
                     shadowColor: 'rgba(40, 40, 40,0.5)',
@@ -576,54 +628,56 @@ function loadCompanyType(){
 
             companyTypeOption = {
 
-                color: ['#22529b', '#24ffb5'],
+                color: ["#ed2d2d", "#ff881f", "#ffe01f", "#0e77ab"],
 
 
 
                 tooltip: {
                     trigger: 'item',
-                    formatter: "{a} <br/>{b}: {c} ({d}%)"
+                    formatter: "{b}: {c} ({d}%)"
                 },
-                legend: {
-                    orient: 'vertical',
-                    x: '2%',
-                    top: '30%',
-                    data: legendData,
-                    textStyle:{
-                        color:'#fff'
-                    }
-                },
+                // legend: {
+                //     orient: 'vertical',
+                //     x: '2%',
+                //     top: '20%',
+                //     data: legendData,
+                //     textStyle:{
+                //         color:'#fff'
+                //     }
+                // },
                 series: [{
                     name: '企业类型占比',
                     type: 'pie',
-                    radius: ['65%', '85%'],
+                    //radius: ['65%', '85%'],
                     avoidLabelOverlap: false,
                     itemStyle: dataStyle,
-                    label: {
-                        normal: {
-                            show: false,
-                            position: 'center'
-                        },
-                        emphasis: {
-                            show: true,
-                            formatter: function(param) {
-                                return param.percent.toFixed(0) + '%';
-                            },
-                            textStyle: {
-                                fontSize: '30',
-                                fontWeight: 'bold',
-                                color:'#fff'
-                            }
-                        }
-                    },
-                    labelLine: {
-                        normal: {
-                            show: true
-                        }
-                    },
+                    // label: {
+                    //     normal: {
+                    //         show: false,
+                    //         position: 'center'
+                    //     },
+                    //     emphasis: {
+                    //         show: true,
+                    //         formatter: function(param) {
+                    //             return param.percent.toFixed(0) + '%';
+                    //         },
+                    //         textStyle: {
+                    //             fontSize: '30',
+                    //             fontWeight: 'bold',
+                    //             color:'#fff'
+                    //         }
+                    //     }
+                    // },
+                    // labelLine: {
+                    //     normal: {
+                    //         show: true
+                    //     }
+                    // },
                     data: data
                 }]
             };
+
+
             companyTypeChart =echarts.init(document.getElementById("companyTypeEchart"));
             companyTypeChart.setOption(companyTypeOption);
         }
