@@ -345,12 +345,12 @@ function loadDSAccidenType(){
             var dataStyle = {
                 normal: {
                     label: {
-                        show: false
+                        show: true
 
 
                     },
                     labelLine: {
-                        show: false
+                        show: true
                     },
                     shadowBlur: 40,
                     shadowColor: 'rgba(40, 40, 40,0.5)',
@@ -359,51 +359,51 @@ function loadDSAccidenType(){
 
             var option = {
 
-                color: [ "#00544a", "#6ca748","a5a5a5"],
+                color: [ "#00544a", "#6ca748","#a5a5a5"],
 
 
 
                 tooltip: {
                     trigger: 'item',
-                    formatter: "{a} <br/>{b}: {c} ({d}%)"
+                    formatter: "{b}: {c} ({d}%)"
                 },
-                legend: {
-                    orient: 'vertical',
-                    x: '2%',
-                    top: '30%',
-                    data: legendData,
-                    textStyle:{
-                        color:'#fff'
-                    }
-                },
+                // legend: {
+                //     orient: 'vertical',
+                //     x: '2%',
+                //     top: '30%',
+                //     data: legendData,
+                //     textStyle:{
+                //         color:'#fff'
+                //     }
+                // },
                 series: [{
-                    name: '可能引发的事故类型',
+                    name: '可能引发的事故类型占比',
                     type: 'pie',
-                    radius: ['65%', '85%'],
+                    //radius: ['65%', '85%'],
                     avoidLabelOverlap: false,
                     itemStyle: dataStyle,
-                    label: {
-                        normal: {
-                            show: false,
-                            position: 'center'
-                        },
-                        emphasis: {
-                            show: true,
-                            formatter: function(param) {
-                                return param.percent.toFixed(0) + '%';
-                            },
-                            textStyle: {
-                                fontSize: '30',
-                                fontWeight: 'bold',
-                                color:'#fff'
-                            }
-                        }
-                    },
-                    labelLine: {
-                        normal: {
-                            show: true
-                        }
-                    },
+                    // label: {
+                    //     normal: {
+                    //         show: false,
+                    //         position: 'center'
+                    //     },
+                    //     emphasis: {
+                    //         show: true,
+                    //         formatter: function(param) {
+                    //             return param.percent.toFixed(0) + '%';
+                    //         },
+                    //         textStyle: {
+                    //             fontSize: '30',
+                    //             fontWeight: 'bold',
+                    //             color:'#fff'
+                    //         }
+                    //     }
+                    // },
+                    // labelLine: {
+                    //     normal: {
+                    //         show: true
+                    //     }
+                    // },
                     data: data
                 }]
             };
@@ -439,10 +439,10 @@ function loadSourceRank(){
             var dataStyle = {
                 normal: {
                     label: {
-                        show: false
+                        show: true
                     },
                     labelLine: {
-                        show: false
+                        show: true
                     },
                     shadowBlur: 40,
                     shadowColor: 'rgba(40, 40, 40,0.5)',
@@ -457,45 +457,45 @@ function loadSourceRank(){
 
                 tooltip: {
                     trigger: 'item',
-                    formatter: "{a} <br/>{b}: {c} ({d}%)"
+                    formatter: "{b}: {c} ({d}%)"
                 },
-                legend: {
-                    orient: 'vertical',
-                    x: '2%',
-                    top: '30%',
-                    data: legendData,
-                    textStyle:{
-                        color:'#fff'
-                    }
-                },
+                // legend: {
+                //     orient: 'vertical',
+                //     x: '2%',
+                //     top: '20%',
+                //     data: legendData,
+                //     textStyle:{
+                //         color:'#fff'
+                //     }
+                // },
                 series: [{
-                    name: '重大危险源等级',
+                    name: '重大危险源等级占比',
                     type: 'pie',
-                    radius: ['65%', '85%'],
+                    //radius: ['65%', '85%'],
                     avoidLabelOverlap: false,
                     itemStyle: dataStyle,
-                    label: {
-                        normal: {
-                            show: false,
-                            position: 'center'
-                        },
-                        emphasis: {
-                            show: true,
-                            formatter: function(param) {
-                                return param.percent.toFixed(0) + '%';
-                            },
-                            textStyle: {
-                                fontSize: '30',
-                                fontWeight: 'bold',
-                                color:'#fff'
-                            }
-                        }
-                    },
-                    labelLine: {
-                        normal: {
-                            show: true
-                        }
-                    },
+                    // label: {
+                    //     normal: {
+                    //         show: false,
+                    //         position: 'center'
+                    //     },
+                    //     emphasis: {
+                    //         show: true,
+                    //         formatter: function(param) {
+                    //             return param.percent.toFixed(0) + '%';
+                    //         },
+                    //         textStyle: {
+                    //             fontSize: '30',
+                    //             fontWeight: 'bold',
+                    //             color:'#fff'
+                    //         }
+                    //     }
+                    // },
+                    // labelLine: {
+                    //     normal: {
+                    //         show: true
+                    //     }
+                    // },
                     data: data
                 }]
             };
@@ -541,7 +541,7 @@ function loadIndustryCompany(){
                                 type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
                             }
                         },
-                        color: ["#ed2d2d", "#ff881f", "#ffe01f", "#0e77ab", "#00544a", "#6ca748","a5a5a5"],
+                        color: ["#ed2d2d","#ff881f","#ffe01f","#0e77ab","#00544a","#6ca748","#a5a5a5"],
                         legend: {
                             data: legendData,
                             textStyle: {

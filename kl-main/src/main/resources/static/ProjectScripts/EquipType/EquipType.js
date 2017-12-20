@@ -450,6 +450,11 @@ function moveOrder(x) {
                     draggable: true, // <-- Default value is false
                     buttonLabel: '确定', // <-- Default value is 'OK',
                     callback: function (result) {
+
+                        $("#equipTable").on("load-success.bs.table", function (data) {
+                            $("#equipTable").bootstrapTable("checkBy", {field: "typeCode", values: [rows[0].typeCode]});
+                            $("#equipTable").off("load-success.bs.table");
+                        });
                         $("#equipTable").bootstrapTable("refresh");
                     }
                 });
