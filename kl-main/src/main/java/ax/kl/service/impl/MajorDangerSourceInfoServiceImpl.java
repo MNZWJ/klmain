@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  *@author  mxl
@@ -26,8 +27,9 @@ public class MajorDangerSourceInfoServiceImpl implements MajorDangerSourceInfoSe
      * @return
      */
     @Override
-    public Page<DangerSourceInfo> getMajorInfo(Page page, String companyName, String sourceNmae,String rank) {
-        page.setRecords(MajorDangerSourceInfoMapper.getMajorInfo(page, companyName, sourceNmae,rank));
+    public Page<DangerSourceInfo> getMajorInfo(Page page, Map<String, String> param) {
+        page.setRecords(MajorDangerSourceInfoMapper.getMajorInfo(page,param.get("companyName") , param.get("sourceNmae")
+                ,param.get("rank")));
         return page;
     }
 

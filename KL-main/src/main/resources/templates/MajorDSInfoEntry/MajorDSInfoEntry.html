@@ -14,7 +14,7 @@
     <script src="../../Scripts/bootstrape-select/js/bootstrap-select.js"></script>
     <script src="../../Scripts/bootstrape-select/js/bootstrap-select.min.js"></script>
     <script src="../../Scripts/bootstrape-select/js/i18n/defaults-zh_CN.js"></script>
-    <script src="../../ProjectScripts/Common/common.js"></script>
+
     <style>
         .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
             width: 150px;
@@ -59,37 +59,34 @@
             padding-left: 0px;
             width: 59%;
         }
-
     </style>
-
 </head>
 <body>
+
 <div class="container-fluid">
     <div class="row">
-        <div class="col-xs-14">
-            <table id="enterpriseTable" class="table  table-striped table-bordered table-hover">
+        <div class="col-xs-14  table-repositive" >
+            <table id="MajorTable" class="table  table-striped table-bordered table-hover"
+                   style="table-layout: fixed;">
             </table>
-            <div id="enterpriseToolbar" class="toolbar" role="toolbar">
+            <div id="sysorgToolbar" class="toolbar" role="toolbar">
                 <form class="form-inline" role="form">
-                    <label class="xs-only" for="searchCompanyName">企业名称：</label>
-                    <select placeholder="请选择" class="selectpicker" style="width: 115px;" data-style="btn-default" id="searchCompanyName" data-live-search="true">                                                >
-                    </select>
-                    <label class="xs-only" for="searchScaleCode">企业规模：</label>
-                    <select placeholder="请选择"class="selectpicker" style="width: 115px;" data-style="btn-default" id="searchScaleCode">                                                >
-                    </select>
-                    <label class="xs-only" for="searchTypeCode">企业类型：</label>
-                    <select placeholder="请选择" class="selectpicker" style="width: 115px;" data-style="btn-default" id="searchTypeCode">                                                >
-                    </select>
-                    <label class="xs-only" for="searchIndustryId">企业行业：</label>
-                    <select placeholder="请选择"class="selectpicker" style="width: 115px;" data-style="btn-default" id="searchIndustryId">                                                >
-                    </select>
+                    <div class="form-group">
+                        <label class="xs-only" for="searchCompanyName">企业名称：</label>
+                        <select placeholder="请选择" class="selectpicker" style="width: 115px;" data-style="btn-default" id="searchCompanyName" data-live-search="true">                                                >
+                        </select>
+                        <label class="xs-only" for="searchSourceNmae">危险源名称：</label>
+                        <input id="searchSourceNmae" class="form-control"placeholder="请输入危险源名称" style="width: 140px;"/>
+                        <label class="xs-only" for="searchRank" style="padding-left:20px">危险源等级：</label>
+                        <select placeholder="请选择" style="width: 115px;" data-style="btn-default" id="searchRank">                                                >
+                        </select>
+                    </div>
                     <button class="btn btn-default" type="button" onclick="searchMenus()">
                         <span class="glyphicon glyphicon-search" type="button"></span> 查询
                     </button>
                     <button class="btn btn-danger" type="button" onclick="clearRole()">
                         <span class="glyphicon glyphicon-minus"></span> 清空
                     </button>
-                    <br/>
                     <button class="btn btn-success" type="button" onclick="companyAdd()">
                         <span class="glyphicon glyphicon-plus"></span> 新增
                     </button>
@@ -99,9 +96,6 @@
                     <button class="btn btn-danger" type="button" onclick="companyDel()">
                         <span class="glyphicon glyphicon-minus"></span> 删除
                     </button>
-                    <!--                <button class="btn btn-success" type="button" onclick="exportExcel()">
-                                    <span class="glyphicon glyphicon-export"></span> 导出
-                                </button>-->
                 </form>
             </div>
         </div>
@@ -127,7 +121,7 @@
                                 <div class="panel-heading" role="tab" id="headingOne">
                                     <h4 class="panel-title">
                                         <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                            企业基本信息
+                                            重大危险源基本信息
                                         </a>
                                     </h4>
                                 </div>
@@ -137,14 +131,14 @@
                                             <div class="tab-pane fade in active" id="companyInfo">
                                                 <form id="companyForm" class="form-inline pull-right form-horizontal" role="form">
                                                     <div class="form-group col-md-6">
-                                                        <label for="companyName" class="col-md-4">企业名称</label>
-                                                        <input type="text" name="companyName" class="form-control input-sm col-md-8"
-                                                               id="companyName">
+                                                        <label for="sourceName" class="col-md-4">危险源名称</label>
+                                                        <input type="text" name="sourceName" class="form-control input-sm col-md-8"
+                                                               id="sourceName">
                                                     </div>
                                                     <div class="form-group col-md-6">
-                                                        <label for="typeCode" class="col-md-4">企业类型</label>
+                                                        <label for="companyId" class="col-md-4">所属企业</label>
                                                         <select placeholder="请选择" class="selectpicker col-md-8" style="width: 115px;"
-                                                                data-style="btn-default" id="typeCode" name="typeCode" >                                                >
+                                                                data-style="btn-default" id="companyId" name="companyId" >                                                >
                                                         </select>
                                                     </div>
 
@@ -153,35 +147,34 @@
                                                         <input type="text" name="uniqueCode" class="form-control input-sm col-md-8"
                                                                id="uniqueCode" >
                                                     </div>
-
                                                     <div class="form-group col-md-6">
-                                                        <label for="industryCode" class="col-md-4">企业行业</label>
-                                                        <select placeholder="请选择" class="selectpicker col-md-8" style="width: 115px;"multiple
-                                                                data-style="btn-default" id="industryCode" name="industryCode" >                                                >
+                                                        <label for="accidentType" class="col-md-4">事故类型</label>
+                                                        <select placeholder="请选择" class="selectpicker col-md-8" style="padding-left:0px;width: 63%;"multiple
+                                                                data-style="btn-default" id="accidentType" name="accidentType" >                                                >
                                                         </select>
                                                     </div>
                                                     <div class="form-group col-md-6">
-                                                        <label for="legalPerson" class="col-md-4">法定代表人</label>
-                                                        <input type="text" name="legalPerson" class="form-control input-sm col-md-8"
-                                                               id="legalPerson">
-                                                    </div>
-                                                    <div class="form-group col-md-6">
-                                                        <label for="scaleCode" class="col-md-4">企业规模</label>
-                                                        <select placeholder="请选择" class="selectpicker col-md-8" style="width: 115px;"
-                                                                data-style="btn-default" id="scaleCode" name="scaleCode" >                                                >
-                                                        </select>
-                                                    </div>
-                                                    <div class="form-group col-md-6">
-                                                        <label for="contactWay" class="col-md-4">联系方式</label>
-                                                        <input type="text" name="contactWay" class="form-control input-sm col-md-8"
-                                                               id="contactWay">
+                                                        <label for="rValue" class="col-md-4">R值</label>
+                                                        <input type="text" name="rValue" class="form-control input-sm col-md-8"
+                                                               id="rValue" >
                                                     </div>
 
                                                     <div class="form-group col-md-6">
-                                                        <label for="operatingState" class="col-md-4">经营状态</label>
+                                                        <label for="rank" class="col-md-4">危险源等级</label>
                                                         <select placeholder="请选择" class="selectpicker col-md-8" style="width: 115px;"
-                                                                data-style="btn-default" id="operatingState" name="operatingState" >                                                >
+                                                                data-style="btn-default" id="rank" name="rank" >                                                >
                                                         </select>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label for="recordNo" class="col-md-4">备案编号</label>
+                                                        <input type="text" name="recordNo" class="form-control input-sm col-md-8"
+                                                               id="recordNo">
+                                                    </div>
+
+                                                    <div class="form-group col-md-6">
+                                                        <label for="validity" class="col-md-4">有效期</label>
+                                                        <input type="date" name="validity" class="form-control input-sm col-md-8"
+                                                               id="validity">
                                                     </div>
                                                     <div class="form-group col-md-6">
                                                         <label for="longt" class="col-md-4">经度</label>
@@ -189,10 +182,9 @@
                                                                id="longt">
                                                     </div>
                                                     <div class="form-group col-md-6">
-                                                        <label for="standardRank" class="col-md-4">标准化等级</label>
-                                                        <select placeholder="请选择" class="selectpicker col-md-8" style="width: 115px;"
-                                                                data-style="btn-default" id="standardRank" name="standardRank" >                                                >
-                                                        </select>
+                                                        <label for="recordDate" class="col-md-4">登记日期</label>
+                                                        <input type="date" name="recordDate" class="form-control input-sm col-md-8"
+                                                               id="recordDate">
                                                     </div>
                                                     <div class="form-group col-md-6">
                                                         <label for="lat" class="col-md-4">纬度</label>
@@ -201,21 +193,15 @@
                                                     </div>
 
                                                     <div class="form-group col-md-6">
-                                                        <label for="safeManageRank" class="col-md-4">安全管理等级</label>
-                                                        <select placeholder="请选择" class="selectpicker col-md-8" style="width: 115px;"
-                                                                data-style="btn-default" id="safeManageRank" name="safeManageRank" >                                                >
-                                                        </select>
+                                                        <label for="deathToll" class="col-md-4">可能引发事故死亡人数</label>
+                                                        <input type="text" name="deathToll" class="form-control input-sm col-md-8"
+                                                               id="deathToll"   >
                                                     </div>
+
                                                     <div class="form-group col-md-6">
-                                                        <label for="area" class="col-md-4">行政区域</label>
-                                                        <input type="text" name="area" class="form-control input-sm col-md-8"
-                                                               id="area"   >
-                                                    </div>
-                                                    <div class="form-group col-md-6">
-                                                        <label for="directArea" class="col-md-4">直属区域</label>
-                                                        <select placeholder="请选择" class="selectpicker col-md-8" style="width: 115px;"
-                                                                data-style="btn-default" id="directArea" name="directArea" >                                                >
-                                                        </select>
+                                                        <label for="outPersonCount" class="col-md-4">厂区边界外500米范围人数估值</label>
+                                                        <input type="text" name="outPersonCount" class="form-control input-sm col-md-8"
+                                                               id="outPersonCount"   >
                                                     </div>
                                                 </form>
                                             </div>
@@ -227,7 +213,7 @@
                                 <div class="panel-heading" role="tab" id="headingTwo">
                                     <h4 class="panel-title">
                                         <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                            企业相关化工工艺
+                                            装置设施周围环境
                                         </a>
                                     </h4>
                                 </div>
@@ -242,7 +228,7 @@
                                                     <span class="glyphicon glyphicon-minus"></span> 删除
                                                 </button>
                                             </div>
-                                            <table id="table" class="table  table-striped table-bordered table-hover">
+                                            <table id="equipTable" class="table  table-striped table-bordered table-hover">
                                             </table>
                                         </div>
                                     </div>
@@ -252,7 +238,7 @@
                                 <div class="panel-heading" role="tab" id="headingThree">
                                     <h4 class="panel-title">
                                         <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                            企业相关证书
+                                            法律保护区
                                         </a>
                                     </h4>
                                 </div>
@@ -267,7 +253,7 @@
                                                     <span class="glyphicon glyphicon-minus"></span> 删除
                                                 </button>
                                             </div>
-                                            <table id="certTable" class="table  table-striped table-bordered table-hover">
+                                            <table id="legalTable" class="table  table-striped table-bordered table-hover">
                                             </table>
                                         </div>
                                     </div>
@@ -284,7 +270,8 @@
         </div>
     </div>
 </div>
-<script src="../../ProjectScripts/BasicInfoEntry/BasicInfoEntry.js"></script>
 
+<script src="../../ProjectScripts/Common/common.js"></script>
+<script src="../../ProjectScripts/MajorDSInfoEntry/MajorDSInfoEntry.js"></script>
 </body>
 </html>

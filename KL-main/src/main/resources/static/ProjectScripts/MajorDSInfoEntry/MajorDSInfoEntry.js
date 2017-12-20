@@ -1,3 +1,9 @@
+//存放查询的危险源等级
+var searchRank="";
+//存放查询的企业名称
+var searchCompanyName="";
+//存放模糊查找的条件危险源名称
+var searchSourceNmae = "";
 //存放查询的企业名称
 var companyId="";
 //存放查询的企业规模
@@ -10,6 +16,8 @@ var searchIndustryCode="";
 var users = [];
 //存放所选企业主键
 var company="";
+//存放所选危险源的主键
+var sourceId = "";
 //存放危险工艺单元名称ID
 var technologyId="";
 //存放证书类型
@@ -20,8 +28,6 @@ var state=false;
 var flag=true;
 //点击事件标志位
 var eventFlag="";
-
-//初始化列表
 $(function () {
     //获取浏览器高度
     var scanHeight = $(window).height();
@@ -29,11 +35,11 @@ $(function () {
     initTable();//初始化危险工艺表格
     init();
     //加载列表
-    $('#enterpriseTable').bootstrapTable({
+    $('#MajorTable').bootstrapTable({
         height: scanHeight - 6,
-        url: '/EnterpriseInfo/getCompanyInfoList',
+        url: '/MajorDangerSourceInfo/getMajor',
         method: 'get',                      //请求方式（*）
-        toolbar: '#enterpriseToolbar',                //工具按钮用哪个容器
+        toolbar: '#sysorgToolbar',                //工具按钮用哪个容器
         striped: true,                      //是否显示行间隔色
         cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
         pagination: true,                   //是否显示分页（*）
@@ -50,8 +56,8 @@ $(function () {
         showRefresh: true,//是否显示 刷新按钮
         sortStable: true,//设置为 true 将获得稳定的排序，我们会添加_position属性到 row 数据中。
         selectItemName: 'state',
-        idField: 'companyId',
-        uniqueId:'companyId',
+        idField: 'sourceId',
+        uniqueId:'sourceId',
         rowStyle: function () {//自定义行样式
             return "bootTableRow";
         },
@@ -71,267 +77,123 @@ $(function () {
             field: 'number1',
             halign: 'center',
             align: 'center',
+            width: '2%',
             formatter: function (value, row, index) {
-                var page = $('#enterpriseTable').bootstrapTable('getOptions');
+                var page = $('#MajorTable').bootstrapTable('getOptions');
                 return (page.pageNumber - 1) * page.pageSize + index + 1;
             }
         }, {
             field: 'state',
-            checkbox: true
+            checkbox: true,
+            width:'2%'
+        }, {
+            field: 'sourceName',
+            title: '危险源名称',
+            halign: 'center',
+            width:'10%',
+            cellStyle: function (value, row, index, field) {
+                return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+            },
+            formatter: function (value, rowData, rowIndex) {
+                users.push(rowData);
+                return "<a href='javascript:look(\""+rowData.sourceId+"\")'>" + value + "</a>";
+            },
+        }, {
+            field: 'companyId',
+            title: '企业名称',
+            halign: 'center',
+            width:'10%',
+            cellStyle: function (value, row, index, field) {
+                return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+            },
+            formatter: function (value, row, index) {
+                return '<span title="'+value+'">'+value+'</span>'
+            }
         },
             {
-                field: 'companyName',
-                title: '企业名称',
+            field: 'rValue',
+            title: 'R值',
+            halign: 'center',
+            align: 'center',
+            width:'2%'
+        }, {
+            field: 'rank',
+            title: '危险源等级',
+            halign: 'center',
+            align: 'center',
+            width:'4%'
+        },
+            {
+                field: 'validity',
+                title: '有效期',
                 halign: 'center',
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                },
-                formatter: function (value, rowData, rowIndex) {
-                    users.push(rowData);
-                    return "<a href='javascript:look(\""+rowData.companyId+"\")'>" + value + "</a>";
-                }
-            },{
-                field: 'legalPerson',
-                title: '法人代表',
+                align: 'center',
+                width:'4%'
+
+            },
+            {
+                field: 'accidentType',
+                title: '事故类型',
                 halign: 'center',
-                align:'center'
-            }, {
-                field: 'contactWay',
-                title: '联系方式',
-                halign: 'center',
-                align:'center'
-            },  {
-                field: 'safeManageRank',
-                title: '安全管理分级',
-                halign: 'center',
-                align:'right'
-            },   {
-                field: 'standardRank',
-                title: '标准化等级',
-                halign: 'center',
-                align:'right'
-            },   {
-                field: 'operatingState',
-                title: '经营状态',
-                halign: 'center'
-            },   {
-                field: 'industryCode',
-                title: '所属行业',
-                halign: 'center',
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                },
-                formatter: function (value, row, index) {
+                width:'5%',
+                  cellStyle: function (value, row, index, field) {
+                      return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                  },
+                  formatter: function (value, row, index) {
                     if(value!=undefined){
                         return '<span title="'+value+'">'+value+'</span>'
                     }else{
                         return "-";
                     }
-
-                }
-            },   {
-                field: 'scaleCode',
-                title: '企业规模',
-                halign: 'center',
-                align:'center'
-            },   {
-                field: 'typeCode',
-                title: '企业类型',
-                halign: 'center',
-                align:'center'
-            }, {
-                field: 'area',
-                title: '行政区域',
-                halign: 'center',
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                },
-                formatter: function (value, row, index) {
-                    return '<span title="'+value+'">'+value+'</span>'
-
-                }
+                  }
             },
             {
-                field: 'directArea',
-                title: '直属区域',
-                halign: 'center'
+                field: 'deathToll',
+                title: '事故死亡人数',
+                halign: 'center',
+                align: 'right',
+                width:'4%'
+            },
+            {
+                field: 'recordDate',
+                title: '登记日期',
+                halign: 'center',
+                align: 'center',
+                width:'4%'
             }
         ]
     });
 });
-//预加载
-function  init() {
+//文本框数据加载
+function init() {
     getCompanyList();
-    getTypeCodeList();
-    getScaleCodeList();
-    getIndustryCodeList();
-    getDirectAreaList();
-    getstandardRankList();
-    getoperatingStateList();
-    getSafeManageRankList();
-    savedata();
+    MajorAangerous();
+    getacccidentTyptList();
+    saveData();
     formValidator();
+    $(".searchRank").selectpicker({noneSelectedText:'请选择'});
+    $(".searchSourceNmae").selectpicker({noneSelectedText:'请选择'});
     //模态窗关闭事件
     $('#myModal').on('hidden.bs.modal', function () {
         $('#myTab a[href="#companyInfo"]').tab('show');
     });
 }
-//获取企业集合
-function getCompanyList() {
+//获取重大危险源等级
+function MajorAangerous() {
     $.ajax({
         type: 'get',
         async: false,
-        url: '/EnterpriseInfo/getCompanyList',
+        url: '/SysDictionary/getDataDictList?typeId=' + MajorHazardRank,
         success: function (result) {
             var companyList = eval(result);
             $.each(companyList, function (i) {
-                $('#searchCompanyName').append("<option value='" + companyList[i].companyId + "'>" + companyList[i].companyName + "</option>");
+                $('#searchRank').append("<option value='" + companyList[i].dictId + "'>" + companyList[i].dictName + "</option>");
+                $('#rank').append("<option value='" + companyList[i].dictId + "'>" + companyList[i].dictName + "</option>");
             });
-            $('#searchCompanyName').selectpicker('val','');
-            $('#searchCompanyName .selectpicker').selectpicker('refresh',{});
-        },
-        error: function () {
-            alert("请求失败");
-        }
-    });
-}
-//获取企业类型集合
-function getTypeCodeList() {
-    $.ajax({
-        type: 'get',
-        async: false,
-        url: '/SysDictionary/getDataDictList?typeId=' + TypeCodeDictId,
-        success: function (result) {
-            var companyList = eval(result);
-            $.each(companyList, function (i) {
-                $('#searchTypeCode').append("<option value='" + companyList[i].dictId + "'>" + companyList[i].dictName + "</option>");
-                $('#typeCode').append("<option value='" + companyList[i].dictId + "'>" + companyList[i].dictName + "</option>");
-
-            });
-            $('#searchTypeCode').selectpicker('val', '');
-            $('#typeCode').selectpicker('val', '');
-            $('#searchTypeCode  .selectpicker').selectpicker('refresh',{});
-            $('#typeCode  .selectpicker').selectpicker('refresh',{});
-        },
-        error: function () {
-            alert("请求失败");
-        }
-    });
-}
-//获取企业规模集合
-function getScaleCodeList() {
-    $.ajax({
-        type: 'get',
-        async: false,
-        url: '/SysDictionary/getDataDictList?typeId=' + ScaleCodeDictId,
-        success: function (result) {
-            var companyList = eval(result);
-            $.each(companyList, function (i) {
-                $('#searchScaleCode').append("<option value='" + companyList[i].dictId + "'>" + companyList[i].dictName + "</option>");
-                $('#scaleCode').append("<option value='" + companyList[i].dictId + "'>" + companyList[i].dictName + "</option>");
-            });
-            $('#searchScaleCode').selectpicker('val', '');
-            $('#scaleCode').selectpicker('val', '');
-            $('#searchScaleCode  .selectpicker').selectpicker('refresh',{});
-            $('#scaleCode  .selectpicker').selectpicker('refresh',{});
-        },
-        error: function () {
-            alert("请求失败");
-        }
-    });
-}
-//垦利行政区域
-function getDirectAreaList() {
-    $.ajax({
-        type: 'get',
-        async: false,
-        url: '/SysDictionary/getDataDictList?typeId=' + DirectAreaDictId,
-        success: function (result) {
-            var companyList = eval(result);
-            $.each(companyList, function (i) {
-                $('#directArea').append("<option value='" + companyList[i].dictId + "'>" + companyList[i].dictName + "</option>");
-            });
-            $('#directArea').selectpicker('val','')
-            $('#directArea  .selectpicker').selectpicker('refresh',{});
-        },
-        error: function () {
-            alert("请求失败");
-        }
-    });
-}
-//获取经营状态集合
-function getoperatingStateList() {
-    $.ajax({
-        type: 'get',
-        async: false,
-        url: '/SysDictionary/getDataDictList?typeId=' + operatingStateDictId,
-        success: function (result) {
-            var companyList = eval(result);
-            $.each(companyList, function (i) {
-                $('#operatingState').append("<option value='" + companyList[i].dictId + "'>" + companyList[i].dictName + "</option>");
-            });
-            $('#operatingState').selectpicker('val','')
-            $('#operatingState  .selectpicker').selectpicker('refresh',{});
-        },
-        error: function () {
-            alert("请求失败");
-        }
-    });
-}
-//安全管理分级
-function getSafeManageRankList() {
-    $.ajax({
-        type: 'get',
-        async: false,
-        url: '/SysDictionary/getDataDictList?typeId=' + safeManageRankDictId,
-        success: function (result) {
-            var companyList = eval(result);
-            $.each(companyList, function (i) {
-                $('#safeManageRank').append("<option value='" + companyList[i].dictId + "'>" + companyList[i].dictName + "</option>");
-            });
-            $('#safeManageRank').selectpicker('val','')
-            $('#safeManageRank  .selectpicker').selectpicker('refresh',{});
-        },
-        error: function () {
-            alert("请求失败");
-        }
-    });
-}
-//标准化等级
-function getstandardRankList() {
-    $.ajax({
-        type: 'get',
-        async: false,
-        url: '/SysDictionary/getDataDictList?typeId=' + standardRankDictId,
-        success: function (result) {
-            var companyList = eval(result);
-            $.each(companyList, function (i) {
-                $('#standardRank').append("<option value='" + companyList[i].dictId + "'>" + companyList[i].dictName + "</option>");
-            });
-            $('#standardRank').selectpicker('val','')
-            $('#standardRank  .selectpicker').selectpicker('refresh',{});
-        },
-        error: function () {
-            alert("请求失败");
-        }
-    });
-}
-//获取企业行业集合
-function getIndustryCodeList() {
-    $.ajax({
-        type: 'get',
-        async: false,
-        url: '/SysDictionary/getDataDictList?typeId=' + IndustryCodeDictId,
-        success: function (result) {
-            var companyList = eval(result);
-            $.each(companyList, function (i) {
-                $('#searchIndustryId').append("<option value='" + companyList[i].dictId + "'>" + companyList[i].dictName + "</option>");
-                $('#industryCode').append("<option value='" + companyList[i].dictId + "'>" + companyList[i].dictName + "</option>");
-            });
-            $('#searchIndustryId').selectpicker('val','')
-            $('#industryCode').selectpicker('val','')
-            $('#searchIndustryId  .selectpicker').selectpicker('refresh',{});
-            $('#industryCode  .selectpicker').selectpicker('refresh',{});
+            $('#searchRank').selectpicker('val', '');
+            $('#rank').selectpicker('val', '');
+            $('#searchRank  .selectpicker').selectpicker('refresh',{});
+            $('#rank  .selectpicker').selectpicker('refresh',{});
         },
         error: function () {
             alert("请求失败");
@@ -340,48 +202,83 @@ function getIndustryCodeList() {
 }
 //查询
 function searchMenus() {
-    companyId = $("#searchCompanyName").selectpicker('val');
-    searchScaleCode = $("#searchScaleCode").selectpicker('val');
-    searchTypeCode = $("#searchTypeCode").selectpicker('val');
-    searchIndustryCode = $("#searchIndustryId").selectpicker('val');
-    $("#enterpriseTable").bootstrapTable("refresh",{});
-}
-//清空查询条件
-function clearRole() {
-    $('#searchScaleCode').selectpicker('val','');
-    $('#searchTypeCode').selectpicker('val','');
-    $('#searchIndustryId').selectpicker('val','');
-    $('#searchCompanyName').selectpicker('val','');
+    searchCompanyName = $("#searchCompanyName").selectpicker('val');
+    searchSourceNmae = $("#searchSourceNmae").val();
+    searchRank = $("#searchRank").selectpicker('val');
+    $("#MajorTable").bootstrapTable("refresh",{});
 }
 //表格返回参数方法
 function queryParams(pageReqeust) {
-    pageReqeust.companyName = companyId;
-    pageReqeust.scaleCode = searchScaleCode;
-    pageReqeust.typeCode = searchTypeCode;
-    pageReqeust.industryId = searchIndustryCode;
+    pageReqeust.companyName = searchCompanyName;
+    pageReqeust.sourceNmae = searchSourceNmae;
+    pageReqeust.rank=searchRank;
     return pageReqeust;
 }
+
+//清空查询条件
+function clearRole() {
+    $('#searchRank').selectpicker('val','');
+    $('#searchSourceNmae').val("");
+    $('#searchCompanyName').selectpicker('val','');
+}
+//获取企业集合
+function getCompanyList() {
+    $.ajax({
+        type: 'get',
+        async: false,
+        url: '/Inspection/getCompanyList',
+        success: function (result) {
+            var companyList = eval(result);
+            $.each(companyList, function (i) {
+                $('#searchCompanyName').append("<option value='" + companyList[i].companyId + "'>" + companyList[i].companyName + "</option>");
+                $('#companyId').append("<option value='" + companyList[i].companyId + "'>" + companyList[i].companyName + "</option>");
+            });
+            $('#searchCompanyName').selectpicker('val','');
+            $('#companyId').selectpicker('val','');
+            $('#searchCompanyName .selectpicker').selectpicker('refresh',{});
+            $('#companyId .selectpicker').selectpicker('refresh',{});
+        },
+        error: function () {
+            alert("请求失败");
+        }
+    });
+}
+//获取事故类型集合
+function getacccidentTyptList() {
+    $.ajax({
+        type: 'get',
+        async: false,
+        url: '/SysDictionary/getDataDictList?typeId=' + acccidentTyptDictId,
+        success: function (result) {
+            var companyList = eval(result);
+            $.each(companyList, function (i) {
+                $('#accidentType').append("<option value='" + companyList[i].dictId + "'>" + companyList[i].dictName + "</option>");
+            });
+            $('#accidentType').selectpicker('val','');
+            $('#accidentType .selectpicker').selectpicker('refresh',{});
+        },
+        error: function () {
+            alert("请求失败");
+        }
+    });
+}
 //企业点击事件弹出查看窗
-function look(companyId) {
+function look(sourceId) {
     eventFlag="look";
-    var row=$("#enterpriseTable").bootstrapTable("getRowByUniqueId",companyId);
-    company=row.companyId;
-    $('#typeCode').selectpicker('val', '');
-    $('#industryCode').selectpicker('val', '');
-    $('#scaleCode').selectpicker('val', '');
-    $('#operatingState').selectpicker('val', '');
-    $('#standardRank').selectpicker('val', '');
-    $('#safeManageRank').selectpicker('val', '');
-    $('#directArea').selectpicker('val', '');
+    var row=$("#MajorTable").bootstrapTable("getRowByUniqueId",sourceId);
+    company=row.sourceId;
+    $('#companyId').selectpicker('val', '');
+    $('#accidentType').selectpicker('val', '');
+    $('#rank').selectpicker('val', '');
     //刷新表格
-    $("#table").bootstrapTable('refresh');
-    $("#certTable").bootstrapTable('refresh');
+    $("#equipTable").bootstrapTable('refresh');
+    $("#legalTable").bootstrapTable('refresh');
 
     //input赋值
     $.ajax({
         type: 'post',
-        url: '/BasicInfoEntry/getCompanyInfo',
-        data: {companyId: company},
+        url: '/MajorDSInfoEntry/getSourceInfo',
+        data: {sourceId: company},
         success: function (result) {
             debugger;
             //清空表单
@@ -391,23 +288,23 @@ function look(companyId) {
                 .removeAttr('checked')
                 .removeAttr('selected');
             //下拉框赋值
-            $('#typeCode').selectpicker('val', result[0].typeCode);
-            if(result[0].industryCode!=null) {
-                $('#industryCode').selectpicker('val', result[0].industryCode.split(','));//多选时
+            $('#companyId').selectpicker('val', result[0].companyId);
+            if(result[0].accidentType!=null) {
+                $('#accidentType').selectpicker('val', result[0].accidentType.split(','));//多选时
             }
-            $('#scaleCode').selectpicker('val', result[0].scaleCode);
-            $('#operatingState').selectpicker('val', result[0].operatingState);
-            $('#standardRank').selectpicker('val', result[0].standardRank);
-            $('#safeManageRank').selectpicker('val', result[0].safeManageRank);
-            $('#directArea').selectpicker('val', result[0].directArea);
+            $('#rank').selectpicker('val', result[0].rank);
             //input赋值
-            $("#companyName").val(result[0].companyName);
+            $("#sourceName").val(result[0].sourceName);
             $("#uniqueCode").val(result[0].uniqueCode);
-            $("#legalPerson").val(result[0].legalPerson);
-            $("#contactWay").val(result[0].contactWay);
+            $("#rValue").val(result[0].rValue);
+            $("#rank").val(result[0].rank);
             $("#longt").val(result[0].longt);
             $("#lat").val(result[0].lat);
-            $("#area").val(result[0].area);
+            $("#recordNo").val(result[0].recordNo);
+            $("#validity").val(result[0].validity);
+            $("#recordDate").val(result[0].recordDate);
+            $("#deathToll").val(result[0].deathToll);
+            $("#outPersonCount").val(result[0].outPersonCount);
         },
         error: function () {
             BootstrapDialog.alert({
@@ -445,14 +342,10 @@ function companyAdd() {
         .val('')
         .removeAttr('checked')
         .removeAttr('selected');
-    $('#typeCode').selectpicker('val', '');
-    $('#industryCode').selectpicker('val', '');
-    $('#scaleCode').selectpicker('val', '');
-    $('#operatingState').selectpicker('val', '');
-    $('#standardRank').selectpicker('val', '');
-    $('#safeManageRank').selectpicker('val', '');
-    $('#directArea').selectpicker('val', '');
-    $("#companyForm").data('bootstrapValidator').resetForm(false)
+    $('#companyId').selectpicker('val', '');
+    $('#accidentType').selectpicker('val', '');
+    $('#rank').selectpicker('val', '');
+    $("#companyForm").data('bootstrapValidator').resetForm(false);
     $("#btn_save").show();
     $("#addData").show();
     $("#delData").show();
@@ -464,8 +357,8 @@ function companyAdd() {
         state = false;
     }
     //清空表格
-    $("#table").bootstrapTable('load', []);
-    $("#certTable").bootstrapTable('load', []);
+    $("#equipTable").bootstrapTable('load', []);
+    $("#legalTable").bootstrapTable('load', []);
 
     $("#myModelLabel").text("新增");
     $('#myModal').modal('show');
@@ -477,7 +370,7 @@ function companyAdd() {
 //修改
 function companyEdit() {
     eventFlag="edit";
-    var row = $("#enterpriseTable").bootstrapTable("getSelections");//获取所有选中的行
+    var row = $("#MajorTable").bootstrapTable("getSelections");//获取所有选中的行
     if (row.length !==1) {
         BootstrapDialog.alert({
             title: '警告',
@@ -501,15 +394,15 @@ function companyEdit() {
     $("#delData").show();
     $("#certAdd").show();
     $("#certDel").show();
-    company=row[0].companyId;
+    company=row[0].sourceId;
     //刷新表格
-    $("#table").bootstrapTable("refresh");
-    $("#certTable").bootstrapTable("refresh");
+    $("#equipTable").bootstrapTable("refresh");
+    $("#legalTable").bootstrapTable("refresh");
 
     $.ajax({
         type: 'post',
-        url: '/BasicInfoEntry/getCompanyInfo',
-        data: {companyId: company},
+        url: '/MajorDSInfoEntry/getSourceInfo',
+        data: {sourceId: company},
         success: function (result) {
             //清空表单
             $(':input', '#companyForm')
@@ -521,13 +414,11 @@ function companyEdit() {
                 $("#companyForm").find(":input[name='" + p + "']").val(result[0][p]);
             }
             //下拉框赋值
-            $('#typeCode').selectpicker('val', result[0].typeCode);
-            $('#industryCode').selectpicker('val', result[0].industryCode.split(','));//多选时
-            $('#scaleCode').selectpicker('val', result[0].scaleCode);
-            $('#operatingState').selectpicker('val', result[0].operatingState);
-            $('#standardRank').selectpicker('val', result[0].standardRank);
-            $('#safeManageRank').selectpicker('val', result[0].safeManageRank);
-            $('#directArea').selectpicker('val', result[0].directArea);
+            $('#companyId').selectpicker('val', result[0].companyId);
+            if(result[0].accidentType!=null) {
+                $('#accidentType').selectpicker('val', result[0].accidentType.split(','));//多选时
+            }
+            $('#rank').selectpicker('val', result[0].rank);
         },
         error: function () {
             BootstrapDialog.alert({
@@ -547,17 +438,19 @@ function companyEdit() {
     $('#collapseTwo').collapse('hide');
     $('#collapseThree').collapse('hide');
 }
-//初始化危险工艺表格
+
+
+//初始化装置设施表格
 function initTable(x) {
-    $("#table").bootstrapTable({
+    $("#equipTable").bootstrapTable({
         method: 'get',//请求方式
         clickToSelect: true,//是否启用点击选中行
         showRefresh: false,//是否显示 刷新按钮
-        url: '/EnterpriseInfo/getCompanyArtList',
+        url: '/MajorDSInfoEntry/getSourceEquipList',
         striped: true,                      //是否显示行间隔色
         cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
         queryParams: function (pageReqeust) {
-            pageReqeust.companyId = company;
+            pageReqeust.sourceId = company;
             return pageReqeust;
         },
         rowStyle: function () {//自定义行样式
@@ -565,8 +458,8 @@ function initTable(x) {
         },
         editable:true,//开启编辑模式
         pagination: true,
-        idField:'technologyId',
-        uniqueId: 'technologyId', //将companyId列设为唯一索引
+        idField:'facilities',
+        uniqueId: 'facilities', //将companyId列设为唯一索引
         minimumCountColumns: 2,
         smartDisplay:true,
         onLoadError: function () {
@@ -582,9 +475,9 @@ function initTable(x) {
         },
         onLoadSuccess:function(){
             //当查看时控制可编辑表格不可编辑
-          if(eventFlag=="look"){
-            $("#table").find(".editable").editable('disable');
-          }
+            if(eventFlag=="look"){
+                $("#equipTable").find(".editable").editable('disable');
+            }
         },
         columns: [
             {
@@ -593,7 +486,7 @@ function initTable(x) {
                 halign: 'center',
                 align: 'center',
                 formatter: function (value, row, index) {
-                    var page = $('#table').bootstrapTable('getOptions');
+                    var page = $('#equipTable').bootstrapTable('getOptions');
                     return (page.pageNumber - 1) * page.pageSize + index + 1;
                 }
             },
@@ -602,48 +495,62 @@ function initTable(x) {
                 checkbox: true
             },
             {
-                field: 'technologyId',
-                title: '危险工艺名称',
+                field: 'facilities',
+                title: '装置设施名称',
                 halign: 'center',
                 align:'center',
                 editable:{
-                    type: 'select',
-                    title: '请选择',
-                    source: function () {
-                        var result = [];
-                        $.ajax({
-                            url: '/SysDictionary/getDataDictList?typeId=' + RiskProcessDictId,
-                            async: false,
-                            type: "get",
-                            success: function (companyList) {
-                                $.each(companyList, function (i) {
-                                    result.push({ value:companyList[i].dictId, text: companyList[i].dictName });
-                                });
-                            }
-                        });
-                        return result;
-                    }
+                    type: 'text',
+                    title: '请输入',
                 },
             },{
-                field: 'monitorUnit',
-                title: '重点监控单元',
+                field: 'environment',
+                title: '周边环境名称',
                 halign: 'center',
                 editable:{
                     type: 'text',
                     title: '请输入',
+                }
+            },{
+                field: 'realDistance',
+                title: '实际距离（米）',
+                halign: 'center',
+                editable:{
+                    type: 'text',
+                    title: '请输入',
+                }
+            },{
+                field: 'standardDistance',
+                title: '标准要求',
+                halign: 'center',
+                editable:{
+                    type: 'text',
+                    title: '请输入',
+                }
+            },{
+                field: 'conformance',
+                title: '与标准符合性',
+                halign: 'center',
+                editable:{
+                    type: 'select',
+                    title: '请选择',
+                    source: function () {
+                        var result = [{value:'1',text:'符合'},{value:'0',text:'不符合'}];
+                        return result;
+                    }
                 }
             }
         ]
     });
     //新增
     $('#addData').click(function(){
-        $('#table').bootstrapTable('selectPage', 1);
-        var data = {technologyId: '',monitorUnit:''};
-        $('#table').bootstrapTable('prepend', data);
+        $('#equipTable').bootstrapTable('selectPage', 1);
+        var data = {facilities: '',environment:'',realDistance:'',realDistance:'',standardDistance:'',conformance:''};
+        $('#equipTable').bootstrapTable('prepend', data);
     });
     //删除
     $('#delData').click(function(){
-        var row = $("#table").bootstrapTable("getSelections");//获取所有选中的行
+        var row = $("#equipTable").bootstrapTable("getSelections");//获取所有选中的行
         if (row.length <= 0) {
             BootstrapDialog.alert({
                 title: '警告',
@@ -657,27 +564,27 @@ function initTable(x) {
             return false;
         }else {
             for(var i=0;i<row.length;i++){
-                $("#table").bootstrapTable('removeByUniqueId', row[i].technologyId);
+                $("#equipTable").bootstrapTable('removeByUniqueId', row[i].facilities);
             }
         }
     });
 }
-//初始化相关证书表格
+//初始化法律保护区表格
 function initCert(x) {
-    $("#certTable").bootstrapTable({
+    $("#legalTable").bootstrapTable({
         method: 'get',
         editable:true,//开启编辑模式
-        url: '/BasicInfoEntry/getCompanyCertList',
+        url: '/MajorDSInfoEntry/getSourceLegalList',
         cache: false,
         pagination: true,
         clickToSelect: true,//是否启用点击选中行
-        idField:'certType',
-        uniqueId: 'certType', //将companyId列设为唯一索引
+        idField:'protectArea',
+        uniqueId: 'protectArea', //将companyId列设为唯一索引
         striped: true,
         minimumCountColumns: 2,
         smartDisplay:true,
         queryParams: function (pageReqeust) {
-            pageReqeust.companyId = company;
+            pageReqeust.sourceId = company;
             return pageReqeust;
         },
         rowStyle: function () {//自定义行样式
@@ -697,7 +604,7 @@ function initCert(x) {
         onLoadSuccess:function(){
             //当查看时控制可编辑表格不可编辑
             if(eventFlag=="look"){
-                $("#certTable").find(".editable").editable('disable');
+                $("#legalTable").find(".editable").editable('disable');
             }
         },
         columns: [
@@ -707,7 +614,7 @@ function initCert(x) {
                 halign: 'center',
                 align: 'center',
                 formatter: function (value, row, index) {
-                    var page = $('#certTable').bootstrapTable('getOptions');
+                    var page = $('#legalTable').bootstrapTable('getOptions');
                     return (page.pageNumber - 1) * page.pageSize + index + 1;
                 }
             },
@@ -716,64 +623,46 @@ function initCert(x) {
                 checkbox: true
             },
             {
-                field: 'certType',
-                title: '证书类型',
+                field: 'protectArea',
+                title: '保护区',
                 halign: 'center',
                 align:'center',
                 editable:{
-                    type: 'select',
-                    title: '请选择',
-                    source: function () {
-                        var result = [];
-                        $.ajax({
-                            url: '/SysDictionary/getDataDictList?typeId=' + certTypeDictId,
-                            async: false,
-                            type: "get",
-                            success: function (companyList) {
-                                $.each(companyList, function (i) {
-                                    result.push({ value:companyList[i].dictId, text: companyList[i].dictName });
-                                });
-                            }
-                        });
-                        return result;
-                    }
+                    type: 'text',
+                    title: '请输入',
                 },
             },{
-                field: 'certNo',
-                title: '证书编号',
+                field: 'environment',
+                title: '周边环境说明',
                 halign: 'center',
                 editable:{
                     type: 'text',
                     title: '请输入',
                 }
             },{
-                field: 'startDate',
-                title: '开始日期',
+                field: 'conformance',
+                title: '与规定符合性',
                 halign: 'center',
                 editable:{
-                    type: 'date',
+                    type: 'select',
                     title: '请选择',
-                }
-            },{
-                field: 'validity',
-                title: '有效期',
-                halign: 'center',
-                editable:{
-                    type: 'date',
-                    title: '请选择',
+                     source: function () {
+                       var result = [{value:'符合',text:'符合'},{value:'不符合',text:'不符合'}];
+                       return result;
+                   }
                 }
             }
         ]
     });
     //新增
     $('#certAdd').click(function(){
-        $('#certTable').bootstrapTable('selectPage', 1);
-        var data = {certType: '',certNo:'',startDate:'',validity:''};
-        $('#certTable').bootstrapTable('prepend', data);
+        $('#legalTable').bootstrapTable('selectPage', 1);
+        var data = {protectArea:'',environment:'',conformance:''};
+        $('#legalTable').bootstrapTable('prepend', data);
     });
     //删除
     $('#certDel').click(function(){
-        var row = $("#certTable").bootstrapTable("getSelections");//获取所有选中的行
+        var row = $("#legalTable").bootstrapTable("getSelections");//获取所有选中的行
         if (row.length <= 0) {
             BootstrapDialog.alert({
                 title: '警告',
@@ -787,39 +676,38 @@ function initCert(x) {
             return false;
         }else {
             for(var i=0;i<row.length;i++){
-                $("#certTable").bootstrapTable('removeByUniqueId', row[i].certType);
+                $("#legalTable").bootstrapTable('removeByUniqueId', row[i].protectArea);
             }
         }
     });
 }
 //保存
-function savedata() {
-//保存
+function saveData() {
     $('#btn_save').click(function () {
         //获取表单对象
         var bootstrapValidator = $("#companyForm").data('bootstrapValidator');
         //获取BS中的List值
-        var processTable = $('#table').bootstrapTable('getData');
-        var certTable = $('#certTable').bootstrapTable('getData');
+        var processTable = $('#equipTable').bootstrapTable('getData');
+        var certTable = $('#legalTable').bootstrapTable('getData');
         //手动触发验证
         bootstrapValidator.validate();
         if (bootstrapValidator.isValid()) {
             //获取表单中的值
             var form = {};
             var menuList = $('#companyForm').serializeArray();
-            var industryCode="";
+            var accidentType="";
             for(var i=0;i<menuList.length;i++){
-                if(menuList[i].name=='industryCode'){
-                    industryCode+=','+menuList[i].value;
+                if(menuList[i].name=='accidentType'){
+                    accidentType+=','+menuList[i].value;
                 }}
             $.each(menuList, function () {
-                form[this.name] = this.value
+                form[this.name] = this.value;
             });
-            form.industryCode=industryCode.substring(1);
+            form.accidentType=accidentType.substring(1);
             var cmd = {"form": form, "processTable": processTable, "certTable": certTable};
             $.ajax({
                 type: 'post',
-                url: '/BasicInfoEntry/saveData',
+                url: '/MajorDSInfoEntry/saveData',
                 data: {cmd:JSON.stringify(cmd)},
                 success: function (result) {
                     if (result.code == 0) {
@@ -830,7 +718,7 @@ function savedata() {
                             type: BootstrapDialog.TYPE_SUCCESS, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
                             callback: function () {
                                 $('#myModal').modal('hide');
-                                $("#enterpriseTable").bootstrapTable("refresh");
+                                $("#MajorTable").bootstrapTable("refresh");
                             }
                         });
                     }
@@ -852,7 +740,7 @@ function savedata() {
 }
 //删除
 function companyDel() {
-    var rows = $("#enterpriseTable").bootstrapTable("getSelections");//获取所有选中的行
+    var rows = $("#MajorTable").bootstrapTable("getSelections");//获取所有选中的行
     if (rows.length <= 0) {
         BootstrapDialog.alert({
             title: '警告',
@@ -868,7 +756,7 @@ function companyDel() {
         return false;
     }
     BootstrapDialog.confirm({
-        message: "确定要删除选中的企业信息吗？",
+        message: "确定要删除选中的危险源信息吗？",
         type: BootstrapDialog.TYPE_WARNING,
         size: BootstrapDialog.SIZE_SMALL,
         title: "提示",
@@ -879,13 +767,13 @@ function companyDel() {
                 //选择ok后调用
                 var ids = "";
                 $.each(rows, function (i, n) {
-                    ids += n.companyId + ",";
+                    ids += n.sourceId + ",";
                 });
                 ids = ids.substring(0, ids.length - 1);
                 $.ajax({
                     type: 'post',
-                    url: '/BasicInfoEntry/delCompanyInfo',
-                    data: {companyId: ids},
+                    url: '/MajorDSInfoEntry/delSourceInfo',
+                    data: {sourceId: ids},
                     success: function (result) {
                         if (result.code == "00") {
                             BootstrapDialog.alert({
@@ -895,7 +783,7 @@ function companyDel() {
                                 type: BootstrapDialog.TYPE_SUCCESS, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
                                 callback: function () {
                                     $('#myModal').modal('hide');
-                                    $("#enterpriseTable").bootstrapTable("refresh");
+                                    $("#MajorTable").bootstrapTable("refresh");
                                 }
                             });
                         }
@@ -922,7 +810,7 @@ function formValidator() {
     $("#companyForm").bootstrapValidator({
         fields: {
             //多个重复
-            companyName: {
+            sourceName: {
                 enabled: true,
                 message: '输入有误',
                 validators: {
@@ -944,6 +832,13 @@ function formValidator() {
                     }
                 }
             },
+            companyId: {
+             validators: {
+                 notEmpty: {
+                     message: '请选择所属企业'
+                 }
+             }
+         },
             uniqueCode: {
                 //隐藏或显示 该字段的验证
                 enabled: true,
