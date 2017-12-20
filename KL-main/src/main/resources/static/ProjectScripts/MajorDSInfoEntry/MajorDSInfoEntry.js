@@ -18,10 +18,6 @@ var users = [];
 var company="";
 //存放所选危险源的主键
 var sourceId = "";
-//存放危险工艺单元名称ID
-var technologyId="";
-//存放证书类型
-var certType="";
 //是否只读的标识
 var state=false;
 //是否初始化的标志位
@@ -169,6 +165,7 @@ function init() {
     getCompanyList();
     MajorAangerous();
     getacccidentTyptList();
+    getaSourceStatusList();
     saveData();
     formValidator();
     $(".searchRank").selectpicker({noneSelectedText:'请选择'});
@@ -262,6 +259,26 @@ function getacccidentTyptList() {
         }
     });
 }
+
+//获取危险源状态集合
+function getaSourceStatusList() {
+    $.ajax({
+        type: 'get',
+        async: false,
+        url: '/SysDictionary/getDataDictList?typeId=' + sourceStatusDictId,
+        success: function (result) {
+            var companyList = eval(result);
+            $.each(companyList, function (i) {
+                $('#status').append("<option value='" + companyList[i].dictId + "'>" + companyList[i].dictName + "</option>");
+            });
+            $('#status').selectpicker('val','');
+            $('#status .selectpicker').selectpicker('refresh',{});
+        },
+        error: function () {
+            alert("请求失败");
+        }
+    });
+}
 //企业点击事件弹出查看窗
 function look(sourceId) {
     eventFlag="look";
@@ -269,6 +286,7 @@ function look(sourceId) {
     company=row.sourceId;
     $('#companyId').selectpicker('val', '');
     $('#accidentType').selectpicker('val', '');
+    $('#status').selectpicker('val', '');
     $('#rank').selectpicker('val', '');
     //刷新表格
     $("#equipTable").bootstrapTable('refresh');
@@ -293,6 +311,7 @@ function look(sourceId) {
                 $('#accidentType').selectpicker('val', result[0].accidentType.split(','));//多选时
             }
             $('#rank').selectpicker('val', result[0].rank);
+            $('#status').selectpicker('val', result[0].status);
             //input赋值
             $("#sourceName").val(result[0].sourceName);
             $("#uniqueCode").val(result[0].uniqueCode);
@@ -345,6 +364,7 @@ function companyAdd() {
     $('#companyId').selectpicker('val', '');
     $('#accidentType').selectpicker('val', '');
     $('#rank').selectpicker('val', '');
+    $('#status').selectpicker('val', '');
     $("#companyForm").data('bootstrapValidator').resetForm(false);
     $("#btn_save").show();
     $("#addData").show();
@@ -419,6 +439,7 @@ function companyEdit() {
                 $('#accidentType').selectpicker('val', result[0].accidentType.split(','));//多选时
             }
             $('#rank').selectpicker('val', result[0].rank);
+            $('#status').selectpicker('val', result[0].rank);
         },
         error: function () {
             BootstrapDialog.alert({
@@ -692,6 +713,7 @@ function saveData() {
         //手动触发验证
         bootstrapValidator.validate();
         if (bootstrapValidator.isValid()) {
+            debugger;
             //获取表单中的值
             var form = {};
             var menuList = $('#companyForm').serializeArray();
