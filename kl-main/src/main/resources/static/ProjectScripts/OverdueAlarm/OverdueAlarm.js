@@ -30,7 +30,7 @@ function initMap() {
     });
 
     getBoundary();
-    map.setMinZoom(8);
+    map.setMinZoom(11);
     map.setMaxZoom(18);
 
     searchCompanyList();

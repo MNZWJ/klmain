@@ -40,7 +40,7 @@ function initMap() {
 
     getBoundary();
     map.addEventListener("zoomend", onZoomChanged);
-    map.setMinZoom(8);
+    map.setMinZoom(11);
     map.setMaxZoom(18);
 
     getHazardList();
@@ -61,16 +61,16 @@ function getHazardList() {
                 var count = 1;
                 switch (true) {
                     case n.colorFlag == "1":
-                        count = 70;
+                        count = 100;
                         break;
                     case n.colorFlag == "2"  :
                         count = 60;
                         break;
                     case n.colorFlag == "3"  :
-                        count = 50;
+                        count = 40;
                         break;
                     case n.colorFlag == "4" :
-                        count = 40;
+                        count = 30;
                         break;
                     default:
                         count = 5;
@@ -242,7 +242,7 @@ function loadHazard(hazardList) {
         var myIcon = new BMap.Icon(imageUrl, new BMap.Size(39, 30));
 
         var marker = new BMap.Marker(wgs2bd(tempPoint), {
-            title: n.sourceName,
+            title: n.companyName+"\n"+n.sourceName,
             icon: myIcon,
             offset: new BMap.Size(0, -40)
         });
@@ -360,20 +360,22 @@ function loadHeatMapData(hazardList) {
         var count = 1;
         switch (true) {
             case n.colorFlag == "1":
-                count = 70;
+                count = 100;
                 break;
             case n.colorFlag == "2"  :
                 count = 60;
                 break;
             case n.colorFlag == "3"  :
-                count = 50;
+                count = 40;
                 break;
             case n.colorFlag == "4" :
-                count = 40;
+                count = 30;
                 break;
             default:
                 count = 5;
                 break;
+
+
         }
         var pointXY = wgs2bd_XY(parseFloat(n.lat), parseFloat(n.longt));
         headPoints.push({"lng": pointXY[0], "lat": pointXY[1], "count": count});

@@ -131,6 +131,8 @@ function getBoundary() {
         //addXQ(bdary);
         //map.setViewport(ply.getPath());    //调整视野
     });
+    map.setMinZoom(11);
+    map.setMaxZoom(18);
 }
 function addXQ(bdary) {
     var citys = new Array();
