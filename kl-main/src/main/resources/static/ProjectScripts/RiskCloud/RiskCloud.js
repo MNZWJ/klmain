@@ -156,7 +156,7 @@ function searchCompanyList() {
         success: function (result) {
             hazardList = result;
             if (map.getZoom() >= 14) {
-                loadHazard(result);
+                loadHazardName(result);
             } else {
 
                 loadHeatMapData(result);
@@ -213,7 +213,7 @@ function onZoomChanged() {
         case curZoom >= 14 && curZoomFlag < 14:
             heatmapOverlay.hide();
 
-            loadHazard(hazardList);
+            loadHazardName(hazardList);
             break;
         default:
 
@@ -570,4 +570,44 @@ function resizePage(){
 
     tableFlag=0;
 
+}
+
+
+//加载重大危险源点（带文字）
+function loadHazardName(hazardList) {
+    map.clearOverlays();
+    $.each(hazardList, function (i, n) {
+
+        var tempPoint = new BMap.Point(n.longt, n.lat);
+        var imageUrl = "";
+        if (n.colorFlag == "1") {
+            imageUrl = "../../Images/Common/红点.png";
+        } else if (n.colorFlag == "2") {
+            imageUrl = "../../Images/Common/橙点.png";
+        } else if (n.colorFlag == "3") {
+            imageUrl = "../../Images/Common/黄点.png";
+        } else if (n.colorFlag == "4") {
+            imageUrl = "../../Images/Common/蓝点.png";
+        }
+
+        var html = '<a title="' +n.companyName+'\n'+ n.sourceName + '" ><div style="position: absolute; padding: 0pt; width: 19px; height: 25px; line-height:25px; overflow: visible;background-size:19px 25px;background-image:url(' + imageUrl + ');text-align:center;white-space : nowrap" ><span style="margin-left:21px;font-size:12px;color: #000;" >' + n.simpleName + '</span>';
+        + '</div></a>';
+        var tempPoint = new BMap.Point(n.longt, n.lat);
+        var marker = new BMapLib.RichMarker(html, wgs2bd(tempPoint), {
+
+            "anchor": new BMap.Size(-20, -3),
+            "enableDragging": false
+        });
+
+        map.addOverlay(marker);
+
+        marker.customData = {sourceId: n.sourceId, rank: n.rank, colorFlag: n.colorFlag, title: n.sourceName,conditionFlag:n.conditionFlag,protectionFlag:n.protectionFlag};
+
+        marker.addEventListener("onclick", onMarkClick);
+
+
+
+
+
+    });
 }
