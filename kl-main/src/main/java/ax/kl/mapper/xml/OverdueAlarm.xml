@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ax.kl.mapper.OverdueAlarmMapper">
+
+    <!--加载企业列表-->
+    <select id="getAlarmCompanyList" resultType="ax.kl.entity.CompanyInfo">
+        SELECT  * FROM (
+        SELECT bci.CompanyId,bci.CompanyName,bci.Longt,bci.Lat,
+        MIN (ISNULL(datediff(day,GETDATE(),bcc.Validity),1)) AS 'CertificateAlarm',
+        (MAX (ISNULL(rad.Status,0))+ COUNT(rad.RealId)) AS 'RealtimeAlarm'
+        FROM TB_BASE_COMPANY_INFO bci
+        LEFT JOIN TB_BASE_COMPANY_CERTIFICATE bcc ON bcc.CompanyId=bci.CompanyId
+        LEFT JOIN TB_REALTIME_ALARM_DATA rad ON rad.EquipCode LIKE bci.UniqueCode + '%'
+        WHERE (rad.Status != 0 OR rad.Status IS NULL)
+        AND LEN(bci.Longt) !=0
+        AND LEN(bci.Lat) != 0
+        <if test="searchCompanyName!=null and searchCompanyName!=''">
+            AND bci.CompanyName LIKE CONCAT('%',CONCAT(#{searchCompanyName},'%'))
+        </if>
+        <if test="searchScaleCode!=null and searchScaleCode!= ''">
+            AND bci.ScaleCode =#{searchScaleCode}
+        </if>
+        <if test="searchTypeCode!=null and searchTypeCode!=''">
+            AND bci.TypeCode=#{searchTypeCode}
+        </if>
+        GROUP BY bci.CompanyId,bci.CompanyName,bci.Longt,bci.Lat,rad.RealId) AS t
+            WHERE LEN(t.Longt) !=0 AND LEN(t.Lat) != 0
+        <if test='searchAlarm == "0" '>
+            AND (t.CertificateAlarm &lt;= 0 OR t.RealtimeAlarm !=0)
+        </if>
+        <if test='searchAlarm == "1" '>
+            AND (t.CertificateAlarm &gt; 0 AND t.RealtimeAlarm =0)
+        </if>
+    </select>
+
+    <!--证书超期-->
+    <select id="getCertificateAlarm" resultType="ax.kl.entity.CompanyCertificate">
+        SELECT bcc.CertId,bci.CompanyName AS 'CompanyId',sd.DictName AS 'CerType',
+                bcc.CertNo,bcc.StartDate,bcc.Validity
+        FROM TB_BASE_COMPANY_CERTIFICATE bcc
+        JOIN TB_SYS_DATADICT sd ON sd.DictId=bcc.CertType
+        JOIN TB_BASE_COMPANY_INFO bci ON bci.CompanyId=bcc.CompanyId
+        WHERE datediff(day,GETDATE(),bcc.Validity) &lt;=0
+        AND bcc.CompanyId= #{companyId}
+    </select>
+
+    <!--设备实时预警-->
+    <select id="getRealtimeAlarm" resultType="ax.kl.entity.RealtimeAlarmData">
+        SELECT (CASE WHEN be2.PCode=0 THEN be2.TypeName + '-' ELSE '' END)+be1.TypeName AS 'EquipType',
+              rad.EquipCode,rad.AlarmDate,rad.RealValue,rad.Threshold
+        FROM TB_REALTIME_ALARM_DATA rad
+        JOIN TB_BASE_EQUIP_TYPE be1 ON rad.EquipType LIKE '%'+ be1.TypeCode
+        LEFT JOIN TB_BASE_EQUIP_TYPE be2 ON be2.TypeCode=be1.PCode AND rad.EquipType LIKE be2.TypeCode + '%'
+        JOIN TB_BASE_COMPANY_INFO bci ON rad.EquipCode LIKE bci.UniqueCode + '%'
+        WHERE bci.UniqueCode IS NOT NULL
+        AND bci.UniqueCode != ''
+        AND (rad.Status != 0 OR rad.Status IS NULL)
+        AND bci.CompanyId = #{companyId}
+    </select>
+</mapper>

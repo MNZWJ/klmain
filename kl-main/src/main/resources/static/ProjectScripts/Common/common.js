@@ -20,3 +20,11 @@ var  SourceDangerIdTwo="b006c3bd-f7b5-402e-a7c9-74ea4a739d64";
 var  SourceDangerIdThree="5fc43c2b-4784-4b55-ac22-e982a2b98bce";
 //四级重大危险源
 var  SourceDangerIdFour="6d0eb494-6b77-4f97-be3d-0b2e675703d7";
+//安管管理分级
+var safeManageRankDictId = "05648f13-4f13-4cd9-9b46-8a35b1365f90";
+//标准化等级
+var standardRankDictId = "3aed6882-2f35-4949-a9ab-e60a9fb6a049";
+//经营状态
+var operatingStateDictId = "2ce1bda6-72ff-43e8-b5e0-ac846e2cc558";
+//证书类型
+var certTypeDictId = "5f56e334-4c7f-4ab6-9dea-94e826a2a5d4";
