@@ -46,17 +46,6 @@ public class DangerSourceServiceImpl implements DangerSourceService {
         return dangerSourceMapper.getDSourceInfo(sourceId);
     }
 
-    /**
-     * 获取重大危险源关联化学品
-     * 分页
-     * @param sourceId 危险源Id
-     * @return
-     */
-    @Override
-    public Page<ChemicalsInfo> getChemicalsInfoListBySourceId(Page page,String sourceId) {
-        page.setRecords(dangerSourceMapper.getChemicalsInfoListBySourceId(page,sourceId));
-        return page;
-    }
 
     ;    /**
      * 获取重大危险源关联化学品

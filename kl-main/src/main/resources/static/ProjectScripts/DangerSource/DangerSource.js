@@ -1,6 +1,6 @@
 var sourceId = "";
+var flagTable = 0;
 var scanHeight="";
-var page = "";
 $(function () {
     //获取浏览器高度
     scanHeight = $(window).height();
@@ -11,7 +11,6 @@ $(function () {
         $('#chemistryTable').bootstrapTable("refresh");
     });
 
-    initTable();
     //模态窗关闭事件
     $('#myModal').on('hidden.bs.modal', function () {
         $('#myTab a[href="#sourceInfo"]').tab('show')
@@ -96,8 +95,13 @@ function loadSourceList(courceList) {
 //危险源点击事件
 function onMarkClick(e) {
     sourceId = e.target.customData.sourceId;
-    chemicalsTableLoda(sourceId);//化学品列表数据
-    $("#chemistryTable").bootstrapTable("refresh");
+    if(flagTable==0){
+        initTable();
+        flagTable=1;
+    }else {
+        $("#chemistryTable").bootstrapTable("refresh",{query:{sourceId:sourceId}});
+    }
+
     $.ajax({
         type: 'get',
         url: '/DangerSource/getDSourceInfo',
@@ -212,23 +216,18 @@ function getSource() {
 function initTable() {
     //化学品表格
     $('#chemistryTable').bootstrapTable({
-        height: scanHeight *3/7,
+        height: scanHeight * 4 / 7,
         striped: true,      //是否显示行间隔色
         cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
         method: 'get',//请求方式
-        pagination: 'false',//显示分页条
-        paginationLoop: 'false',//启用分页条无限循环功能
         url: '/DangerSource/getChemicalsInfoListTable',//请求url
-        pageNumber: 1,                       //初始化加载第一页，默认第一页
-        pageSize: 10,                       //每页的记录行数（*）
-        pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
-        sidePagination: 'server',//'server'或'client'服务器端分页
-        toolbar: '#toolbar',                //工具按钮用哪个容器
         clickToSelect: true,//是否启用点击选中行
         showRefresh: false,//是否显示 刷新按钮
-        queryParams: queryParams,
-        queryParamsType: '', //默认值为 'limit' ,在默认情况下 传给服务端的参数为：offset,limit,sort
-        idField:"chemId",
+        queryParams: function (pageReqeust) {
+            pageReqeust.sourceId = sourceId;
+
+            return pageReqeust;
+        },
         rowStyle: function () {//自定义行样式
             return "bootTableRow";
         },
@@ -286,30 +285,10 @@ function queryParams(pageReqeust) {
     return pageReqeust;
 }
 
-/**
- * 获取化学品列表数据
- * @param sourceId
- */
-function chemicalsTableLoda(sourceId) {
-    $.ajax({
-        type: 'get',
-        url: '/DangerSource/getChemicalsInfoListTable',
-        async: false,
-        data:{sourceId:sourceId,pageSize:page.pageSize,pageNumber:page.pageNumber},
-        contentType : 'application/json;charset=utf-8',
-        success:function (result) {
-            $('#chemistryTable').load(result);
-        },
-        error:function (e) {
-
-        }
-    })
-}
-
 //初始化图表
 function initEcharts() {
 
-    //各行业企业分布情况
+    //各行业危险源分布情况
     loadIndustryCompany();
     //加载事故等级占比
     loadSourceRank();
@@ -348,6 +327,7 @@ function getSourceCount() {
     });
 }
 
+var DSAccidenTypeEchart =null;
 //加载可能引发的事故类型
 function loadDSAccidenType(){
 
@@ -427,7 +407,7 @@ function loadDSAccidenType(){
                     data: data
                 }]
             };
-            var DSAccidenTypeEchart =echarts.init(document.getElementById("DSAccidenTypeEchart"));
+            DSAccidenTypeEchart =echarts.init(document.getElementById("DSAccidenTypeEchart"));
             DSAccidenTypeEchart.setOption(option);
         },
         error:function(e){
@@ -437,10 +417,14 @@ function loadDSAccidenType(){
 }
 
 
-
+var sourceRankEchart = null;
 //加载重大危险源等级占比
 function loadSourceRank(){
 
+    if(sourceRankEchart!=null){
+        sourceRankEchart.dispose();
+        sourceRankEchart=null;
+    }
     $.ajax({
         type:'get',
         url:'/DangerSource/getSourceRankCount',
@@ -515,16 +499,21 @@ function loadSourceRank(){
                     data: data
                 }]
             };
-            var sourceRankEchart =echarts.init(document.getElementById("sourceRankEchart"));
+            sourceRankEchart =echarts.init(document.getElementById("sourceRankEchart"));
             sourceRankEchart.setOption(option);
         }
     });
 
 }
 
-
+var industrySource =null;
 //加载各行业重大危险源分布情况
 function loadIndustryCompany(){
+
+    if(industrySource!=null){
+        industrySource.dispose();
+        industrySource=null;
+    }
     $.ajax({
         type: 'get',
         url: '/DangerSource/getDSIndustry',
@@ -603,8 +592,8 @@ function loadIndustryCompany(){
                         series: data
                     };
 
-                    var myChart = echarts.init(document.getElementById('industryCompanyInfo'));
-                    myChart.setOption(option);
+                    industrySource = echarts.init(document.getElementById('industrySourceInfo'));
+                    industrySource.setOption(option);
                 }
             });
 
@@ -614,8 +603,13 @@ function loadIndustryCompany(){
 }
 
 
+var directAreaSource =null;
 //加载重大危险源行政分布情况
 function loadDSDistribution(){
+    if(directAreaSource!=null){
+        directAreaSource.dispose();
+        directAreaSource=null;
+    }
     $.ajax({
         type: 'get',
         url: '/DangerSource/getDSDistribution',
@@ -696,8 +690,8 @@ function loadDSDistribution(){
                         series: data
                     };
 
-                    var myChart = echarts.init(document.getElementById('directAreaCompanyInfo'));
-                    myChart.setOption(option);
+                    directAreaSource = echarts.init(document.getElementById('directAreaSourceInfo'));
+                    directAreaSource.setOption(option);
                 }
             });
 
@@ -735,4 +729,24 @@ function convert(date) {
     var seconds = today.getSeconds() > 9 ? today.getSeconds() : "0" + today.getSeconds();
 
     return today.getFullYear() + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
+}
+
+//适应页面大小
+function resizePage(){
+    if(DSAccidenTypeEchart!=null){
+        DSAccidenTypeEchart.resize();
+    }
+    if(sourceRankEchart!=null){
+        sourceRankEchart.resize();
+    }
+    if(industrySource!=null){
+        industrySource.resize();
+    }
+    if(directAreaSource!=null){
+        directAreaSource.resize();
+    }
+
+    //获取浏览器高度
+    scanHeight = $(window).height();
+    flagTable=0;
 }
