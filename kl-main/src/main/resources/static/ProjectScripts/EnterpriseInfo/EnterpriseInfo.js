@@ -32,7 +32,7 @@ $(function () {
         pageNumber: 1,                       //初始化加载第一页，默认第一页
         pageSize: 10,                       //每页的记录行数（*）
         pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
-        showRefresh: true,//是否显示 刷新按钮
+        showRefresh: false,//是否显示 刷新按钮
         sortStable: true,//设置为 true 将获得稳定的排序，我们会添加_position属性到 row 数据中。
         selectItemName: 'state',
         idField: 'companyId',
@@ -110,6 +110,7 @@ $(function () {
                     };
                 },
                 formatter: function (value, row, index) {
+                    value = value==undefined?"":value;
                     return '<span title="' + value + '">' + value + '</span>'
                 }
             },

@@ -23,9 +23,6 @@ $(function () {
         queryParamsType: '', //默认值为 'limit' ,在默认情况下 传给服务端的参数为：offset,limit,sort
         idField:"dangerId",
         // 设置为 ''  在这种情况下传给服务器的参数为：pageSize,pageNumber
-        rowStyle: function () {//自定义行样式
-            return "bootTableRow";
-        },
         onLoadError:function(){
 
         },
@@ -35,7 +32,6 @@ $(function () {
             {
                 title: '序号',
                 halign: 'center',
-                width: '5%',
                 align: 'center',
                 formatter: function (value, row, index) {
                     var page = $('#table').bootstrapTable('getOptions');
@@ -46,10 +42,8 @@ $(function () {
                 title: '重大危险源名称',
                 halign: 'center',
                 align: 'left',
-                width: '8.63%',
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                },
+                width: '10%',
+                class:"bootTableRow",
                 formatter: function (value, row, index) {
                     value = value ==undefined?'-':value;
                     return '<span title="'+value+'">'+value+'</span>'
@@ -60,9 +54,7 @@ $(function () {
                 halign: 'center',
                 align: 'left',
                 width: '8.63%',
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                },
+                class:"bootTableRow",
                 formatter: function (value, row, index) {
                     value = value ==undefined?'-':value;
                     return '<span title="'+value+'">'+value+'</span>'
@@ -73,9 +65,7 @@ $(function () {
                 halign: 'center',
                 align: 'left',
                 width: '8.63%',
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                },
+                class:"bootTableRow",
                 formatter: function (value, row, index) {
                     value = value ==undefined?'-':value;
                     return '<span title="'+value+'">'+value+'</span>'
@@ -86,9 +76,7 @@ $(function () {
                 halign: 'center',
                 align: 'left',
                 width: '8.63%',
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                },
+                class:"bootTableRow",
                 formatter: function (value, row, index) {
                     value = value ==undefined?'-':value;
                     return '<span title="'+value+'">'+value+'</span>'
@@ -99,9 +87,7 @@ $(function () {
                 halign: 'center',
                 align: 'left',
                 width: '8.63%',
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                },
+                class:"bootTableRow",
                 formatter: function (value, row, index) {
                     value = value ==undefined?'-':value;
                     return '<span title="'+value+'">'+value+'</span>'
@@ -112,13 +98,10 @@ $(function () {
                 halign: 'center',
                 align: 'left',
                 width: '8.63%',
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                },
+                class:"bootTableRow",
                 formatter: function (value, row, index) {
                     value = value ==undefined?'-':value;
                     return '<span title="'+value+'">'+value+'</span>'
-
                 }
             },{
                 field: 'category',
@@ -126,9 +109,7 @@ $(function () {
                 halign: 'center',
                 align: 'left',
                 width: '8.63%',
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                },
+                class:"bootTableRow",
                 formatter: function (value, row, index) {
                     value = value ==undefined?'-':value;
                     return '<span title="'+value+'">'+value+'</span>'
@@ -137,11 +118,9 @@ $(function () {
                 field: 'rank',
                 title: '隐患级别',
                 halign: 'center',
-                align: 'left',
+                align: 'center',
                 width: '8.63%',
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                },
+                class:"bootTableRow",
                 formatter: function (value, row, index) {
                     value = value ==undefined?'-':value;
                     return '<span title="'+value+'">'+value+'</span>'
@@ -150,11 +129,9 @@ $(function () {
                 field: 'upReportDate',
                 title: '上报日期',
                 halign: 'center',
-                align: 'left',
+                align: 'center',
                 width: '8.63%',
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                },
+                class:"bootTableRow",
                 formatter: function (value, row, index) {
                     value = value ==undefined?'-':value;
                     return '<span title="'+value+'">'+value+'</span>'
@@ -163,11 +140,9 @@ $(function () {
                 field: 'reformTerm',
                 title: '整改期限',
                 halign: 'center',
-                align: 'left',
+                align: 'center',
                 width: '8.63%',
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                },
+                class:"bootTableRow",
                 formatter: function (value, row, index) {
                     value = value ==undefined?'-':value;
                     return '<span title="'+value+'">'+value+'</span>'
@@ -176,11 +151,9 @@ $(function () {
                 field: 'rectification',
                 title: '整改情况',
                 halign: 'center',
-                align: 'left',
+                align: 'center',
                 width: '8.63%',
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                },
+                class:"bootTableRow",
                 formatter: function (value, row, index) {
                     value = value ==undefined?'-':value;
                     return '<span title="'+value+'">'+value+'</span>'
