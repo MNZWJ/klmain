@@ -47,7 +47,7 @@ function initMap() {
     });
 
     getBoundary();
-    map.setMinZoom(8);
+    map.setMinZoom(11);
     map.setMaxZoom(18);
 
 
@@ -485,7 +485,7 @@ function loadScaleCode(){
 
             scaleCodeOption = {
 
-                color: ['#fbf31f', '#ffffff','#24ffb5','#22529b'],
+                color: ['#fbf31f', '#ef8938','#24ffb5','#22529b'],
 
 
 

@@ -73,10 +73,7 @@ function loadAreaAlarmEchart(){
 
 
             var option = {
-                // title: {
-                //     text: '世界人口总量',
-                //     subtext: '数据来自网络'
-                // },
+
                 tooltip: {
                     trigger: 'axis',
                     axisPointer: {
@@ -111,7 +108,8 @@ function loadAreaAlarmEchart(){
                         lineStyle:{
                             color:'#fff'
                         }
-                    }
+                    },
+                    minInterval: 1
                 },
                 yAxis: {
                     type: 'category',
@@ -135,7 +133,7 @@ function loadAreaAlarmEchart(){
                     },
                     {
                         show: "true",
-                        start: 80,
+                        start: 40,
                         end: 100,
 
                         textStyle: {

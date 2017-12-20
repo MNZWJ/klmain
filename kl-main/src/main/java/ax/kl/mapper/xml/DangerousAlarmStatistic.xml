@@ -74,8 +74,8 @@ WHERE Len(mt.LevelCode)=6 AND da.IDCode='ZB'
 union
 SELECT at.TypeName,da.AlarmCount,da.AlarmDate
 FROM TB_STATIS_DAY_ALARM da
-JOIN TB_BASE_ALARM_TYPE at on da.AlarmType LIKE at.TypeCode +'%'
-WHERE Len(at.TypeCode)=6 AND da.IDCode='ZT'
+JOIN TB_BASE_ALARM_TYPE at on da.AlarmType = at.TypeCode
+WHERE  da.IDCode='ZT'
 	</select>
 
 
@@ -103,12 +103,11 @@ WHERE Len(at.TypeCode)=6 AND da.IDCode='ZT'
 					FROM
 						TB_STATIS_INDUSTRY_MONTH_ALARM ma
 					RIGHT JOIN TB_BASE_ALARM_TYPE AT ON (
-						[at].TypeCode LIKE ma.AlarmType + '%'
+						[at].TypeCode = ma.AlarmType
 						AND ma.IDCode = 'ZT' AND ma.IndustryId=sda.DictId
 						AND ma.MonthDay=cast(year(getdate()) as Varchar)+'-'+cast( datename(month,getdate()) as Varchar)
 					)
-					WHERE
-						LEN([at].TypeCode) = 6
+
 					UNION ALL
 						SELECT
 							CAST (
