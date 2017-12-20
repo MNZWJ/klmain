@@ -1,4 +1,4 @@
-var scanHeight = "";
+
 var scanHeight = "";
 $(function () {
     //获取浏览器高度
@@ -66,7 +66,8 @@ function initTable() {
                 },
                 colspan: 1,
                 rowspan: 3,
-                width: 'auto'
+                width: 'auto',
+                classes:'table',
             }
                 ,
 
