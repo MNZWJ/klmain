@@ -32,7 +32,7 @@ $(function () {
         pageNumber: 1,                       //初始化加载第一页，默认第一页
         pageSize: 10,                       //每页的记录行数（*）
         pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
-        showRefresh: true,//是否显示 刷新按钮
+        showRefresh: false,//是否显示 刷新按钮
         sortStable: true,//设置为 true 将获得稳定的排序，我们会添加_position属性到 row 数据中。
         selectItemName: 'state',
         idField: 'companyId',
@@ -56,18 +56,22 @@ $(function () {
             field: 'number1',
             halign: 'center',
             align: 'center',
+            width: '5%',
             formatter: function (value, row, index) {
                 var page = $('#enterpriseTable').bootstrapTable('getOptions');
                 return (page.pageNumber - 1) * page.pageSize + index + 1;
             }
         }, {
             field: 'state',
-            checkbox: true
+            checkbox: true,
+            width: '3%'
         },
             {
                 field: 'companyName',
                 title: '企业名称',
                 halign: 'center',
+                class: "bootTableRow",
+                width: "8.8%",
                 formatter: function (value, rowData, rowIndex) {
                     users.push(rowData);
                     return "<a href='javascript:look(\""+rowData.companyId+"\")'>" + value + "</a>";
@@ -76,44 +80,88 @@ $(function () {
                 field: 'legalPerson',
                 title: '法人代表',
                 halign: 'center',
-                align:'center'
+                align:'center',
+                width: "8.8%"
             }, {
                 field: 'contactWay',
                 title: '联系方式',
                 halign: 'center',
-                align:'center'
+                align:'center',
+                class: "bootTableRow",
+                width: "8.8%",
+                formatter: function (value, row, index) {
+                    value = value==undefined?"":value;
+                    return '<span title="' + value + '">' + value + '</span>'
+                }
             },  {
                 field: 'safeManageRank',
                 title: '安全管理分级',
                 halign: 'center',
-                align:'right'
+                align: 'center',
+                class: "bootTableRow",
+                width: "8.8%"
+
             },   {
                 field: 'standardRank',
                 title: '标准化等级',
                 halign: 'center',
-                align:'right'
+                align: 'center',
+                class: "bootTableRow",
+                width: "8.8%"
             },   {
                 field: 'operatingState',
                 title: '经营状态',
-                halign: 'center'
-            },   {
+                halign: 'center',
+                align: 'center',
+                class: "bootTableRow",
+                width: "8.8%"
+            }, {
                 field: 'industryCode',
                 title: '所属行业',
-                halign: 'center'
-            },   {
+                halign: 'center',
+                align: 'left',
+                width: "8.8%",
+                class: "bootTableRow",
+                formatter: function (value, row, index) {
+                    value = value==undefined?"":value;
+                    return '<span title="' + value + '">' + value + '</span>'
+                }
+            },
+            {
                 field: 'scaleCode',
                 title: '企业规模',
                 halign: 'center',
-                align:'center'
-            },   {
+                align:'center',
+                width: "8.8%",
+            },
+            {
                 field: 'typeCode',
                 title: '企业类型',
                 halign: 'center',
-                align:'center'
+                align:'center',
+                width: "8.8%",
+                class: "bootTableRow",
+                formatter: function (value, row, index) {
+                    return '<span title="'+value+'">'+value+'</span>'
+                }
             }, {
                 field: 'area',
                 title: '行政区域',
-                halign: 'center'
+                halign: 'center',
+                width: "8.8%",
+                class: "bootTableRow",
+                formatter: function (value, row, index) {
+                    return '<span title="'+value+'">'+value+'</span>'
+                }
+            }, {
+                field: 'directArea',
+                title: '直属区域',
+                halign: 'center',
+                width: '8.8%',
+                class: "bootTableRow",
+                formatter: function (value, row, index) {
+                    return '<span title="'+value+'">'+value+'</span>'
+                }
             }
         ]
     });

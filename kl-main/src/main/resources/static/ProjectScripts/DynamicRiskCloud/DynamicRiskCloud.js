@@ -40,7 +40,7 @@ function initMap() {
 
     getBoundary();
     map.addEventListener("zoomend", onZoomChanged);
-    map.setMinZoom(8);
+    map.setMinZoom(11);
     map.setMaxZoom(18);
 
     getHazardList();
@@ -61,16 +61,16 @@ function getHazardList() {
                 var count = 1;
                 switch (true) {
                     case n.colorFlag == "1":
-                        count = 70;
+                        count = 100;
                         break;
                     case n.colorFlag == "2"  :
                         count = 60;
                         break;
                     case n.colorFlag == "3"  :
-                        count = 50;
+                        count = 40;
                         break;
                     case n.colorFlag == "4" :
-                        count = 40;
+                        count = 30;
                         break;
                     default:
                         count = 5;
@@ -91,10 +91,10 @@ function getHazardList() {
     return hazardList;
 }
 
-
-//关闭查询框
 function openOrclose() {
 
+
+//关闭查询框
     $("#tab2").hide();
     var i = 92;
     var interval = setInterval(function () {
@@ -239,13 +239,24 @@ function loadHazard(hazardList) {
         } else if (n.colorFlag == "4") {
             imageUrl = "../../Images/Common/蓝点.png";
         }
-        var myIcon = new BMap.Icon(imageUrl, new BMap.Size(39, 30));
+        // var myIcon = new BMap.Icon(imageUrl, new BMap.Size(39, 30));
+        //
+        // var marker = new BMap.Marker(wgs2bd(tempPoint), {
+        //     title: n.companyName+"\n"+n.sourceName,
+        //     icon: myIcon,
+        //     offset: new BMap.Size(0, -40)
+        // });
 
-        var marker = new BMap.Marker(wgs2bd(tempPoint), {
-            title: n.sourceName,
-            icon: myIcon,
-            offset: new BMap.Size(0, -40)
+        var html = '<a title="' +n.companyName+'\n'+ n.sourceName + '" ><div style="position: absolute; padding: 0pt; width: 19px; height: 25px; line-height:25px; overflow: visible;background-size:19px 25px;background-image:url(' + imageUrl + ');text-align:center;white-space : nowrap" ><span style="margin-left:21px;font-size:12px;color: #000;" >' + n.simpleName + '</span>';
+        + '</div></a>';
+        var tempPoint = new BMap.Point(n.longt, n.lat);
+        var marker = new BMapLib.RichMarker(html, wgs2bd(tempPoint), {
+
+            "anchor": new BMap.Size(-20, -3),
+            "enableDragging": false
         });
+
+
         map.addOverlay(marker);
         marker.customData = {
             sourceId: n.sourceId,
@@ -341,16 +352,16 @@ function loadHeatMapData(hazardList) {
         var count = 1;
         switch (true) {
             case n.colorFlag == "1":
-                count = 70;
+                count = 100;
                 break;
             case n.colorFlag == "2"  :
                 count = 60;
                 break;
             case n.colorFlag == "3"  :
-                count = 50;
+                count = 40;
                 break;
             case n.colorFlag == "4" :
-                count = 40;
+                count = 30;
                 break;
             default:
                 count = 5;

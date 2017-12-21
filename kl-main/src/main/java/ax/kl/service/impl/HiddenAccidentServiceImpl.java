@@ -73,8 +73,8 @@ public class HiddenAccidentServiceImpl implements HiddenAccidentService {
      * @return
      */
     @Override
-    public Page<HiddenAccident> getHiddenAllInfo(Page page,String dangerSource,String hiddenDanger){
-        page.setRecords(hiddenAccidentMapper.getHiddenAllInfo(page,dangerSource,hiddenDanger));
+    public Page<HiddenAccident> getHiddenAllInfo(Page page,String dangerSource,String hiddenDanger,String rank,String rectification,String startdate,String enddate){
+        page.setRecords(hiddenAccidentMapper.getHiddenAllInfo(page,dangerSource,hiddenDanger,rank,rectification,startdate,enddate));
         return page;
     };
 

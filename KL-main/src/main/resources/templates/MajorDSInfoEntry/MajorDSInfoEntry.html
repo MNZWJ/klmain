@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <#include "/Common/Layout.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="../../Scripts/bootstrap-table/bootstrap-table.min.css"/>
+    <link rel="stylesheet" href="../../Scripts/bootstrape-select/css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="../../Scripts/bootstrap-table/extensions/editable/bootstrap-editable.css">
+    <script src="../../Scripts/bootstrap-table/bootstrap-table.min.js"></script>
+    <script src="../../Scripts/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+    <script src="../../Scripts/bootstrap-table/extensions/editable/bootstrap-editable.js"></script>
+    <script src="../../Scripts/bootstrap-table/extensions/editable/bootstrap-table-editable.js"></script>
+    <script src="../../Scripts/bootstrape-select/js/bootstrap-select.js"></script>
+    <script src="../../Scripts/bootstrape-select/js/bootstrap-select.min.js"></script>
+    <script src="../../Scripts/bootstrape-select/js/i18n/defaults-zh_CN.js"></script>
+
+    <style>
+        .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
+            width: 150px;
+            padding-right: 20px;
+        }
+        .form-inline .form-control {
+            display: inline-block;
+            width: 170px;
+            vertical-align: middle;
+        }
+        /*固定表格行高*/
+        .bootTableRow {
+            white-space: nowrap;
+            overflow: hidden;
+            height: 120px;
+            max-height: 120px;
+        }
+        .form {
+            padding-top: 10px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .nav {
+            margin-bottom: 10px;
+        }
+
+        .container-fluid {
+            margin-left: 5px;
+            margin-right: 5px;
+        }
+
+        .col-md-4 {
+            width: 37%;
+            height: auto;
+            padding-bottom: 2px;
+        }
+        .col-md-6 {
+            padding-bottom: 10px;
+        }
+        .col-md-8 {
+            padding-left: 0px;
+            width: 59%;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-14  table-repositive" >
+            <table id="MajorTable" class="table  table-striped table-bordered table-hover"
+                   style="table-layout: fixed;">
+            </table>
+            <div id="sysorgToolbar" class="toolbar" role="toolbar">
+                <form class="form-inline" role="form">
+                    <div class="form-group">
+                        <label class="xs-only" for="searchCompanyName">企业名称：</label>
+                        <select placeholder="请选择" class="selectpicker" style="width: 115px;" data-style="btn-default" id="searchCompanyName" data-live-search="true">                                                >
+                        </select>
+                        <label class="xs-only" for="searchSourceNmae">危险源名称：</label>
+                        <input id="searchSourceNmae" class="form-control"placeholder="请输入危险源名称" style="width: 140px;"/>
+                        <label class="xs-only" for="searchRank" style="padding-left:20px">危险源等级：</label>
+                        <select placeholder="请选择" style="width: 115px;" data-style="btn-default" id="searchRank">                                                >
+                        </select>
+                    </div>
+                    <button class="btn btn-default" type="button" onclick="searchMenus()">
+                        <span class="glyphicon glyphicon-search" type="button"></span> 查询
+                    </button>
+                    <button class="btn btn-danger" type="button" onclick="clearRole()">
+                        <span class="glyphicon glyphicon-minus"></span> 清空
+                    </button>
+                    <button class="btn btn-success" type="button" onclick="companyAdd()">
+                        <span class="glyphicon glyphicon-plus"></span> 新增
+                    </button>
+                    <button class="btn btn-warning" type="button" onclick="companyEdit()">
+                        <span class="glyphicon glyphicon-pencil"></span> 修改
+                    </button>
+                    <button class="btn btn-danger" type="button" onclick="companyDel()">
+                        <span class="glyphicon glyphicon-minus"></span> 删除
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--模态窗-->
+<div class="modal fade bs-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     data-backdrop='static'      data-target=".bs-example-modal-lg">
+    <div class="modal-dialog modal-lg" role="document" style="min-height: 80%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel"></h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-10 col-xs-offset-1">
+                        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                            <div class="panel panel-default">
+                                <div class="panel-heading" role="tab" id="headingOne">
+                                    <h4 class="panel-title">
+                                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                            重大危险源基本信息
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                                    <div class="panel-body">
+                                        <div id="myTabContent" class="tab-content">
+                                            <div class="tab-pane fade in active" id="companyInfo">
+                                                <form id="companyForm" class="form-inline pull-right form-horizontal" role="form">
+                                                    <div class="form-group col-md-6">
+                                                        <label for="sourceName" class="col-md-4">危险源名称</label>
+                                                        <input type="text" name="sourceName" class="form-control input-sm col-md-8"
+                                                               id="sourceName">
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label for="companyId" class="col-md-4">所属企业</label>
+                                                        <select placeholder="请选择" class="selectpicker col-md-8" style="width: 115px;"
+                                                                data-style="btn-default" id="companyId" name="companyId" >                                                >
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="form-group col-md-6">
+                                                        <label for="uniqueCode" class="col-md-4">唯一编码</label>
+                                                        <input type="text" name="uniqueCode" class="form-control input-sm col-md-8"
+                                                               id="uniqueCode" >
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label for="accidentType" class="col-md-4">事故类型</label>
+                                                        <select placeholder="请选择" class="selectpicker col-md-8" style="padding-left:0px;width: 63%;"multiple
+                                                                data-style="btn-default" id="accidentType" name="accidentType" >                                                >
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label for="rValue" class="col-md-4">R值</label>
+                                                        <input type="text" name="rValue" class="form-control input-sm col-md-8"
+                                                               id="rValue" >
+                                                    </div>
+
+                                                    <div class="form-group col-md-6">
+                                                        <label for="rank" class="col-md-4">危险源等级</label>
+                                                        <select placeholder="请选择" class="selectpicker col-md-8" style="width: 115px;"
+                                                                data-style="btn-default" id="rank" name="rank" >                                                >
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label for="recordNo" class="col-md-4">备案编号</label>
+                                                        <input type="text" name="recordNo" class="form-control input-sm col-md-8"
+                                                               id="recordNo">
+                                                    </div>
+
+                                                    <div class="form-group col-md-6">
+                                                        <label for="validity" class="col-md-4">有效期</label>
+                                                        <input type="date" name="validity" class="form-control input-sm col-md-8"
+                                                               id="validity">
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label for="longt" class="col-md-4">经度</label>
+                                                        <input type="text" name="longt" class="form-control input-sm col-md-8"
+                                                               id="longt">
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label for="recordDate" class="col-md-4">登记日期</label>
+                                                        <input type="date" name="recordDate" class="form-control input-sm col-md-8"
+                                                               id="recordDate">
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label for="lat" class="col-md-4">纬度</label>
+                                                        <input type="text" name="lat" class="form-control input-sm col-md-8"
+                                                               id="lat">
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label for="status" class="col-md-4">状态</label>
+                                                        <select placeholder="请选择" class="selectpicker col-md-8" style="width: 115px;"
+                                                                data-style="btn-default" id="status" name="status" >                                                >
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label for="deathToll" class="col-md-4">可能引发事故死亡人数</label>
+                                                        <input type="text" name="deathToll" class="form-control input-sm col-md-8"
+                                                               id="deathToll"   >
+                                                    </div>
+
+                                                    <div class="form-group col-md-6">
+                                                        <label for="outPersonCount" class="col-md-4">厂区边界外500米范围人数估值</label>
+                                                        <input type="text" name="outPersonCount" class="form-control input-sm col-md-8"
+                                                               id="outPersonCount"   >
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading" role="tab" id="headingTwo">
+                                    <h4 class="panel-title">
+                                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                            装置设施周围环境
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                    <div class="panel-body">
+                                        <div class="col-md-12">
+                                            <div>
+                                                <button class="btn btn-success btn-sm" type="button" id="addData">
+                                                    <span class="glyphicon glyphicon-plus"></span> 新增
+                                                </button>
+                                                <button class="btn btn-danger btn-sm" type="button" id="delData">
+                                                    <span class="glyphicon glyphicon-minus"></span> 删除
+                                                </button>
+                                            </div>
+                                            <table id="equipTable" class="table  table-striped table-bordered table-hover">
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading" role="tab" id="headingThree">
+                                    <h4 class="panel-title">
+                                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                            法律保护区
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                                    <div class="panel-body">
+                                        <div class="col-md-12">
+                                            <div>
+                                                <button class="btn btn-success btn-sm" type="button" id="certAdd">
+                                                    <span class="glyphicon glyphicon-plus"></span> 新增
+                                                </button>
+                                                <button class="btn btn-danger btn-sm" type="button" id="certDel">
+                                                    <span class="glyphicon glyphicon-minus"></span> 删除
+                                                </button>
+                                            </div>
+                                            <table id="legalTable" class="table  table-striped table-bordered table-hover">
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"  id="btn_save" >保存</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../../ProjectScripts/Common/common.js"></script>
+<script src="../../ProjectScripts/MajorDSInfoEntry/MajorDSInfoEntry.js"></script>
+</body>
+</html>

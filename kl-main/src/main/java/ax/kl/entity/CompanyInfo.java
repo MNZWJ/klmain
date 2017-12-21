@@ -51,18 +51,27 @@ public class CompanyInfo {
   @TableField("OperatingState")
   @ApiModelProperty("经营状态，字典")
   private String operatingState;
+
   @TableField("Longt")
   @ApiModelProperty("经度")
   private String longt;
+
   @TableField("Lat")
   @ApiModelProperty("纬度")
   private String lat;
+
   @TableField("ScaleCode")
   @ApiModelProperty("企业规模，字典")
   private String scaleCode;
+
   @TableField(value = "TypeCode")
   @ApiModelProperty("企业类型，字典")
   private String typeCode;
+
+  @TableField(value = "DirectArea")
+  @ApiModelProperty("直属区域，字典")
+  private String directArea;
+
   @ApiModelProperty("危险工艺Id")
   @TableField(value = "TechnologyId",exist =false)
   private String technologyId;
@@ -75,8 +84,40 @@ public class CompanyInfo {
   @TableField(value = "MonitorUnit",exist =false)
   private String monitorUnit;
 
+  @ApiModelProperty("企业性质")
   @TableField(value = "CompanyType",exist =false)
-  @ApiModelProperty("企业性质名称，字典")
   private String companyType;
 
+  @TableField(value = "CertType",exist =false)
+  @ApiModelProperty("证书类型，字典")
+  private String certType;
+
+  @TableField(value = "CertTypeName",exist =false)
+  @ApiModelProperty("证书类型名称，字典")
+  private String certTypeName;
+
+  @TableField(value = "CertNo",exist =false)
+  @ApiModelProperty("证书编号")
+  private String certNo;
+
+  @TableField(value = "StartDate",exist =false)
+  @ApiModelProperty("开始日期")
+  private String startDate;
+
+  @TableField(value = "Validity",exist =false)
+  @ApiModelProperty("有效期，字典")
+  private String validity;
+
+  @TableField(value = "CertificateAlarm",exist = false)
+  @ApiModelProperty("证书预警")
+  private String certificateAlarm;
+
+  @TableField(value = "RealtimeAlarm",exist = false)
+  @ApiModelProperty("设备预警")
+  private String realtimeAlarm;
+
+
+  @TableField(value = "SimpleName")
+  @ApiModelProperty("企业简称")
+  private String simpleName;
 }

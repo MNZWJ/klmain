@@ -24,9 +24,6 @@ $(function () {
         queryParamsType: '', //默认值为 'limit' ,在默认情况下 传给服务端的参数为：offset,limit,sort
         idField:"chemId",
         // 设置为 ''  在这种情况下传给服务器的参数为：pageSize,pageNumber
-        rowStyle: function () {//自定义行样式
-            return "bootTableRow";
-        },
         onLoadError:function(){
             BootstrapDialog.alert({
                 title: '错误',
@@ -60,34 +57,45 @@ $(function () {
                 title: '化学品名称',
                 halign: 'center',
                 align: 'left',
-                /*width: '13.57%'*/
+                width: '13.57%',
+                class: "bootTableRow",
+                formatter: function (value, row, index) {
+                    return '<span title="'+value+'">'+value+'</span>'
+                }
             }, {
                 field: 'cAS',
                 title: 'CAS',
                 halign: 'center',
                 align: 'left',
-              /*  width: '13.57%'*/
+                width: '13.57%',
+                class: "bootTableRow"
             }, {
                 field: 'equipName',
                 title: '设备名称',
                 halign: 'center',
                 align: 'left',
-           /*     width: '13.57%'*/
+                width: '13.57%',
+                class: "bootTableRow",
+                formatter: function (value, row, index) {
+                    return '<span title="'+value+'">'+value+'</span>'
+                }
             }, {
                 field: 'unitName',
                 title: '工艺单元名称',
                 halign: 'center',
                 align: 'left',
-         /*       width: '13.57%'*/
+                width: '13.57%',
+                class: "bootTableRow",
+                formatter: function (value, row, index) {
+                    return '<span title="'+value+'">'+value+'</span>'
+                }
             },{
                 field: 'sourceName',
                 title: '危险源名称',
                 halign: 'center',
                 align: 'left',
-            /*    width: '13.57%',*/
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                },
+                width: '13.57%',
+                class: "bootTableRow",
                 formatter: function (value, row, index) {
                     return '<span title="'+value+'">'+value+'</span>'
                 }
@@ -96,10 +104,8 @@ $(function () {
                 title: '企业名称',
                 halign: 'center',
                 align: 'left',
-           /*     width: '13.57%',*/
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                },
+                width: '13.57%',
+                class: "bootTableRow",
                 formatter: function (value, row, index) {
                     return '<span title="'+value+'">'+value+'</span>'
                 }
@@ -108,7 +114,11 @@ $(function () {
                 title: '行政区域',
                 halign: 'center',
                 align: 'left',
-            /*    width: '13.57%'*/
+                class: "bootTableRow",
+                width: '13.57%',
+                formatter: function (value, row, index) {
+                    return '<span title="'+value+'">'+value+'</span>'
+                }
             }]
     });
 });

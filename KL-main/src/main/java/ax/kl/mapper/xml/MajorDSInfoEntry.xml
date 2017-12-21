@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ax.kl.mapper.MajorDSInfoEntryMapper">
+
+
+
+    <!--通过Id查询危险源信息-->
+    <select id="getSourceInfo" resultType="ax.kl.entity.DangerSourceInfo">
+        SELECT 	*, STUFF((	SELECT		',' + TypeId
+        FROM	TB_REL_DRESOURCE_ACCIDENTYPE ci		WHERE
+        aa.SourceId = ci.SourceId FOR xml path ('')	),	1,	1,	''
+        ) AS accidentType   FROM	TB_BASE_DANGERSOURCE_INFO aa
+        WHERE SourceId=#{sourceId}
+    </select>
+
+    <!--通过id获取装置设施周围环境-->
+    <select id="getSourceEquipList" resultType="ax.kl.entity.FacilitiesCondition">
+      SELECT  *  FROM 	TB_BASE_DR_FACILITIES_CONDITION
+        WHERE SourceId=#{sourceId}
+    </select>
+
+    <!--通过id获取法律保护区信息-->
+    <select id="getSourceLegalList" resultType="ax.kl.entity.LegalProtection">
+        SELECT 	*  FROM	TB_BASE_DR_LEGAL_PROTECTION
+        WHERE SourceId=#{sourceId}
+    </select>
+
+    <!--删除危险源信息-->
+    <delete id="delSourceInfo">
+        /*删除装置设施*/
+        DELETE  FROM  TB_BASE_DR_FACILITIES_CONDITION WHERE  SourceId IN
+        <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        /*删除法律保护区*/
+        DELETE  FROM  TB_BASE_DR_LEGAL_PROTECTION WHERE  SourceId IN
+        <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        /*删除事故类型*/
+        DELETE  FROM  TB_REL_DRESOURCE_ACCIDENTYPE WHERE  SourceId IN
+        <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        /*删除危险源*/
+        DELETE  FROM  TB_BASE_DANGERSOURCE_INFO WHERE  SourceId IN
+        <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!--新增危险源信息-->
+    <insert id="saveData" parameterType="ax.kl.entity.DangerSourceInfo">
+        INSERT INTO TB_BASE_DANGERSOURCE_INFO (
+        SourceId,UniqueCode,CompanyId,SourceName,RValue,Rank,RecordNo,Validity,Longt,Lat,
+        OutPersonCount,DeathToll,RecordDate,Status
+        )VALUES ( #{sourceId},#{uniqueCode},#{companyId},#{sourceName},#{rValue},#{rank},
+        #{recordNo},#{validity},#{longt},#{lat},#{outPersonCount},#{deathToll},#{recordDate},
+        #{status}        )
+    </insert>
+
+    <!--更新危险源信息-->
+    <update id="updateData" >
+        UPDATE TB_BASE_DANGERSOURCE_INFO
+        SET   UniqueCode =#{ uniqueCode }, CompanyId =#{ companyId },
+         SourceName =#{ sourceName }, RValue= #{ rValue }, Rank =#{ rank }, RecordNo =#{ recordNo },
+          Validity =#{ validity }, Longt =#{ longt }, Lat =#{ lat }, OutPersonCount =#{ outPersonCount },
+           DeathToll =#{ deathToll }, RecordDate =#{ recordDate },Status=#{status}
+        WHERE   SourceId =#{ sourceId }
+    </update>
+
+    <!--保存事故类型-->
+    <insert id="saveSGLXData" >
+        DELETE FROM TB_REL_DRESOURCE_ACCIDENTYPE  WHERE  SourceId=#{ sourceId }
+
+        INSERT INTO TB_REL_DRESOURCE_ACCIDENTYPE (RelationId,SourceId,TypeId) VALUES
+        <foreach collection="industry" item="item" open="" separator="," close="" index="index">
+            (
+            NEWID() ,#{ sourceId },#{ item }
+            )
+        </foreach>
+    </insert>
+
+    <!--保存装置设施周围环境-->
+    <insert id="saveEquipData">
+        DELETE  FROM  	TB_BASE_DR_FACILITIES_CONDITION  WHERE  	SourceId=#{ sourceId }
+
+        INSERT INTO TB_BASE_DR_FACILITIES_CONDITION  (TargetId,SourceId,Facilities,Environment
+        ,RealDistance,StandardDistance,Conformance) VALUES
+        <foreach collection="processTable" item="item" index="index" separator=",">
+            ( NEWID() ,#{sourceId },#{ item.facilities }  ,#{ item.environment } ,#{ item.realDistance }
+            ,#{ item.standardDistance } ,#{ item.conformance } )
+        </foreach>
+    </insert>
+
+    <!--保存法律保护区信息-->
+    <insert id="saveLegalData" parameterType="java.util.List">
+        DELETE  FROM  TB_BASE_DR_LEGAL_PROTECTION WHERE  SourceId=#{ sourceId }
+
+        INSERT INTO TB_BASE_DR_LEGAL_PROTECTION (TargetId,SourceId,ProtectArea,
+        Environment,Conformance ) VALUES
+        <foreach collection="certTable" item="item" separator="," index="index">
+            (
+            NEWID() ,#{ sourceId },#{ item.protectArea },#{ item.environment },#{ item.conformance }
+            )
+        </foreach>
+    </insert>
+
+</mapper>

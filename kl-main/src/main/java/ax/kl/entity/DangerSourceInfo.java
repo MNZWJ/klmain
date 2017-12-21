@@ -121,5 +121,17 @@ public class DangerSourceInfo {
     @TableField("RiskWarn")
     private long riskWarn;
 
+    /**
+     * 企业名称
+     */
+    @TableField("CompanyName")
+    private String companyName;
+
+    /**
+     * 简称
+     */
+    @TableField("SimpleName")
+    private String simpleName;
+
 
 }

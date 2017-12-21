@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <#include "/Common/Layout.html" />
+    <link rel="stylesheet" href="../../Scripts/bootstrap-table/bootstrap-table.min.css"/>
+    <link rel="stylesheet" href="../../Scripts/bootstrape-select/css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="../../Scripts/bootstrape-datetimepicker/css/bootstrap-datetimepicker.min.css" />
+
+
+    <script src="../../Scripts/bootstrap-table/bootstrap-table.min.js"></script>
+    <script src="../../Scripts/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+    <script src="../../Scripts/bootstrape-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="../../Scripts/bootstrape-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="../../Scripts/bootstrape-select/js/bootstrap-select.js"></script>
+    <script src="../../Scripts/bootstrape-select/js/i18n/defaults-zh_CN.js"></script>
+
+    <style>
+        /*固定表格行高*/
+        .bootTableRow {
+            white-space: nowrap;
+            overflow: hidden;
+            height: 120px;
+            max-height: 120px;
+
+        }
+    </style>
+    <script src="../../ProjectScripts/CompanyAlarmAnalysis/CompanyAlarmAnalysis.js"></script>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row" style="display: flex">
+        <div class="col-xs-12">
+            <table id="table" class="table  table-striped table-bordered table-hover">
+            </table>
+            <div id="toolbar" class="toolbar" role="toolbar">
+                <form class="form-inline" role="form">
+                    <div class="form-group">
+                        <label>公司名称</label>
+                        <select id="searchName" name="searchName" class="selectpicker show-tick"
+                                data-live-search="true" data-live-search-style="begins" title="">
+
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>开始日期：</label>
+                        <!--指定 date标记-->
+                        <div class='input-group date' id='startDateDiv'>
+                            <input id="startDate" type='text' class="form-control" style="width:140px"
+                                   placeholder="开始日期"/>
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>结束日期：</label>
+                        <!--指定 date标记-->
+                        <div class='input-group date' id='endDateDiv'>
+                            <input id="endDate" type='text' class="form-control" style="width:140px"
+                                   placeholder="结束日期"/>
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                    <button class="btn btn-default" type="button" onclick="searchMenus()">
+                        <span class="glyphicon glyphicon-search" type="button"></span> 查询
+                    </button>
+                    <button class="btn btn-default" type="button" onclick="searchClear()">
+                        <span class="glyphicon glyphicon-search" type="button"></span> 清空
+                    </button>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>

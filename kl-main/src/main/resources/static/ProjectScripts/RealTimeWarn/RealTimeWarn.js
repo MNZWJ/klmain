@@ -1,4 +1,4 @@
-var scanHeight = "";
+
 var scanHeight = "";
 $(function () {
     //获取浏览器高度
@@ -66,7 +66,7 @@ function initTable() {
                 },
                 colspan: 1,
                 rowspan: 3,
-                width: 'auto'
+                classes:'table',
             }
                 ,
 
@@ -210,7 +210,7 @@ function initTable() {
                     }else if(value>=128&&value<=158){
                         str="较轻";
                     }else{
-                        str="无";
+                        str="-";
                     }
                     return str;
                 },

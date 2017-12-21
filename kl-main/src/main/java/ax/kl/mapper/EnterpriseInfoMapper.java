@@ -36,7 +36,7 @@ public interface EnterpriseInfoMapper extends BaseMapper<CompanyInfo> {
     List<CompanyInfo> getCompanyInfo(@Param("companyId") String companyId);
 
     /**
-     * 通过公司id查询企业
+     * 通过公司id查询危险源
      * @param companyId
      * @return
      */

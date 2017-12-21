@@ -58,12 +58,11 @@
 
     <!--查询企业下的化学品信息-->
     <select id="getChemicalsInfoList" resultType="ax.kl.entity.ChemicalsInfo">
-        SELECT DISTINCT ci.* FROM TB_BASE_DANGERSOURCE_INFO di
-        JOIN TB_BASE_PROCESS_UNIT pu ON di.SourceId=pu.SourceId
-        JOIN TB_BASE_EQUIP_INFO ei ON pu.UnitId=ei.UnitId
-        JOIN TB_REL_EQUIP_CHEMICAL ec ON ei.EquipId=ec.EquipId
-        JOIN TB_BASE_CHEMICAL_INFO ci ON ec.ChemId=ci.ChemId
-        WHERE di.CompanyId=#{companyId}
+        SELECT cl.ChemName,cl.CAS,cc.Unit,cc.Dreserves FROM TB_REL_COMPANY_CHEMICAL cc
+		JOIN TB_BASE_CHEMICAL_CATALOG cl ON cc.ChemId=cl.ChemId
+
+		WHERE cc.CompanyId=#{companyId}
+
     </select>
 
     <!--加载关联危险化学工艺-->
@@ -82,47 +81,47 @@
 
     <!--查询各行业企业分布情况-->
     <select id="getIndustryCompanyInfo" resultType="ax.kl.entity.IndustryCompanyInfo">
-        SELECT
-	sd2.DictId AS TypeId,
-	sd2.DictName AS TypeName,
-	sd2.DictOrder,
-	'类型' AS Stack,
-	STUFF(
-		(
-			SELECT
-				',' + CAST (
-					COUNT (bci.CompanyId) AS VARCHAR
-				)
-			FROM
-				TB_SYS_DATADICT sd
-			LEFT JOIN TB_REL_COMPANY_INDUSTRY ci ON ci.IndustryId = sd.DictId
-			LEFT JOIN TB_BASE_COMPANY_INFO bci ON (
-				ci.CompanyId = bci.CompanyId
-				AND bci.TypeCode = sd2.DictId
-			)
-			WHERE
-				sd.TypeId = '29485cb6-bf2e-4892-ab3a-083ffbb2e6f9'
-			GROUP BY
-				sd.DictId,
-				sd.DictName,
-				sd.DictOrder
-			ORDER BY
-				sd.DictOrder FOR xml path ('')
-		),
-		1,
-		1,
-		''
-	) AS NumList
-FROM
-	TB_SYS_DATADICT sd2
-WHERE
-	sd2.TypeId IN (
-		'22bd341b-5ea1-4364-a4cf-8496f3132492'
-	)
-UNION
+--         SELECT
+-- 	sd2.DictId AS TypeId,
+-- 	sd2.DictName AS TypeName,
+-- 	sd2.DictOrder,
+-- 	'类型' AS Stack,
+-- 	STUFF(
+-- 		(
+-- 			SELECT
+-- 				',' + CAST (
+-- 					COUNT (bci.CompanyId) AS VARCHAR
+-- 				)
+-- 			FROM
+-- 				TB_SYS_DATADICT sd
+-- 			LEFT JOIN TB_REL_COMPANY_INDUSTRY ci ON ci.IndustryId = sd.DictId
+-- 			LEFT JOIN TB_BASE_COMPANY_INFO bci ON (
+-- 				ci.CompanyId = bci.CompanyId
+-- 				AND bci.TypeCode = sd2.DictId
+-- 			)
+-- 			WHERE
+-- 				sd.TypeId = '29485cb6-bf2e-4892-ab3a-083ffbb2e6f9'
+-- 			GROUP BY
+-- 				sd.DictId,
+-- 				sd.DictName,
+-- 				sd.DictOrder
+-- 			ORDER BY
+-- 				sd.DictOrder FOR xml path ('')
+-- 		),
+-- 		1,
+-- 		1,
+-- 		''
+-- 	) AS NumList
+-- FROM
+-- 	TB_SYS_DATADICT sd2
+-- WHERE
+-- 	sd2.TypeId IN (
+-- 		'22bd341b-5ea1-4364-a4cf-8496f3132492'
+-- 	)
+-- UNION
 	SELECT
-		sd2.DictId,
-		sd2.DictName,
+		sd2.DictId AS TypeId,
+		sd2.DictName AS TypeName,
 		sd2.DictOrder,
 		'规模' AS Stack,
 		STUFF(
@@ -150,7 +149,7 @@ UNION
 			1,
 			1,
 			''
-		)
+		)AS NumList
 	FROM
 		TB_SYS_DATADICT sd2
 	WHERE
@@ -170,8 +169,8 @@ UNION
 	GROUP BY 	bci.TypeCode,	sd.DictName
 	</select>
 
-	<!--加载企业规模占比-->
-	<select id="getScaleCodeData" resultType="java.util.Map">
+    <!--加载企业规模占比-->
+    <select id="getScaleCodeData" resultType="java.util.Map">
 		SELECT
 			bci.ScaleCode,
 			sd.DictName,
@@ -184,48 +183,48 @@ UNION
 			sd.DictName,sd.DictOrder
 		ORDER BY sd.DictOrder
 	</select>
-	
-	
-	<!--获取企业行政分布数据-->
-	<select id="getCompanyDirectAirData" resultType="ax.kl.entity.IndustryCompanyInfo">
-		SELECT
-	sd2.DictId AS TypeId,
-	sd2.DictName AS TypeName,
-	sd2.DictOrder,
-	'类型' AS Stack,
-	STUFF(
-		(
-			SELECT
-				',' + CAST (
-					COUNT (bci.CompanyId) AS VARCHAR
-				)
-			FROM
-				TB_SYS_DATADICT sd
-			LEFT JOIN TB_BASE_COMPANY_INFO bci ON (
-				sd.DictId = bci.DirectArea
-				AND bci.TypeCode = sd2.DictId
-			)
-			WHERE
-				sd.TypeId = '8b4524ce-15cf-404a-8182-a7e8a8d68343'
-			GROUP BY
-				sd.DictId,
-				sd.DictName,
-				sd.DictOrder
-			ORDER BY
-				sd.DictOrder FOR xml path ('')
-		),
-		1,
-		1,
-		''
-	) AS NumList
-FROM
-	TB_SYS_DATADICT sd2
-WHERE
-	sd2.TypeId IN (
-		'22bd341b-5ea1-4364-a4cf-8496f3132492'
-	)
 
-UNION
+
+    <!--获取企业行政分布数据-->
+    <select id="getCompanyDirectAirData" resultType="ax.kl.entity.IndustryCompanyInfo">
+-- 		SELECT
+-- 	sd2.DictId AS TypeId,
+-- 	sd2.DictName AS TypeName,
+-- 	sd2.DictOrder,
+-- 	'类型' AS Stack,
+-- 	STUFF(
+-- 		(
+-- 			SELECT
+-- 				',' + CAST (
+-- 					COUNT (bci.CompanyId) AS VARCHAR
+-- 				)
+-- 			FROM
+-- 				TB_SYS_DATADICT sd
+-- 			LEFT JOIN TB_BASE_COMPANY_INFO bci ON (
+-- 				sd.DictId = bci.DirectArea
+-- 				AND bci.TypeCode = sd2.DictId
+-- 			)
+-- 			WHERE
+-- 				sd.TypeId = '8b4524ce-15cf-404a-8182-a7e8a8d68343'
+-- 			GROUP BY
+-- 				sd.DictId,
+-- 				sd.DictName,
+-- 				sd.DictOrder
+-- 			ORDER BY
+-- 				sd.DictOrder FOR xml path ('')
+-- 		),
+-- 		1,
+-- 		1,
+-- 		''
+-- 	) AS NumList
+-- FROM
+-- 	TB_SYS_DATADICT sd2
+-- WHERE
+-- 	sd2.TypeId IN (
+-- 		'22bd341b-5ea1-4364-a4cf-8496f3132492'
+-- 	)
+--
+-- UNION
 SELECT
 	sd2.DictId AS TypeId,
 	sd2.DictName AS TypeName,
