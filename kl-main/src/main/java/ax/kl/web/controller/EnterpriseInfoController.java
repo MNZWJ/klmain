@@ -98,7 +98,7 @@ public class EnterpriseInfoController {
 
 
     @RequestMapping("/getCompanyArtList")
-    @ApiOperation(value ="加载关联危险化学品信息" )
+    @ApiOperation(value ="初始化危险工艺表格" )
     @ResponseBody
     public List<CompanyArt> getCompanyArtList(@RequestParam("companyId")String companyId){
         return enterpriseInfoService.getCompanyArtList(companyId);

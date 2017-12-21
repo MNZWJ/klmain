@@ -115,4 +115,9 @@ public class CompanyInfo {
   @TableField(value = "RealtimeAlarm",exist = false)
   @ApiModelProperty("设备预警")
   private String realtimeAlarm;
+
+
+  @TableField(value = "SimpleName")
+  @ApiModelProperty("企业简称")
+  private String simpleName;
 }

@@ -92,7 +92,7 @@ public class EnterpriseInfoServiceImpl implements EnterpriseInfoService {
     }
 
     /**
-     * 通过id加载关联危险化学品信息
+     * 通过id加载关联危险化工工艺信息
      * @param companyId
      * @return
      */
