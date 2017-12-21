@@ -28,7 +28,6 @@ var cas = "";
 var scanHeight = $(window).height();
 $(function () {
     //获取浏览器高度
-
     initCert();//初始化相关证书表格
     initTable();//初始化危险工艺表格
     initChemiacalAllTable();
@@ -77,18 +76,22 @@ $(function () {
             field: 'number1',
             halign: 'center',
             align: 'center',
+            width:'3%',
             formatter: function (value, row, index) {
                 var page = $('#enterpriseTable').bootstrapTable('getOptions');
                 return (page.pageNumber - 1) * page.pageSize + index + 1;
             }
         }, {
             field: 'state',
-            checkbox: true
+            checkbox: true,
+            width:'3%',
+            align:'center',
         },
             {
                 field: 'companyName',
                 title: '企业名称',
                 halign: 'center',
+                width:'14%',
                 cellStyle: function (value, row, index, field) {
                     return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
                 },
@@ -96,34 +99,40 @@ $(function () {
                     users.push(rowData);
                     return "<a href='javascript:look(\""+rowData.companyId+"\")'>" + value + "</a>";
                 }
-            },{
+            },/*{
                 field: 'legalPerson',
                 title: '法人代表',
                 halign: 'center',
-                align:'center'
+                align:'center',
+                width:'5%',
             }, {
                 field: 'contactWay',
                 title: '联系方式',
                 halign: 'center',
-                align:'center'
-            },  {
+                align:'center',
+                width:'8%',
+            }, */ {
                 field: 'safeManageRank',
                 title: '安全管理分级',
                 halign: 'center',
-                align:'right'
+                align:'right',
+                width:'7%',
             },   {
                 field: 'standardRank',
                 title: '标准化等级',
                 halign: 'center',
-                align:'right'
+                align:'right',
+                width:'7%',
             },   {
                 field: 'operatingState',
                 title: '经营状态',
-                halign: 'center'
+                halign: 'center',
+                width:'5%',
             },   {
                 field: 'industryCode',
                 title: '所属行业',
                 halign: 'center',
+                width:'15%',
                 cellStyle: function (value, row, index, field) {
                     return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
                 },
@@ -131,24 +140,47 @@ $(function () {
                     if(value!=undefined){
                         return '<span title="'+value+'">'+value+'</span>'
                     }else{
-                        return "-";
+                        return "";
                     }
-
                 }
             },   {
                 field: 'scaleCode',
                 title: '企业规模',
                 halign: 'center',
-                align:'center'
+                align:'center',
+                width:'5%',
+                cellStyle: function (value, row, index, field) {
+                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                },
+                formatter: function (value, row, index) {
+                    if(value!=undefined){
+                        return '<span title="'+value+'">'+value+'</span>'
+                    }else{
+                        return "";
+                    }
+                }
             },   {
                 field: 'typeCode',
                 title: '企业类型',
                 halign: 'center',
-                align:'center'
-            }, {
+                align:'center',
+                width:'10%',
+                cellStyle: function (value, row, index, field) {
+                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                },
+                formatter: function (value, row, index) {
+                    if(value!=undefined){
+                        return '<span title="'+value+'">'+value+'</span>'
+                    }else{
+                        return "";
+                    }
+                }
+
+            }, /*{
                 field: 'area',
                 title: '行政区域',
                 halign: 'center',
+                width:'9%',
                 cellStyle: function (value, row, index, field) {
                     return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
                 },
@@ -156,11 +188,12 @@ $(function () {
                     return '<span title="'+value+'">'+value+'</span>'
 
                 }
-            },
+            },*/
             {
                 field: 'directArea',
                 title: '直属区域',
-                halign: 'center'
+                halign: 'center',
+                width:'5%',
             }
         ]
     });
