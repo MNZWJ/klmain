@@ -2,9 +2,12 @@ package ax.kl.web.controller;
 
 import ax.f4j.model.JsonResult;
 import ax.f4j.model.ResultUtil;
+import ax.kl.entity.ChemicalCataLog;
+import ax.kl.entity.CompanyChemical;
 import ax.kl.entity.CompanyInfo;
 import ax.kl.service.BasicInfoEntryService;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.plugins.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,5 +79,35 @@ public class BasicInfoEntryController {
         JSONObject obj=new JSONObject();
         obj.put("valid",result);
         return obj;
+    }
+
+    /**
+     * 获取化学品信息列表
+     * @param
+     * @author
+     * @return
+     */
+    @RequestMapping(value = "/getChemicalInfoList", method = RequestMethod.GET)
+    @ApiOperation(value = "获取化学品信息列表")
+    @ResponseBody
+    public Map<String,Object> getChemicalInfoList(@RequestParam Map<String, String> param) {
+        int pageSize=Integer.parseInt(param.get("pageSize"));
+        int pageNumber=Integer.parseInt(param.get("pageNumber"));
+        Page page=new Page();
+        page.setCurrent(pageNumber);
+        page.setSize(pageSize);
+
+        Page<ChemicalCataLog> list = basicInfoEntryService.getChemicalInfoList(page,param);
+        Map<String,Object> map=new HashMap<>();
+        map.put("total",list.getTotal());
+        map.put("rows",list.getRecords());
+        return map ;
+    }
+
+    @RequestMapping("/getChemicalList")
+    @ApiOperation(value = "通过ID获取公司化学品信息")
+    @ResponseBody
+    public List<CompanyChemical> getChemicalList(@RequestParam String companyId) {
+        return basicInfoEntryService.getChemicalList(companyId);
     }
 }

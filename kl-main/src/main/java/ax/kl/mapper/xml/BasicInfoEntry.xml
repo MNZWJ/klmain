@@ -7,9 +7,9 @@
         INSERT INTO TB_BASE_COMPANY_INFO ( CompanyId,
         CompanyName,        UniqueCode,        Area,        LegalPerson,        ContactWay,        SafeManageRank,
         StandardRank,        OperatingState,        Longt,        Lat,        ScaleCode,        TypeCode,
-        DirectArea        )        VALUES        (       #{companyId},
+        DirectArea,SimpleName        )        VALUES        (       #{companyId},
         #{ companyName },#{ uniqueCode },#{ area },#{ legalPerson },#{ contactWay },#{ safeManageRank }, #{ standardRank },
-         #{ operatingState }, #{ longt },#{ lat },#{ scaleCode },#{ typeCode },#{ directArea }        )
+         #{ operatingState }, #{ longt },#{ lat },#{ scaleCode },#{ typeCode },#{ directArea }   ,#{simpleName}     )
     </insert>
 
     <!--更新企业信息-->
@@ -18,7 +18,7 @@
         SET CompanyName =#{ companyName }, UniqueCode =#{ uniqueCode }, Area =#{ area }, LegalPerson =#{ legalPerson },
         ContactWay =#{ contactWay }, SafeManageRank =#{ safeManageRank }, StandardRank =#{ standardRank },
         OperatingState =#{ operatingState }, Longt =#{ longt }, Lat =#{ lat }, ScaleCode =#{ scaleCode },
-        TypeCode =#{ typeCode }, DirectArea =#{ directArea }
+        TypeCode =#{ typeCode }, DirectArea =#{ directArea },SimpleName=#{simpleName}
         WHERE
         CompanyId =#{ companyId }
     </update>
@@ -48,7 +48,7 @@
     </insert>
 
     <!--保存证书-->
-    <insert id="saveCertData" parameterType="java.util.List">
+    <insert id="saveCertData">
         DELETE  FROM  TB_BASE_COMPANY_CERTIFICATE  WHERE   CompanyId=#{ companyId }
 
         INSERT INTO TB_BASE_COMPANY_CERTIFICATE (
@@ -95,4 +95,39 @@
     <select id="validateTypeCode" resultType="int">
         SELECT COUNT(*) FROM TB_BASE_COMPANY_INFO WHERE UniqueCode = #{typeCode}
     </select>
+
+    <!--化学品信息备查-->
+    <select id="getChemicalInfoList" resultType="ax.kl.entity.ChemicalCataLog">
+        SELECT * from TB_BASE_CHEMICAL_CATALOG WHERE ChemId IS NOT NULL
+        <if test="chemName !=null and chemName!=''">
+            AND chemName LIKE '%'+ #{chemName} + '%'
+        </if>
+        <if test="cas !=null and cas!=''">
+            AND cas LIKE '%'+ #{cas} + '%'
+        </if>
+    </select>
+
+    <!--通过ID获取公司化学品信息-->
+    <select id="getChemicalList" resultType="ax.kl.entity.CompanyChemical">
+        SELECT	aa.ChemId,ChemName,CAS,Unit,Dreserves  FROM  	TB_REL_COMPANY_CHEMICAL  aa
+        LEFT JOIN TB_BASE_CHEMICAL_CATALOG   bb  ON  aa.ChemId=bb.ChemId
+        WHERE   CompanyId=#{companyId}
+    </select>
+
+
+    <!--保存企业化学品-->
+    <insert id="saveChemicalData">
+        DELETE  FROM  TB_REL_COMPANY_CHEMICAL  WHERE   CompanyId=#{ companyId }
+
+        INSERT INTO TB_REL_COMPANY_CHEMICAL (
+        RelId,ChemId,CompanyId, Dreserves,Unit
+        )        VALUES
+        <foreach collection="chemicalTable" item="item" separator="," index="index">
+            (
+            NEWID() ,#{ item.chemId },#{ companyId },#{ item.dreserves },#{ item.unit }
+            )
+        </foreach>
+    </insert>
+
+
 </mapper>
