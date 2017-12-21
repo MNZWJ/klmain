@@ -5,15 +5,18 @@
     <#include "/Common/Layout.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link rel="stylesheet" href="../../Scripts/bootstrap-table/bootstrap-table.min.css"/>
-    <link rel="stylesheet" href="../../Scripts/bootstrap-treeview/bootstrap-treeview.min.css"/>
     <link rel="stylesheet" href="../../Scripts/bootstrape-select/css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="../../Scripts/bootstrap-table/extensions/editable/bootstrap-editable.css">
     <script src="../../Scripts/bootstrap-table/bootstrap-table.min.js"></script>
     <script src="../../Scripts/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
-
-    <script src="../../ProjectScripts/ProcessUnit/ProcessUnit.js"></script>
+    <script src="../../Scripts/bootstrap-table/extensions/editable/bootstrap-editable.js"></script>
+    <script src="../../Scripts/bootstrap-table/extensions/editable/bootstrap-table-editable.js"></script>
+    <script src="../../Scripts/bootstrape-select/js/bootstrap-select.js"></script>
     <script src="../../Scripts/bootstrape-select/js/bootstrap-select.min.js"></script>
     <script src="../../Scripts/bootstrape-select/js/i18n/defaults-zh_CN.js"></script>
-    <script src="../../Scripts/bootstrap-treeview/bootstrap-treeview.js"></script>
+    <script src="../../ProjectScripts/Common/common.js"></script>
+
+
     <style>
         .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
             width: 150px;
@@ -101,8 +104,8 @@
 <div class="modal fade bs-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      data-backdrop='static'      data-target=".bs-example-modal-lg">
     <div class="modal-dialog modal-lg" role="document" style="min-height: 80%;">
-        <div class="modal-content" style="width:800px;height:550px;margin:auto auto;">
-            <div class="modal-header" style="padding: 10px;">
+        <div class="modal-content">
+            <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -110,70 +113,114 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-xs-8 col-xs-offset-2">
-                        <form id="unitForm" name="myForm">
-                            <input type="hidden" name="unitId" id="unitId">
-                            <div class="form-group" style="height:70px;">
-                                <label for="CompanyName" class="col-xs-10" style="padding-left: 0">所属企业</label>
-                                <select onchange="changeDangerSource(document.myForm)" id="CompanyName" name="CompanyName" class="selectpicker show-tick form-control"
-                                        data-live-search="true" data-live-search-style="begins" title="">
+                    <div class="col-xs-10 col-xs-offset-1">
+                        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                            <div class="panel panel-default">
+                                <div class="panel-heading" role="tab" id="headingOne">
+                                    <h4 class="panel-title">
+                                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                            工艺单元信息
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-xs-8 col-xs-offset-2">
+                                                <form id="unitForm" name="myForm">
+                                                    <input type="hidden" name="unitId" id="unitId">
+                                                    <div class="form-group" style="height:70px;">
+                                                        <label for="CompanyName" class="col-xs-10" style="padding-left: 0">所属企业</label>
+                                                        <select onchange="changeDangerSource(document.myForm)" id="CompanyName" name="CompanyName" class="selectpicker show-tick form-control"
+                                                                data-live-search="true" data-live-search-style="begins" title="">
 
-                                </select>
-                            </div>
-                            <div class="form-group" style="height:70px;">
-                                <label for="SourceId" class="col-xs-10" style="padding-left: 0">所属重大危险源</label>
-                                <select id="SourceId" name="SourceId" class="selectpicker show-tick form-control"
-                                        data-live-search="false" data-live-search-style="begins" title="">
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group" style="height:70px;">
+                                                        <label for="SourceId" class="col-xs-10" style="padding-left: 0">所属重大危险源</label>
+                                                        <select id="SourceId" name="SourceId" class="selectpicker show-tick form-control"
+                                                                data-live-search="false" data-live-search-style="begins" title="">
 
-                                </select>
-                            </div>
-                            <div class="form-group" style="height:70px;">
-                                <label for="UnitName">工艺单元名称</label>
-                                <input type="text" name="UnitName" class="form-control" id="UnitName"
-                                       placeholder="请输入工艺单元名称">
-                            </div>
-                            <div class="form-group" style="height:65px;width: 45%;float:left;">
-                                <label for="FEI" style="padding-left: 0px;width: 100%;">
-                                    火灾爆炸指数 F&EI</label>
-                                <input type="number" name="FEI" id="FEI" class="form-control"
-                                       placeholder="请输入火灾爆炸指数F&EI"  style="width: 100%;">
-                            </div>
-                            <div class="form-group"  style="height:65px;width: 45%; float:right;">
-                                <label for="AfterFEI" style="padding-left: 0px;width: 100%;">
-                                    补偿后的 F&EI</label>
-                                <input type="number" name="AfterFEI" class="form-control" id="AfterFEI"
-                                       placeholder="请输入补偿后的F&EI"  style="width: 100%;">
-                            </div>
-                            <div class="form-group" style="height:65px;width: 45%;float:left;">
-                                <label for="DangerRank" style="padding-left: 0px;width: 100%;">
-                                    危险等级</label>
-                                <select  id="DangerRank"  style="width: 100%;" name="DangerRank" class="selectpicker show-tick form-control"
-                                        data-live-search="false" data-live-search-style="begins" title="">
-                                    <option value="最轻">最轻</option>
-                                    <option value="较轻">较轻</option>
-                                    <option value="中等">中等</option>
-                                    <option value="很大">很大</option>
-                                    <option value="非常大">非常大</option>
-                                </select>
-                            </div>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group" style="height:70px;">
+                                                        <label for="UnitName">工艺单元名称</label>
+                                                        <input type="text" name="UnitName" class="form-control" id="UnitName"
+                                                               placeholder="请输入工艺单元名称">
+                                                    </div>
+                                                    <div class="form-group" style="height:65px;width: 45%;float:left;">
+                                                        <label for="FEI" style="padding-left: 0px;width: 100%;">
+                                                            火灾爆炸指数 F&EI</label>
+                                                        <input type="number" name="FEI" id="FEI" class="form-control"
+                                                               placeholder="请输入火灾爆炸指数F&EI"  style="width: 100%;">
+                                                    </div>
+                                                    <div class="form-group"  style="height:65px;width: 45%; float:right;">
+                                                        <label for="AfterFEI" style="padding-left: 0px;width: 100%;">
+                                                            补偿后的 F&EI</label>
+                                                        <input type="number" name="AfterFEI" class="form-control" id="AfterFEI"
+                                                               placeholder="请输入补偿后的F&EI"  style="width: 100%;">
+                                                    </div>
+                                                    <div class="form-group" style="height:65px;width: 45%;float:left;">
+                                                        <label for="DangerRank" style="padding-left: 0px;width: 100%;">
+                                                            危险等级</label>
+                                                        <select  id="DangerRank"  style="width: 100%;" name="DangerRank" class="selectpicker show-tick form-control"
+                                                                 data-live-search="false" data-live-search-style="begins" title="">
+                                                            <option value="最轻">最轻</option>
+                                                            <option value="较轻">较轻</option>
+                                                            <option value="中等">中等</option>
+                                                            <option value="很大">很大</option>
+                                                            <option value="非常大">非常大</option>
+                                                        </select>
+                                                    </div>
 
-                            <div class="form-group" style="height:70px;width: 45%; float:right;">
-                                <label for="AfterDangerRank" style="padding-left: 0px;width: 100%;">
-                                    补偿后的危险等级</label>
-                                <select id="AfterDangerRank"  style="width: 100%;" name="AfterDangerRank" class="selectpicker show-tick form-control"
-                                        data-live-search="false" data-live-search-style="begins" title="">
-                                    <option value="最轻">最轻</option>
-                                    <option value="较轻">较轻</option>
-                                    <option value="中等">中等</option>
-                                    <option value="很大">很大</option>
-                                    <option value="非常大">非常大</option>
-                                </select>
+                                                    <div class="form-group" style="height:70px;width: 45%; float:right;">
+                                                        <label for="AfterDangerRank" style="padding-left: 0px;width: 100%;">
+                                                            补偿后的危险等级</label>
+                                                        <select id="AfterDangerRank"  style="width: 100%;" name="AfterDangerRank" class="selectpicker show-tick form-control"
+                                                                data-live-search="false" data-live-search-style="begins" title="">
+                                                            <option value="最轻">最轻</option>
+                                                            <option value="较轻">较轻</option>
+                                                            <option value="中等">中等</option>
+                                                            <option value="很大">很大</option>
+                                                            <option value="非常大">非常大</option>
+                                                        </select>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </form>
+                            <div class="panel panel-default">
+                                <div class="panel-heading" role="tab" id="headingTwo">
+                                    <h4 class="panel-title">
+                                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                            设备基本信息
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                    <div class="panel-body">
+                                        <div class="col-md-12">
+                                            <div>
+                                                <button class="btn btn-success btn-sm" type="button" id="addEquip">
+                                                    <span class="glyphicon glyphicon-plus"></span> 新增
+                                                </button>
+                                                <button class="btn btn-danger btn-sm" type="button" id="delEquip">
+                                                    <span class="glyphicon glyphicon-minus"></span> 删除
+                                                </button>
+                                            </div>
+                                            <table id="equipInfoTable" class="table  table-striped table-bordered table-hover">
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="modal-footer" style="padding: 7px;">
+            <div class="modal-footer">
                 <button type="button" class="btn btn-default"  id="btn_save" >保存</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
             </div>
@@ -181,6 +228,6 @@
     </div>
 </div>
 
-
+<script src="../../ProjectScripts/ProcessUnit/ProcessUnit.js"></script>
 </body>
 </html>
