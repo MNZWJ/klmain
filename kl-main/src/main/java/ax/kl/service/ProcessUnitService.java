@@ -15,7 +15,7 @@ public interface ProcessUnitService {
     /**
      * 新增或更新工艺单元信息，添加就返回UUID码,参数是一个json字符串
      */
-    String saveOrUpdateData(ProcessUnit processUnit);
+    String saveOrUpdateData(String cmd);
 
     /**
      * 通过名称获取工艺单元信息
