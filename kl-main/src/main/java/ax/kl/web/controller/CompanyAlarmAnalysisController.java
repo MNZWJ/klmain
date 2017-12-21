@@ -6,9 +6,10 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author: ZhenpengSu
@@ -30,4 +31,35 @@ public class CompanyAlarmAnalysisController {
     public String doView(Model model){
         return "/CompanyAlarmAnalysis/CompanyAlarmAnalysis";
     }
+
+
+    @ApiOperation("获取监测点类型")
+    @RequestMapping(value = "/getAlarmTypeList",method = RequestMethod.POST )
+    @ResponseBody
+    public List<Map<String,String>> getAlarmTypeList(){
+        return companyAlarmAnalysisService.getAlarmTypeList();
+    }
+
+    @ApiOperation("获取监测点类型")
+    @RequestMapping(value = "/getAlarmNum",method = RequestMethod.POST )
+    @ResponseBody
+    public List<Map<String,String>> getAlarmNum(@RequestParam Map<String,String> param){
+
+        String startDate="";
+        String endDate="";
+        String companyName="";
+        if(param.containsKey("startDate")){
+            startDate=param.get("startDate");
+        }
+        if(param.containsKey("endDate")){
+            endDate=param.get("endDate");
+        }
+        if(param.containsKey("companyName")){
+            companyName=param.get("companyName");
+        }
+
+        return companyAlarmAnalysisService.getAlarmNum(startDate,endDate,companyName);
+    }
+
+
 }

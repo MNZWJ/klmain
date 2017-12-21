@@ -48,4 +48,13 @@ public class ChemicalsInfo {
     @ApiModelProperty("行政区域")
     private String area;
 
+    @TableField("Unit")
+    @ApiModelProperty("计量单位")
+    private String unit;
+
+    @TableField("Dreserves")
+    @ApiModelProperty("设计储量")
+    private String dreserves;
+
+
 }
