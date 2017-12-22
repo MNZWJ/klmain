@@ -59,6 +59,15 @@
         .modal {
             overflow-y: auto;
         }
+        .panel-default>.panel-heading {
+            background-color: #92C6F9;
+        }
+        a {
+            font-weight: bold;
+        }
+        span {
+            font-weight: normal;
+        }
     </style>
 
 </head>
@@ -114,7 +123,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
-                <h4 class="modal-title" id="myModalLabel">新增</h4>
+                <h4 class="modal-title" id="myModalLabel"></h4>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -135,92 +144,92 @@
                                                 <form id="companyForm" class="form-inline pull-right form-horizontal" role="form">
                                                     <div class="form-group col-md-6">
                                                         <input type="hidden" id="companyId" name="companyId">
-                                                        <label for="companyName" class="col-md-4">企业名称</label>
+                                                        <label for="companyName" class="col-md-4"><span>企业名称</span></label>
                                                         <input type="text" name="companyName" class="form-control input-sm col-md-8"
                                                                id="companyName">
                                                     </div>
                                                     <div class="form-group col-md-6">
-                                                        <label for="typeCode" class="col-md-4">企业类型</label>
+                                                        <label for="typeCode" class="col-md-4"><span>企业类型</span></label>
                                                         <select placeholder="请选择" class="selectpicker col-md-8" style="width: 115px;"
                                                                 data-style="btn-default" id="typeCode" name="typeCode" >                                                >
                                                         </select>
                                                     </div>
                                                     <div class="form-group col-md-6">
-                                                        <label for="simpleName" class="col-md-4">企业简称</label>
+                                                        <label for="simpleName" class="col-md-4"><span>企业简称</span></label>
                                                         <input type="text" name="simpleName" class="form-control input-sm col-md-8"
                                                                id="simpleName" >
                                                     </div>
 
                                                     <div class="form-group col-md-6">
-                                                        <label for="industryCode" class="col-md-4">企业行业</label>
+                                                        <label for="industryCode" class="col-md-4"><span>企业行业</span></label>
                                                         <select placeholder="请选择" class="selectpicker col-md-8" style="width: 115px;"multiple
                                                                 data-style="btn-default" id="industryCode" name="industryCode" >                                                >
                                                         </select>
                                                     </div>
                                                     <div class="form-group col-md-6">
-                                                        <label for="uniqueCode" class="col-md-4">唯一编码</label>
+                                                        <label for="uniqueCode" class="col-md-4"><span>唯一编码</span></label>
                                                         <input type="text" name="uniqueCode" class="form-control input-sm col-md-8"
                                                                id="uniqueCode" >
                                                     </div>
                                                     <div class="form-group col-md-6">
-                                                        <label for="scaleCode" class="col-md-4">企业规模</label>
+                                                        <label for="scaleCode" class="col-md-4"><span>企业规模</span></label>
                                                         <select placeholder="请选择" class="selectpicker col-md-8" style="width: 115px;"
                                                                 data-style="btn-default" id="scaleCode" name="scaleCode" >                                                >
                                                         </select>
                                                     </div>
 
                                                     <div class="form-group col-md-6">
-                                                        <label for="legalPerson" class="col-md-4">法定代表人</label>
+                                                        <label for="legalPerson" class="col-md-4"><span>法定代表人</span></label>
                                                         <input type="text" name="legalPerson" class="form-control input-sm col-md-8"
                                                                id="legalPerson">
                                                     </div>
 
                                                     <div class="form-group col-md-6">
-                                                        <label for="operatingState" class="col-md-4">经营状态</label>
+                                                        <label for="operatingState" class="col-md-4"><span>经营状态</span></label>
                                                         <select placeholder="请选择" class="selectpicker col-md-8" style="width: 115px;"
                                                                 data-style="btn-default" id="operatingState" name="operatingState" >                                                >
                                                         </select>
                                                     </div>
 
                                                     <div class="form-group col-md-6">
-                                                        <label for="contactWay" class="col-md-4">联系方式</label>
+                                                        <label for="contactWay" class="col-md-4"><span>联系方式</span></label>
                                                         <input type="text" name="contactWay" class="form-control input-sm col-md-8"
                                                                id="contactWay">
                                                     </div>
                                                     <div class="form-group col-md-6">
-                                                        <label for="standardRank" class="col-md-4">标准化等级</label>
+                                                        <label for="standardRank" class="col-md-4"><span>标准化等级</span></label>
                                                         <select placeholder="请选择" class="selectpicker col-md-8" style="width: 115px;"
                                                                 data-style="btn-default" id="standardRank" name="standardRank" >                                                >
                                                         </select>
                                                     </div>
 
                                                     <div class="form-group col-md-6">
-                                                        <label for="longt" class="col-md-4">经度</label>
+                                                        <label for="longt" class="col-md-4"><span>经度</span></label>
                                                         <input type="text" name="longt" class="form-control input-sm col-md-8"
                                                                id="longt">
                                                     </div>
                                                     <div class="form-group col-md-6">
-                                                        <label for="safeManageRank" class="col-md-4">安全管理等级</label>
+                                                        <label for="safeManageRank" class="col-md-4"><span>安全管理等级</span></label>
                                                         <select placeholder="请选择" class="selectpicker col-md-8" style="width: 115px;"
                                                                 data-style="btn-default" id="safeManageRank" name="safeManageRank" >                                                >
                                                         </select>
                                                     </div>
 
                                                     <div class="form-group col-md-6">
-                                                        <label for="lat" class="col-md-4">纬度</label>
+                                                        <label for="lat" class="col-md-4"><span>纬度</span></label>
                                                         <input type="text" name="lat" class="form-control input-sm col-md-8"
                                                                id="lat">
                                                     </div>
 
                                                     <div class="form-group col-md-6">
-                                                        <label for="directArea" class="col-md-4">直属区域</label>
+                                                        <label for="directArea" class="col-md-4"><span>直属区域</span></label>
                                                         <select placeholder="请选择" class="selectpicker col-md-8" style="width: 115px;"
                                                                 data-style="btn-default" id="directArea" name="directArea" >                                                >
                                                         </select>
                                                     </div>
 
                                                     <div class="form-group col-md-6">
-                                                        <label for="area" class="col-md-4">行政区域</label>
+                                                        <label for="area" class="col-md-4"><span>行政区域</span></label>
                                                         <input type="text" name="area" class="form-control input-sm col-md-8"
                                                                id="area"   >
                                                     </div>

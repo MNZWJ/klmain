@@ -1,9 +1,6 @@
 package ax.kl.service;
 
-import ax.kl.entity.CompanyInfo;
-import ax.kl.entity.DangerSourceInfo;
-import ax.kl.entity.FacilitiesCondition;
-import ax.kl.entity.LegalProtection;
+import ax.kl.entity.*;
 
 import java.util.List;
 
@@ -44,4 +41,12 @@ public interface MajorDSInfoEntryService {
      * 保存信息
      */
     String saveOrUpdateData(String cmd);
+
+
+    /**
+     * 通过ID获取危险源化学品信息
+     * @param sourceId
+     * @return
+     */
+    List<CompanyChemical> getChemicalList(String sourceId);
 }

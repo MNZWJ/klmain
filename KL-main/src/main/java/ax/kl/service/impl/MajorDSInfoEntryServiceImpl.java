@@ -1,9 +1,6 @@
 package ax.kl.service.impl;
 
-import ax.kl.entity.CompanyInfo;
-import ax.kl.entity.DangerSourceInfo;
-import ax.kl.entity.FacilitiesCondition;
-import ax.kl.entity.LegalProtection;
+import ax.kl.entity.*;
 import ax.kl.mapper.MajorDSInfoEntryMapper;
 import ax.kl.service.MajorDSInfoEntryService;
 import com.alibaba.fastjson.JSONObject;
@@ -78,7 +75,8 @@ public class MajorDSInfoEntryServiceImpl implements MajorDSInfoEntryService {
         DangerSourceInfo form=JSONObject.toJavaObject(jsstr.getJSONObject("form"),DangerSourceInfo.class);
         List<FacilitiesCondition> processTable=JSONObject.parseArray(jsstr.getString("processTable"),FacilitiesCondition.class);
         List<LegalProtection> certTable=JSONObject.parseArray(jsstr.getString("certTable"),LegalProtection.class);
-        if("".equals(processTable.get(0).getSourceId()) ||processTable.get(0).getSourceId()==null){
+        List<CompanyChemical> chemicalTable=JSONObject.parseArray(jsstr.getString("chemicalTable"),CompanyChemical.class);
+        if("".equals(form.getSourceId()) ||form.getSourceId()==null){
             String SourceId= UUID.randomUUID().toString();
             form.setSourceId(SourceId);
             this.majorDSInfoEntryMapper.saveData(form);
@@ -92,6 +90,9 @@ public class MajorDSInfoEntryServiceImpl implements MajorDSInfoEntryService {
             }
             if(certTable.size()>0) {
                 this.majorDSInfoEntryMapper.saveLegalData(certTable, SourceId);
+            }
+            if(chemicalTable.size()>0) {
+                this.majorDSInfoEntryMapper.saveChemicalData(chemicalTable, SourceId);
             }
             return SourceId;
         }else{
@@ -109,7 +110,21 @@ public class MajorDSInfoEntryServiceImpl implements MajorDSInfoEntryService {
             if(certTable.size()>0) {
                 this.majorDSInfoEntryMapper.saveLegalData(certTable, sourceId);
             }
+            if(chemicalTable.size()>0) {
+                this.majorDSInfoEntryMapper.saveChemicalData(chemicalTable, sourceId);
+            }
             return "";
         }
+    }
+
+
+    /**
+     * 通过ID获取危险源化学品信息
+     * @param sourceId
+     * @return
+     */
+    @Override
+    public List<CompanyChemical> getChemicalList(String sourceId) {
+        return majorDSInfoEntryMapper.getChemicalList(sourceId);
     }
 }
