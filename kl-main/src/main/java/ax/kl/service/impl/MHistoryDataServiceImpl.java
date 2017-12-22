@@ -75,67 +75,102 @@ public class MHistoryDataServiceImpl implements MHistoryDataService {
         HBaseOperateData.insertDataList(list);
     }
 
-    public long getDataCount(){
-        ResultScanner rs = null;
-        long rowCount = 0;
-        try {
-            HBaseConnectionEntity hcEntity = HBaseConnectionPool.getInstance().getConnection();
-            Connection connection = hcEntity.getConnection();
-            TableName tableName = TableName.valueOf("tb_realtime_monitor");
-            Table table = connection.getTable(tableName);
-
-            Scan scan = new Scan();
-            //添加查询条件
-            FilterList filterList = new FilterList();
-//            Filter filter1 = new RowFilter(CompareFilter.CompareOp.EQUAL,
-//                    new SubstringComparator("010102"));
-
-            Filter filter2 = new RowFilter(CompareFilter.CompareOp.EQUAL,
-                    new RegexStringComparator("^[0-9A-Z]+_010102"));
-            filterList.addFilter(filter2);
-
-            scan.setFilter(filterList);
-            rs = table.getScanner(scan);
-
-            for (Result result : rs) {
-                rowCount += result.size();
-            }
-            table.close();
-            rs.close();
-           // HBaseConnectionPool.getInstance().releaseConnection(hcEntity.getId());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return rowCount;
-    }
-
-    public Map<String,Object> loadMonitorDataList(int pageIndex,int pageSize){
+    /**
+     * 查询监测数据
+     * @param pageIndex
+     * @param pageSize
+     * @param qcompanyCode
+     * @param qresourceCode
+     * @param qunitCode
+     * @param qequipCode
+     * @param qtargetCode
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    public Map<String,Object> loadMonitorDataList(int pageIndex,int pageSize,String qcompanyCode,
+                                                  String qresourceCode, String qunitCode,String qequipCode,
+                                                  String qtargetCode, String startDate, String endDate){
          //企业字典
          Map<String,Map<String,String>> companyDict = this.hbaseDataMapper.getCompanyDict();
          //重大危险源
-        Map<String,Map<String,String>> danagerDict = this.hbaseDataMapper.getDresourceDict();
+        Map<String,Map<String,String>> danagerDict = this.hbaseDataMapper.getDresourceDict("");
         //工艺单元
-        Map<String,Map<String,String>> unitDict = this.hbaseDataMapper.getUnitDict();
+        Map<String,Map<String,String>> unitDict = this.hbaseDataMapper.getUnitDict("");
         //设备
-        Map<String,Map<String,String>> equipDict = this.hbaseDataMapper.getEquipDict();
+        Map<String,Map<String,String>> equipDict = this.hbaseDataMapper.getEquipDict("");
+        //指标
+        Map<String,Map<String,String>> targetDict = this.hbaseDataMapper.getTargetDict();
 
         //添加查询条件
-//        FilterList filterList = new FilterList();
-//        Filter filter1 = new RowFilter(CompareFilter.CompareOp.EQUAL,
-//                new BinaryPrefixComparator("370521002".getBytes()));
-//        filterList.addFilter(filter1);
+        int filterNum = 0;
+        FilterList filterList = new FilterList();
+        if(qequipCode!=null && qequipCode.length()>0){
+            //设备编码
+            Filter equipFilter = new RowFilter(CompareFilter.CompareOp.EQUAL,
+                    new BinaryPrefixComparator(qequipCode.getBytes()));
+            filterList.addFilter(equipFilter);
+            filterNum++;
+        }else if(qunitCode!=null && qunitCode.length()>0){
+            //工艺单元编码
+            Filter equipFilter = new RowFilter(CompareFilter.CompareOp.EQUAL,
+                    new BinaryPrefixComparator(qunitCode.getBytes()));
+            filterList.addFilter(equipFilter);
+            filterNum++;
+        }else if(qresourceCode!=null && qresourceCode.length()>0){
+            //重大危险源编码
+            Filter equipFilter = new RowFilter(CompareFilter.CompareOp.EQUAL,
+                    new BinaryPrefixComparator(qresourceCode.getBytes()));
+            filterList.addFilter(equipFilter);
+            filterNum++;
+        }else if(qcompanyCode!=null && qcompanyCode.length()>0){
+            //企业编码
+            Filter equipFilter = new RowFilter(CompareFilter.CompareOp.EQUAL,
+                    new BinaryPrefixComparator(qcompanyCode.getBytes()));
+            filterList.addFilter(equipFilter);
+            filterNum++;
+        }
+        //指标类型
+        if(qtargetCode!=null && qtargetCode.length()>0){
+            Filter equipFilter = new SingleColumnValueFilter(Bytes.toBytes("cf1"),
+                    Bytes.toBytes("targetCode"),CompareFilter.CompareOp.EQUAL,
+                    new BinaryPrefixComparator(qtargetCode.getBytes()));
+            filterList.addFilter(equipFilter);
+            filterNum++;
+        }
+        //开始时间
+        if(startDate!=null && startDate.length()>0){
+            Filter equipFilter = new SingleColumnValueFilter(Bytes.toBytes("cf1"),
+                    Bytes.toBytes("collectDate"), CompareOp.GREATER_OR_EQUAL,
+                    new BinaryComparator((startDate+" 00:00:00").getBytes()));
+            filterList.addFilter(equipFilter);
+            filterNum++;
+        }
+        //结束时间
+        if(endDate!=null && endDate.length()>0){
+            Filter equipFilter = new SingleColumnValueFilter(Bytes.toBytes("cf1"),
+                    Bytes.toBytes("collectDate"), CompareOp.LESS_OR_EQUAL,
+                    new BinaryComparator((endDate+"23:59:59").getBytes()));
+            filterList.addFilter(equipFilter);
+            filterNum++;
+        }
+
+        if(filterNum<=0){
+            filterList = null;
+        }
 
         List<String> columnList = new ArrayList<String>();
         columnList.add("targetCode");
         columnList.add("collectDate");
         columnList.add("realValue");
         PageData pageData =  HBaseOperateData.getDataMap("tb_realtime_monitor",null,null,
-                null,columnList,pageIndex,pageSize);
+                filterList,columnList,pageIndex,pageSize);
         List<Map<String,String>> list = pageData.getResultList();
 
         //结果列表
         List<MonitorData> resultList = new ArrayList<MonitorData>();
-        for(Map<String,String> map : list){
+        for(int i=0;i<list.size();i++){
+            Map<String,String> map = list.get(i);
             String rowKey = map.get("key");
             String companyCode = rowKey.substring(0,9);
             String companyName = "";
@@ -157,8 +192,16 @@ public class MHistoryDataServiceImpl implements MHistoryDataService {
             if(equipDict.containsKey(equipCode)){
                 equipName = equipDict.get(equipCode).get("EquipName");
             }
+            String targetCode = map.get("targetCode");
+            String targetName = "";
+            String targetUnit = "";
+            if(targetDict.containsKey(targetCode)){
+                targetName = targetDict.get(targetCode).get("TargetName");
+                targetUnit = targetDict.get(targetCode).get("Unit");
+            }
 
             MonitorData  monitorData = new MonitorData();
+            monitorData.setDataNum(""+(i+1));
             monitorData.setDataId(rowKey);
             monitorData.setCompanyName(companyName);
             monitorData.setDResourceName(danageName);
@@ -166,6 +209,8 @@ public class MHistoryDataServiceImpl implements MHistoryDataService {
             monitorData.setEquipName(equipName);
             monitorData.setCollectDate(map.get("collectDate"));
             monitorData.setRealValue(map.get("realValue"));
+            monitorData.setTargetName(targetName);
+            monitorData.setTargetUnit(targetUnit);
             resultList.add(monitorData);
         }
 
@@ -177,5 +222,44 @@ public class MHistoryDataServiceImpl implements MHistoryDataService {
     }
 
 
+    /**
+     * 获取企业下拉框
+     * @return
+     */
+    public Map<String,Map<String,String>> getCompanyDict(){
+        return this.hbaseDataMapper.getCompanyDict();
+    }
+
+    /**
+     * 获取重大危险源下拉框
+     * @return
+     */
+    public Map<String,Map<String,String>> getDresourceDict(String companyCode){
+        return this.hbaseDataMapper.getDresourceDict(companyCode);
+    }
+
+    /**
+     * 获取工艺单元下拉框
+     * @return
+     */
+    public Map<String,Map<String,String>> getUnitDict(String dresourceCode){
+        return this.hbaseDataMapper.getUnitDict(dresourceCode);
+    }
+
+    /**
+     * 获取设备下拉框
+     * @return
+     */
+    public Map<String,Map<String,String>> getEquipDict(String unitCode){
+        return this.hbaseDataMapper.getEquipDict(unitCode);
+    }
+
+    /**
+     * 获取指标下拉框
+     * @return
+     */
+    public Map<String,Map<String,String>> getTargetDict(){
+        return this.hbaseDataMapper.getTargetDict();
+    }
 
 }

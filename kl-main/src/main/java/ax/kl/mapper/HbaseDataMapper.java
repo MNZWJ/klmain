@@ -29,27 +29,28 @@ public interface HbaseDataMapper {
      * @return
      */
     @MapKey("UniqueCode")
-    public Map<String,Map<String,String>> getDresourceDict();
+    public Map<String,Map<String,String>> getDresourceDict(@Param("companyCode") String companyCode);
 
     /**
      * 获取工艺单元字典表
      * @return
      */
     @MapKey("UniqueCode")
-    public Map<String,Map<String,String>> getUnitDict();
+    public Map<String,Map<String,String>> getUnitDict(@Param("dresourceCode") String dresourceCode);
 
     /**
      * 获取设备字典表
      * @return
      */
     @MapKey("UniqueCode")
-    public Map<String,Map<String,String>> getEquipDict();
+    public Map<String,Map<String,String>> getEquipDict(@Param("unitCode") String unitCode);
 
     /**
      * 获取指标字典表
      * @return
      */
-  //  public Map<String,String> getTargetDict();
+    @MapKey("TargetCode")
+    public Map<String,Map<String,String>> getTargetDict();
 
     /**
      * 获取报警类型字典表
