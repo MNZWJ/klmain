@@ -189,11 +189,12 @@ function loadIndustryAlarmEchart(){
        url:'/DangerousAlarmStatistic/getIndustryAlarmMonth',
         success:function(result){
            var data=[];
-
+            var xData = [];
             $.each(result,function(i,n){
                 var dataNum=n.DataNum.split(",");
                 var dataItem=[];
                 dataItem.push(n.DictName);
+                xData.push(n.DictName);
                 var sumNum=0;
                 $.each(dataNum,function(i,n){
                     sumNum+=parseInt(n);
@@ -207,17 +208,17 @@ function loadIndustryAlarmEchart(){
                 url:'/DangerousAlarmStatistic/getAlarmTypeList' ,
                 success:function (alarmList) {
 
-                    var xData = [];
-                    $.ajax({
-                        type: 'get',
-                        async:false,
-                        url: "/SysDictionary/getDataDictList?typeId=" + IndustryCodeDictId,
-                        success: function (dataResult) {
 
-                            $.each(dataResult, function (i, n) {
-                                xData.push(n.dictName);
-                            });
-                        }});
+                    // $.ajax({
+                    //     type: 'get',
+                    //     async:false,
+                    //     url: "/SysDictionary/getDataDictList?typeId=" + IndustryCodeDictId,
+                    //     success: function (dataResult) {
+                    //
+                    //         $.each(dataResult, function (i, n) {
+                    //             xData.push(n.dictName);
+                    //         });
+                    //     }});
 
 
                     var legend = [];
@@ -271,12 +272,14 @@ function loadIndustryAlarmEchart(){
                         //     orient: 'vertical',
                         //     parallelAxisIndex: [0]
                         // },
+
                         parallelAxis: legend,
 
                         parallel: {
                             left: '5%',
                             right: '18%',
                             bottom: '8%',
+
                             parallelAxisDefault: {
                                 type: 'value',
                                 name: 'AQI指数',
@@ -603,7 +606,8 @@ function initLoadCompanyAlarmTable(){
                 },
                 cellStyle: function (value, row, index, field) {
                     return {classes: '', css: {'white-space': 'nowrap', "word-wrap":"break-word;",'text-overflow': 'ellipsis','overflow': 'hidden','color':'#fff','background-color':'#0a2732','vertical-align':'middle'}};
-                }
+                },
+                width: '5%',
             }
             ,
 
@@ -612,7 +616,7 @@ function initLoadCompanyAlarmTable(){
                 field: 'CompanyName',
                 title: '企业',
                 halign: 'center',
-                width: '60%',
+                width: '55%',
                 cellStyle: function (value, row, index, field) {
                     return {classes: '', css: {'white-space': 'nowrap', "word-wrap":"break-word;",'text-overflow': 'ellipsis','overflow': 'hidden','color':'#37afbf','background-color':'#0a2732'}};
                 },
@@ -654,68 +658,63 @@ function loadTodayAlarmTypeEchart(){
             var dataStyle = {
                 normal: {
                     label: {
-                        show: false
+                        show: true
                     },
                     labelLine: {
-                        show: false
+                        show: true
                     },
                     shadowBlur: 40,
                     shadowColor: 'rgba(40, 40, 40,0.5)',
                 }
             };
 
-            var option = {
+            var option ={
 
-                // color: ['#22529b', '#24ffb5'],
+                color: ['#2377ad', '#97b356', '#23a290', '#547b98', '#e7971e', '#b5382d'],
 
 
-                color:['#2377ad', '#97b356', '#23a290', '#547b98', '#e7971e', '#b5382d'],
+
                 tooltip: {
                     trigger: 'item',
-                    formatter: "{a} <br/>{b}: {c} ({d}%)"
+                    formatter: "{b}: {c} ({d}%)"
                 },
-                legend: {
-                    orient: 'vertical',
-                    type:'scroll',
-                    x: '2%',
-                    // top: '30%',
-                    data: legendData,
-                    textStyle:{
-                        color:'#fff'
-                    },
-                    pageIconColor:'#fff',
-                    pageTextStyle:'fff',
-                    pageIconSize:12
-                },
+                // legend: {
+                //     orient: 'vertical',
+                //     x: '2%',
+                //     top: '20%',
+                //     data: legendData,
+                //     textStyle:{
+                //         color:'#fff'
+                //     }
+                // },
                 series: [{
                     name: '今日报警类型占比',
                     type: 'pie',
-                    radius: ['65%', '85%'],
+                    //radius: ['65%', '85%'],
                     avoidLabelOverlap: false,
                     itemStyle: dataStyle,
-                    center:['60%','50%'],
-                    label: {
-                        normal: {
-                            show: false,
-                            position: 'center'
-                        },
-                        emphasis: {
-                            show: true,
-                            formatter: function(param) {
-                                return param.percent.toFixed(0) + '%';
-                            },
-                            textStyle: {
-                                fontSize: '30',
-                                fontWeight: 'bold',
-                                color:'#fff'
-                            }
-                        }
-                    },
-                    labelLine: {
-                        normal: {
-                            show: true
-                        }
-                    },
+                    // label: {
+                    //     normal: {
+                    //         show: false,
+                    //         position: 'center'
+                    //     },
+                    //     emphasis: {
+                    //         show: true,
+                    //         formatter: function(param) {
+                    //             return param.percent.toFixed(0) + '%';
+                    //         },
+                    //         textStyle: {
+                    //             fontSize: '30',
+                    //             fontWeight: 'bold',
+                    //             color:'#fff'
+                    //         }
+                    //     }
+                    // },
+                    // labelLine: {
+                    //     normal: {
+                    //         show: true
+                    //     }
+                    // },
                     data: data
                 }]
             };

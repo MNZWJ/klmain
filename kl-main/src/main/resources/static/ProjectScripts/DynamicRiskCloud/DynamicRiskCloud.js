@@ -327,7 +327,23 @@ function onMarkClick(e) {
                 }
 
 
-                strDiv += "<tr><td style='padding-left:10px;width: 49.5%;height: 100px;border: solid 1px #000;'>" + "<span>名称：" + n.UnitName + "</span><br/>" + "<span >有毒气、可燃气体报警<img style='width: 40px;height: 40px;margin-left: 10px;' src='" + imgUrl + "'></span>" + "</td>" + "<td  style='width: 50%;height: 100px;border: solid 1px #000;font-size:0;'></td ></tr>"
+                strDiv="<tr><td style='padding-left:10px;width: 49.5%;height: 100px;border: solid 1px #000;'>" + "<span>名称：" + n.UnitName + "</span><br/>" + "<span >有毒气、可燃气体报警<img style='width: 40px;height: 40px;margin-left: 10px;' src='" + imgUrl + "'></span>" + "</td>" + "<td  style='width: 50%;height: 100px;border: solid 1px #000;'>"+
+
+                    "<table style='width: 100%;height: 100%;'>"+
+                    "<tr>"+
+                    "<td style='width: 10%;'>"+
+                        "<a class='left' href='#' role='button'><span class='glyphicon glyphicon-chevron-left'  aria-hidden='true'></span></a>"+
+                    "</td>"+
+                "<td style='width: 80%;'>"+
+                    "<a class='left' href='#' role='button'><span class='glyphicon glyphicon-chevron-left'  aria-hidden='true'></span></a>"+
+                "</td>"+
+                "<td style='width: 10%;' align='right'>"+
+                    "<a class='right' href='#' role='button'><span class='glyphicon glyphicon-chevron-right'  aria-hidden='true'></span></a>"
+                +"</td>"
+                    +"</tr>"
+                    +"</table>"
+
+                    +"</td ></tr>";
             });
             $("#unitDiv").html(strDiv);
         },
