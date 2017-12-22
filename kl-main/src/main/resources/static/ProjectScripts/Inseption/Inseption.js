@@ -588,7 +588,7 @@ function loadScaleCode(){
 
             scaleCodeOption = {
 
-                color: ['#fbf31f', '#ef8938','#ffe01f','#22529b'],
+                color: ['#ed2d2d', '#ef8938','#ffe01f','#22529b'],
 
 
 
