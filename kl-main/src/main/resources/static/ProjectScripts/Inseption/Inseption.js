@@ -330,7 +330,7 @@ function initTable() {
                 halign: 'center',
                 width: '40%',
                 cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis'}};
+                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
                 },
                 formatter: function (value, row, index) {
                     if(value==undefined){
@@ -345,7 +345,7 @@ function initTable() {
                 halign: 'center',
                 width: '50%',
                 cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis'}};
+                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
                 },
                 formatter: function (value, row, index) {
                     if(value==undefined){
@@ -608,7 +608,7 @@ function loadScaleCode(){
                     name: '企业类型占比',
                     type: 'pie',
                     //radius: ['65%', '85%'],
-                    avoidLabelOverlap: false,
+                    avoidLabelOverlap: true,
                     itemStyle: dataStyle,
                     // label: {
                     //     normal: {
@@ -719,9 +719,8 @@ function loadCompanyType(){
                     label: {
                         show: true
                     },
-                    labelLine: {
-                        show: true
-                    },
+
+                    position:'inside',
                     shadowBlur: 40,
                     shadowColor: 'rgba(40, 40, 40,0.5)',
                 }
@@ -750,7 +749,7 @@ function loadCompanyType(){
                     name: '企业类型占比',
                     type: 'pie',
                     //radius: ['65%', '85%'],
-                    avoidLabelOverlap: false,
+                    avoidLabelOverlap: true,
                     itemStyle: dataStyle,
                     // label: {
                     //     normal: {
@@ -874,12 +873,13 @@ function loadIndustryCompany(){
                         dataZoom: [
                             {
                                 type:'inside',
-
+                                start: 0,
+                                end: 20,
                             },
                             {
                                 show: "true",
                                 start: 0,
-                                end: 100,
+                                end: 60,
 
                                 textStyle: {
                                     color: '#fff'
@@ -985,12 +985,13 @@ function loadDirectAreaCompany(){
                         dataZoom: [
                             {
                                 type:'inside',
-
+                                start: 0,
+                                end: 60,
                             },
                             {
                                 show: "true",
                                 start: 0,
-                                end: 100,
+                                end: 60,
 
                                 textStyle: {
                                     color: '#fff'
