@@ -1,8 +1,13 @@
 package ax.kl.service;
 
+import ax.kl.entity.ChemicalCataLog;
+import ax.kl.entity.ChemicalsInfo;
+import ax.kl.entity.CompanyChemical;
 import ax.kl.entity.CompanyInfo;
+import com.baomidou.mybatisplus.plugins.Page;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Created by mxl
@@ -42,4 +47,19 @@ public interface BasicInfoEntryService {
      * @return
      */
     boolean validateTypeCode(String typeCode);
+
+    /**
+     * 获取化学品列表
+     * @param page
+     * @param param
+     * @return
+     */
+    Page<ChemicalCataLog> getChemicalInfoList(Page page, Map<String, String> param);
+
+    /**
+     * 通过ID获取公司化学品信息
+     * @param companyId
+     * @return
+     */
+    List<CompanyChemical> getChemicalList(String companyId);
 }

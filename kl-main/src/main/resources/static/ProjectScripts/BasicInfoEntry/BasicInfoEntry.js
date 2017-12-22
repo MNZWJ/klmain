@@ -20,13 +20,18 @@ var state=false;
 var flag=true;
 //点击事件标志位
 var eventFlag="";
-
-//初始化列表
+//查询的化学品名称
+var chemName = "";
+//查询的cas
+var cas = "";
+//初始化列表1
+var scanHeight = $(window).height();
 $(function () {
     //获取浏览器高度
-    var scanHeight = $(window).height();
     initCert();//初始化相关证书表格
     initTable();//初始化危险工艺表格
+    initChemiacalAllTable();
+    initChemicalTable();
     init();
     //加载列表
     $('#enterpriseTable').bootstrapTable({
@@ -71,18 +76,22 @@ $(function () {
             field: 'number1',
             halign: 'center',
             align: 'center',
+            width:'3%',
             formatter: function (value, row, index) {
                 var page = $('#enterpriseTable').bootstrapTable('getOptions');
                 return (page.pageNumber - 1) * page.pageSize + index + 1;
             }
         }, {
             field: 'state',
-            checkbox: true
+            checkbox: true,
+            width:'3%',
+            align:'center',
         },
             {
                 field: 'companyName',
                 title: '企业名称',
                 halign: 'center',
+                width:'14%',
                 cellStyle: function (value, row, index, field) {
                     return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
                 },
@@ -90,34 +99,40 @@ $(function () {
                     users.push(rowData);
                     return "<a href='javascript:look(\""+rowData.companyId+"\")'>" + value + "</a>";
                 }
-            },{
+            },/*{
                 field: 'legalPerson',
                 title: '法人代表',
                 halign: 'center',
-                align:'center'
+                align:'center',
+                width:'5%',
             }, {
                 field: 'contactWay',
                 title: '联系方式',
                 halign: 'center',
-                align:'center'
-            },  {
+                align:'center',
+                width:'8%',
+            }, */ {
                 field: 'safeManageRank',
                 title: '安全管理分级',
                 halign: 'center',
-                align:'right'
+                align:'right',
+                width:'7%',
             },   {
                 field: 'standardRank',
                 title: '标准化等级',
                 halign: 'center',
-                align:'right'
+                align:'right',
+                width:'7%',
             },   {
                 field: 'operatingState',
                 title: '经营状态',
-                halign: 'center'
+                halign: 'center',
+                width:'5%',
             },   {
                 field: 'industryCode',
                 title: '所属行业',
                 halign: 'center',
+                width:'15%',
                 cellStyle: function (value, row, index, field) {
                     return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
                 },
@@ -125,24 +140,47 @@ $(function () {
                     if(value!=undefined){
                         return '<span title="'+value+'">'+value+'</span>'
                     }else{
-                        return "-";
+                        return "";
                     }
-
                 }
             },   {
                 field: 'scaleCode',
                 title: '企业规模',
                 halign: 'center',
-                align:'center'
+                align:'center',
+                width:'5%',
+                cellStyle: function (value, row, index, field) {
+                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                },
+                formatter: function (value, row, index) {
+                    if(value!=undefined){
+                        return '<span title="'+value+'">'+value+'</span>'
+                    }else{
+                        return "";
+                    }
+                }
             },   {
                 field: 'typeCode',
                 title: '企业类型',
                 halign: 'center',
-                align:'center'
-            }, {
+                align:'center',
+                width:'10%',
+                cellStyle: function (value, row, index, field) {
+                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                },
+                formatter: function (value, row, index) {
+                    if(value!=undefined){
+                        return '<span title="'+value+'">'+value+'</span>'
+                    }else{
+                        return "";
+                    }
+                }
+
+            }, /*{
                 field: 'area',
                 title: '行政区域',
                 halign: 'center',
+                width:'9%',
                 cellStyle: function (value, row, index, field) {
                     return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
                 },
@@ -150,11 +188,12 @@ $(function () {
                     return '<span title="'+value+'">'+value+'</span>'
 
                 }
-            },
+            },*/
             {
                 field: 'directArea',
                 title: '直属区域',
-                halign: 'center'
+                halign: 'center',
+                width:'5%',
             }
         ]
     });
@@ -169,7 +208,6 @@ function  init() {
     getstandardRankList();
     getoperatingStateList();
     getSafeManageRankList();
-    savedata();
     formValidator();
     //模态窗关闭事件
     $('#myModal').on('hidden.bs.modal', function () {
@@ -376,6 +414,7 @@ function look(companyId) {
     //刷新表格
     $("#table").bootstrapTable('refresh');
     $("#certTable").bootstrapTable('refresh');
+    $("#chemicalTable").bootstrapTable('refresh');
 
     //input赋值
     $.ajax({
@@ -383,13 +422,15 @@ function look(companyId) {
         url: '/BasicInfoEntry/getCompanyInfo',
         data: {companyId: company},
         success: function (result) {
-            debugger;
             //清空表单
             $(':input', '#companyForm')
                 .not(':button, :submit, :reset')
                 .val('')
                 .removeAttr('checked')
                 .removeAttr('selected');
+            for (var p in result[0]) {
+                $("#companyForm").find(":input[name='" + p + "']").val(result[0][p]);
+            }
             //下拉框赋值
             $('#typeCode').selectpicker('val', result[0].typeCode);
             if(result[0].industryCode!=null) {
@@ -400,14 +441,6 @@ function look(companyId) {
             $('#standardRank').selectpicker('val', result[0].standardRank);
             $('#safeManageRank').selectpicker('val', result[0].safeManageRank);
             $('#directArea').selectpicker('val', result[0].directArea);
-            //input赋值
-            $("#companyName").val(result[0].companyName);
-            $("#uniqueCode").val(result[0].uniqueCode);
-            $("#legalPerson").val(result[0].legalPerson);
-            $("#contactWay").val(result[0].contactWay);
-            $("#longt").val(result[0].longt);
-            $("#lat").val(result[0].lat);
-            $("#area").val(result[0].area);
         },
         error: function () {
             BootstrapDialog.alert({
@@ -427,6 +460,7 @@ function look(companyId) {
     $('#collapseOne').collapse('show');
     $('#collapseTwo').collapse('hide');
     $('#collapseThree').collapse('hide');
+    $('#collapseFour').collapse('hide');
     $("#companyForm").find('input').attr({ readonly: 'true' });
     $("#companyForm").find('select').attr("disabled", "disabled");
     $("#btn_save").hide();
@@ -434,6 +468,8 @@ function look(companyId) {
     $("#delData").hide();
     $("#certAdd").hide();
     $("#certDel").hide();
+    $("#select").hide();
+    $("#delChemical").hide();
     state=true;
 }
 //新增
@@ -458,6 +494,9 @@ function companyAdd() {
     $("#delData").show();
     $("#certAdd").show();
     $("#certDel").show();
+    $("#select").show();
+    $("#delChemical").show();
+
     if(state){
         $("#companyForm").find('input').removeAttr('readonly');
         $("#companyForm").find('select').removeAttr("disabled", "disabled");
@@ -466,13 +505,14 @@ function companyAdd() {
     //清空表格
     $("#table").bootstrapTable('load', []);
     $("#certTable").bootstrapTable('load', []);
+    $("#chemicalTable").bootstrapTable('load', []);
 
     $("#myModelLabel").text("新增");
     $('#myModal').modal('show');
     $('#collapseOne').collapse('show');
     $('#collapseTwo').collapse('hide');
     $('#collapseThree').collapse('hide');
-
+    $('#collapseFour').collapse('hide');
 }
 //修改
 function companyEdit() {
@@ -501,10 +541,14 @@ function companyEdit() {
     $("#delData").show();
     $("#certAdd").show();
     $("#certDel").show();
+    $("#select").show();
+    $("#delChemical").show();
+
     company=row[0].companyId;
     //刷新表格
     $("#table").bootstrapTable("refresh");
     $("#certTable").bootstrapTable("refresh");
+    $("#chemicalTable").bootstrapTable("refresh");
 
     $.ajax({
         type: 'post',
@@ -522,7 +566,9 @@ function companyEdit() {
             }
             //下拉框赋值
             $('#typeCode').selectpicker('val', result[0].typeCode);
-            $('#industryCode').selectpicker('val', result[0].industryCode.split(','));//多选时
+            if(result[0].industryCode!=null) {
+                $('#industryCode').selectpicker('val', result[0].industryCode.split(','));//多选时
+            }
             $('#scaleCode').selectpicker('val', result[0].scaleCode);
             $('#operatingState').selectpicker('val', result[0].operatingState);
             $('#standardRank').selectpicker('val', result[0].standardRank);
@@ -541,11 +587,14 @@ function companyEdit() {
             });
         }
     });
+    $('#uniqueCode').attr("readonly","readonly");
     $("#myModelLabel").text("修改");
     $('#myModal').modal('show');
     $('#collapseOne').collapse('show');
     $('#collapseTwo').collapse('hide');
     $('#collapseThree').collapse('hide');
+    $('#collapseFour').collapse('hide');
+    $("#companyForm").data('bootstrapValidator').removeField("uniqueCode");//删除编码验证
 }
 //初始化危险工艺表格
 function initTable(x) {
@@ -792,64 +841,7 @@ function initCert(x) {
         }
     });
 }
-//保存
-function savedata() {
-//保存
-    $('#btn_save').click(function () {
-        //获取表单对象
-        var bootstrapValidator = $("#companyForm").data('bootstrapValidator');
-        //获取BS中的List值
-        var processTable = $('#table').bootstrapTable('getData');
-        var certTable = $('#certTable').bootstrapTable('getData');
-        //手动触发验证
-        bootstrapValidator.validate();
-        if (bootstrapValidator.isValid()) {
-            //获取表单中的值
-            var form = {};
-            var menuList = $('#companyForm').serializeArray();
-            var industryCode="";
-            for(var i=0;i<menuList.length;i++){
-                if(menuList[i].name=='industryCode'){
-                    industryCode+=','+menuList[i].value;
-                }}
-            $.each(menuList, function () {
-                form[this.name] = this.value
-            });
-            form.industryCode=industryCode.substring(1);
-            var cmd = {"form": form, "processTable": processTable, "certTable": certTable};
-            $.ajax({
-                type: 'post',
-                url: '/BasicInfoEntry/saveData',
-                data: {cmd:JSON.stringify(cmd)},
-                success: function (result) {
-                    if (result.code == 0) {
-                        BootstrapDialog.alert({
-                            title: "提示",
-                            size: BootstrapDialog.SIZE_SMALL,
-                            message: "保存成功！",
-                            type: BootstrapDialog.TYPE_SUCCESS, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                            callback: function () {
-                                $('#myModal').modal('hide');
-                                $("#enterpriseTable").bootstrapTable("refresh");
-                            }
-                        });
-                    }
-                },
-                error: function () {
-                    BootstrapDialog.alert({
-                        title: '错误',
-                        message: '保存失败！',
-                        size: BootstrapDialog.SIZE_SMALL,
-                        type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                        closable: false, // <-- Default value is false
-                        draggable: true, // <-- Default value is false
-                        buttonLabel: '确定', // <-- Default value is 'OK',
-                    });
-                }
-            });
-        }
-    });
-}
+
 //删除
 function companyDel() {
     var rows = $("#enterpriseTable").bootstrapTable("getSelections");//获取所有选中的行
@@ -973,3 +965,301 @@ function formValidator() {
         }
     });
 }
+
+
+//初始化模态窗中全部化学品数据
+function initChemiacalAllTable() {
+    $('#chemicalAllTable').bootstrapTable({
+        url: '/BasicInfoEntry/getChemicalInfoList',
+        method: 'get',                      //请求方式（*）
+        striped: true,                      //是否显示行间隔色
+        cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+        pagination: true,                   //是否显示分页（*）
+        sortable: false,                     //是否启用排序
+        sortOrder: "asc",                   //排序方式
+        sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+        clickToSelect: true,//是否启用点击选中行
+        pageNumber: 1,                       //初始化加载第一页，默认第一页
+        pageSize: 20,                       //每页的记录行数（*）
+        pageList: [20, 50, 100, 200],        //可供选择的每页的行数（*）
+        sortStable: true,//设置为 true 将获得稳定的排序，我们会添加_position属性到 row 数据中。
+        queryParamsType: '', //默认值为 'limit' ,在默认情况下 传给服务端的参数为：offset,limit,sort
+        // 设置为 ''  在这种情况下传给服务器的参数为：pageSize,pageNumber
+        selectItemName: 'state',
+        idField: 'chemId',
+        uniqueId: 'chemId',
+        queryParams: function (pageReqeust) {
+            pageReqeust.chemName = chemName;
+            pageReqeust.cas = cas;
+            return pageReqeust;
+        },
+        rowStyle: function () {//自定义行样式
+            return "bootTableRow";
+        },
+        onLoadSuccess:function () {
+            var chemicalRows = $('#chemicalTable').bootstrapTable('getData');//获取当前数据
+            if(chemicalRows.length>0) {
+                for(var  i=0;i<chemicalRows.length;i++) {
+                    $('#chemicalAllTable').bootstrapTable('hideRow', {uniqueId:chemicalRows[i].chemId});
+                    //$("#chemicalTable").bootstrapTable('removeByUniqueId', row[i].chemId);
+                }
+            }
+        },
+        onLoadError: function () {
+            BootstrapDialog.alert({
+                title: '错误',
+                message: '表格加载失败！',
+                size: BootstrapDialog.SIZE_SMALL,
+                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+                closable: false, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                buttonLabel: '确定' // <-- Default value is 'OK',
+            });
+        },
+        columns: [
+            {
+            title: '序号',
+            field: 'number1',
+            halign: 'center',
+            align: 'center',
+            formatter: function (value, row, index) {
+                var page = $('#chemicalAllTable').bootstrapTable('getOptions');
+                return (page.pageNumber - 1) * page.pageSize + index + 1;
+            }
+        }, {
+            field: 'state',
+            checkbox: true
+        },
+            {
+                field: 'chemName',
+                title: '化学品名称',
+                halign: 'center',
+                width:'23%',
+            }, {
+                field: 'cAS',
+                title: 'CAS',
+                halign: 'center',
+                align: 'center',
+                width:'23%',
+            }, {
+                field: 'alisaName',
+                title: '别名',
+                halign: 'center',
+                align: 'center',
+                width:'23%',
+            }, {
+                field: 'dangerType',
+                title: '化学品危险类别',
+                halign: 'center',
+                align: 'center',
+                width:'26%',
+            }]
+    })
+    //保存所选的化学品信息
+    $('#saveChemical').click(function () {
+        var rows=$('#chemicalAllTable').bootstrapTable('getSelections');//获取选中行
+        if(rows.length>0) {
+            for(var  i=0;i<rows.length;i++) {
+                $('#chemicalTable').bootstrapTable('selectPage', 1);
+                var data = {chemId:rows[i].chemId,chemName:rows[i].chemName,cAS:rows[i].cAS, dreserves: '', unit: ''};
+                $('#chemicalTable').bootstrapTable('prepend', data);
+            }
+        }else {
+            BootstrapDialog.alert({
+                title: '警告',
+                message: '请至少选择一条要保存的数据！',
+                size: BootstrapDialog.SIZE_SMALL,
+                type: BootstrapDialog.TYPE_WARNING, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+                closable: false, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                buttonLabel: '确定', // <-- Default value is 'OK',
+            });
+            return false;
+        }
+        $('#chemicalMadel').modal('hide');
+
+    });
+}
+
+//加载模态窗中选中的化学品数据
+function initChemicalTable() {
+    $('#chemicalTable').bootstrapTable({
+        method: 'get',
+        editable:true,//开启编辑模式
+        url: '/BasicInfoEntry/getChemicalList',
+        cache: false,
+        pagination: true,
+        clickToSelect: true,//是否启用点击选中行
+        striped: true,
+        minimumCountColumns: 2,
+        smartDisplay:true,
+        idField: 'chemId',
+        uniqueId: 'chemId',
+        queryParams: function (pageReqeust) {
+            pageReqeust.companyId = company;
+            return pageReqeust;
+        },
+        rowStyle: function () {//自定义行样式
+            return "bootTableRow";
+        },
+        onLoadError: function () {
+            BootstrapDialog.alert({
+                title: '错误',
+                message: '表格加载失败！',
+                size: BootstrapDialog.SIZE_SMALL,
+                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+                closable: false, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                buttonLabel: '确定' // <-- Default value is 'OK',
+            });
+        },
+        onLoadSuccess:function(){
+            //当查看时控制可编辑表格不可编辑
+            if(eventFlag=="look"){
+                $("#chemicalTable").find(".editable").editable('disable');
+            }
+        },
+        columns: [
+            {
+                title: '序号',
+                field: 'number1',
+                halign: 'center',
+                align: 'center',
+                formatter: function (value, row, index) {
+                    var page = $('#certTable').bootstrapTable('getOptions');
+                    return (page.pageNumber - 1) * page.pageSize + index + 1;
+                }
+            },
+            {
+                field: 'state',
+                checkbox: true
+            },{
+                field: 'chemId',
+                title: '化学品ID',
+                halign: 'center',
+                align:'center',
+                visible:false,
+            },
+            {
+                field: 'chemName',
+                title: '化学品名称',
+                halign: 'center',
+                align:'center',
+            },{
+                field: 'cAS',
+                title: 'CAS',
+                halign: 'center',
+            },{
+                field: 'dreserves',
+                title: '设计储量',
+                halign: 'center',
+                editable:{
+                    type: 'text',
+                    title: '请输入',
+                }
+            },{
+                field: 'unit',
+                title: '单位',
+                halign: 'center',
+                editable:{
+                    type: 'text',
+                    title: '请输入',
+                }
+            }]
+    })
+//点击引用按钮弹出模态窗选择化学品信息
+    $('#select').click(function () {
+        $('#chemicalMadel').modal('show');
+        /*$("#chemicalAllTable").bootstrapTable('destroy');
+        initChemiacalAllTable();*/
+        $("#chemicalAllTable").bootstrapTable('refresh');
+    });
+//删除所选化学品
+    $('#delChemical').click(function(){
+        var row = $("#chemicalTable").bootstrapTable("getSelections");//获取所有选中的行
+        if (row.length <= 0) {
+            BootstrapDialog.alert({
+                title: '警告',
+                message: '请选择一条要删除的数据！',
+                size:BootstrapDialog.SIZE_SMALL,
+                type: BootstrapDialog.TYPE_WARNING, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+                closable: false, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                buttonLabel: '确定', // <-- Default value is 'OK',
+            });
+            return false;
+        }else {
+            for(var i=0;i<row.length;i++){
+                $("#chemicalTable").bootstrapTable('removeByUniqueId', row[i].chemId);
+            }
+        }
+    });
+}
+//化学品查询
+function searchchem() {
+    chemName = $("#chemName").val();
+    cas = $("#cas").val();
+    $("#chemicalAllTable").bootstrapTable("refresh",{});
+}
+//化学品清空查询条件
+function cleanchem() {
+    chemName = $("#chemName").val("");
+    cas = $("#cas").val("");
+}
+
+//保存
+$('#btn_save').click(function () {
+    //获取表单对象
+    var bootstrapValidator = $("#companyForm").data('bootstrapValidator');
+    //获取BS中的List值
+    var processTable = $('#table').bootstrapTable('getData');
+    var certTable = $('#certTable').bootstrapTable('getData');
+    var chemicalTable = $('#chemicalTable').bootstrapTable('getData');
+    //手动触发验证
+    bootstrapValidator.validate();
+    if (bootstrapValidator.isValid()) {
+        //获取表单中的值
+        var form = {};
+        var menuList = $('#companyForm').serializeArray();
+        var industryCode="";
+        for(var i=0;i<menuList.length;i++){
+            if(menuList[i].name=='industryCode'){
+                industryCode+=','+menuList[i].value;
+            }}
+        $.each(menuList, function () {
+            form[this.name] = this.value
+        });
+        form.industryCode=industryCode.substring(1);
+        var cmd = {"form": form, "processTable": processTable, "certTable": certTable,"chemicalTable":chemicalTable};
+        $.ajax({
+            type: 'post',
+            url: '/BasicInfoEntry/saveData',
+            data: {cmd:JSON.stringify(cmd)},
+            success: function (result) {
+                if (result.code == 0) {
+                    BootstrapDialog.alert({
+                        title: "提示",
+                        size: BootstrapDialog.SIZE_SMALL,
+                        message: "保存成功！",
+                        type: BootstrapDialog.TYPE_SUCCESS, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+                        callback: function () {
+                            $('#myModal').modal('hide');
+                            $("#enterpriseTable").bootstrapTable("refresh");
+                        }
+                    });
+                }
+            },
+            error: function () {
+                BootstrapDialog.alert({
+                    title: '错误',
+                    message: '保存失败！',
+                    size: BootstrapDialog.SIZE_SMALL,
+                    type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+                    closable: false, // <-- Default value is false
+                    draggable: true, // <-- Default value is false
+                    buttonLabel: '确定', // <-- Default value is 'OK',
+                });
+            }
+        });
+    }
+});

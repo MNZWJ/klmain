@@ -1,5 +1,6 @@
 package ax.kl;
 
+import ax.kl.hbase.HBaseConnectionPool;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,5 +15,6 @@ public class KlApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(KlApplication.class, args);
+		HBaseConnectionPool p = new HBaseConnectionPool(1, 10);
 	}
 }

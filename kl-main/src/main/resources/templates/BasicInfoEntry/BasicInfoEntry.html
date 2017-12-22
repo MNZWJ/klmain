@@ -32,14 +32,8 @@
             height: 120px;
             max-height: 120px;
         }
-        .form {
-            padding-top: 10px;
-        }
         .form-group {
             margin-bottom: 15px;
-        }
-        .nav {
-            margin-bottom: 10px;
         }
 
         .container-fluid {
@@ -59,7 +53,12 @@
             padding-left: 0px;
             width: 59%;
         }
-
+        .toolbar {
+            padding-bottom: 15px;
+        }
+        .modal {
+            overflow-y: auto;
+        }
     </style>
 
 </head>
@@ -67,7 +66,8 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-xs-14">
-            <table id="enterpriseTable" class="table  table-striped table-bordered table-hover">
+            <table id="enterpriseTable" class="table  table-striped table-bordered table-hover"
+                   style="table-layout: fixed;">
             </table>
             <div id="enterpriseToolbar" class="toolbar" role="toolbar">
                 <form class="form-inline" role="form">
@@ -99,9 +99,6 @@
                     <button class="btn btn-danger" type="button" onclick="companyDel()">
                         <span class="glyphicon glyphicon-minus"></span> 删除
                     </button>
-                    <!--                <button class="btn btn-success" type="button" onclick="exportExcel()">
-                                    <span class="glyphicon glyphicon-export"></span> 导出
-                                </button>-->
                 </form>
             </div>
         </div>
@@ -117,7 +114,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
-                <h4 class="modal-title" id="myModalLabel"></h4>
+                <h4 class="modal-title" id="myModalLabel">新增</h4>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -137,6 +134,7 @@
                                             <div class="tab-pane fade in active" id="companyInfo">
                                                 <form id="companyForm" class="form-inline pull-right form-horizontal" role="form">
                                                     <div class="form-group col-md-6">
+                                                        <input type="hidden" id="companyId" name="companyId">
                                                         <label for="companyName" class="col-md-4">企业名称</label>
                                                         <input type="text" name="companyName" class="form-control input-sm col-md-8"
                                                                id="companyName">
@@ -147,11 +145,10 @@
                                                                 data-style="btn-default" id="typeCode" name="typeCode" >                                                >
                                                         </select>
                                                     </div>
-
                                                     <div class="form-group col-md-6">
-                                                        <label for="uniqueCode" class="col-md-4">唯一编码</label>
-                                                        <input type="text" name="uniqueCode" class="form-control input-sm col-md-8"
-                                                               id="uniqueCode" >
+                                                        <label for="simpleName" class="col-md-4">企业简称</label>
+                                                        <input type="text" name="simpleName" class="form-control input-sm col-md-8"
+                                                               id="simpleName" >
                                                     </div>
 
                                                     <div class="form-group col-md-6">
@@ -161,9 +158,9 @@
                                                         </select>
                                                     </div>
                                                     <div class="form-group col-md-6">
-                                                        <label for="legalPerson" class="col-md-4">法定代表人</label>
-                                                        <input type="text" name="legalPerson" class="form-control input-sm col-md-8"
-                                                               id="legalPerson">
+                                                        <label for="uniqueCode" class="col-md-4">唯一编码</label>
+                                                        <input type="text" name="uniqueCode" class="form-control input-sm col-md-8"
+                                                               id="uniqueCode" >
                                                     </div>
                                                     <div class="form-group col-md-6">
                                                         <label for="scaleCode" class="col-md-4">企业规模</label>
@@ -171,10 +168,11 @@
                                                                 data-style="btn-default" id="scaleCode" name="scaleCode" >                                                >
                                                         </select>
                                                     </div>
+
                                                     <div class="form-group col-md-6">
-                                                        <label for="contactWay" class="col-md-4">联系方式</label>
-                                                        <input type="text" name="contactWay" class="form-control input-sm col-md-8"
-                                                               id="contactWay">
+                                                        <label for="legalPerson" class="col-md-4">法定代表人</label>
+                                                        <input type="text" name="legalPerson" class="form-control input-sm col-md-8"
+                                                               id="legalPerson">
                                                     </div>
 
                                                     <div class="form-group col-md-6">
@@ -183,10 +181,11 @@
                                                                 data-style="btn-default" id="operatingState" name="operatingState" >                                                >
                                                         </select>
                                                     </div>
+
                                                     <div class="form-group col-md-6">
-                                                        <label for="longt" class="col-md-4">经度</label>
-                                                        <input type="text" name="longt" class="form-control input-sm col-md-8"
-                                                               id="longt">
+                                                        <label for="contactWay" class="col-md-4">联系方式</label>
+                                                        <input type="text" name="contactWay" class="form-control input-sm col-md-8"
+                                                               id="contactWay">
                                                     </div>
                                                     <div class="form-group col-md-6">
                                                         <label for="standardRank" class="col-md-4">标准化等级</label>
@@ -194,6 +193,19 @@
                                                                 data-style="btn-default" id="standardRank" name="standardRank" >                                                >
                                                         </select>
                                                     </div>
+
+                                                    <div class="form-group col-md-6">
+                                                        <label for="longt" class="col-md-4">经度</label>
+                                                        <input type="text" name="longt" class="form-control input-sm col-md-8"
+                                                               id="longt">
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label for="safeManageRank" class="col-md-4">安全管理等级</label>
+                                                        <select placeholder="请选择" class="selectpicker col-md-8" style="width: 115px;"
+                                                                data-style="btn-default" id="safeManageRank" name="safeManageRank" >                                                >
+                                                        </select>
+                                                    </div>
+
                                                     <div class="form-group col-md-6">
                                                         <label for="lat" class="col-md-4">纬度</label>
                                                         <input type="text" name="lat" class="form-control input-sm col-md-8"
@@ -201,21 +213,16 @@
                                                     </div>
 
                                                     <div class="form-group col-md-6">
-                                                        <label for="safeManageRank" class="col-md-4">安全管理等级</label>
-                                                        <select placeholder="请选择" class="selectpicker col-md-8" style="width: 115px;"
-                                                                data-style="btn-default" id="safeManageRank" name="safeManageRank" >                                                >
-                                                        </select>
-                                                    </div>
-                                                    <div class="form-group col-md-6">
-                                                        <label for="area" class="col-md-4">行政区域</label>
-                                                        <input type="text" name="area" class="form-control input-sm col-md-8"
-                                                               id="area"   >
-                                                    </div>
-                                                    <div class="form-group col-md-6">
                                                         <label for="directArea" class="col-md-4">直属区域</label>
                                                         <select placeholder="请选择" class="selectpicker col-md-8" style="width: 115px;"
                                                                 data-style="btn-default" id="directArea" name="directArea" >                                                >
                                                         </select>
+                                                    </div>
+
+                                                    <div class="form-group col-md-6">
+                                                        <label for="area" class="col-md-4">行政区域</label>
+                                                        <input type="text" name="area" class="form-control input-sm col-md-8"
+                                                               id="area"   >
                                                     </div>
                                                 </form>
                                             </div>
@@ -273,6 +280,31 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading" role="tab" id="headingFour">
+                                    <h4 class="panel-title">
+                                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseThree">
+                                            企业相关化学品
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                                    <div class="panel-body">
+                                        <div class="col-md-12">
+                                            <div>
+                                                <button class="btn btn-success btn-sm" type="button" id="select">
+                                                    <span class="glyphicon glyphicon-plus"></span> 引用
+                                                </button>
+                                                <button class="btn btn-danger" type="button" id="delChemical">
+                                                    <span class="glyphicon glyphicon-minus"></span> 删除
+                                                </button>
+                                            </div>
+                                            <table id="chemicalTable" class="table  table-striped table-bordered table-hover">
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -284,6 +316,46 @@
         </div>
     </div>
 </div>
+
+<!--化学品模态窗-->
+<div class="modal fade bs-example-modal-lg" tabindex="-2" role="dialog" id="chemicalMadel"
+     data-backdrop='static'      data-target=".bs-example-modal-lg">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">化学品信息</h4>
+            </div>
+            <div class="modal-body">
+
+                <div id="toolbar" class="toolbar" role="toolbar">
+                    <form class="form-inline" role="form">
+                            <label class="xs-only" for="chemName">化学品名称：</label>
+                            <input type="text" class="form-control" id="chemName"
+                                   placeholder="请输入化学品名称">
+
+                            <label class="xs-only" for="cas">CAS：</label>
+                            <input type="text" class="form-control" id="cas"
+                                   placeholder="请输入CAS">
+
+                        <button class="btn btn-default" type="button" onclick="searchchem()">
+                            <span class="glyphicon glyphicon-search" type="button"></span> 查询
+                        </button>
+                        <button class="btn btn-default" type="button" onclick="cleanchem()">
+                            <span class="glyphicon glyphicon-calendar"></span> 清空
+                        </button>
+                    </form>
+                </div>
+                <table id="chemicalAllTable" class="table  table-striped table-bordered table-hover">
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="saveChemical">保存</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <script src="../../ProjectScripts/BasicInfoEntry/BasicInfoEntry.js"></script>
 
 </body>

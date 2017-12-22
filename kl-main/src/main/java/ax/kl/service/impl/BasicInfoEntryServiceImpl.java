@@ -1,14 +1,19 @@
 package ax.kl.service.impl;
 
+import ax.kl.entity.ChemicalCataLog;
+import ax.kl.entity.ChemicalsInfo;
+import ax.kl.entity.CompanyChemical;
 import ax.kl.entity.CompanyInfo;
 import ax.kl.mapper.BasicInfoEntryMapper;
 import ax.kl.service.BasicInfoEntryService;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.plugins.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -30,10 +35,11 @@ public class BasicInfoEntryServiceImpl implements BasicInfoEntryService {
     @Override
     public String  saveOrUpdateData(String  cmd){
         JSONObject jsstr = JSONObject.parseObject(cmd);
-        CompanyInfo form=(CompanyInfo)JSONObject.toJavaObject(jsstr.getJSONObject("form"),CompanyInfo.class);
-        List<CompanyInfo> processTable=(List<CompanyInfo>)JSONObject.parseArray(jsstr.getString("processTable"),CompanyInfo.class);
-        List<CompanyInfo> certTable=(List<CompanyInfo>)JSONObject.parseArray(jsstr.getString("certTable"),CompanyInfo.class);
-        if("".equals(processTable.get(0).getCompanyId()) ||processTable.get(0).getCompanyId()==null){
+        CompanyInfo form=JSONObject.toJavaObject(jsstr.getJSONObject("form"),CompanyInfo.class);
+        List<CompanyInfo> processTable=JSONObject.parseArray(jsstr.getString("processTable"),CompanyInfo.class);
+        List<CompanyInfo> certTable=JSONObject.parseArray(jsstr.getString("certTable"),CompanyInfo.class);
+        List<CompanyChemical> chemicalTable=JSONObject.parseArray(jsstr.getString("chemicalTable"),CompanyChemical.class);
+        if("".equals(form.getCompanyId()) ||form.getCompanyId()==null){
             String CompanyId= UUID.randomUUID().toString();
             form.setCompanyId(CompanyId);
             this.basicInfoEntryMapper.saveData(form);
@@ -47,6 +53,9 @@ public class BasicInfoEntryServiceImpl implements BasicInfoEntryService {
             }
             if(certTable.size()>0) {
                 this.basicInfoEntryMapper.saveCertData(certTable, CompanyId);
+            }
+            if(chemicalTable.size()>0) {
+                this.basicInfoEntryMapper.saveChemicalData(chemicalTable, CompanyId);
             }
             return CompanyId;
         }else{
@@ -63,6 +72,9 @@ public class BasicInfoEntryServiceImpl implements BasicInfoEntryService {
             }
             if(certTable.size()>0) {
                 this.basicInfoEntryMapper.saveCertData(certTable, companyId);
+            }
+            if(chemicalTable.size()>0) {
+                this.basicInfoEntryMapper.saveChemicalData(chemicalTable, companyId);
             }
             return "";
         }
@@ -111,4 +123,24 @@ public class BasicInfoEntryServiceImpl implements BasicInfoEntryService {
         return re;
     };
 
+    /**
+     * 获取化学品列表
+     * @param param 过滤条件
+     * @return
+     */
+    @Override
+    public Page<ChemicalCataLog> getChemicalInfoList(Page page, Map<String, String> param) {
+        page.setRecords(basicInfoEntryMapper.getChemicalInfoList(page,param.get("chemName"),param.get("cas")));
+        return page;
+    }
+
+    /**
+     * 通过ID获取公司化学品信息
+     * @param companyId
+     * @return
+     */
+    @Override
+    public List<CompanyChemical> getChemicalList(String companyId) {
+        return basicInfoEntryMapper.getChemicalList(companyId);
+    }
 }
