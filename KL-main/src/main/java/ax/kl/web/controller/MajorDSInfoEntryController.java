@@ -2,10 +2,7 @@ package ax.kl.web.controller;
 
 import ax.f4j.model.JsonResult;
 import ax.f4j.model.ResultUtil;
-import ax.kl.entity.CompanyInfo;
-import ax.kl.entity.DangerSourceInfo;
-import ax.kl.entity.FacilitiesCondition;
-import ax.kl.entity.LegalProtection;
+import ax.kl.entity.*;
 import ax.kl.service.MajorDSInfoEntryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -70,5 +67,12 @@ public class MajorDSInfoEntryController {
     public JsonResult saveData(@RequestParam("cmd") String cmd) {
         String SourceId=this.majorDSInfoEntryService.saveOrUpdateData(cmd);
         return ResultUtil.success(SourceId);
+    }
+
+    @RequestMapping("/getChemicalList")
+    @ApiOperation(value = "通过ID获取危险源化学品信息")
+    @ResponseBody
+    public List<CompanyChemical> getChemicalList(@RequestParam String sourceId) {
+        return majorDSInfoEntryService.getChemicalList(sourceId);
     }
 }

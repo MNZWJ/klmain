@@ -3,6 +3,7 @@ package ax.kl.web.controller;
 import ax.f4j.model.JsonResult;
 import ax.f4j.model.ResultUtil;
 import ax.kl.entity.CompanyInfo;
+import ax.kl.entity.EquipInfo;
 import ax.kl.entity.ProcessUnit;
 import ax.kl.service.BasicInfoEntryService;
 import ax.kl.service.ProcessUnitService;
@@ -42,8 +43,8 @@ public class ProcessUnitController {
     @ApiOperation(value = "保存工艺单元")
     @RequestMapping(value = "/saveData", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult saveData(@RequestBody ProcessUnit processUnit) {
-        String unitId=this.processUnitService.saveOrUpdateData(processUnit);
+    public JsonResult saveData(@RequestParam("cmd") String cmd) {
+        String unitId=this.processUnitService.saveOrUpdateData(cmd);
         //返回主键
         return ResultUtil.success(unitId);
     }

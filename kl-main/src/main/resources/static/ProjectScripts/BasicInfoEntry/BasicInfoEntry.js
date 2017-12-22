@@ -24,15 +24,14 @@ var eventFlag="";
 var chemName = "";
 //查询的cas
 var cas = "";
-//初始化列表1
+//获取浏览器高度
 var scanHeight = $(window).height();
+//初始化列表
 $(function () {
-    //获取浏览器高度
-
     initCert();//初始化相关证书表格
     initTable();//初始化危险工艺表格
-    initChemiacalAllTable();
-    initChemicalTable();
+    initChemiacalAllTable();//初始化化学品全部信息列表
+    initChemicalTable();//初始话所引用化学品信息列表
     init();
     //加载列表
     $('#enterpriseTable').bootstrapTable({
@@ -72,23 +71,28 @@ $(function () {
                 buttonLabel: '确定' // <-- Default value is 'OK',
             });
         },
-        columns: [{
+        columns: [
+            {
             title: '序号',
             field: 'number1',
             halign: 'center',
             align: 'center',
+            width:'3%',
             formatter: function (value, row, index) {
                 var page = $('#enterpriseTable').bootstrapTable('getOptions');
                 return (page.pageNumber - 1) * page.pageSize + index + 1;
             }
         }, {
             field: 'state',
-            checkbox: true
+            checkbox: true,
+            width:'3%',
+            align:'center',
         },
             {
                 field: 'companyName',
                 title: '企业名称',
                 halign: 'center',
+                width:'14%',
                 cellStyle: function (value, row, index, field) {
                     return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
                 },
@@ -96,34 +100,40 @@ $(function () {
                     users.push(rowData);
                     return "<a href='javascript:look(\""+rowData.companyId+"\")'>" + value + "</a>";
                 }
-            },{
+            },/*{
                 field: 'legalPerson',
                 title: '法人代表',
                 halign: 'center',
-                align:'center'
+                align:'center',
+                width:'5%',
             }, {
                 field: 'contactWay',
                 title: '联系方式',
                 halign: 'center',
-                align:'center'
-            },  {
+                align:'center',
+                width:'8%',
+            }, */ {
                 field: 'safeManageRank',
                 title: '安全管理分级',
                 halign: 'center',
-                align:'right'
+                align:'right',
+                width:'7%',
             },   {
                 field: 'standardRank',
                 title: '标准化等级',
                 halign: 'center',
-                align:'right'
+                align:'right',
+                width:'7%',
             },   {
                 field: 'operatingState',
                 title: '经营状态',
-                halign: 'center'
+                halign: 'center',
+                width:'5%',
             },   {
                 field: 'industryCode',
                 title: '所属行业',
                 halign: 'center',
+                width:'15%',
                 cellStyle: function (value, row, index, field) {
                     return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
                 },
@@ -131,24 +141,47 @@ $(function () {
                     if(value!=undefined){
                         return '<span title="'+value+'">'+value+'</span>'
                     }else{
-                        return "-";
+                        return "";
                     }
-
                 }
             },   {
                 field: 'scaleCode',
                 title: '企业规模',
                 halign: 'center',
-                align:'center'
+                align:'center',
+                width:'5%',
+                cellStyle: function (value, row, index, field) {
+                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                },
+                formatter: function (value, row, index) {
+                    if(value!=undefined){
+                        return '<span title="'+value+'">'+value+'</span>'
+                    }else{
+                        return "";
+                    }
+                }
             },   {
                 field: 'typeCode',
                 title: '企业类型',
                 halign: 'center',
-                align:'center'
-            }, {
+                align:'center',
+                width:'10%',
+                cellStyle: function (value, row, index, field) {
+                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                },
+                formatter: function (value, row, index) {
+                    if(value!=undefined){
+                        return '<span title="'+value+'">'+value+'</span>'
+                    }else{
+                        return "";
+                    }
+                }
+
+            }, /*{
                 field: 'area',
                 title: '行政区域',
                 halign: 'center',
+                width:'9%',
                 cellStyle: function (value, row, index, field) {
                     return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
                 },
@@ -156,11 +189,12 @@ $(function () {
                     return '<span title="'+value+'">'+value+'</span>'
 
                 }
-            },
+            },*/
             {
                 field: 'directArea',
                 title: '直属区域',
-                halign: 'center'
+                halign: 'center',
+                width:'5%',
             }
         ]
     });
@@ -179,6 +213,18 @@ function  init() {
     //模态窗关闭事件
     $('#myModal').on('hidden.bs.modal', function () {
         $('#myTab a[href="#companyInfo"]').tab('show');
+        //清空表单
+        $(':input', '#companyForm')
+            .not(':button, :submit, :reset')
+            .val('')
+            .removeAttr('checked')
+            .removeAttr('selected');
+        $("#companyForm").data('bootstrapValidator').destroy();
+        $('#companyForm').data('bootstrapValidator', null);
+        formValidator();
+        if($('#uniqueCode').attr("readonly")!=undefined){
+            $('#uniqueCode').removeAttr("readonly");
+        }
     });
 }
 //获取企业集合
@@ -382,7 +428,6 @@ function look(companyId) {
     $("#table").bootstrapTable('refresh');
     $("#certTable").bootstrapTable('refresh');
     $("#chemicalTable").bootstrapTable('refresh');
-
     //input赋值
     $.ajax({
         type: 'post',
@@ -421,7 +466,6 @@ function look(companyId) {
             });
         }
     });
-
     $("#myModelLabel").text("查看");
     $('#myModal').modal('show');
     $('#collapseOne').collapse('show');
@@ -463,23 +507,23 @@ function companyAdd() {
     $("#certDel").show();
     $("#select").show();
     $("#delChemical").show();
-
     if(state){
         $("#companyForm").find('input').removeAttr('readonly');
         $("#companyForm").find('select').removeAttr("disabled", "disabled");
+        $('#uniqueCode').removeAttr("readonly");
         state = false;
     }
     //清空表格
     $("#table").bootstrapTable('load', []);
     $("#certTable").bootstrapTable('load', []);
     $("#chemicalTable").bootstrapTable('load', []);
-
     $("#myModelLabel").text("新增");
     $('#myModal').modal('show');
     $('#collapseOne').collapse('show');
     $('#collapseTwo').collapse('hide');
     $('#collapseThree').collapse('hide');
     $('#collapseFour').collapse('hide');
+    $("#companyForm").data('bootstrapValidator').addField("uniqueCode");//添加编码验证
 }
 //修改
 function companyEdit() {
@@ -510,13 +554,11 @@ function companyEdit() {
     $("#certDel").show();
     $("#select").show();
     $("#delChemical").show();
-
     company=row[0].companyId;
     //刷新表格
     $("#table").bootstrapTable("refresh");
     $("#certTable").bootstrapTable("refresh");
     $("#chemicalTable").bootstrapTable("refresh");
-
     $.ajax({
         type: 'post',
         url: '/BasicInfoEntry/getCompanyInfo',
@@ -623,8 +665,9 @@ function initTable(x) {
                 halign: 'center',
                 align:'center',
                 editable:{
+                    emptytext: '请选择',
                     type: 'select',
-                    title: '请选择',
+                    title: '危险工艺名称',
                     source: function () {
                         var result = [];
                         $.ajax({
@@ -646,7 +689,8 @@ function initTable(x) {
                 halign: 'center',
                 editable:{
                     type: 'text',
-                    title: '请输入',
+                    title: '重点监控单元',
+                    emptytext: '请输入',
                 }
             }
         ]
@@ -738,7 +782,8 @@ function initCert(x) {
                 align:'center',
                 editable:{
                     type: 'select',
-                    title: '请选择',
+                    title: '证书类型',
+                    emptytext: '请选择',
                     source: function () {
                         var result = [];
                         $.ajax({
@@ -760,7 +805,8 @@ function initCert(x) {
                 halign: 'center',
                 editable:{
                     type: 'text',
-                    title: '请输入',
+                    title: '证书编号',
+                    emptytext: '请输入',
                 }
             },{
                 field: 'startDate',
@@ -768,7 +814,8 @@ function initCert(x) {
                 halign: 'center',
                 editable:{
                     type: 'date',
-                    title: '请选择',
+                    title: '开始日期',
+                    emptytext: '请选择',
                 }
             },{
                 field: 'validity',
@@ -776,7 +823,8 @@ function initCert(x) {
                 halign: 'center',
                 editable:{
                     type: 'date',
-                    title: '请选择',
+                    title: '有效期',
+                    emptytext: '请选择',
                 }
             }
         ]
@@ -808,7 +856,6 @@ function initCert(x) {
         }
     });
 }
-
 //删除
 function companyDel() {
     var rows = $("#enterpriseTable").bootstrapTable("getSelections");//获取所有选中的行
@@ -818,11 +865,9 @@ function companyDel() {
             message: '请选择一条要删除的数据！',
             size: BootstrapDialog.SIZE_SMALL,
             type: BootstrapDialog.TYPE_WARNING, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-
             closable: false, // <-- Default value is false
             draggable: true, // <-- Default value is false
             buttonLabel: '确定', // <-- Default value is 'OK',
-
         });
         return false;
     }
@@ -932,8 +977,6 @@ function formValidator() {
         }
     });
 }
-
-
 //初始化模态窗中全部化学品数据
 function initChemiacalAllTable() {
     $('#chemicalAllTable').bootstrapTable({
@@ -968,7 +1011,6 @@ function initChemiacalAllTable() {
             if(chemicalRows.length>0) {
                 for(var  i=0;i<chemicalRows.length;i++) {
                     $('#chemicalAllTable').bootstrapTable('hideRow', {uniqueId:chemicalRows[i].chemId});
-                    //$("#chemicalTable").bootstrapTable('removeByUniqueId', row[i].chemId);
                 }
             }
         },
@@ -1044,10 +1086,8 @@ function initChemiacalAllTable() {
             return false;
         }
         $('#chemicalMadel').modal('hide');
-
     });
 }
-
 //加载模态窗中选中的化学品数据
 function initChemicalTable() {
     $('#chemicalTable').bootstrapTable({
@@ -1122,7 +1162,8 @@ function initChemicalTable() {
                 halign: 'center',
                 editable:{
                     type: 'text',
-                    title: '请输入',
+                    title: '设计储量',
+                    emptytext: '请输入',
                 }
             },{
                 field: 'unit',
@@ -1130,7 +1171,8 @@ function initChemicalTable() {
                 halign: 'center',
                 editable:{
                     type: 'text',
-                    title: '请输入',
+                    title: '单位',
+                    emptytext: '请输入',
                 }
             }]
     })
@@ -1173,7 +1215,6 @@ function cleanchem() {
     chemName = $("#chemName").val("");
     cas = $("#cas").val("");
 }
-
 //保存
 $('#btn_save').click(function () {
     //获取表单对象

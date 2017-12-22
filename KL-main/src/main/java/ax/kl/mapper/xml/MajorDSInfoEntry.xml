@@ -106,4 +106,29 @@
         </foreach>
     </insert>
 
+
+    <!--通过ID获取危险源化学品信息-->
+    <select id="getChemicalList" resultType="ax.kl.entity.CompanyChemical">
+        SELECT	aa.ChemId,ChemName,CAS,Unit,Dreserves  FROM  	TB_REL_DRESOURCE_CHEMICAL  aa
+        LEFT JOIN TB_BASE_CHEMICAL_CATALOG   bb  ON  aa.ChemId=bb.ChemId
+        WHERE   SourceId=#{sourceId}
+    </select>
+
+    <!--保存危险源化学品-->
+    <insert id="saveChemicalData">
+        DELETE  FROM  TB_REL_DRESOURCE_CHEMICAL  WHERE   SourceId=#{sourceId}
+
+        INSERT INTO TB_REL_DRESOURCE_CHEMICAL (
+        RelId,ChemId,SourceId, Dreserves,Unit
+        )        VALUES
+        <foreach collection="chemicalTable" item="item" separator="," index="index">
+            (
+            NEWID() ,#{ item.chemId },#{ sourceId },#{ item.dreserves },#{ item.unit }
+            )
+        </foreach>
+
+
+    </insert>
+
+
 </mapper>
