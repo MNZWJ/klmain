@@ -37,4 +37,17 @@ public class EquipInfo {
     @ApiModelProperty("设备类型")
     private String equipType;
 
+    @TableField("NormalPict")
+    @ApiModelProperty("正常状态图片")
+    private String normalPict;
+
+    @TableField("AlarmPict")
+    @ApiModelProperty("报警状态图片")
+    private String alarmPict;
+
+    @TableField("alarmNum")
+    @ApiModelProperty("设备报警数量")
+    private String alarmNum;
+
+
 }

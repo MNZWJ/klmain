@@ -582,6 +582,7 @@ function loadScaleCode(){
                     },
                     shadowBlur: 40,
                     shadowColor: 'rgba(40, 40, 40,0.5)',
+
                 }
             };
 
@@ -610,28 +611,18 @@ function loadScaleCode(){
                     //radius: ['65%', '85%'],
                     avoidLabelOverlap: true,
                     itemStyle: dataStyle,
-                    // label: {
-                    //     normal: {
-                    //         show: false,
-                    //         position: 'center'
-                    //     },
-                    //     emphasis: {
-                    //         show: true,
-                    //         formatter: function(param) {
-                    //             return param.percent.toFixed(0) + '%';
-                    //         },
-                    //         textStyle: {
-                    //             fontSize: '30',
-                    //             fontWeight: 'bold',
-                    //             color:'#fff'
-                    //         }
-                    //     }
-                    // },
-                    // labelLine: {
-                    //     normal: {
-                    //         show: true
-                    //     }
-                    // },
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'outside'
+                        }
+
+                    },
+                    labelLine: {
+                        normal: {
+                            show: true
+                        }
+                    },
                     data: data
                 }]
             }
@@ -723,6 +714,14 @@ function loadCompanyType(){
                     position:'inside',
                     shadowBlur: 40,
                     shadowColor: 'rgba(40, 40, 40,0.5)',
+                    formatter: function(params){
+                        var name=params.name;
+                        if(name.length>4){
+                            return name.substring(0,4)+"\n"+name.substring(5);
+                        }
+                        return name;
+                    }
+
                 }
             };
 
@@ -751,28 +750,25 @@ function loadCompanyType(){
                     //radius: ['65%', '85%'],
                     avoidLabelOverlap: true,
                     itemStyle: dataStyle,
-                    // label: {
-                    //     normal: {
-                    //         show: false,
-                    //         position: 'center'
-                    //     },
-                    //     emphasis: {
-                    //         show: true,
-                    //         formatter: function(param) {
-                    //             return param.percent.toFixed(0) + '%';
-                    //         },
-                    //         textStyle: {
-                    //             fontSize: '30',
-                    //             fontWeight: 'bold',
-                    //             color:'#fff'
-                    //         }
-                    //     }
-                    // },
-                    // labelLine: {
-                    //     normal: {
-                    //         show: true
-                    //     }
-                    // },
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'outside',
+                            formatter: function(params){
+                                var name=params.name;
+                                if(name.length>4){
+                                    return name.substring(0,4)+"\n"+name.substring(5);
+                                }
+                                return name;
+                            },
+                        },
+
+                    },
+                    labelLine: {
+                        normal: {
+                            show: true
+                        }
+                    },
                     data: data
                 }]
             };

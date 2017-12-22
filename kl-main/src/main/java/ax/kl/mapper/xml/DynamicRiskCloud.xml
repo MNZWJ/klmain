@@ -61,13 +61,16 @@ GROUP BY pu.UnitName,pu.UnitId
     </select>
 
     <!--获取设备报警信息-->
-    <select id="getEquipAlarmInfo">
+    <select id="getEquipAlarmInfo" resultType="ax.kl.entity.EquipInfo">
 
-        SELECT ei.* FROM TB_BASE_PROCESS_UNIT pu
-        JOIN TB_BASE_EQUIP_INFO ei ON ei.UnitId=pu.UnitId
-        LEFT JOIN TB_REALTIME_ALARM_DATA ad ON (ad.EquipCode=ei.UniqueCode AND ad.Status='1')
-        WHERE pu.SourceId=#{sourceId}
+        SELECT ei.EquipName,ei.EquipId,ei.UnitId,et.NormalPict,et.AlarmPict,SUM(CASE WHEN ad.RealId IS NOT NULL THEN 1 else 0 end)AS alarmNum FROM TB_BASE_PROCESS_UNIT pu
+JOIN TB_BASE_EQUIP_INFO ei ON ei.UnitId=pu.UnitId
+JOIN TB_BASE_EQUIP_TYPE et ON (ei.EquipType LIKE et.TypeCode+'%' AND LEN(et.LeveCode)=6 )
+LEFT JOIN TB_REALTIME_ALARM_DATA ad ON (ad.EquipCode=ei.UniqueCode AND ad.Status='1')
 
+WHERE pu.SourceId=#{sourceId}
+GROUP BY ei.EquipName,ei.EquipId,ei.UnitId,et.NormalPict,et.AlarmPict
+ORDER BY alarmNum DESC
     </select>
 
 
