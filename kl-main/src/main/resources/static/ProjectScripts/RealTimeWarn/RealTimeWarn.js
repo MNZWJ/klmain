@@ -232,7 +232,7 @@ function initTable() {
                 }
             }, {
 
-                title: '不符合项',
+                title: '安全距离不符合项',
                 valign: "middle",
                 align: "center",
 

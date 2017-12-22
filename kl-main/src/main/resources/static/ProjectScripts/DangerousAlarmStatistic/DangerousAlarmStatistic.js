@@ -1,6 +1,9 @@
 var scanHeight=0;
 
 $(function () {
+    setInterval(function(){
+        $("#showTime").html(convert(new Date()));
+    },1000);
     //获取浏览器高度
     scanHeight = $(window).height();
 
@@ -20,6 +23,8 @@ $(function () {
     //本月行政区域报警情况统计
     loadAreaAlarmEchart();
 
+    //月度报警次数统计
+    loadMonthAlarmCount();
 });
 
 
@@ -561,6 +566,111 @@ function loadTodayEquipTypeCountEchart(){
     });
 }
 
+//月度报警次数统计
+function loadMonthAlarmCount(){
+    $('#monthAlarmCount').bootstrapTable({
+        height: '100%',
+        // striped: true,      //是否显示行间隔色
+        cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+        method: 'get',//请求方式
+        url: '/DangerousAlarmStatistic/getMonthAllAlarmCount',//请求url
+        pagination:false,
+        clickToSelect: true,//是否启用点击选中行
+        showRefresh: false,//是否显示 刷新按钮
+        queryParams: function (pageReqeust) {
+            return pageReqeust;
+        },
+        rowStyle: function () {//自定义行样式
+            return "bootTableRow";
+        },
+        onLoadError: function () {
+
+
+            BootstrapDialog.alert({
+                title: '错误',
+                size: BootstrapDialog.SIZE_SMALL,
+                message: '表格加载失败！',
+                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+                closable: false, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                buttonLabel: '确定', // <-- Default value is 'OK',
+
+            });
+        },
+
+        columns: [
+            {
+
+                // title: '序号',
+                formatter: function (value, row, index) {
+
+
+                    return "<div style='background-color: #44d3e4;border-radius: 8px;height: 14px;text-align: center;line-height: 14px;'>"+(index + 1)+"</div>";
+                },
+                cellStyle: function (value, row, index, field) {
+                    return {classes: '', css: {'white-space': 'nowrap', "word-wrap":"break-word;",'text-overflow': 'ellipsis','overflow': 'hidden','color':'#fff','background-color':'#0a2732','vertical-align':'middle'}};
+                },
+                width: '5%',
+            }
+            ,
+
+            {
+
+                field: 'MonthDay',
+                title: '月份',
+                halign: 'left',
+                align:'center',
+                width: '55%',
+                cellStyle: function (value, row, index, field) {
+                    return {classes: '', css: {'white-space': 'nowrap', "word-wrap":"break-word;",'text-overflow': 'ellipsis','overflow': 'hidden','color':'#37afbf','background-color':'#0a2732'}};
+                },
+                formatter: function (value, row, index) {
+                    return '<span  title="'+value+'">'+value+'</span>'
+
+                }
+            }, {
+                field: 'alarmCount',
+                title: '报警次数',
+                halign: 'left',
+                align:'center',
+                width: '40%',
+                cellStyle: function (value, row, index, field) {
+                    return {classes: '', css: {'white-space': 'nowrap', "word-wrap":"break-word;",'text-overflow': 'ellipsis','overflow': 'hidden','color':'#37afbf','background-color':'#0a2732'}};
+                },
+                formatter: function (value, row, index) {
+                    return '<span >'+value+'次</span>'
+
+                }
+            },{
+                field: 'alarmUp',
+                title: '环比增长',
+                halign: 'left',
+                align:'center',
+                width: '40%',
+                cellStyle: function (value, row, index, field) {
+                    return {classes: '', css: {'white-space': 'nowrap', "word-wrap":"break-word;",'text-overflow': 'ellipsis','overflow': 'hidden','color':'#37afbf','background-color':'#0a2732'}};
+                },
+                formatter: function (value, row, index) {
+                    var str="";
+                    if(value!=undefined&&value!= null&&value!=""){
+                        value=parseFloat(value);
+                        if(value>0){
+                            str+="<span style='color: #f00;'><span class='glyphicon glyphicon-triangle-top'></span> "+(value*100).toFixed(2)+"%</span>";
+                        }else if(value<0){
+                            str+="<span style='color: #0f0;'><span class='glyphicon glyphicon-triangle-bottom'></span> "+(Math.abs(value).toFixed(2)*100).toFixed(2)+"%</span>";
+                        }else{
+                            str+="<span style='color: #0080c0;'><span class='glyphicon glyphicon-minus'></span> 0%</span>";
+                        }
+                    }else{
+                        str="-";
+                    }
+                    return '<span >'+str+'</span>'
+
+                }
+            }]
+    });
+}
+
 
 //今日企业报警次数表格
 function initLoadCompanyAlarmTable(){
@@ -754,4 +864,15 @@ function resizePage(){
         areaAlarmEchart.resize();
     }
 
+}
+//转换日期格式
+function convert(date) {
+    var today = new Date(date);
+    var month = today.getMonth() + 1 > 9 ? (today.getMonth() + 1) : "0" + (today.getMonth() + 1);
+    var day = today.getDate() > 9 ? today.getDate() : "0" + today.getDate();
+    var hours = today.getHours() > 9 ? today.getHours() : "0" + today.getHours();
+    var minutes = today.getMinutes() > 9 ? today.getMinutes() : "0" + today.getMinutes();
+    var seconds = today.getSeconds() > 9 ? today.getSeconds() : "0" + today.getSeconds();
+
+    return today.getFullYear() + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
 }

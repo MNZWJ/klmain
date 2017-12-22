@@ -262,6 +262,15 @@ FROM
 ORDER BY dataTable.data desc
 	</select>
 
+	<!--获取月度报警次数统计-->
+	<select id="getMonthAllAlarmCount" resultType="java.util.Map">
+		SELECT  MonthDay,CAST(SUM(AlarmNum) AS VARCHAR )AS alarmCount  FROM TB_STATIS_INDUSTRY_MONTH_ALARM ma
+WHERE MonthDay>CAST (datename(year,DATEADD(month, -6, getdate())) AS VARCHAR) + '-' + CAST (
+					datename(month,DATEADD(month, -6, getdate())) AS VARCHAR
+				)
+GROUP BY MonthDay
+ORDER BY MonthDay DESC
+	</select>
 
 
 

@@ -1,6 +1,7 @@
 package ax.kl.web.controller;
 
 import ax.kl.entity.DangerSourceInfo;
+import ax.kl.entity.EquipInfo;
 import ax.kl.service.DynamicRiskCloudService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -46,6 +47,15 @@ public class DynamicRiskCloudController {
     @ResponseBody
     public List<Map<String,String>> getProcessUnitData(@RequestParam("sourceId")String sourceId){
         return dynamicRiskCloudService.getProcessUnitData(sourceId);
+    }
+
+
+
+    @ApiOperation("获取设备报警信息")
+    @RequestMapping(value = "/getEquipAlarmInfo",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,List<EquipInfo>> getEquipAlarmInfo(@RequestParam("sourceId") String sourceId){
+        return dynamicRiskCloudService.getEquipAlarmInfo(sourceId);
     }
 
 }

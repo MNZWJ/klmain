@@ -101,21 +101,33 @@
     <img src="../../Images/Common/左上线.png" style="width: 60%;height: 60%;position: absolute;top: 3.8%;z-index:-1;">
     <img src="../../Images/Common/右下线1.png"
          style="width: 50%;height: 50%;position: absolute;bottom: 0;right: 0;z-index:-1;">
-
+    <div style="height: 7%;position: absolute;top: 5%;left: 78%;">
+        <div style="margin:0 auto;">
+            <div style="width: 25px;height: 25px;vertical-align:bottom;background-image: url('../../Images/Common/时钟.png');background-size: 100% 100%;display: inline-block;"></div>
+            <span id="showTime" style="color: #fff;font-size: 16px;font-family: 微软雅黑">0000-00-00 00:00:00</span>
+        </div>
+    </div>
 
     <div style="width: 25%;height: 100%;position: relative;float: left;padding-top: 6%">
 
 
         <div style="overflow-y: visible;height: 30%;width: 100%;">
 
-
-            <div id="titleDivColor"
+            <div id="titleDivC1"
                  style="margin-left:15%;height: 30px;line-height: 30px;color: #fff; width: 88%;background-color: #0a4164">
-                <span style="font-size: 24px;margin-left: 10px;">今日报警数据</span>
+                <span style="font-size: 24px;margin-left: 10px;">今日企业报警次数</span>
             </div>
-            <div style="margin-left:15%;width: 88%;height: 88%;">
-                <div id="directAreaCompanyInfo" style="width: 100%;height: 100%;"></div>
+            <div style="margin-left:15%;width: 88%;height: 78%;overflow-y: auto">
+                <table id="todayCompanyAlarm"  style="table-layout: fixed;">
+                    <colgroup>
+                        <col width="12%">
+                        <col width="54%">
+                        <col width="34%">
+
+                    </colgroup>
+                </table>
             </div>
+
 
         </div>
 
@@ -165,7 +177,9 @@
                 <span style="font-size: 24px;margin-left: 10px;">月度报警类型统计</span>
             </div>
             <div style="margin-left:8%;width: 84%;height: 88%;">
-                <div id="alarmTypeMonthEchart" style="width: 100%;height: 100%;"></div>
+                <div id="alarmTypeMonthEchart" style="width: 100%;height: 100%;">
+
+                </div>
             </div>
         </div>
 
@@ -179,17 +193,17 @@
         <div style="overflow-y: visible;height: 30%;width: 100%;">
 
 
-            <div id="titleDivC1"
-                 style="margin-left:0;height: 30px;line-height: 30px;color: #fff; width: 88%;background-color: #0a4164">
-                <span style="font-size: 24px;margin-left: 10px;">今日企业报警次数</span>
+            <div id="titleDivColor"
+                 style="height: 30px;line-height: 30px;color: #fff; width: 88%;background-color: #0a4164">
+                <span style="font-size: 24px;margin-left: 10px;">月度报警次数统计</span>
             </div>
-            <div style="margin-left:0;width: 88%;height: 78%;overflow-y: auto">
-                <table id="todayCompanyAlarm"  style="table-layout: fixed;">
+            <div style="width: 88%;height: 88%;">
+                <table id="monthAlarmCount"  style="table-layout: fixed;">
                     <colgroup>
-                        <col width="12%">
-                        <col width="54%">
-                        <col width="34%">
-
+                        <col width="6%">
+                        <col width="20%">
+                        <col width="20%">
+                        <col width="30%">
                     </colgroup>
                 </table>
             </div>

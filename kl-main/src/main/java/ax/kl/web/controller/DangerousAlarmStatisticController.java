@@ -101,4 +101,11 @@ public class DangerousAlarmStatisticController {
     }
 
 
+    @ApiOperation("获取月度报警次数统计")
+    @RequestMapping(value = "/getMonthAllAlarmCount",method = RequestMethod.GET)
+    @ResponseBody
+    public List<Map<String,String>> getMonthAllAlarmCount(){
+        return dangerousAlarmStatisticService.getMonthAllAlarmCount();
+    }
+
 }
