@@ -155,7 +155,6 @@ public class HBaseOperateData {
             if (filterList != null) {
                 scan.setFilter(filterList);
             }
-
             // ----------------添加过滤查询
             // 缓存1000条数据
             scan.setCaching(10000);
@@ -167,7 +166,7 @@ public class HBaseOperateData {
             for (Result result : scanner) {
                 String row = toStr(result.getRow());
                 if (i >= firstPage && i < endPage) {
-                    System.out.println(row);
+                    //System.out.println(row);
                     rowList.add(getBytes(row));
                 }
                 i++;

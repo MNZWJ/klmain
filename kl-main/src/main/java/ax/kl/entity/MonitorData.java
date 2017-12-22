@@ -14,6 +14,10 @@ import lombok.Data;
  */
 @Data
 public class MonitorData {
+
+    @ApiModelProperty("序号")
+    private String dataNum;
+
     @ApiModelProperty("主键")
     private String dataId;
 
@@ -35,8 +39,8 @@ public class MonitorData {
     @ApiModelProperty("实时值")
     private String realValue;
 
-    @ApiModelProperty("单位")
-    private String unit;
+    @ApiModelProperty("指标单位")
+    private String targetUnit;
 
     @ApiModelProperty("采集时间")
     private String collectDate;
