@@ -1,5 +1,6 @@
 package ax.kl.mapper;
 
+import ax.kl.entity.CompanyChemical;
 import ax.kl.entity.DangerSourceInfo;
 import ax.kl.entity.FacilitiesCondition;
 import ax.kl.entity.LegalProtection;
@@ -76,6 +77,22 @@ public interface MajorDSInfoEntryMapper {
      * @return
      */
     void saveLegalData(@Param("certTable") List<LegalProtection> certTable,@Param("sourceId")String sourceId);
+
+    /**
+     * 通过ID获取危险源化学品信息
+     * @param sourceId
+     * @return
+     */
+    List<CompanyChemical> getChemicalList(@Param("sourceId") String sourceId);
+
+    /**
+     * 保存危险源化学品
+     * @param chemicalTable
+     * @param sourceId
+     */
+    void saveChemicalData(@Param("chemicalTable")List<CompanyChemical> chemicalTable, @Param("sourceId")String sourceId);
+
+
 
 
 }

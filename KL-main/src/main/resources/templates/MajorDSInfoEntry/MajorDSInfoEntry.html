@@ -32,21 +32,13 @@
             height: 120px;
             max-height: 120px;
         }
-        .form {
-            padding-top: 10px;
-        }
         .form-group {
             margin-bottom: 15px;
         }
-        .nav {
-            margin-bottom: 10px;
-        }
-
         .container-fluid {
             margin-left: 5px;
             margin-right: 5px;
         }
-
         .col-md-4 {
             width: 37%;
             height: auto;
@@ -58,6 +50,21 @@
         .col-md-8 {
             padding-left: 0px;
             width: 59%;
+        }
+        .toolbar {
+            padding-bottom: 15px;
+        }
+        .modal {
+            overflow-y: auto;
+        }
+        .panel-default>.panel-heading {
+            background-color: #92C6F9;
+        }
+        a {
+            font-weight: bold;
+        }
+        span {
+            font-weight: normal;
         }
     </style>
 </head>
@@ -120,8 +127,9 @@
                             <div class="panel panel-default">
                                 <div class="panel-heading" role="tab" id="headingOne">
                                     <h4 class="panel-title">
-                                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                            重大危险源基本信息
+                                        <a role="button" data-toggle="collapse" data-parent="#accordion" style="font-weight: bold;"
+                                           href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                            危险源基本信息
                                         </a>
                                     </h4>
                                 </div>
@@ -131,80 +139,81 @@
                                             <div class="tab-pane fade in active" id="companyInfo">
                                                 <form id="companyForm" class="form-inline pull-right form-horizontal" role="form">
                                                     <div class="form-group col-md-6">
-                                                        <label for="sourceName" class="col-md-4">危险源名称</label>
+                                                        <input type="hidden" id="sourceId" name="sourceId"><!--隐藏主键-->
+                                                        <label for="sourceName" class="col-md-4"><span>危险源名称</span></label>
                                                         <input type="text" name="sourceName" class="form-control input-sm col-md-8"
                                                                id="sourceName">
                                                     </div>
                                                     <div class="form-group col-md-6">
-                                                        <label for="companyId" class="col-md-4">所属企业</label>
+                                                        <label for="companyId" class="col-md-4"><span>所属企业</span></label>
                                                         <select placeholder="请选择" class="selectpicker col-md-8" style="width: 115px;"
                                                                 data-style="btn-default" id="companyId" name="companyId" >                                                >
                                                         </select>
                                                     </div>
 
                                                     <div class="form-group col-md-6">
-                                                        <label for="uniqueCode" class="col-md-4">唯一编码</label>
+                                                        <label for="uniqueCode" class="col-md-4"><span>唯一编码</span></label>
                                                         <input type="text" name="uniqueCode" class="form-control input-sm col-md-8"
                                                                id="uniqueCode" >
                                                     </div>
                                                     <div class="form-group col-md-6">
-                                                        <label for="accidentType" class="col-md-4">事故类型</label>
+                                                        <label for="accidentType" class="col-md-4"><span>事故类型</span></label>
                                                         <select placeholder="请选择" class="selectpicker col-md-8" style="padding-left:0px;width: 63%;"multiple
                                                                 data-style="btn-default" id="accidentType" name="accidentType" >                                                >
                                                         </select>
                                                     </div>
                                                     <div class="form-group col-md-6">
-                                                        <label for="rValue" class="col-md-4">R值</label>
+                                                        <label for="rValue" class="col-md-4"><span>R值</span></label>
                                                         <input type="text" name="rValue" class="form-control input-sm col-md-8"
                                                                id="rValue" >
                                                     </div>
 
                                                     <div class="form-group col-md-6">
-                                                        <label for="rank" class="col-md-4">危险源等级</label>
+                                                        <label for="rank" class="col-md-4"><span>危险源等级</span></label>
                                                         <select placeholder="请选择" class="selectpicker col-md-8" style="width: 115px;"
                                                                 data-style="btn-default" id="rank" name="rank" >                                                >
                                                         </select>
                                                     </div>
                                                     <div class="form-group col-md-6">
-                                                        <label for="recordNo" class="col-md-4">备案编号</label>
+                                                        <label for="recordNo" class="col-md-4"><span>备案编号</span></label>
                                                         <input type="text" name="recordNo" class="form-control input-sm col-md-8"
                                                                id="recordNo">
                                                     </div>
 
                                                     <div class="form-group col-md-6">
-                                                        <label for="validity" class="col-md-4">有效期</label>
+                                                        <label for="validity" class="col-md-4"><span>有效期</span></label>
                                                         <input type="date" name="validity" class="form-control input-sm col-md-8"
                                                                id="validity">
                                                     </div>
                                                     <div class="form-group col-md-6">
-                                                        <label for="longt" class="col-md-4">经度</label>
+                                                        <label for="longt" class="col-md-4"><span>经度</span></label>
                                                         <input type="text" name="longt" class="form-control input-sm col-md-8"
                                                                id="longt">
                                                     </div>
                                                     <div class="form-group col-md-6">
-                                                        <label for="recordDate" class="col-md-4">登记日期</label>
+                                                        <label for="recordDate" class="col-md-4"><span>登记日期</span></label>
                                                         <input type="date" name="recordDate" class="form-control input-sm col-md-8"
                                                                id="recordDate">
                                                     </div>
                                                     <div class="form-group col-md-6">
-                                                        <label for="lat" class="col-md-4">纬度</label>
+                                                        <label for="lat" class="col-md-4"><span>纬度</span></label>
                                                         <input type="text" name="lat" class="form-control input-sm col-md-8"
                                                                id="lat">
                                                     </div>
                                                     <div class="form-group col-md-6">
-                                                        <label for="status" class="col-md-4">状态</label>
+                                                        <label for="status" class="col-md-4"><span>状态</span></label>
                                                         <select placeholder="请选择" class="selectpicker col-md-8" style="width: 115px;"
                                                                 data-style="btn-default" id="status" name="status" >                                                >
                                                         </select>
                                                     </div>
                                                     <div class="form-group col-md-6">
-                                                        <label for="deathToll" class="col-md-4">可能引发事故死亡人数</label>
+                                                        <label for="deathToll" class="col-md-4"><span>可能引发事故死亡人数</span></label>
                                                         <input type="text" name="deathToll" class="form-control input-sm col-md-8"
                                                                id="deathToll"   >
                                                     </div>
 
                                                     <div class="form-group col-md-6">
-                                                        <label for="outPersonCount" class="col-md-4">厂区边界外500米范围人数估值</label>
+                                                        <label for="outPersonCount" class="col-md-4"><span>厂区边界外500米范围人数估值</span></label>
                                                         <input type="text" name="outPersonCount" class="form-control input-sm col-md-8"
                                                                id="outPersonCount"   >
                                                     </div>
@@ -264,6 +273,31 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading" role="tab" id="headingFour">
+                                    <h4 class="panel-title">
+                                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseThree">
+                                            危险源相关化学品
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                                    <div class="panel-body">
+                                        <div class="col-md-12">
+                                            <div>
+                                                <button class="btn btn-success btn-sm" type="button" id="select">
+                                                    <span class="glyphicon glyphicon-plus"></span> 引用
+                                                </button>
+                                                <button class="btn btn-danger" type="button" id="delChemical">
+                                                    <span class="glyphicon glyphicon-minus"></span> 删除
+                                                </button>
+                                            </div>
+                                            <table id="chemicalTable" class="table  table-striped table-bordered table-hover">
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -276,6 +310,45 @@
     </div>
 </div>
 
+<!--化学品模态窗-->
+<div class="modal fade bs-example-modal-lg" tabindex="-2" role="dialog" id="chemicalMadel"
+     data-backdrop='static'      data-target=".bs-example-modal-lg">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">化学品信息</h4>
+            </div>
+            <div class="modal-body">
+
+                <div id="toolbar" class="toolbar" role="toolbar">
+                    <form class="form-inline" role="form">
+                        <label class="xs-only" for="chemName">化学品名称：</label>
+                        <input type="text" class="form-control" id="chemName"
+                               placeholder="请输入化学品名称">
+
+                        <label class="xs-only" for="cas">CAS：</label>
+                        <input type="text" class="form-control" id="cas"
+                               placeholder="请输入CAS">
+
+                        <button class="btn btn-default" type="button" onclick="searchchem()">
+                            <span class="glyphicon glyphicon-search" type="button"></span> 查询
+                        </button>
+                        <button class="btn btn-default" type="button" onclick="cleanchem()">
+                            <span class="glyphicon glyphicon-calendar"></span> 清空
+                        </button>
+                    </form>
+                </div>
+                <table id="chemicalAllTable" class="table  table-striped table-bordered table-hover">
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="saveChemical">保存</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <script src="../../ProjectScripts/Common/common.js"></script>
 <script src="../../ProjectScripts/MajorDSInfoEntry/MajorDSInfoEntry.js"></script>
 </body>
