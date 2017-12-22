@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="../../Scripts/bootstrape-select/css/bootstrap-select.min.css">
     <script src="../../Scripts/bootstrap-table/bootstrap-table.min.js"></script>
     <script src="../../Scripts/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+    <script src="../../Scripts/bootstrape-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="../../Scripts/bootstrape-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
 
     <script src="../../ProjectScripts/MonitorHistoryData/index.js"></script>
     <script src="../../Scripts/bootstrape-select/js/bootstrap-select.min.js"></script>
@@ -21,6 +23,13 @@
             height: 120px;
             max-height: 120px;
 
+        }
+        /**查询框右边距*/
+        .form-group{
+            margin-right: 20px;
+        }
+        .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
+            width: 180px;
         }
     </style>
 
@@ -36,14 +45,62 @@
             <div id="dictToolbar" class="toolbar" role="toolbar">
                 <form class="form-inline" role="form">
                     <div class="form-group">
-                        <label class="xs-only" for="dictSearchName">名称：</label>
-                        <input type="text" class="form-control" id="dictSearchName"
-                               placeholder="请输入名称">
+                        <label class="xs-only" for="searchCompanyName">企业名称：</label>
+                        <select placeholder="请选择" class="selectpicker" style="width: 115px;" data-style="btn-default"
+                                id="searchCompanyName" data-live-search="true"  onchange="onchangeCompany()">                                                >
+                        </select>
                     </div>
-                    <button class="btn btn-default" type="button" onclick="searchMenus()">
+                    <div class="form-group">
+                        <label class="xs-only" for="qResourceName">重大危险源名称：</label>
+                        <select placeholder="请选择" class="selectpicker" style="width: 115px;" data-style="btn-default"
+                                id="qResourceName" data-live-search="true" onchange="onchangeResource()">                                                >
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="xs-only" for="qUnitName">工艺单元：</label>
+                        <select placeholder="请选择" class="selectpicker" style="width: 115px;" data-style="btn-default"
+                                id="qUnitName" data-live-search="true"  onchange="onchangeUnit()">                                                >
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="xs-only" for="qEquipName">设备名称：</label>
+                        <select placeholder="请选择" class="selectpicker" style="width: 115px;" data-style="btn-default"
+                                id="qEquipName" data-live-search="true" >                                                >
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="xs-only" for="qTargetName">指标类型：</label>
+                        <select placeholder="请选择" class="selectpicker" style="width: 115px;" data-style="btn-default"
+                                id="qTargetName" data-live-search="true" >                                                >
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label style="padding-left: 43px;">采集时间：</label>
+                        <!--指定 date标记-->
+                        <div class='input-group date' id='startdateDiv'>
+                            <input id="startdate" type='text' class="form-control" style="width:140px"
+                                   placeholder="开始日期"/>
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>&nbsp;&nbsp;至&nbsp;&nbsp;</label>
+                        <div class='input-group date' id='enddateDiv'>
+                            <input id="enddate" type='text' class="form-control" style="width:140px;margin-left: 2px"
+                                   placeholder="结束时间"/>
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                    <button class="btn btn-default" type="button" onclick="searchData()">
                         <span class="glyphicon glyphicon-search" type="button"></span> 查询
                     </button>
-
+                    <button class="btn btn-danger" type="button" onclick="clearParam()">
+                        <span class="glyphicon glyphicon-minus"></span> 清空
+                    </button>
                 </form>
 
             </div>

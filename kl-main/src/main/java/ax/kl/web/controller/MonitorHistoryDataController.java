@@ -46,12 +46,54 @@ public class MonitorHistoryDataController {
     @ApiOperation(value = "获取监测数据列表")
     @RequestMapping(value = "/getDataList", method = RequestMethod.GET)
     @ResponseBody
-    public Map<String,Object> getDataList(@RequestParam Map<String,String> paraMap) {
+    public Map<String,Object> getDataList(@RequestParam Map<String,String> paraMap,@RequestParam String companyCode,
+                                          @RequestParam String resourceCode,@RequestParam String unitCode,@RequestParam String equipCode,
+                                          @RequestParam String targetCode,@RequestParam String startdate,@RequestParam String enddate) {
         int pageSize=Integer.parseInt(paraMap.get("pageSize"));
         int pageNumber=Integer.parseInt(paraMap.get("pageNumber"));
-        Map<String,Object> map = this.MHistoryDataService.loadMonitorDataList(pageNumber,pageSize);
+        Map<String,Object> map = this.MHistoryDataService.loadMonitorDataList(pageNumber,pageSize,companyCode,resourceCode,unitCode,
+                equipCode,targetCode,startdate,enddate);
         return map ;
     }
 
+    @ApiOperation(value = "获取企业下拉框")
+    @RequestMapping(value = "/getCompanyDict", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Map<String,String>> getCompanyDict() {
+        Map<String,Map<String,String>> map = this.MHistoryDataService.getCompanyDict();
+        return map ;
+    }
+
+    @ApiOperation(value = "获取重大危险源下拉框")
+    @RequestMapping(value = "/getDresourceDict", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Map<String,String>> getDresourceDict(@RequestParam(required = false) String companyCode) {
+        Map<String,Map<String,String>> map = this.MHistoryDataService.getDresourceDict(companyCode);
+        return map ;
+    }
+
+    @ApiOperation(value = "获取工艺单元下拉框")
+    @RequestMapping(value = "/getUnitDict", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Map<String,String>> getUnitDict(@RequestParam(required = false) String dresourceCode) {
+        Map<String,Map<String,String>> map = this.MHistoryDataService.getUnitDict(dresourceCode);
+        return map ;
+    }
+
+    @ApiOperation(value = "获取设备下拉框")
+    @RequestMapping(value = "/getEquipDict", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Map<String,String>> getEquipDict(@RequestParam(required = false) String unitCode) {
+        Map<String,Map<String,String>> map = this.MHistoryDataService.getEquipDict(unitCode);
+        return map ;
+    }
+
+    @ApiOperation(value = "获取指标下拉框")
+    @RequestMapping(value = "/getTargetDict", method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String,Map<String,String>> getTargetDict() {
+        Map<String,Map<String,String>> map = this.MHistoryDataService.getTargetDict();
+        return map ;
+    }
 
 }
