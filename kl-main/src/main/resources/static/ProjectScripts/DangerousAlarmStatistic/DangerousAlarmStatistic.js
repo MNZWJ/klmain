@@ -770,13 +770,8 @@ function loadTodayAlarmTypeEchart(){
             var dataStyle = {
                 normal: {
                     label: {
-                        show: true
-                    },
-                    labelLine: {
-                        show: true
-                    },
-                    shadowBlur: 40,
-                    shadowColor: 'rgba(40, 40, 40,0.5)',
+                        show: false
+                    }
                 }
             };
 
@@ -784,7 +779,17 @@ function loadTodayAlarmTypeEchart(){
 
                 color: ['#2377ad', '#97b356', '#23a290', '#547b98', '#e7971e', '#b5382d'],
 
-
+                legend:{
+                    type:'scroll',
+                    left:10,
+                    orient:'vertical',
+                    data:legendData,
+                    textStyle:{
+                        color:'#fff'
+                    },
+                    itemWidth:20,
+                    pageIconSize:10
+                },
 
                 tooltip: {
                     trigger: 'item',
@@ -793,7 +798,7 @@ function loadTodayAlarmTypeEchart(){
                 series: [{
                     name: '今日报警类型占比',
                     type: 'pie',
-                    center: ['50%','45%'],
+                    center: ['60%','50%'],
                     avoidLabelOverlap: false,
                     itemStyle: dataStyle,
                     data: data
