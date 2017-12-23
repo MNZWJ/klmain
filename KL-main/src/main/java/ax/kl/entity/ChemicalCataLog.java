@@ -57,4 +57,7 @@ public class ChemicalCataLog {
     @ApiModelProperty("易制爆")
     private String detonating;
 
+    @TableField(value = "CompanyId",exist = false)
+    @ApiModelProperty("所属企业")
+    private String companyId;
 }

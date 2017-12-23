@@ -58,23 +58,13 @@ function initTable(){
                 }],[]
 
             ];
-            columns[1].push({title: "合计",field:'totalNum',halign: 'center',align: 'center',colspan: 1,rowspan: 1,width:'140px'});
+            columns[1].push({title: "合计",field:'totalNum',sortable : true,halign: 'center',align: 'center',colspan: 1,rowspan: 1,width:'140px'});
             $.each(result,function(i,n){
-                columns[1].push({title: n.TypeName,field:n.TypeCode,halign: 'center',align: 'center',colspan: 1,rowspan: 1,width:'140px'});
+                columns[1].push({title: n.TypeName,field:n.TypeCode,sortable : true,halign: 'center',align: 'center',colspan: 1,rowspan: 1,width:'140px'});
             });
 
         }
     });
-
-
-
-
-
-
-
-
-
-
 
     $("#table").bootstrapTable("destroy");
     $('#table').bootstrapTable({
@@ -96,17 +86,11 @@ function initTable(){
         // queryParamsType: '', //默认值为 'limit' ,在默认情况下 传给服务端的参数为：offset,limit,sort
         // // 设置为 ''  在这种情况下传给服务器的参数为：pageSize,pageNumber
         sortStable: true,//设置为 true 将获得稳定的排序，我们会添加_position属性到 row 数据中。
-
-
+        sortOrder: 'desc',
         rowStyle: function () {//自定义行样式
             return "bootTableRow";
         },
-
-
-
         onLoadError: function () {
-
-
             BootstrapDialog.alert({
                 title: '错误',
                 message: '表格加载失败！',
@@ -131,10 +115,12 @@ function initTable(){
         success:function(result){
            $.each(result,function(i,n){
                var alarmData=n.num.split(',');
+               //var totalNum = 0;
                $.each(alarmData,function (i,m) {
                    n[alarmType[i].TypeCode]=m;
+                   //totalNum+=parseInt(m);
                })
-
+               n.totalNum = n.totalNum;
            });
 
             $("#table").bootstrapTable("load", result);

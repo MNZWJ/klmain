@@ -1,8 +1,10 @@
 package ax.kl.service;
 
 import ax.kl.entity.*;
+import com.baomidou.mybatisplus.plugins.Page;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 重大危险源信息录入
@@ -49,4 +51,13 @@ public interface MajorDSInfoEntryService {
      * @return
      */
     List<CompanyChemical> getChemicalList(String sourceId);
+
+    /**
+     * 获取化学品列表
+     * @param page
+     * @param param
+     * @return
+     */
+    Page<ChemicalCataLog> getChemicalInfoByCompany(Page page, Map<String, String> param);
+
 }

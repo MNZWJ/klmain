@@ -4,11 +4,13 @@ import ax.kl.entity.*;
 import ax.kl.mapper.MajorDSInfoEntryMapper;
 import ax.kl.service.MajorDSInfoEntryService;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.plugins.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -127,4 +129,17 @@ public class MajorDSInfoEntryServiceImpl implements MajorDSInfoEntryService {
     public List<CompanyChemical> getChemicalList(String sourceId) {
         return majorDSInfoEntryMapper.getChemicalList(sourceId);
     }
+
+
+    /**
+     * 获取化学品列表
+     * @param param 过滤条件
+     * @return
+     */
+    @Override
+    public Page<ChemicalCataLog> getChemicalInfoByCompany(Page page, Map<String, String> param) {
+        page.setRecords(majorDSInfoEntryMapper.getChemicalInfoByCompany(page,param.get("chemName"),param.get("cas"),param.get("companyId")));
+        return page;
+    }
+
 }
