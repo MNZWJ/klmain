@@ -85,7 +85,7 @@ WHERE  da.IDCode='ZT'
 
 	<!--获取月度报警类型-->
 	<select id="getAlarmTypeList" resultType="java.util.Map" >
-		SELECT at.TypeName FROM TB_BASE_ALARM_TYPE at
+		SELECT at.TypeName FROM TB_BASE_ALARM_TYPE at WHERE at.IDCode='ZT'
 			UNION ALL
 		SELECT mt.TargetName FROM TB_BASE_MONITOR_TARGET mt where len(mt.LevelCode)=6
 	</select>
@@ -113,7 +113,7 @@ TOP 5
 						AND ma.IDCode = 'ZT' AND ma.IndustryId=sda.DictId
 						AND ma.MonthDay=cast(year(getdate()) as Varchar)+'-'+cast( datename(month,getdate()) as Varchar)
 					)
-
+					WHERE at.IdCode='ZT'
 					UNION ALL
 						SELECT
 							CAST (
