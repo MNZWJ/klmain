@@ -10,6 +10,7 @@
 END
 ) as TypeNum,at.TypeName FROM TB_REALTIME_ALARM_DATA ad
 RIGHT JOIN TB_BASE_ALARM_TYPE at ON (at.TypeCode = ad.AlarmCode AND ad.TargetCode='0')
+WHERE at.IDCode='ZT'
 GROUP BY at.TypeName
 union
 SELECT sum(CASE
