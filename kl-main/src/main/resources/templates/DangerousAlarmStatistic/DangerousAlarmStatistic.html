@@ -9,6 +9,7 @@
     <script src="../../Scripts/Echarts/echarts-3.8.4/echarts.min.js"></script>
     <script src="../../ProjectScripts/DangerousAlarmStatistic/DangerousAlarmStatistic.js"></script>
     <script src="../../ProjectScripts/Common/common.js"></script>
+    <script src="../../ProjectScripts/Common/convertor_offline.js"></script>
 
 
 
@@ -137,7 +138,7 @@
                  style="margin-left:15%;height: 30px;line-height: 30px;color: #fff; width: 88%;background-color: #0a4164">
                 <span style="font-size: 24px;margin-left: 10px;">今日报警类型占比</span>
             </div>
-            <div style="margin-left:15%;width: 88%;height: 81%;">
+            <div style="margin-left:15%;width: 88%;height: 75%;">
                 <div id="todayAlarmType" style="width: 100%;height: 100%;"></div>
             </div>
         </div>
@@ -146,8 +147,8 @@
                  style="margin-left:15%;height: 30px;line-height: 30px;color: #fff; width: 88%;background-color: #0a4164">
                 <span style="font-size: 24px;margin-left: 10px;">今日设备类型报警统计</span>
             </div>
-            <div style="margin-left:15%;width: 88%;height: 88%;">
-                <div id="todayEquipTypeCountEchart" style="width: 100%;height: 100%;"></div>
+            <div style="margin-left:15%;width: 88%;height: 100%;">
+                <div id="todayEquipTypeCountEchart" style="width: 100%;height: 100%; margin-bottom: 0%"></div>
             </div>
         </div>
 
@@ -176,7 +177,7 @@
                  style="margin-left:8%;height: 30px;line-height: 30px;color: #fff; width: 84%;background-color: #0a4164">
                 <span style="font-size: 24px;margin-left: 10px;">月度报警类型统计</span>
             </div>
-            <div style="margin-left:8%;width: 84%;height: 88%;">
+            <div style="margin-left:8%;width: 84%;height: 100%;">
                 <div id="alarmTypeMonthEchart" style="width: 100%;height: 100%;">
 
                 </div>
@@ -211,12 +212,12 @@
         </div>
 
 
-        <div style="height: 60%;width: 100%;">
+        <div style="height: 57%;width: 100%;margin-top: 15px;">
             <div id="titleDivCol1"
-                 style="margin-left:0;height: 30px;line-height: 30px;color: #fff; width: 88%;background-color: #0a4164">
+                 style="margin-left:0;height: 30px;line-height: 30px;color: #fff; width: 90%;background-color: #0a4164">
                 <span style="font-size: 24px;margin-left: 10px;">本月行政区域报警情况统计</span>
             </div>
-            <div style="margin-left:0;width: 88%;height: 88%;">
+            <div style="margin-left:0;width: 88%;height: 100%;">
                 <div id="areaAlarmEchart" style="width: 100%;height: 100%;"></div>
             </div>
         </div>

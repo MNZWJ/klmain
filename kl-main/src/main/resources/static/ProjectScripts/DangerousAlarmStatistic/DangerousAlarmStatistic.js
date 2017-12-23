@@ -87,6 +87,7 @@ function loadAreaAlarmEchart(){
                 },
                 color:['#67b1b0','#277ace'],
                 legend: {
+                    top:'5%',
                     data: ['本月报警次数', '上月报警次数'],
                     textStyle:{
                         color:'#fff'
@@ -122,7 +123,12 @@ function loadAreaAlarmEchart(){
                     axisLabel: {
                         textStyle: {
                             color: '#fff',
-                            // fontSize: 20
+                            fontSize: 10
+                        },
+                        interval:0,
+                        formatter:function (params) {
+                            params =xAxisNameType(params);
+                            return params;
                         }
                     },
                     axisLine:{
@@ -138,7 +144,7 @@ function loadAreaAlarmEchart(){
                     },
                     {
                         show: "true",
-                        start: 40,
+                        start: 20,
                         end: 100,
 
                         textStyle: {
@@ -511,7 +517,7 @@ function loadTodayEquipTypeCountEchart(){
                                 axisLabel: {
                                     textStyle: {
                                         color: '#fff',
-                                        // fontSize: 20
+                                        fontSize: 10
                                     }
                                 },
                                 axisLine:{
@@ -538,10 +544,6 @@ function loadTodayEquipTypeCountEchart(){
                             }
                         ],
                         dataZoom: [
-                            {
-                                type:'inside',
-
-                            },
                             {
                                 show: "true",
                                 start: 0,
@@ -788,43 +790,12 @@ function loadTodayAlarmTypeEchart(){
                     trigger: 'item',
                     formatter: "{b}: {c} ({d}%)"
                 },
-                // legend: {
-                //     orient: 'vertical',
-                //     x: '2%',
-                //     top: '20%',
-                //     data: legendData,
-                //     textStyle:{
-                //         color:'#fff'
-                //     }
-                // },
                 series: [{
                     name: '今日报警类型占比',
                     type: 'pie',
-                    //radius: ['65%', '85%'],
+                    center: ['50%','45%'],
                     avoidLabelOverlap: false,
                     itemStyle: dataStyle,
-                    // label: {
-                    //     normal: {
-                    //         show: false,
-                    //         position: 'center'
-                    //     },
-                    //     emphasis: {
-                    //         show: true,
-                    //         formatter: function(param) {
-                    //             return param.percent.toFixed(0) + '%';
-                    //         },
-                    //         textStyle: {
-                    //             fontSize: '30',
-                    //             fontWeight: 'bold',
-                    //             color:'#fff'
-                    //         }
-                    //     }
-                    // },
-                    // labelLine: {
-                    //     normal: {
-                    //         show: true
-                    //     }
-                    // },
                     data: data
                 }]
             };
