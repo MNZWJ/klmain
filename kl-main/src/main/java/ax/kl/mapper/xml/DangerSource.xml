@@ -71,6 +71,7 @@
 
     <!--各区域重大危险源分布数量-->
     <select id="getDSDistribution" resultType="java.util.Map">
+        SELECT * FROM (
         SELECT sd2.DictId AS typeId,sd2.DictName AS typeName,sd2.dictOrder,'等级' AS stack,
         STUFF((SELECT ',' + CAST (COUNT (di.SourceId) AS VARCHAR)
         FROM TB_SYS_DATADICT sd
@@ -80,7 +81,8 @@
         GROUP BY sd.DictId,sd.DictName,sd.DictOrder
         ORDER BY sd.DictOrder FOR xml path ('')),1,1,'') AS numList
         FROM TB_SYS_DATADICT sd2
-        WHERE sd2.TypeId = '8ea8562f-e58b-461c-9485-a967bc5e29ca'
+        WHERE sd2.TypeId = '8ea8562f-e58b-461c-9485-a967bc5e29ca') AS t
+        ORDER BY dictOrder
 --         UNION
 --         SELECT sd2.DictId AS typeId,sd2.DictName AS typeName,sd2.dictOrder,'类型' AS stack,
 --         STUFF((SELECT ','+ CAST(COUNT(rda.RelationId) AS VARCHAR)
