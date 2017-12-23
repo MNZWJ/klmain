@@ -22,6 +22,13 @@ public interface ProcessUnitMapper {
     int  insertUnit(ProcessUnit processUnit);
 
     /**
+     * 验证工艺单元唯一编码是否存在
+     * @param uniqueCodeU
+     * @return
+     */
+    int validateUniqueCode(@Param("uniqueCodeU")String uniqueCodeU);
+
+    /**
      * 更新工艺单元信息
      */
     int updateUnit(ProcessUnit processUnit);

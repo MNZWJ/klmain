@@ -36,8 +36,8 @@ public class EquipInfoController {
     @RequestMapping(value = "/getEquipInfoList",method = RequestMethod.GET)
     @ResponseBody
     public List<EquipInfo> getEquipInfoList(@RequestParam("unitId") String unitId){
-
-        return equipInfoService.getEquipInfoList(unitId);
+        List<EquipInfo> list=equipInfoService.getEquipInfoList(unitId);
+        return list;
     }
 
     @ApiOperation("新增设备信息")
@@ -57,12 +57,11 @@ public class EquipInfoController {
     @ApiOperation("设备唯一编码校验")
     @RequestMapping(value = "/validateEquipCode",method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject validateEquipCode(@RequestParam Map<String,String> param){
-        String equipCode = param.get("EquipCode");
-        Map<String,String> map =new HashMap<>(1);
-        boolean result = equipInfoService.validateEquipCode(equipCode);
+    public JSONObject validateEquipCode(@RequestParam("UniqueCode") String uniqueCode){
+
+        boolean result = equipInfoService.validateEquipCode(uniqueCode);
         JSONObject obj=new JSONObject();
-        obj.put("valid",result);
+        obj.put("end",result);
         return obj;
     }
 

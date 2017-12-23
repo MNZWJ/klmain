@@ -3,7 +3,6 @@ package ax.kl.service.impl;
 import ax.kl.entity.EquipInfo;
 import ax.kl.mapper.EquipInfoMapper;
 import ax.kl.service.EquipInfoService;
-import com.baomidou.mybatisplus.plugins.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
