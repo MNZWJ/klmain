@@ -43,7 +43,7 @@ public class FacilitiesCondition {
 
     @TableField("StandardDistance")
     @ApiModelProperty("标准要求")
-    private Double standardDistance;
+    private double standardDistance;
 
 
     @TableField("Conformance")
