@@ -98,7 +98,7 @@ public class MajorDSInfoEntryServiceImpl implements MajorDSInfoEntryService {
             }
             return SourceId;
         }else{
-            String sourceId = processTable.get(0).getSourceId();
+            String sourceId = form.getSourceId();
             String AccidentType=form.getAccidentType();
             form.setSourceId(sourceId);
             if(AccidentType!=null) {
