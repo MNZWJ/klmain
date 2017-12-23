@@ -835,6 +835,10 @@ function resizePage(){
         areaAlarmEchart.resize();
     }
 
+    if(alarmTypeMonthEchart!=null){
+        alarmTypeMonthEchart.resize();
+    }
+
 }
 //转换日期格式
 function convert(date) {
