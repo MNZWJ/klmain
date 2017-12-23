@@ -101,12 +101,15 @@ public class ProcessUnitServiceImpl implements ProcessUnitService {
         this.processUnitMapper.delProcessUnit(idLists);
         for(String id:idLists){
             List<EquipInfo> equipInfos=this.equipInfoMapper.getEquipInfoList(id);
-            StringBuilder ids=new StringBuilder();
-            for(EquipInfo e:equipInfos){
-                ids.append(e.getEquipId()).append(",");
+            if(equipInfos.size()!=0){
+                StringBuilder ids=new StringBuilder();
+                for(EquipInfo e:equipInfos){
+                    ids.append(e.getEquipId()).append(",");
+                }
+                String[] equipIds=ids.substring(0,ids.length()-1).split(",");
+                this.equipInfoMapper.deleteEquipInfo(equipIds);
             }
-            String[] equipIds=ids.substring(0,ids.length()-1).split(",");
-            this.equipInfoMapper.deleteEquipInfo(equipIds);
+
         }
 
     }
