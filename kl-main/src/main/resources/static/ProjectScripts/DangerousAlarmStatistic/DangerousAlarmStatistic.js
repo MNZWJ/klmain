@@ -144,7 +144,7 @@ function loadAreaAlarmEchart(){
                     },
                     {
                         show: "true",
-                        start: 20,
+                        start: 40,
                         end: 100,
 
                         textStyle: {
@@ -239,7 +239,7 @@ function loadIndustryAlarmEchart(){
                         legend.push({dim: i+1, name: n.TypeName});
 
                     });
-                    legend.push({dim: alarmList.length+1, name: '总量'})
+                    legend.push({dim: alarmList.length+1, name: '合计'})
                     var lineStyle = {
                         normal: {
                             width: 1,
@@ -607,7 +607,7 @@ function loadMonthAlarmCount(){
                 formatter: function (value, row, index) {
 
 
-                    return "<div style='background-color: #44d3e4;border-radius: 8px;height: 14px;text-align: center;line-height: 14px;'>"+(index + 1)+"</div>";
+                    return "<div style='background-color: #44d3e4;border-radius: 8px;height: 14px;width:14px;text-align: center;line-height: 14px;'>"+(index + 1)+"</div>";
                 },
                 cellStyle: function (value, row, index, field) {
                     return {classes: '', css: {'white-space': 'nowrap', "word-wrap":"break-word;",'text-overflow': 'ellipsis','overflow': 'hidden','color':'#fff','background-color':'#0a2732','vertical-align':'middle'}};
@@ -714,7 +714,7 @@ function initLoadCompanyAlarmTable(){
                 formatter: function (value, row, index) {
 
 
-                    return "<div style='background-color: #44d3e4;border-radius: 8px;height: 14px;text-align: center;line-height: 14px;'>"+(index + 1)+"</div>";
+                    return "<div style='background-color: #44d3e4;border-radius: 8px;height: 14px;width: 14px;text-align: center;line-height: 14px;'>"+(index + 1)+"</div>";
                 },
                 cellStyle: function (value, row, index, field) {
                     return {classes: '', css: {'white-space': 'nowrap', "word-wrap":"break-word;",'text-overflow': 'ellipsis','overflow': 'hidden','color':'#fff','background-color':'#0a2732','vertical-align':'middle'}};
@@ -770,13 +770,8 @@ function loadTodayAlarmTypeEchart(){
             var dataStyle = {
                 normal: {
                     label: {
-                        show: true
-                    },
-                    labelLine: {
-                        show: true
-                    },
-                    shadowBlur: 40,
-                    shadowColor: 'rgba(40, 40, 40,0.5)',
+                        show: false
+                    }
                 }
             };
 
@@ -784,7 +779,17 @@ function loadTodayAlarmTypeEchart(){
 
                 color: ['#2377ad', '#97b356', '#23a290', '#547b98', '#e7971e', '#b5382d'],
 
-
+                legend:{
+                    type:'scroll',
+                    left:10,
+                    orient:'vertical',
+                    data:legendData,
+                    textStyle:{
+                        color:'#fff'
+                    },
+                    itemWidth:20,
+                    pageIconSize:10
+                },
 
                 tooltip: {
                     trigger: 'item',
@@ -793,7 +798,9 @@ function loadTodayAlarmTypeEchart(){
                 series: [{
                     name: '今日报警类型占比',
                     type: 'pie',
-                    center: ['50%','45%'],
+                    center: ['50%','60%'],
+                    avoidLabelOverlap: true,
+                    center: ['60%','50%'],
                     avoidLabelOverlap: false,
                     itemStyle: dataStyle,
                     data: data
@@ -833,6 +840,10 @@ function resizePage(){
     }
     if(areaAlarmEchart!=null){
         areaAlarmEchart.resize();
+    }
+
+    if(alarmTypeMonthEchart!=null){
+        alarmTypeMonthEchart.resize();
     }
 
 }
