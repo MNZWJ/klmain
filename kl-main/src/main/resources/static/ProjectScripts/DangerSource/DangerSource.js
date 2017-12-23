@@ -576,7 +576,7 @@ function loadIndustryCompany(){
                                 axisLabel: {
                                     textStyle: {
                                         color: '#fff',
-                                        fontSize: 20
+                                        fontSize: 15
                                     }
                                 }
                             }
@@ -585,7 +585,7 @@ function loadIndustryCompany(){
                             {
                                 show: "true",
                                 start: 0,
-                                end: 50,
+                                end: 60,
 
                                 textStyle: {
                                     color: '#fff'
@@ -663,7 +663,7 @@ function loadDSDistribution(){
                                 axisLabel: {
                                     textStyle: {
                                         color: '#fff',
-                                        fontSize: 20
+                                        fontSize: 18
                                     }
                                 }
                             }
@@ -674,7 +674,7 @@ function loadDSDistribution(){
                                 axisLabel: {
                                     textStyle: {
                                         color: '#fff',
-                                        fontSize: 20
+                                        fontSize: 15
                                     }
                                 }
                             }
