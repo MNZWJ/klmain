@@ -260,10 +260,10 @@ function formValidator() {
                     stringLength: {
                         min: 0,
                         max: 10,
-                        message: '指标名称过长'
+                        message: '计量单位过长'
                     },
                     regexp: {
-                        regexp: /[^\]@=/'\"$%&^*{}<>\\\\[:\;]+/,
+                        regexp: /[^\]@=/'\"$&^*{}<>\\\\[:\;]+/,
                         message: '输入值中含有非法字符'
                     }
                 }

@@ -88,8 +88,8 @@
         INSERT INTO TB_BASE_DR_FACILITIES_CONDITION  (TargetId,SourceId,Facilities,Environment
         ,RealDistance,StandardDistance,Conformance) VALUES
         <foreach collection="processTable" item="item" index="index" separator=",">
-            ( NEWID() ,#{sourceId },#{ item.facilities }  ,#{ item.environment } ,#{ item.realDistance }
-            ,#{ item.standardDistance } ,#{ item.conformance } )
+            ( NEWID() ,#{sourceId },#{ item.facilities }  ,#{ item.environment } ,${ item.realDistance }
+            ,#{ item.standardDistance } ,${ item.conformance } )
         </foreach>
     </insert>
 
@@ -126,9 +126,28 @@
             NEWID() ,#{ item.chemId },#{ sourceId },#{ item.dreserves },#{ item.unit }
             )
         </foreach>
-
-
     </insert>
 
-
+    <!--化学品信息备查-->
+    <select id="getChemicalInfoByCompany" resultType="ax.kl.entity.ChemicalCataLog">
+        SELECT
+        aa.ChemId,
+        bb.CAS,
+        bb.ChemName,
+        bb.DangerType,
+        bb.AlisaName
+        FROM
+        TB_REL_COMPANY_CHEMICAL aa
+        LEFT JOIN TB_BASE_CHEMICAL_CATALOG bb ON aa.ChemId = bb.ChemId
+        WHERE           CompanyId=#{companyId}
+        <if test="chemName !=null and chemName!=''">
+            AND chemName LIKE '%'+ #{chemName} + '%'
+        </if>
+        <if test="cas !=null and cas!=''">
+            AND cas LIKE '%'+ #{cas} + '%'
+        </if>
+        <if test="cas !=null and cas!=''">
+            AND cas LIKE '%'+ #{cas} + '%'
+        </if>
+    </select>
 </mapper>

@@ -25,6 +25,9 @@ var unitId="";
 //存放删除的设备的ID
 var equipIds="";
 
+//存放设备的ID
+var equipId="";
+
 //屏幕高度
 var scanHeight="";
 //开启页面直接加载
@@ -67,29 +70,66 @@ $(function () {
 function saveData(){
     //绑定保存按钮提交事件
     $("#btn_save").on("click", function () {
+
         //获取表单对象
         var bootstrapValidator = $("#unitForm").data('bootstrapValidator');
-        //获取折叠面板equipInfoTable表格中的值
-        var equipInfoTable = $('#equipInfoTable').bootstrapTable('getData');
         //手动触发验证
         bootstrapValidator.validate();
-
         if (bootstrapValidator.isValid()) {
             //表单提交的方法、比如ajax提交
             var unit = new Object();
-            //获取表单中输入的值和对应的表单控件名放入sysOrg对象
+            //获取表单中输入的值和对应的表单控件名放入unit对象
             var unitList = $('#unitForm').serializeArray();
+            //检验表单
+            var end = checkForm(unitList);
+            var c=false;
             $.each(unitList, function () {
-                unit[this.name] = this.value
+
+                if(this.name=="unitId"){
+                    unit[this.name] = unitId;
+                }
+                if(this.name=='SourceId'){
+                    c=true;
+                }
+                unit[this.name] = this.value;
             });
+            if (!end) {
+                return false;
+            }
+            if(!c){
+                BootstrapDialog.alert({
+                    title: '错误',
+                    message: '请选择重大危险源！！！',
+                    size: BootstrapDialog.SIZE_SMALL,
+                    type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+
+                    closable: false, // <-- Default value is false
+                    draggable: true, // <-- Default value is false
+                    buttonLabel: '确定', // <-- Default value is 'OK',
+
+                });
+                return false;
+            }
+
+
+            //获取折叠面板equipInfoTable表格中的值
+            var equipInfoTable = $('#equipInfoTable').bootstrapTable('getData');
+            var e = checkEquipTable(equipInfoTable);
+            if (!e) {
+                return false;
+            }
             //,"deleteIds":equipIds.substring(0,equipIds.length-1)
-            var cmd={"unit":unit,"equipInfoTable":equipInfoTable,"deleteIds":equipIds.substring(0,equipIds.length-1)};
+            var cmd = {
+                "unit": unit,
+                "equipInfoTable": equipInfoTable,
+                "deleteIds": equipIds.substring(0, equipIds.length - 1)
+            };
 
             $.ajax({
                 type: 'post',
                 url: '/ProcessUnit/saveData',
                 //将sysOrg对象的JSON类型参数传到后台
-                data: {cmd:JSON.stringify(cmd)},
+                data: {cmd: JSON.stringify(cmd)},
                 success: function (result) {
                     //根据返回的result进行判断
                     if (result.code == 0) {
@@ -169,16 +209,16 @@ function getDangerSource() {
 
 //获取所有设备类型
 function getEquipType() {
-    var str="3973bc69-2c93-4505-b03e-bf58fdf3d963";
     $.ajax({
-        url: '/SysDictionary/getDataDictList?typeId='+str,
+        url: '/EquipType/getEquipTypeTreeList',
         async: false,
         type: "get",
         dataType: 'json',
         contentType : 'application/json;charset=utf-8',
         success: function (n) {
-            $.each(n, function (i) {
-                equipList.push({ value:n[i].dictId, text: n[i].dictName });
+            var arr=n[0].nodes;
+            $.each(arr, function (i) {
+                equipList.push({ value:arr[i].id, text: arr[i].text });
             });
         }
     });
@@ -275,6 +315,11 @@ function initTable(){
                 return sourceName;
             }
         },{
+            field: 'uniqueCodeU',
+            title: '唯一编码',
+            halign: 'center',
+            align:'center'
+        },{
                 field: 'fEI',
                 title: '火灾爆炸指数F&EI',
                 halign: 'center',
@@ -322,9 +367,12 @@ function initEquip() {
         },
         onLoadSuccess:function(){
             //当查看时控制可编辑表格不可编辑
-            if(eventFlag=="look"){
+            if(eventFlag=="look") {
                 $("#equipInfoTable").find(".editable").editable('disable');
+            }else if(eventFlag=="edit"){
+                $("#equipInfoTable").find("#uniqueCode.editable").editable('disable');
             }
+
         },
         columns: [
             {
@@ -348,6 +396,11 @@ function initEquip() {
                 editable:{
                     type: 'text',
                     title: '请输入',
+                    validate: function (value) { //字段验证
+                        if (!$.trim(value)) {
+                            return '不能为空';
+                        }
+                    }
                 }
             },{
                 field: 'equipType',
@@ -359,8 +412,13 @@ function initEquip() {
                     title: '请选择',
                     source: function () {
                         return equipList;
+                    },
+                    validate: function (value) { //字段验证
+                        if (!$.trim(value)) {
+                            return '不能为空';
+                        }
                     }
-                },
+                }
             },{
                 field: 'uniqueCode',
                 title: '唯一编码',
@@ -368,7 +426,29 @@ function initEquip() {
                 editable:{
                     type: 'text',
                     title: '请选择',
+                    validate: function (value) { //字段验证
+
+                        if (!$.trim(value)||$.trim(value)==null) {
+                            return '不能为空';
+                        }
+                        var info="";
+                        $.ajax({
+                            type: 'post',
+                            url: '/EquipInfo/validateEquipCode?UniqueCode='+value,
+                            async: false,
+                            contentType : 'application/json;charset=utf-8',
+                            success: function (result) {
+                                if(!result.end){
+                                    info="此唯一编码已存在";
+                                }
+                            }
+                        });
+                        if(info!=""&&info!=null){
+                            return info;
+                        }
+                    }
                 }
+
             }
         ]
     });
@@ -427,56 +507,56 @@ function formValidator() {
                 //隐藏或显示 该字段的验证
                 enabled: true,
                 //错误提示信息
-                message: '输入有误',
+                message: '<br>输入有误',
 
                 // 定义每个验证规则
                 validators: {
                     notEmpty: {
-                        message: '请输入工艺单元名称'
+                        message: '<br>请输入工艺单元名称'
                     },
                     stringLength: {
                         min: 0,
                         max: 50,
-                        message: '工艺单元名称过长，名称长度不得大于50'
+                        message: '<br>工艺单元名称过长，名称长度不得大于50'
                     },
                     regexp: {
                         regexp: /[^\]@=/'\"$%&^*{}<>\\\\[:\;]+/,
-                        message: '工艺单元名称中含有非法字符'
+                        message: '<br>工艺单元名称中含有非法字符'
                     }
                 }
             },
-            //设置企业验证
-            uniqueCode: {
+            //唯一编码验证
+            UniqueCodeU: {
                 //隐藏或显示 该字段的验证
                 enabled: true,
                 threshold: 0,
                 //有3字符以上才发送ajax请求，（input中输入一个字符，插件会向服务器发送一次，设置限制，6字符以上才开始）
                 //错误提示信息
-                message: '输入有误',
+                message: '<br>输入有误',
                 validators: {
                     notEmpty: {
-                        message: '唯一编码不能为空'
+                        message: '<br>唯一编码不能为空'
                     }, stringLength: {
                         min: 0,
                         max: 30,
-                        message: '唯一编码过长'
+                        message: '<br>唯一编码过长'
                     },
                     regexp: {
                         regexp: /[^\]@=/'\"$%&^*{}<>\\\\[:\;]+/,
-                        message: '输入值中含有非法字符'
+                        message: '<br>输入值中含有非法字符'
                     },
                     remote:{
-                        url:'/EquipInfo/validateEquipCode',
-                        message: '唯一编码已存在',
+                        url:'/ProcessUnit/validateUniqueCode',
+                        message: '<br>唯一编码已存在',
                         type: 'POST'
                     }
                 }
             },
-            //唯一编码验证
+            //设置企业验证
             CompanyName: {
                 validators: {
                     notEmpty: {
-                        message: '请选择企业'
+                        message: '<br>请选择企业'
                     }
                 }
             },
@@ -484,7 +564,7 @@ function formValidator() {
             SourceId: {
                 validators: {
                     notEmpty: {
-                        message: '请选择危险源，如果此公司没有危险源，那请先录入本公司的危险源'
+                        message: '请选择危险源'
                     }
                 }
             },
@@ -492,7 +572,7 @@ function formValidator() {
             FEI: {
                 validators: {
                     notEmpty: {
-                        message: '请输入火灾爆炸指数 F&EI'
+                        message: '<br>请输入火灾爆炸指数 F&EI'
                     }
                 }
             },
@@ -508,7 +588,7 @@ function formValidator() {
             AfterFEI: {
                 validators: {
                     notEmpty: {
-                        message: '请输入补偿后的 F&EI'
+                        message: '<br>请输入补偿后的 F&EI'
                     }
                 }
             },
@@ -570,13 +650,15 @@ function unitAdd() {
 
     changeDangerSource(document.myForm);
 
-
+    　
+    $("#UniqueCodeU").removeAttr("readonly");
     $("#SourceId").selectpicker('val','');
     $("#DangerRank").selectpicker('val','');
     $("#AfterDangerRank").selectpicker('val','');
     $("#equipInfoTable").bootstrapTable('load', []);
     //将此标签标题改为新增
     $("#myModalLabel").text("新增");
+
     //展示悬浮窗口
     $('#myModal').modal('show');
     $('#collapseOne').collapse('show');
@@ -597,6 +679,7 @@ function unitEdit() {
         .removeAttr('checked')
         .removeAttr('selected');
     var rows = $("#processUnitTable").bootstrapTable("getSelections");//获取所有选中的行
+
     if (rows.length != 1) {
 
         BootstrapDialog.alert({
@@ -612,6 +695,7 @@ function unitEdit() {
         });
         return false;
     }
+    unitId=rows[0].unitId;
     $("#unitForm").data('bootstrapValidator').resetForm(false);
 
     if(state){
@@ -638,16 +722,15 @@ function unitEdit() {
     $('#CompanyName').selectpicker('val', companyId);
     changeDangerSource(document.myForm);
 
-    unitId=rows[0].unitId;
+
 
 
     $("#processUnitTable").bootstrapTable("refresh");
     $("#equipInfoTable").bootstrapTable("refresh");
-
     $.ajax({
         type: 'get',
         async:false,
-        url: '/EquipInfo/getEquipInfoList?unitId='+unitId,
+        url: '/EquipInfo/getEquipInfoList?unitId='+rows[0].unitId,
         success: function (result) {
             //清空表单
             $(':input', '#unitForm')
@@ -662,17 +745,23 @@ function unitEdit() {
             $('#equipType').selectpicker('val', result[0].equipType);
             $("#equipName").val(result[0].equipName);
             $("#uniqueCode").val(result[0].uniqueCode);
+            equipId=result[0].equipId;
         }
     });
 
 
+    //设置唯一编码为只读
+    $('#UniqueCodeU').attr("readonly","readonly");
     $("#UnitName").val(rows[0].unitName);
+    $("#UniqueCodeU").val(rows[0].uniqueCodeU);
     $("#FEI").val(rows[0].fEI);
     $("#DangerRank").selectpicker('val', rows[0].dangerRank);
     $("#AfterFEI").val(rows[0].afterFEI);
     $("#AfterDangerRank").selectpicker('val', rows[0].afterDangerRank);
+    $('#CompanyName').selectpicker('val', companyId);
     $('#SourceId').selectpicker('val', rows[0].sourceId);
     $("#equipInfoTable").bootstrapTable('load', []);
+
     $("#myModalLabel").text("修改");
     $('#myModal').modal('show');
     $('#collapseOne').collapse('show');
@@ -680,6 +769,7 @@ function unitEdit() {
     $("#btn_save").show();
     $("#addEquip").show();
     $("#delEquip").show();
+    $("#unitForm").data('bootstrapValidator').removeField("UniqueCodeU");//删除编码验证
 }
 
 //删除字典
@@ -780,8 +870,9 @@ function unitDel() {
 }
 
 //工艺单元点击事件弹出查看窗
-function look(unitId) {
+function look(obj) {
     eventFlag="look";
+    unitId=obj;
     //清空表单
     $(':input', '#unitForm')
         .not(':button, :submit, :reset')
@@ -789,21 +880,7 @@ function look(unitId) {
         .removeAttr('checked')
         .removeAttr('selected');
     var rows = $("#processUnitTable").bootstrapTable("getSelections");//获取所有选中的行
-    if (rows.length != 1) {
 
-        BootstrapDialog.alert({
-            title: '警告',
-            message: '请选择一条要修改的数据！',
-            size: BootstrapDialog.SIZE_SMALL,
-            type: BootstrapDialog.TYPE_WARNING, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-
-            closable: false, // <-- Default value is false
-            draggable: true, // <-- Default value is false
-            buttonLabel: '确定', // <-- Default value is 'OK',
-
-        });
-        return false;
-    }
     $("#unitForm").data('bootstrapValidator').resetForm(false);
 
     if(state){
@@ -811,6 +888,7 @@ function look(unitId) {
         $("#unitForm").find('select').removeAttr("disabled", "disabled");
         state = false;
     }
+
 
     sourceId=rows[0].sourceId;
 
@@ -824,7 +902,6 @@ function look(unitId) {
     });
 
     $('#CompanyName').selectpicker('val', companyId);
-
     changeDangerSource(document.myForm);
 
     unitId=rows[0].unitId;
@@ -833,35 +910,15 @@ function look(unitId) {
     $("#processUnitTable").bootstrapTable("refresh");
     $("#equipInfoTable").bootstrapTable("refresh");
 
-    $.ajax({
-        type: 'get',
-        async:false,
-        url: '/EquipInfo/getEquipInfoList?unitId='+unitId,
-        success: function (result) {
-            //清空表单
-            $(':input', '#unitForm')
-                .not(':button, :submit, :reset')
-                .val('')
-                .removeAttr('checked')
-                .removeAttr('selected');
-            for (var p in result[0]) {
-                $("#unitForm").find(":input[name='" + p + "']").val(result[0][p]);
-            }
-            //下拉框赋值
-            $('#equipType').selectpicker('val', result[0].equipType);
-            $("#equipName").val(result[0].equipName);
-            $("#uniqueCode").val(result[0].uniqueCode);
-        }
-    });
-
-
     $("#UnitName").val(rows[0].unitName);
+    $("#UniqueCodeU").val(rows[0].uniqueCodeU);
     $("#FEI").val(rows[0].fEI);
     $("#DangerRank").selectpicker('val', rows[0].dangerRank);
     $("#AfterFEI").val(rows[0].afterFEI);
     $("#AfterDangerRank").selectpicker('val', rows[0].afterDangerRank);
+    $('#CompanyName').selectpicker('val', companyId);
     $('#SourceId').selectpicker('val', rows[0].sourceId);
-    $("#equipInfoTable").bootstrapTable("refresh");
+    $("#equipInfoTable").bootstrapTable('load', []);
     $("#myModalLabel").text("查看");
     $('#myModal').modal('show');
     $('#collapseOne').collapse('show');
@@ -881,4 +938,75 @@ function resizePage(){
     //获取浏览器高度
     scanHeight = $(window).height();
     initTable();
+}
+
+//检验表单非空
+function checkForm(obj){
+    var info="";
+    $.each(obj, function () {
+        if((this.value==""||null==this.value)&&this.name!='unitId'){
+            info="请将表单填写完整！！！"
+            return false;
+        }
+    });
+    if(info==""){
+        return true;
+    }
+    BootstrapDialog.alert({
+        title: '警告',
+        message:info,
+        size: BootstrapDialog.SIZE_SMALL,
+        type: BootstrapDialog.TYPE_WARNING, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+
+        closable: false, // <-- Default value is false
+        draggable: true, // <-- Default value is false
+        buttonLabel: '确定', // <-- Default value is 'OK',
+    });
+    return false;
+
+}
+
+//检验表格非空
+function checkEquipTable(obj){
+    var count=0;
+    if(obj!=null){
+        for(var key in obj){
+            for(var item in obj[key]){
+                if(item!='equipId'&&item!='state'){
+                    if(obj[key][item]==''||obj[key][item]==null){
+                        count++;
+                        BootstrapDialog.alert({
+                            title: '警告',
+                            message:'请将设备信息表格内的数据填写完整！！！',
+                            size: BootstrapDialog.SIZE_SMALL,
+                            type: BootstrapDialog.TYPE_WARNING, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+                            closable: false, // <-- Default value is false
+                            draggable: true, // <-- Default value is false
+                            buttonLabel: '确定', // <-- Default value is 'OK',
+                        });
+                        return false;
+                    }
+                }
+
+            }
+        }
+        return true;
+    }else if(count==0||obj.length==0){
+        if(count==0){
+            return true;
+        }else{
+            BootstrapDialog.alert({
+                title: '警告',
+                message:'请将设备信息表格内的数据填写完整！！！',
+                size: BootstrapDialog.SIZE_SMALL,
+                type: BootstrapDialog.TYPE_WARNING, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+                closable: false, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                buttonLabel: '确定', // <-- Default value is 'OK',
+            });
+            return false;
+        }
+    }else{
+        return true;
+    }
 }

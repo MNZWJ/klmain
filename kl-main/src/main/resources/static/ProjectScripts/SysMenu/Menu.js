@@ -610,24 +610,28 @@ function moveOrder(x){
         data:{type:x,dataDictStr:JSON.stringify(rows[0])},
         success:function(result){
             if(result.code=="0"){
-
-
-                BootstrapDialog.alert({
-                    title: '提示',
-                    message: result.msg,
-                    type: BootstrapDialog.TYPE_SUCCESS   , // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                    size:BootstrapDialog.SIZE_SMALL,
-                    closable: false, // <-- Default value is false
-                    draggable: true, // <-- Default value is false
-                    buttonLabel: '确定', // <-- Default value is 'OK',
-                    callback: function (result) {
-                        $("#table").on("load-success.bs.table",function(data){
-                            $("#table").bootstrapTable("checkBy", {field:"MenuId", values:[rows[0].MenuId]});
-                            $("#table").off("load-success.bs.table");
-                        });
-                        $("#table").bootstrapTable("refresh");
-                    }
+                $("#table").on("load-success.bs.table",function(data){
+                    $("#table").bootstrapTable("checkBy", {field:"MenuId", values:[rows[0].MenuId]});
+                    $("#table").off("load-success.bs.table");
                 });
+                $("#table").bootstrapTable("refresh");
+
+                // BootstrapDialog.alert({
+                //     title: '提示',
+                //     message: result.msg,
+                //     type: BootstrapDialog.TYPE_SUCCESS   , // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+                //     size:BootstrapDialog.SIZE_SMALL,
+                //     closable: false, // <-- Default value is false
+                //     draggable: true, // <-- Default value is false
+                //     buttonLabel: '确定', // <-- Default value is 'OK',
+                //     callback: function (result) {
+                //         $("#table").on("load-success.bs.table",function(data){
+                //             $("#table").bootstrapTable("checkBy", {field:"MenuId", values:[rows[0].MenuId]});
+                //             $("#table").off("load-success.bs.table");
+                //         });
+                //         $("#table").bootstrapTable("refresh");
+                //     }
+                // });
 
 
 

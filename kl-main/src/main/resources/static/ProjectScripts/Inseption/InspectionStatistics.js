@@ -1,367 +1,28 @@
-var companyId = "";
 var scanHeight = "";
-var flagTable=0;
-$(function () {
-    //获取浏览器高度
-    scanHeight = $(window).height();
 
-    // $("#map").height(scanHeight);
-    initMap();
+//打开统计图页面
+$(function() {
+    timeMethod=setInterval(function(){
+        $("#showTime").html(convert(new Date()));
+    },1000);
 
-    $("#myTabDrop1").on("shown.bs.tab", function (e) {
-        $('#riskTable').bootstrapTable("refresh");
-    });
-
-    $("#chemicalsTab").on("shown.bs.tab", function (e) {
-        $('#chemistryTable').bootstrapTable("refresh");
-    });
-
-    $("#companyArt").on("shown.bs.tab", function (e) {
-        $('#companyArtTable').bootstrapTable("refresh");
-    });
-
-
-    //模态窗关闭事件
-    $('#myModal').on('hidden.bs.modal', function () {
-        $('#myTab a[href="#companyInfo"]').tab('show')
-    });
-
-
-});
-
-//初始化地图
-function initMap() {
-    map = new BMap.Map("map");          // 创建地图实例
-    var point = new BMap.Point('118.65', '37.7');
-    map.centerAndZoom(point, '11');             // 初始化地图，设置中心点坐标和地图级别
-    map.enableScrollWheelZoom(); // 允许滚轮缩放
-
-    map.setMapStyle({
-        styleJson: [{
-            "featureType": "road",
-            "elementType": "all",
-            "stylers": {
-                "visibility": "off"
-            }
-        }]
-    });
-
-    getBoundary();
-    map.setMinZoom(11);
-    map.setMaxZoom(18);
-
-
-    loadCompanyList(getCompanyList());
-    mini.get("searchIndustryCode").load("/SysDictionary/getDataDictList?typeId=" + IndustryCodeDictId);
-    mini.get("searchScaleCode").load("/SysDictionary/getDataDictList?typeId=" + ScaleCodeDictId);
-    mini.get("searchTypeCode").load("/SysDictionary/getDataDictList?typeId=" + TypeCodeDictId);
-}
-
-//初始化表格
-function initTable() {
-    $("#chemistryTable").bootstrapTable("destroy");
-    //化学品表格
-    $('#chemistryTable').bootstrapTable({
-        height: scanHeight * 4 / 7,
-        striped: true,      //是否显示行间隔色
-        cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
-        method: 'get',//请求方式
-        url: '/Inspection/getChemicalsInfoList',//请求url
-
-        clickToSelect: true,//是否启用点击选中行
-        showRefresh: false,//是否显示 刷新按钮
-        queryParams: function (pageReqeust) {
-            pageReqeust.companyId = companyId;
-
-            return pageReqeust;
-        },
-        rowStyle: function () {//自定义行样式
-            return "bootTableRow";
-        },
-        onLoadError: function () {
-
-
-            BootstrapDialog.alert({
-                title: '错误',
-                size: BootstrapDialog.SIZE_SMALL,
-                message: '表格加载失败！',
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定', // <-- Default value is 'OK',
-
-            });
-        },
-
-        columns: [
-            {
-
-                title: '序号',
-                formatter: function (value, row, index) {
-
-
-                    return index + 1;
-                },
-                width: '14%'
-            }
-            ,
-
-            {
-
-                field: 'chemName',
-                title: '化学品名称',
-                halign: 'center',
-                width: '28%',
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css:  {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                }
-            }, {
-                field: 'cAS',
-                title: 'CAS',
-                halign: 'center',
-                width: '21%',
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css:  {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                },
-                formatter: function (value, row, index) {
-                    if(value==undefined){
-                        value="";
-                    }
-                    return '<span title="'+value+'">'+value+'</span>'
-
-                }
-            }, {
-                field: 'dreserves',
-                title: '设计储量',
-                halign: 'center',
-                width: '21%',
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css:  {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                },
-                formatter: function (value, row, index) {
-                    if(value==undefined){
-                        value="";
-                    }
-                    return '<span title="'+value+'">'+value+'</span>'
-
-                }
-            }, {
-                field: 'unit',
-                title: '计量单位',
-                halign: 'center',
-                width: '16%',
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css:  {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                },
-                formatter: function (value, row, index) {
-                    if(value==undefined){
-                        value="";
-                    }
-                    return '<span title="'+value+'">'+value+'</span>'
-
-                }
-            }
-]
-    });
-    $("#riskTable").bootstrapTable("destroy");
-    //危险源表格
-    $('#riskTable').bootstrapTable({
-        height: scanHeight * 4 / 7,
-        striped: true,      //是否显示行间隔色
-        cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
-        method: 'get',//请求方式
-        url: '/Inspection/getDangerSourceList',//请求url
-
-        clickToSelect: true,//是否启用点击选中行
-        showRefresh: false,//是否显示 刷新按钮
-        queryParams: function (pageReqeust) {
-            pageReqeust.companyId = companyId;
-
-            return pageReqeust;
-        },
-        rowStyle: function () {//自定义行样式
-            return "bootTableRow";
-        },
-        onLoadError: function () {
-
-
-            BootstrapDialog.alert({
-                title: '错误',
-                size: BootstrapDialog.SIZE_SMALL,
-                message: '表格加载失败！',
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定', // <-- Default value is 'OK',
-
-            });
-        },
-
-        columns: [
-            {
-
-                title: '序号',
-                formatter: function (value, row, index) {
-
-
-                    return index + 1;
-                },
-                width: '10%',
-            }
-            ,
-
-            {
-
-                field: 'sourceName',
-                title: '危险源名称',
-                halign: 'center',
-                width: '30%',
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                },
-                formatter: function (value, row, index) {
-                    if(value==undefined){
-                        value="";
-                    }
-                    return '<span title="'+value+'">'+value+'</span>'
-
-                }
-            }, {
-                field: 'rank',
-                title: '危险源等级',
-                halign: 'center',
-                width: '20%',
-                align: 'center',
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                },
-                formatter: function (value, row, index) {
-                    if(value==undefined){
-                        value="";
-                    }
-                    return '<span title="'+value+'">'+value+'</span>'
-
-                }
-            }, {
-                field: 'OutPersonCount',
-                title: '500米范围内人数估值',
-                halign: 'center',
-                width: '25%',
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                },
-                formatter: function (value, row, index) {
-                    if(value==undefined){
-                        value="";
-                    }
-                    return '<span title="'+value+'">'+value+'</span>'
-
-                }
-
-            }, {
-                field: 'recordDate',
-                title: '投用时间',
-                halign: 'center',
-                width: '15%',
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                },
-                formatter: function (value, row, index) {
-                    if(value==undefined){
-                        value="";
-                    }
-                    return '<span title="'+value+'">'+value+'</span>'
-
-                }
-
-            }]
-    });
-    $("#companyArtTable").bootstrapTable("destroy");
-    //危险关联工艺
-    $('#companyArtTable').bootstrapTable({
-        height: scanHeight * 4 / 7,
-        striped: true,      //是否显示行间隔色
-        cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
-        method: 'get',//请求方式
-        url: '/Inspection/getCompanyArtList',//请求url
-
-        clickToSelect: true,//是否启用点击选中行
-        showRefresh: false,//是否显示 刷新按钮
-        queryParams: function (pageReqeust) {
-            pageReqeust.companyId = companyId;
-
-            return pageReqeust;
-        },
-        rowStyle: function () {//自定义行样式
-            return "bootTableRow";
-        },
-        onLoadError: function () {
-
-
-            BootstrapDialog.alert({
-                title: '错误',
-                size: BootstrapDialog.SIZE_SMALL,
-                message: '表格加载失败！',
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定', // <-- Default value is 'OK',
-
-            });
-        },
-
-        columns: [
-            {
-
-                title: '序号',
-                formatter: function (value, row, index) {
-
-
-                    return index + 1;
-                },
-                width: '10%',
-            }
-            ,
-
-            {
-
-                field: 'technologyName',
-                title: '工艺名称',
-                halign: 'center',
-                width: '40%',
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                },
-                formatter: function (value, row, index) {
-                    if(value==undefined){
-                        value="";
-                    }
-                    return '<span title="'+value+'">'+value+'</span>'
-
-                }
-            }, {
-                field: 'monitorUnit',
-                title: '重点监控单元',
-                halign: 'center',
-                width: '50%',
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                },
-                formatter: function (value, row, index) {
-                    if(value==undefined){
-                        value="";
-                    }
-                    return '<span title="'+value+'">'+value+'</span>'
-
-                }
-            }]
-    });
-
+    initEcharts();
+})
+//初始化图表
+function initEcharts() {
+    //企业总数
+    getCompanyList();
+    //各行业企业分布情况
+    loadIndustryCompany();
+    //加载企业类型占比
+    loadCompanyType();
+    //加载企业规模占比
+    loadScaleCode();
+    //加载企业行政区划分布情况
+    loadDirectAreaCompany();
 
 }
 
-
-//获取企业集合
 function getCompanyList() {
     var companyList = [];
     $.ajax({
@@ -388,168 +49,6 @@ function getCompanyList() {
         }
     });
     return companyList;
-}
-
-//加载所有企业集合
-function loadCompanyList(companyList) {
-    map.clearOverlays();
-    $.each(companyList, function (i, n) {
-        var tempPoint = new BMap.Point(n.longt, n.lat);
-        var marker = new BMap.Marker(wgs2bd(tempPoint), {
-            title: n.companyName
-
-        });
-
-        map.addOverlay(marker);
-        marker.customData = {companyId: n.companyId};
-        marker.addEventListener("onclick", onMarkClick);
-    });
-
-}
-
-//企业点击事件
-function onMarkClick(e) {
-    if(flagTable==0){
-        initTable();
-        flagTable=1;
-    }
-
-    companyId = e.target.customData.companyId;
-
-    $.ajax({
-        type: 'post',
-        url: '/Inspection/getCompanyInfo',
-        data: {companyId: companyId},
-        success: function (result) {
-            //清空表单
-            $(':input', '#companyForm')
-                .not(':button, :submit, :reset')
-                .val('')
-                .removeAttr('checked')
-                .removeAttr('selected');
-            for (var p in result[0]) {
-
-                $("#companyForm").find(":input[name='" + p + "']").val(result[0][p]);
-
-            }
-        },
-        error: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                message: '请检查网络连接！',
-                size: BootstrapDialog.SIZE_SMALL,
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定', // <-- Default value is 'OK',
-
-            });
-        }
-
-    });
-
-    $('#myModal').modal('show');
-}
-
-//关闭查询框
-function openOrclose() {
-
-    $("#tab2").hide();
-    var i = 92;
-    var interval = setInterval(function () {
-        i--;
-
-        $("#tab").css({"width": i + "%"});
-        if (i <= 0) {
-            clearInterval(interval)
-            $("#td1").hide();
-            $("#windowdiv1").hide();
-            $("#td3").hide();
-            $("#open").show();
-            $(".windowdiv").hide();
-        }
-    }, 4);
-
-
-}
-
-//打开查询框
-function openwindow() {
-    $(".windowdiv").show();
-    $("#open").hide();
-    $("#tab").show();
-    $("#td3").show();
-    $("#windowdiv1").show();
-    var i = 0;
-    var interval2 = setInterval(function () {
-        i++;
-
-        $("#tab").css({"width": i + "%"});
-        if (i >= 100) {
-            clearInterval(interval2)
-
-            $("#tab2").show();
-            $("#td1").show();
-
-        }
-    }, 4);
-
-}
-
-//查询企业
-function searchCompanyList() {
-    var searchCompanyName = mini.get("searchCompanyName").getValue();
-    var searchIndustryCode = mini.get("searchIndustryCode").getValue();
-    var searchScaleCode = mini.get("searchScaleCode").getValue();
-    var searchTypeCode = mini.get("searchTypeCode").getValue();
-
-    $.ajax({
-        type: 'post',
-        async: false,
-        data: {
-            searchCompanyName: searchCompanyName,
-            searchIndustryCode: searchIndustryCode,
-            searchScaleCode: searchScaleCode,
-            searchTypeCode: searchTypeCode
-        },
-        url: '/Inspection/getCompanyList',
-        success: function (result) {
-            loadCompanyList(result);
-            //定位到查询到的点
-            // if(result.length>0){
-            //     map.panTo(new BMap.Point(result[0].longt,result[0].lat));
-            // }
-        },
-        error: function () {
-            alert("请求失败");
-        }
-    });
-
-}
-
-
-//清空查询条件
-function clearSearch() {
-    mini.get("searchCompanyName").setValue('');
-    mini.get("searchIndustryCode").setValue('');
-    mini.get("searchScaleCode").setValue('');
-    mini.get("searchTypeCode").setValue('');
-
-}
-
-//初始化图表
-function initEcharts() {
-
-    //各行业企业分布情况
-    loadIndustryCompany();
-    //加载企业类型占比
-    loadCompanyType();
-    //加载企业规模占比
-    loadScaleCode();
-    //加载企业行政区划分布情况
-    loadDirectAreaCompany();
-
 }
 
 var scaleCodeChart=null;
@@ -757,7 +256,7 @@ function loadCompanyType(){
                             formatter: function(params){
                                 var name=params.name;
                                 if(name.length>4){
-                                    return name.substring(0,4)+"\n"+name.substring(4);
+                                    return name.substring(0,4)+"\n"+name.substring(5);
                                 }
                                 return name;
                             },
@@ -782,7 +281,6 @@ function loadCompanyType(){
 }
 
 var industryCompanyCharts=null;
-
 var industryCompanyOption=null;
 //加载各行业企业分布情况
 function loadIndustryCompany(){
@@ -1012,15 +510,7 @@ function loadDirectAreaCompany(){
     });
 }
 var timeMethod="";
-//打开统计图页面
-function openwindows() {
-    $('#echartsPage').show();
-    timeMethod=setInterval(function(){
-        $("#showTime").html(convert(new Date()));
-    },1000);
 
-    initEcharts();
-}
 
 //关闭统计图页面
 function closePage(){
@@ -1043,6 +533,41 @@ function convert(date) {
     return today.getFullYear() + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
 }
 
+//横坐标换行
+function xAxisNameType(params){
+    var newParamsName = "";// 最终拼接成的字符串
+    var paramsNameNumber = params.length;// 实际标签的个数
+    var provideNumber = 4;// 每行能显示的字的个数
+    var rowNumber = Math.ceil(paramsNameNumber / provideNumber);// 换行的话，需要显示几行，向上取整
+    /**
+     * 判断标签的个数是否大于规定的个数， 如果大于，则进行换行处理 如果不大于，即等于或小于，就返回原标签
+     */
+    // 条件等同于rowNumber>1
+    if (paramsNameNumber > provideNumber) {
+        /** 循环每一行,p表示行 */
+        for (var p = 0; p < rowNumber; p++) {
+            var tempStr = "";// 表示每一次截取的字符串
+            var start = p * provideNumber;// 开始截取的位置
+            var end = start + provideNumber;// 结束截取的位置
+            // 此处特殊处理最后一行的索引值
+            if (p == rowNumber - 1) {
+                // 最后一次不换行
+                tempStr = params.substring(start, paramsNameNumber);
+            } else {
+                // 每一次拼接字符串并换行
+                tempStr = params.substring(start, end) + "\n";
+            }
+            newParamsName += tempStr;// 最终拼成的字符串
+        }
+
+    } else {
+        // 将旧标签的值赋给新标签
+        newParamsName = params;
+    }
+    //将最终的字符串返回
+    return newParamsName
+}
+
 //适应页面大小
 function resizePage(){
     if(scaleCodeChart!=null){
@@ -1060,6 +585,5 @@ function resizePage(){
 
     //获取浏览器高度
     scanHeight = $(window).height();
-    flagTable=0;
 }
 

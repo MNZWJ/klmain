@@ -18,6 +18,13 @@ public interface ProcessUnitService {
     String saveOrUpdateData(String cmd);
 
     /**
+     * 验证工艺单元唯一编码是否存在
+     * @param equipCode
+     * @return
+     */
+    boolean validateUniqueCode(String equipCode);
+
+    /**
      * 通过名称获取工艺单元信息
      * @param searchName
      * @return

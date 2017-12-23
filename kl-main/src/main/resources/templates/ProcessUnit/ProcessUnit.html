@@ -27,6 +27,22 @@
             width: 170px;
             vertical-align: middle;
         }
+        .has-feedback .form-control-feedback {
+            position: absolute;
+            top: 25px;
+            right: 20px;
+        }
+        #as .has-feedback .form-control-feedback {
+            position: absolute;
+            top: 25px;
+            right: 100px;
+        }
+
+        .form-horizontal .has-feedback .form-control-feedback {
+            position: absolute;
+            top: 0;
+            right: 15px;
+        }
         /*固定表格行高*/
         .bootTableRow {
             white-space: nowrap;
@@ -61,7 +77,18 @@
             paddiing-left: -10px;
             width: 56%;
         }
-
+        a:link {
+            text-decoration: none;
+        }
+        a:visited {
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: none;
+        }
+        a:active {
+            text-decoration: none;
+        }
     </style>
 
 </head>
@@ -126,45 +153,50 @@
                                 <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                                     <div class="modal-body">
                                         <div class="row">
-                                            <div class="col-xs-8 col-xs-offset-2">
-                                                <form id="unitForm" name="myForm">
+                                            <div>
+                                                <form id="unitForm" class="form-inline" name="myForm" role="form">
                                                     <input type="hidden" name="unitId" id="unitId">
-                                                    <div class="form-group" style="height:70px;">
-                                                        <label for="CompanyName" class="col-xs-10" style="padding-left: 0">所属企业</label>
-                                                        <select onchange="changeDangerSource(document.myForm)" id="CompanyName" name="CompanyName" class="selectpicker show-tick form-control"
-                                                                data-live-search="true" data-live-search-style="begins" title="">
-
+                                                    <div id="as" class="form-group col-md-6" style="height:50px;">
+                                                        <label for="CompanyName" style="margin-left: 30px;margin-right: 16px;font-size: 13px;">所属企业</label>
+                                                        <select onchange="changeDangerSource(document.myForm)" id="CompanyName" name="CompanyName"
+                                                                class="selectpicker col-md-8" style="width: 115px;margin-right:100px;" data-live-search="true"
+                                                                data-style="btn-default">
                                                         </select>
                                                     </div>
-                                                    <div class="form-group" style="height:70px;">
-                                                        <label for="SourceId" class="col-xs-10" style="padding-left: 0">所属重大危险源</label>
-                                                        <select id="SourceId" name="SourceId" class="selectpicker show-tick form-control"
-                                                                data-live-search="false" data-live-search-style="begins" title="">
-
+                                                    <div class="form-group col-md-6"  style="height:50px;">
+                                                        <label for="SourceId" style="font-size: 13px;margin-right: 5px;">所属重大危险源</label>
+                                                        <select id="SourceId" name="SourceId" class="selectpicker col-md-8" style="width: 115px;margin-right:-50px;"
+                                                                data-style="btn-default" data-live-search="true"
+                                                                class="form-control" width="115px">
                                                         </select>
                                                     </div>
-                                                    <div class="form-group" style="height:70px;">
-                                                        <label for="UnitName">工艺单元名称</label>
-                                                        <input type="text" name="UnitName" class="form-control" id="UnitName"
-                                                               placeholder="请输入工艺单元名称">
+
+                                                    <div id="bs" class="form-group col-md-6" style="height:50px;padding-right: 60px;">
+                                                        <label for="UnitName" class="col-md-4" style="font-size: 13px;width: 125px;">工艺单元名称</label>
+                                                        <input type="text" name="UnitName" class="form-control select-sm col-md-8" style="width: 155px;margin-left: -5px;"
+                                                               id="UnitName" placeholder="工艺单元名称" >
                                                     </div>
-                                                    <div class="form-group" style="height:65px;width: 45%;float:left;">
-                                                        <label for="FEI" style="padding-left: 0px;width: 100%;">
-                                                            火灾爆炸指数 F&EI</label>
-                                                        <input type="number" name="FEI" id="FEI" class="form-control"
-                                                               placeholder="请输入火灾爆炸指数F&EI"  style="width: 100%;">
+                                                    <div class="form-group col-md-6" style="height:50px;padding-right: 65px;">
+                                                        <label for="UniqueCodeU" class="col-md-4" style="font-size: 13px;margin-left: 14px;margin-right: -6px;">唯一编码</label>
+                                                        <input type="text" name="UniqueCodeU" class="form-control select-sm col-md-8" style="width: 155px;margin-left: 10px;"
+                                                               id="UniqueCodeU" placeholder="唯一编码" >
                                                     </div>
-                                                    <div class="form-group"  style="height:65px;width: 45%; float:right;">
-                                                        <label for="AfterFEI" style="padding-left: 0px;width: 100%;">
-                                                            补偿后的 F&EI</label>
-                                                        <input type="number" name="AfterFEI" class="form-control" id="AfterFEI"
-                                                               placeholder="请输入补偿后的F&EI"  style="width: 100%;">
+
+                                                    <div class="form-group col-md-6" style="height: 30px;padding-right: 60px;">
+                                                        <label for="FEI" class="col-md-4" style="margin-left:-8px;margin-right:-10px;width: 140px;font-size: 13px;">火灾爆炸指数F&EI</label>
+                                                        <input type="number" name="FEI" class="form-control input-sm col-md-8" style="width: 155px;"
+                                                               id="FEI" placeholder="火灾爆炸指数F&EI" >
                                                     </div>
-                                                    <div class="form-group" style="height:65px;width: 45%;float:left;">
-                                                        <label for="DangerRank" style="padding-left: 0px;width: 100%;">
+                                                    <div class="form-group col-md-6" style="height:50px;padding-right: 65px;">
+                                                        <label for="AfterFEI" class="col-md-4" style="margin-left:-4px;margin-right:-13px;width: 138px;font-size: 13px;">补偿后的 F&EI</label>
+                                                        <input type="number" name="AfterFEI" class="form-control input-sm col-md-8" style="width: 155px;"
+                                                               id="AfterFEI" placeholder="补偿后的 F&EI" >
+                                                    </div>
+                                                    <div class="form-group col-md-6" style="padding-bottom: 10px;">
+                                                        <label for="DangerRank" class="col-md-4" style="margin-right: -29px;margin-left: 15px;font-size: 13px;">
                                                             危险等级</label>
-                                                        <select  id="DangerRank"  style="width: 100%;" name="DangerRank" class="selectpicker show-tick form-control"
-                                                                 data-live-search="false" data-live-search-style="begins" title="">
+                                                        <select  id="DangerRank"  class="selectpicker col-md-8"
+                                                                 data-style="btn-default" name="DangerRank">
                                                             <option value="最轻">最轻</option>
                                                             <option value="较轻">较轻</option>
                                                             <option value="中等">中等</option>
@@ -173,11 +205,11 @@
                                                         </select>
                                                     </div>
 
-                                                    <div class="form-group" style="height:70px;width: 45%; float:right;">
-                                                        <label for="AfterDangerRank" style="padding-left: 0px;width: 100%;">
+                                                    <div class="form-group col-md-6">
+                                                        <label for="AfterDangerRank" class="col-md-4"  style="margin-left: -17px;margin-right: -14px;width: 138px;font-size: 13px;">
                                                             补偿后的危险等级</label>
-                                                        <select id="AfterDangerRank"  style="width: 100%;" name="AfterDangerRank" class="selectpicker show-tick form-control"
-                                                                data-live-search="false" data-live-search-style="begins" title="">
+                                                        <select id="AfterDangerRank"   class="selectpicker col-md-8" style="margin-left: 0px;width:115px;"
+                                                                name="AfterDangerRank">
                                                             <option value="最轻">最轻</option>
                                                             <option value="较轻">较轻</option>
                                                             <option value="中等">中等</option>

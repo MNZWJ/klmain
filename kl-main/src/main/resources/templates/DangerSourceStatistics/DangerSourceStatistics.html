@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <#include "/Common/Layout.html" />
+
+    <link rel="stylesheet" href="../../Scripts/bootstrap-table/bootstrap-table.min.css"/>
+    <script src="../../Scripts/bootstrap-table/bootstrap-table.min.js"></script>
+    <script src="../../Scripts/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+    <script src="../../Scripts/Echarts/echarts-3.8.4/echarts.min.js"></script>
+    <script src="../../ProjectScripts/DangerSourceStatistics/DangerSourceStatistics.js"></script>
+    <script src="../../ProjectScripts/Common/common.js"></script>
+
+
+
+
+    <style>
+
+        #titleSpan {
+            position: absolute;
+            top: 1%;
+            left: 0;
+            right: 0;
+            margin: auto;
+            font-size: 34px;
+            font-weight: bold;
+            font-family: 微软雅黑;
+            text-align: center;
+            color: #fff;
+
+        }
+        .fixed-table-container{
+            border: 0px solid transparent;
+        }
+        .bootstrap-table .table>thead>tr>th{
+            border: 0px solid transparent;
+            background-color: #134458;
+            color: #37afbf;
+        }
+        .bootstrap-table .table>tbody>tr>td{
+            border: 0px solid transparent;
+        }
+        .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
+            padding: 4px !important;
+        }
+        .fixed-table-container tbody td .th-inner, .fixed-table-container thead th .th-inner{
+            padding: 0 !important;
+        }
+        ::-webkit-scrollbar {
+            width: 14px;
+            height: 14px;
+        }
+
+        ::-webkit-scrollbar-track,
+        ::-webkit-scrollbar-thumb {
+            border-radius: 999px;
+            border: 5px solid transparent;
+        }
+
+        ::-webkit-scrollbar-track {
+            box-shadow: 1px 1px 5px rgba(255,255,255,.2) inset;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            min-height: 20px;
+            background-clip: content-box;
+            box-shadow: 0 0 0 5px rgba(255,255,255,.5) inset;
+        }
+
+        ::-webkit-scrollbar-corner {
+            background: transparent;
+        }
+
+    </style>
+
+</head>
+<body style="background-color: #0e2a42;">
+
+<div id="fullDiv" style="width: 100%;height: 100%;">
+
+    <div id="titleSpan" class="titleSpan">
+        <span>重大危险源统计</span>
+    </div>
+
+    <img src="../../Images/Common/左上线.png" style="width: 60%;height: 60%;position: absolute;top: 3.8%;z-index:-1;">
+    <img src="../../Images/Common/右下线1.png"
+         style="width: 50%;height: 50%;position: absolute;bottom: 0;right: 0;z-index:-1;">
+
+
+    <div style="width: 37%;height: 100%;position: relative;float: left;padding-top: 6%">
+
+
+        <div style="overflow-y: visible;height: 45%;width: 100%;">
+
+            <div id="titleDivColor"
+                 style="margin-left:15%;height: 30px;line-height: 30px;color: #fff; width: 88%;background-color: #0a4164">
+                <span style="font-size: 20px;margin-left: 10px;">近五年重大危险源数量统计</span>
+            </div>
+            <div style="margin-left:15%;width: 88%;height: 100%">
+                <div id="fiveYearCountInfo" style="width: 100%;height: 100%;"></div>
+            </div>
+
+        </div>
+
+        <div style="height: 48%;width: 100%;">
+            <div id="titleDivColor2"
+                 style="margin-left:15%;height: 30px;line-height: 30px;color: #fff; width: 88%;background-color: #0a4164">
+                <span style="font-size: 20px;margin-left: 10px;">近五年可能引发的事故类型占比</span>
+            </div>
+            <div style="margin-left:15%;width: 88%;height: 100%;">
+                <div id="FiveYearAccitentTypeScale" style="width: 100%;height: 100%;"></div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div style="width: 26%;height: 100%;position: relative;float: left;padding-top: 6%">
+        <div style="overflow-y: visible;height: 45%;width: 105%;">
+            <div id="titleDivC"
+                 style="margin-left:8%;height: 30px;line-height: 30px;color: #fff; width: 84%;background-color: #0a4164">
+                <span style="font-size: 20px;margin-left: 10px;">可能引发事故类型占比
+                </span>
+
+            </div>
+            <div style="margin-left:8%;width: 84%;margin-top:2%;height: 88%;">
+                <div id="DSAccidenTypeScale" style="width: 100%;height: 100%;"></div>
+            </div>
+
+        </div>
+
+
+        <div style="height: 45%;width: 105%;">
+            <div id="titleDivColo"
+                 style="margin-left:8%;height: 30px;line-height: 30px;color: #fff; width: 84%;background-color: #0a4164">
+                <span style="font-size: 20px;margin-left: 10px;">安全标准化级别占比</span>
+            </div>
+            <div style="margin-left:8%;margin-top:5%; width: 84%;height: 88%;">
+                <div id="StandardRankScale" style="width: 100%;height: 100%;"></div>
+            </div>
+        </div>
+
+
+
+    </div>
+
+    <div style="width: 37%;height: 100%;position: relative;float: left;padding-top: 6%">
+
+
+        <div style="overflow-y: visible;height: 45%;width: 100%;">
+
+
+            <div id="titleDivC1"
+                 style="margin-left:0;height: 30px;line-height: 30px;color: #fff; width: 88%;background-color: #0a4164">
+                <span style="font-size: 20px;margin-left: 10px;">重大危险源级别和可能引发事故类型的区域分布</span>
+            </div>
+            <div style="margin-left:0;width: 88%;height: 86%;">
+                <div id="RankAndAccenTypeAreaInfo" style="width: 100%;height: 100%;"></div>
+            </div>
+        </div>
+
+
+        <div style="height: 45%;width: 100%;">
+            <div id="titleDivCol1"
+                 style="margin-left:0;height: 30px;line-height: 30px;color: #fff; width: 88%;background-color: #0a4164">
+                <span style="font-size: 20px;margin-left: 10px;">重大危险源引发事故死亡人数统计</span>
+            </div>
+            <div style="margin-left:0;width: 88%;height: 88%;">
+                <div id="DeathTollInfo" style="width: 100%;height: 100%;"></div>
+            </div>
+        </div>
+
+
+
+    </div>
+
+
+</div>
+</div>
+</body>
+</html>

@@ -77,4 +77,16 @@ public class ProcessUnitController {
         this.processUnitService.delProcessUnit(idLists);
         return ResultUtil.success(00);
     }
+
+    @ApiOperation("设工艺单元唯一编码校验")
+    @RequestMapping(value = "/validateUniqueCode",method = RequestMethod.POST)
+    @ResponseBody
+    public JSONObject validateUniqueCode(@RequestParam Map<String,String> param){
+        String uniqueCode = param.get("UniqueCodeU");
+        Map<String,String> map =new HashMap<>(1);
+        boolean result = processUnitService.validateUniqueCode(uniqueCode);
+        JSONObject obj=new JSONObject();
+        obj.put("valid",result);
+        return obj;
+    }
 }

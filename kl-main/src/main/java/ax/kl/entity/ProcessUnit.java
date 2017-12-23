@@ -27,7 +27,7 @@ public class ProcessUnit {
 
     @ApiModelProperty("唯一编码")
     @TableField("UniqueCode")
-    private String uniqueCode;
+    private String uniqueCodeU;
 
 
     @ApiModelProperty("所属重大危险源")

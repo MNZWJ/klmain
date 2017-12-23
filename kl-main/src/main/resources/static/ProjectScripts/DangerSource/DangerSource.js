@@ -457,43 +457,12 @@ function loadSourceRank(){
                     trigger: 'item',
                     formatter: "{b}: {c} ({d}%)"
                 },
-                // legend: {
-                //     orient: 'vertical',
-                //     x: '2%',
-                //     top: '20%',
-                //     data: legendData,
-                //     textStyle:{
-                //         color:'#fff'
-                //     }
-                // },
                 series: [{
                     name: '重大危险源等级占比',
                     type: 'pie',
                     //radius: ['65%', '85%'],
                     avoidLabelOverlap: false,
                     itemStyle: dataStyle,
-                    // label: {
-                    //     normal: {
-                    //         show: false,
-                    //         position: 'center'
-                    //     },
-                    //     emphasis: {
-                    //         show: true,
-                    //         formatter: function(param) {
-                    //             return param.percent.toFixed(0) + '%';
-                    //         },
-                    //         textStyle: {
-                    //             fontSize: '30',
-                    //             fontWeight: 'bold',
-                    //             color:'#fff'
-                    //         }
-                    //     }
-                    // },
-                    // labelLine: {
-                    //     normal: {
-                    //         show: true
-                    //     }
-                    // },
                     data: data
                 }]
             };
@@ -560,7 +529,12 @@ function loadIndustryCompany(){
                                 axisLabel: {
                                     textStyle: {
                                         color: '#fff',
-                                        fontSize: 20
+                                        fontSize: 10
+                                    },
+                                    interval:0,
+                                    formatter:function (params) {
+                                        params =xAxisNameType(params);
+                                        return params;
                                     }
                                 }
                             }
@@ -571,7 +545,7 @@ function loadIndustryCompany(){
                                 axisLabel: {
                                     textStyle: {
                                         color: '#fff',
-                                        fontSize: 20
+                                        fontSize: 15
                                     }
                                 }
                             }
@@ -580,7 +554,7 @@ function loadIndustryCompany(){
                             {
                                 show: "true",
                                 start: 0,
-                                end: 100,
+                                end: 60,
 
                                 textStyle: {
                                     color: '#fff'
@@ -658,7 +632,7 @@ function loadDSDistribution(){
                                 axisLabel: {
                                     textStyle: {
                                         color: '#fff',
-                                        fontSize: 20
+                                        fontSize: 18
                                     }
                                 }
                             }
@@ -669,7 +643,7 @@ function loadDSDistribution(){
                                 axisLabel: {
                                     textStyle: {
                                         color: '#fff',
-                                        fontSize: 20
+                                        fontSize: 15
                                     }
                                 }
                             }
@@ -715,7 +689,6 @@ function closePage(){
     }
     $('#echartsPage').hide();
 }
-
 
 //转换日期格式
 function convert(date) {
