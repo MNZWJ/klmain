@@ -41,7 +41,6 @@ public class ProcessUnitServiceImpl implements ProcessUnitService {
             //删除设备
             this.equipInfoMapper.deleteEquipInfo(deleteIds.split(","));
         }
-
         if ("".equals(processUnit.getUnitId()) || processUnit.getUnitId() == null) {
             String unitId = UUID.randomUUID().toString();
             processUnit.setUnitId(unitId);
@@ -71,6 +70,18 @@ public class ProcessUnitServiceImpl implements ProcessUnitService {
             return "";
         }
     }
+
+    /**
+     * 验证工艺单元唯一编码是否存在
+     * @param uniqueCode
+     * @return true 不存在，false 存在
+     */
+    @Override
+    public boolean validateUniqueCode(String uniqueCode){
+        int num = processUnitMapper.validateUniqueCode(uniqueCode);
+        boolean re = num == 0;
+        return re;
+    };
 
     /**
      * 通过名称获取工艺单元信息
