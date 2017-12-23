@@ -391,8 +391,7 @@ function loadRankAndAccenTypeAreaInfo() {
                         legend: {
                             data: legendData,
                             textStyle: {
-                                color: '#fff',
-                                fontSize: 20
+                                color: '#fff'
                             }
                         },
                         grid: {
@@ -408,7 +407,7 @@ function loadRankAndAccenTypeAreaInfo() {
                                 axisLabel: {
                                     textStyle: {
                                         color: '#fff',
-                                        fontSize: 20
+                                        fontSize: 15
                                     }
                                 },
                                 axisLine:{
@@ -424,7 +423,7 @@ function loadRankAndAccenTypeAreaInfo() {
                                 axisLabel: {
                                     textStyle: {
                                         color: '#fff',
-                                        fontSize: 20
+                                        fontSize: 15
                                     }
                                 },
                                 splitLine:{
@@ -441,7 +440,7 @@ function loadRankAndAccenTypeAreaInfo() {
                             {
                                 show: "true",
                                 start: 0,
-                                end: 50,
+                                end: 60,
 
                                 textStyle: {
                                     color: '#fff'
@@ -502,8 +501,7 @@ function loadDeathTollInfo() {
                         legend: {
                             data: legendData,
                             textStyle: {
-                                color: '#fff',
-                                fontSize: 20
+                                color: '#fff'
                             }
                         },
                         grid: {
@@ -519,7 +517,7 @@ function loadDeathTollInfo() {
                                 axisLabel: {
                                     textStyle: {
                                         color: '#fff',
-                                        fontSize: 20
+                                        fontSize: 15
                                     }
                                 },
                                 axisLine:{
@@ -536,7 +534,7 @@ function loadDeathTollInfo() {
                                 axisLabel: {
                                     textStyle: {
                                         color: '#fff',
-                                        fontSize: 20
+                                        fontSize: 15
                                     }
                                 },
                                 splitLine:{
@@ -553,7 +551,7 @@ function loadDeathTollInfo() {
                             {
                                 show: "true",
                                 start: 0,
-                                end: 50,
+                                end: 60,
 
                                 textStyle: {
                                     color: '#fff'
