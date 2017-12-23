@@ -518,6 +518,10 @@ function loadTodayEquipTypeCountEchart(){
                                     textStyle: {
                                         color: '#fff',
                                         fontSize: 10
+                                    },
+                                    formatter:function (params) {
+                                        params =xAxisNameType(params);
+                                        return params;
                                     }
                                 },
                                 axisLine:{
@@ -547,7 +551,7 @@ function loadTodayEquipTypeCountEchart(){
                             {
                                 show: "true",
                                 start: 0,
-                                end: 100,
+                                end: 50,
 
                                 textStyle: {
                                     color: '#fff'
