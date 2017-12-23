@@ -82,15 +82,34 @@ function saveData(){
             var unitList = $('#unitForm').serializeArray();
             //检验表单
             var end = checkForm(unitList);
-            if (!end) {
-                return false;
-            }
+            var c=false;
             $.each(unitList, function () {
+
                 if(this.name=="unitId"){
                     unit[this.name] = unitId;
                 }
+                if(this.name=='SourceId'){
+                    c=true;
+                }
                 unit[this.name] = this.value;
             });
+            if (!end) {
+                return false;
+            }
+            if(!c){
+                BootstrapDialog.alert({
+                    title: '错误',
+                    message: '请选择重大危险源！！！',
+                    size: BootstrapDialog.SIZE_SMALL,
+                    type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+
+                    closable: false, // <-- Default value is false
+                    draggable: true, // <-- Default value is false
+                    buttonLabel: '确定', // <-- Default value is 'OK',
+
+                });
+                return false;
+            }
 
 
             //获取折叠面板equipInfoTable表格中的值
