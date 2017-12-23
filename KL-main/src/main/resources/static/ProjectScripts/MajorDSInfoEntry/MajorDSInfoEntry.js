@@ -28,6 +28,8 @@ var eventFlag="";
 var chemName = "";
 //查询的cas
 var cas = "";
+//存放新增中选择的企业信息
+var companyChemical ="";
 //获取浏览器高度
 var scanHeight = $(window).height();
 //初始化列表
@@ -919,7 +921,7 @@ function formValidator() {
 //初始化模态窗中全部化学品数据
 function initChemiacalAllTable() {
     $('#chemicalAllTable').bootstrapTable({
-        url: '/BasicInfoEntry/getChemicalInfoList',
+        url: '/MajorDSInfoEntry/getChemicalInfoByCompany',
         method: 'get',                      //请求方式（*）
         striped: true,                      //是否显示行间隔色
         cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
@@ -940,6 +942,7 @@ function initChemiacalAllTable() {
         queryParams: function (pageReqeust) {
             pageReqeust.chemName = chemName;
             pageReqeust.cas = cas;
+            pageReqeust.companyId = companyChemical;
             return pageReqeust;
         },
         rowStyle: function () {//自定义行样式
@@ -1117,8 +1120,20 @@ function initChemicalTable() {
     })
 //点击引用按钮弹出模态窗选择化学品信息
     $('#select').click(function () {
-        $('#chemicalMadel').modal('show');
-        $("#chemicalAllTable").bootstrapTable('refresh');
+        debugger;
+        var form = {};
+        var menuList = $('#companyForm').serializeArray();
+        $.each(menuList, function () {
+            form[this.name] = this.value;
+        });
+        if(form.companyId != null) {
+            companyChemical = form.companyId;
+            $('#chemicalMadel').modal('show');
+            $("#chemicalAllTable").bootstrapTable('refresh');
+        }else {
+            alert("请先选择企业")
+        }
+
     });
 //删除所选化学品
     $('#delChemical').click(function(){

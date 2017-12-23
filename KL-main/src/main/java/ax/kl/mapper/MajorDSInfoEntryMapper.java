@@ -1,9 +1,7 @@
 package ax.kl.mapper;
 
-import ax.kl.entity.CompanyChemical;
-import ax.kl.entity.DangerSourceInfo;
-import ax.kl.entity.FacilitiesCondition;
-import ax.kl.entity.LegalProtection;
+import ax.kl.entity.*;
+import com.baomidou.mybatisplus.plugins.Page;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -92,6 +90,17 @@ public interface MajorDSInfoEntryMapper {
      */
     void saveChemicalData(@Param("chemicalTable")List<CompanyChemical> chemicalTable, @Param("sourceId")String sourceId);
 
+
+    /**
+     * 获取化学品列表
+     *
+     * @param page        分页
+     * @param chemName    化学品名称
+     * @param   cas
+     * @param   companyId
+     * @return
+     */
+    List<ChemicalCataLog> getChemicalInfoByCompany(Page page, @Param("chemName") String chemName, @Param("cas") String cas,@Param("companyId") String companyId);
 
 
 
