@@ -48,9 +48,9 @@
         #legend {
             position: absolute;
             right: 18px;
-            top: 140px;
+            top: 123px;
             width: 114px;
-            height: 115px;
+            height: 65px;
             cursor: pointer;
             background-size: 100% 100%;
         }
@@ -241,6 +241,30 @@
 
 </div>
 
+<!--图例-->
+<div id="legend" style="background-image: url(../../Images/Common/背景.png); background-size: 100% 100%;width:112px">
+    <table id="ttd" style="width: 100%; height: 100%;">
+
+        <tr style="height: 16px;">
+            <td id="ttd1">
+                <div class="legenddiv" style="background-color: #e73941"></div>
+                <span id="redSpan" style="margin-left: 20px; font-family: 微软雅黑; font-size: 12px"> 重大隐患</span>
+            </td>
+        </tr>
+        <tr style="height: 16px;">
+            <td id="ttd2">
+                <div class="legenddiv" style="background-color: #ff881f"></div>
+                <span id="orangeSpan" style="margin-left: 20px; font-family: 微软雅黑; font-size: 12px">一般隐患</span>
+            </td>
+        </tr>
+        <tr style="height: 16px;display: none">
+            <td id="ttd5">
+                <div class="legenddiv" style="background-color: #008000"></div>
+                <span id="greenSpan" style="margin-left: 10px; font-family: 微软雅黑; font-size: 13px">＜ 100</span>
+            </td>
+        </tr>
+    </table>
+</div>
 
 <div id="open" class="btn_open"
      style="width: 20px; height: 140px; background-image: url('../../Images/Common/query.png'); background-size: 100% 100%; word-break: break-all; padding-left: 5px; padding-top: 16px; cursor: pointer;display: none"
