@@ -88,8 +88,10 @@
         INSERT INTO TB_BASE_DR_FACILITIES_CONDITION  (TargetId,SourceId,Facilities,Environment
         ,RealDistance,StandardDistance,Conformance) VALUES
         <foreach collection="processTable" item="item" index="index" separator=",">
-            ( NEWID() ,#{sourceId },#{ item.facilities }  ,#{ item.environment } ,${ item.realDistance }
-            ,#{ item.standardDistance } ,${ item.conformance } )
+            (
+            NEWID() ,#{sourceId },#{ item.facilities }  ,#{ item.environment } ,#{ item.realDistance }
+            ,#{ item.standardDistance } ,#{ item.conformance }
+            )
         </foreach>
     </insert>
 
