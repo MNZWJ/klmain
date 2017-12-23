@@ -48,24 +48,20 @@ function initTable(){
                     width:'24%'
                 },{
 
-                    title: '监测点类型',
+                    title: '报警统计',
 
                     halign: 'center',
                     align: 'center',
-                    colspan: result.length,
+                    colspan: (result.length+1),
                     rowspan: 1,
                     width:'68%'
                 }],[]
 
             ];
-
+            columns[1].push({title: "合计",field:'totalNum',halign: 'center',align: 'center',colspan: 1,rowspan: 1,width:'140px'});
             $.each(result,function(i,n){
                 columns[1].push({title: n.TypeName,field:n.TypeCode,halign: 'center',align: 'center',colspan: 1,rowspan: 1,width:'140px'});
             });
-
-
-
-
 
         }
     });

@@ -757,7 +757,7 @@ function loadCompanyType(){
                             formatter: function(params){
                                 var name=params.name;
                                 if(name.length>4){
-                                    return name.substring(0,4)+"\n"+name.substring(5);
+                                    return name.substring(0,4)+"\n"+name.substring(4);
                                 }
                                 return name;
                             },
