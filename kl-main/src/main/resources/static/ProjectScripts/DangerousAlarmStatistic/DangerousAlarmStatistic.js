@@ -714,7 +714,7 @@ function initLoadCompanyAlarmTable(){
                 formatter: function (value, row, index) {
 
 
-                    return "<div style='background-color: #44d3e4;border-radius: 8px;height: 14px;text-align: center;line-height: 14px;'>"+(index + 1)+"</div>";
+                    return "<div style='background-color: #44d3e4;border-radius: 8px;height: 14px;width: 14px;text-align: center;line-height: 14px;'>"+(index + 1)+"</div>";
                 },
                 cellStyle: function (value, row, index, field) {
                     return {classes: '', css: {'white-space': 'nowrap', "word-wrap":"break-word;",'text-overflow': 'ellipsis','overflow': 'hidden','color':'#fff','background-color':'#0a2732','vertical-align':'middle'}};
