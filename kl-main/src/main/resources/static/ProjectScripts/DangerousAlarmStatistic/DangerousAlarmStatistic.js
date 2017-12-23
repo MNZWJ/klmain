@@ -798,13 +798,10 @@ function loadTodayAlarmTypeEchart(){
                 series: [{
                     name: '今日报警类型占比',
                     type: 'pie',
-<<<<<<< HEAD
                     center: ['50%','60%'],
                     avoidLabelOverlap: true,
-=======
                     center: ['60%','50%'],
                     avoidLabelOverlap: false,
->>>>>>> feature/KL-58_统计页面
                     itemStyle: dataStyle,
                     data: data
                 }]
