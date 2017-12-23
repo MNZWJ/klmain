@@ -607,7 +607,7 @@ function loadMonthAlarmCount(){
                 formatter: function (value, row, index) {
 
 
-                    return "<div style='background-color: #44d3e4;border-radius: 8px;height: 14px;text-align: center;line-height: 14px;'>"+(index + 1)+"</div>";
+                    return "<div style='background-color: #44d3e4;border-radius: 8px;height: 14px;width:14px;text-align: center;line-height: 14px;'>"+(index + 1)+"</div>";
                 },
                 cellStyle: function (value, row, index, field) {
                     return {classes: '', css: {'white-space': 'nowrap', "word-wrap":"break-word;",'text-overflow': 'ellipsis','overflow': 'hidden','color':'#fff','background-color':'#0a2732','vertical-align':'middle'}};
@@ -793,8 +793,8 @@ function loadTodayAlarmTypeEchart(){
                 series: [{
                     name: '今日报警类型占比',
                     type: 'pie',
-                    center: ['50%','45%'],
-                    avoidLabelOverlap: false,
+                    center: ['50%','60%'],
+                    avoidLabelOverlap: true,
                     itemStyle: dataStyle,
                     data: data
                 }]
