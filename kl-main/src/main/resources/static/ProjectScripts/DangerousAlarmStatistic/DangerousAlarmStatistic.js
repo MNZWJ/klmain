@@ -239,7 +239,7 @@ function loadIndustryAlarmEchart(){
                         legend.push({dim: i+1, name: n.TypeName});
 
                     });
-                    legend.push({dim: alarmList.length+1, name: '总量'})
+                    legend.push({dim: alarmList.length+1, name: '合计'})
                     var lineStyle = {
                         normal: {
                             width: 1,
