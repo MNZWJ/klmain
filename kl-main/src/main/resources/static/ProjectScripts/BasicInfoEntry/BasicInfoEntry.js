@@ -45,6 +45,7 @@ $(function () {
         sortable: false,                     //是否启用排序
         sortOrder: "asc",                   //排序方式
         queryParams: queryParams,//传递参数（*）
+        showRefresh: false,//是否显示 刷新按钮
         queryParamsType: '', //默认值为 'limit' ,在默认情况下 传给服务端的参数为：offset,limit,sort
         // 设置为 ''  在这种情况下传给服务器的参数为：pageSize,pageNumber
         sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
@@ -52,7 +53,6 @@ $(function () {
         pageNumber: 1,                       //初始化加载第一页，默认第一页
         pageSize: 10,                       //每页的记录行数（*）
         pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
-        showRefresh: true,//是否显示 刷新按钮
         sortStable: true,//设置为 true 将获得稳定的排序，我们会添加_position属性到 row 数据中。
         selectItemName: 'state',
         idField: 'companyId',
@@ -116,18 +116,19 @@ $(function () {
                 field: 'safeManageRank',
                 title: '安全管理分级',
                 halign: 'center',
-                align:'right',
+                align:'center',
                 width:'7%',
             },   {
                 field: 'standardRank',
                 title: '标准化等级',
                 halign: 'center',
-                align:'right',
+                align:'center',
                 width:'7%',
             },   {
                 field: 'operatingState',
                 title: '经营状态',
                 halign: 'center',
+                align:'center',
                 width:'5%',
             },   {
                 field: 'industryCode',
@@ -194,6 +195,7 @@ $(function () {
                 field: 'directArea',
                 title: '直属区域',
                 halign: 'center',
+                align:'center',
                 width:'5%',
             }
         ]
@@ -528,6 +530,19 @@ function companyAdd() {
 //修改
 function companyEdit() {
     eventFlag="edit";
+    //清空表单
+    $(':input', '#companyForm')
+        .not(':button, :submit, :reset')
+        .val('')
+        .removeAttr('checked')
+        .removeAttr('selected');
+    $('#typeCode').selectpicker('val', '');
+    $('#industryCode').selectpicker('val', '');
+    $('#scaleCode').selectpicker('val', '');
+    $('#operatingState').selectpicker('val', '');
+    $('#standardRank').selectpicker('val', '');
+    $('#safeManageRank').selectpicker('val', '');
+    $('#directArea').selectpicker('val', '');
     var row = $("#enterpriseTable").bootstrapTable("getSelections");//获取所有选中的行
     if (row.length !==1) {
         BootstrapDialog.alert({
@@ -1179,8 +1194,6 @@ function initChemicalTable() {
 //点击引用按钮弹出模态窗选择化学品信息
     $('#select').click(function () {
         $('#chemicalMadel').modal('show');
-        /*$("#chemicalAllTable").bootstrapTable('destroy');
-        initChemiacalAllTable();*/
         $("#chemicalAllTable").bootstrapTable('refresh');
     });
 //删除所选化学品

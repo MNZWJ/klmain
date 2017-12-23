@@ -4,6 +4,7 @@ import ax.f4j.model.JsonResult;
 import ax.f4j.model.ResultUtil;
 import ax.kl.entity.*;
 import ax.kl.service.MajorDSInfoEntryService;
+import com.baomidou.mybatisplus.plugins.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Created by mxl
@@ -74,5 +77,28 @@ public class MajorDSInfoEntryController {
     @ResponseBody
     public List<CompanyChemical> getChemicalList(@RequestParam String sourceId) {
         return majorDSInfoEntryService.getChemicalList(sourceId);
+    }
+
+
+    /**
+     *获取所属企业下的化学品信息列表
+     * @param param
+     * @return
+     */
+    @RequestMapping(value = "/getChemicalInfoByCompany", method = RequestMethod.GET)
+    @ApiOperation(value = "获取所属企业下的化学品信息列表")
+    @ResponseBody
+    public Map<String,Object> getChemicalInfoByCompany(@RequestParam Map<String, String> param) {
+        int pageSize=Integer.parseInt(param.get("pageSize"));
+        int pageNumber=Integer.parseInt(param.get("pageNumber"));
+        Page page=new Page();
+        page.setCurrent(pageNumber);
+        page.setSize(pageSize);
+
+        Page<ChemicalCataLog> list1 = majorDSInfoEntryService.getChemicalInfoByCompany(page,param);
+        Map<String,Object> map=new HashMap<>();
+        map.put("total",list1.getTotal());
+        map.put("rows",list1.getRecords());
+        return map ;
     }
 }

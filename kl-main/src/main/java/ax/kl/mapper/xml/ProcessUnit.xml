@@ -7,12 +7,14 @@
     <select id="getProcessUnitList" resultType="ax.kl.entity.ProcessUnit">
         SELECT u.UnitId unitId,u.UnitName unitName,d.SourceId sourceId,
                 u.FEI fEI,u.DangerRank dangerRank,u.AfterFEI afterFEI,
-                u.AfterDangerRank afterDangerRank,o.CompanyName companyName
+                u.AfterDangerRank afterDangerRank,o.CompanyName companyName,
+                u.UniqueCode uniqueCodeU
           from TB_BASE_PROCESS_UNIT u,TB_BASE_DANGERSOURCE_INFO d,TB_BASE_COMPANY_INFO o
          WHERE u.SourceId=d.SourceId and d.CompanyId=o.CompanyId
         <if test="unitName != null and unitName !='' ">
             AND UnitName LIKE CONCAT(CONCAT('%',#{unitName}),'%')
         </if>
+        order by u.UnitName
     </select>
 
     <!--删除工艺信息-->
@@ -26,14 +28,15 @@
     <!--插入工艺信息-->
     <insert id="insertUnit" parameterType="ax.kl.entity.ProcessUnit">
         INSERT INTO TB_BASE_PROCESS_UNIT
-        (UnitId,SourceId,UnitName,FEI,DangerRank,AfterFEI,AfterDangerRank)
-        VALUES(#{unitId},#{sourceId},#{unitName},#{fEI},#{dangerRank},#{afterFEI},#{afterDangerRank})
+        (UnitId,UniqueCode,SourceId,UnitName,FEI,DangerRank,AfterFEI,AfterDangerRank)
+        VALUES(#{unitId},#{uniqueCodeU},#{sourceId},#{unitName},#{fEI},#{dangerRank},#{afterFEI},#{afterDangerRank})
     </insert>
 
     <!--更新工艺信息-->
     <update id="updateUnit" parameterType="ax.kl.entity.ProcessUnit">
         UPDATE TB_BASE_PROCESS_UNIT
         SET  SourceId=#{sourceId},
+              UniqueCode=#{uniqueCodeU},
               UnitName=#{unitName},
               FEI=#{fEI},
               DangerRank=#{dangerRank},
@@ -41,6 +44,11 @@
               AfterDangerRank=#{afterDangerRank}
         WHERE UnitId=#{unitId}
     </update>
+
+    <!--判定唯一编码的唯一性-->
+    <select id="validateUniqueCode" resultType="int">
+        SELECT COUNT(*) FROM TB_BASE_PROCESS_UNIT WHERE UniqueCode = #{uniqueCodeU}
+    </select>
 
 
 </mapper>
