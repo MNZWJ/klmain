@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ax.kl.mapper.DangerSourceStatisticsMapper">
+
+    <!--近五年重大危险源统计折线-->
+    <select id="getFiveYearCountInfo" resultType="java.util.Map">
+        SELECT dictName,y2017,y2018,y2019,y2020,y2021
+        FROM(
+        SELECT 'y'+SUBSTRING(di.RecordDate,0,5) AS year,d.DictName,di.SourceId,d.DictOrder
+        FROM TB_BASE_DANGERSOURCE_INFO di
+        RIGHT JOIN TB_SYS_DATADICT d ON di.Rank = d.DictId
+		WHERE d.TypeId = '8ea8562f-e58b-461c-9485-a967bc5e29ca') AS t
+        pivot(COUNT(t.SourceId) FOR t.year IN(y2017,y2018,y2019,y2020,y2021)) AS t1
+        ORDER BY DictOrder
+    </select>
+
+    <!--近五年重大危险源统计柱状图-->
+    <select id="getFiveYearCountbarInfo" resultType="java.util.Map">
+        SELECT dictName,convert(VARCHAR,y2017)+','+convert(VARCHAR,y2017+y2018)+
+          ','+convert(VARCHAR,y2017+y2018+y2019)+','+convert(VARCHAR,y2017+y2018+y2019+y2020)+
+          ','+convert(VARCHAR,y2017+y2018+y2019+y2020+y2021) AS num
+          FROM(SELECT d.DictName,d.DictOrder,di.SourceId,'y'+SUBSTRING(di.RecordDate,0,5) AS year
+        FROM TB_BASE_DANGERSOURCE_INFO di
+        RIGHT JOIN TB_SYS_DATADICT d ON di.Rank = d.DictId
+        WHERE d.TypeId = '8ea8562f-e58b-461c-9485-a967bc5e29ca') AS t
+        PIVOT(COUNT(t.SourceId) for t.year IN (y2017,y2018,y2019,y2020,y2021)) AS t1
+        ORDER BY DictOrder
+    </select>
+
+    <!--近五年可能引发的事故类型占比-->
+    <select id="getFiveYearAccitentTypeScale" resultType="java.util.Map">
+        SELECT dictName, y2017,y2018,y2019,y2020,y2021
+        FROM (SELECT sd.DictName,sd.DictOrder,rda.RelationId,'y'+SUBSTRING(bdi.RecordDate,0,5) AS year
+        FROM TB_REL_DRESOURCE_ACCIDENTYPE rda
+        JOIN TB_BASE_DANGERSOURCE_INFO bdi ON bdi.SourceId=rda.SourceId
+        RIGHT JOIN TB_SYS_DATADICT sd ON sd.DictId=rda.TypeId
+        WHERE sd.TypeId='61c44efb-ec19-4f92-9c47-507dee5b4bbe') AS t
+        pivot(COUNT(t.RelationId) for t.year in (y2017,y2018,y2019,y2020,y2021)) AS pvt
+        ORDER BY DictOrder
+    </select>
+
+    <!--可能引起的事故类型占比-->
+    <select id="getDSAccidenTypeScale" resultType="java.util.Map">
+        SELECT COUNT(rda.RelationId) AS num,sd.dictName FROM TB_REL_DRESOURCE_ACCIDENTYPE rda
+        JOIN TB_BASE_DANGERSOURCE_INFO di ON di.SourceId=rda.SourceId AND Rank=#{rank}
+        RIGHT JOIN TB_SYS_DATADICT sd ON rda.TypeId=sd.DictId
+        WHERE sd.TypeId='61c44efb-ec19-4f92-9c47-507dee5b4bbe'
+        GROUP BY sd.DictName,sd.DictOrder
+    </select>
+
+    <!--安全标准化级别占比-->
+    <select id="getStandardRankScale" resultType="java.util.Map">
+        SELECT COUNT(bdi.SourceId) AS num,sd.dictName FROM TB_BASE_DANGERSOURCE_INFO bdi
+        JOIN TB_BASE_COMPANY_INFO bci ON bci.CompanyId=bdi.CompanyId
+        RIGHT JOIN TB_SYS_DATADICT sd ON sd.DictId=bci.StandardRank
+        WHERE sd.TypeId='3aed6882-2f35-4949-a9ab-e60a9fb6a049'
+        GROUP BY sd.DictName,sd.DictId,sd.DictOrder
+        ORDER BY sd.DictOrder
+    </select>
+
+    <!--重大危险源级别和可能引发事故类型的区域分布-->
+    <select id="getRankAndAccenTypeAreaInfo" resultType="java.util.Map">
+        SELECT * FROM (
+        SELECT sd2.DictId AS typeId,sd2.DictName AS typeName,sd2.dictOrder,'等级' AS stack,
+        STUFF((SELECT ',' + CAST (COUNT (rda.RelationId) AS VARCHAR)
+        FROM TB_SYS_DATADICT sd
+        LEFT JOIN TB_BASE_COMPANY_INFO ci ON sd.DictId = ci.DirectArea
+        LEFT JOIN TB_BASE_DANGERSOURCE_INFO di ON ci.CompanyId=di.CompanyId AND di.Rank=sd2.DictId
+		LEFT JOIN TB_REL_DRESOURCE_ACCIDENTYPE rda ON rda.SourceId=di.SourceId AND rda.TypeId=#{typeId}
+        WHERE sd.TypeId = '8b4524ce-15cf-404a-8182-a7e8a8d68343'
+        GROUP BY sd.DictId,sd.DictName,sd.DictOrder
+        ORDER BY sd.DictOrder FOR xml path ('')),1,1,'') AS numList
+        FROM TB_SYS_DATADICT sd2
+        WHERE sd2.TypeId = '8ea8562f-e58b-461c-9485-a967bc5e29ca') AS t
+        ORDER BY dictOrder
+    </select>
+
+    <!--重大危险源引发事故死亡人数统计-->
+    <select id="getDeathTollInfo" resultType="java.util.Map">
+        SELECT dictName,SUM(a) AS a,SUM(b) AS b, SUM(c) AS c,SUM(d) AS d FROM (
+        SELECT sd.dictName,CASE WHEN bdi.DeathToll &lt; 10 THEN 1 ELSE 0 END AS 'a',
+        CASE WHEN bdi.DeathToll &gt; =10 AND bdi.DeathToll &lt; 30 THEN 1 ELSE 0 END AS 'b',
+        CASE WHEN bdi.DeathToll &gt; =30 AND bdi.DeathToll &lt; 100 THEN 1 ELSE 0 END AS 'c',
+        CASE WHEN bdi.DeathToll &gt; =100 THEN 1 ELSE 0 END AS 'd',
+        bdi.DeathToll,sd.dictOrder FROM TB_BASE_DANGERSOURCE_INFO bdi
+        JOIN TB_BASE_COMPANY_INFO bci ON bdi.CompanyId=bci.CompanyId
+        AND  bdi.DeathToll !=0 AND bdi.DeathToll  IS NOT NULL  AND bdi.DeathToll != ''
+        RIGHT JOIN TB_SYS_DATADICT sd ON sd.DictId=	bci.DirectArea
+        WHERE sd.TypeId='8b4524ce-15cf-404a-8182-a7e8a8d68343') AS t
+        GROUP BY dictName,dictOrder
+    </select>
+</mapper>
