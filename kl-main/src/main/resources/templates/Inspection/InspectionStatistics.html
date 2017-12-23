@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <#include "/Common/Layout.html" />
+
+    <link rel="stylesheet" href="../../Scripts/bootstrap-table/bootstrap-table.min.css"/>
+    <script src="../../Scripts/bootstrap-table/bootstrap-table.min.js"></script>
+    <script src="../../Scripts/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+    <script src="../../Scripts/Echarts/echarts-3.8.4/echarts.min.js"></script>
+    <script src="../../ProjectScripts/DangerSourceStatistics/DangerSourceStatistics.js"></script>
+    <script src="../../ProjectScripts/Common/common.js"></script>
+
+
+
+
+    <style>
+        .windowdiv {
+            position: absolute;
+            top: 0;
+            left: 0px;
+            width: 245px;
+            height: 100%;
+            border-top: solid 1px transparent;
+        }
+        #echartsPage {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 99999;
+            background-color: #0e2a42;
+        }
+        #titleSpan {
+            position: absolute;
+            top: 1%;
+            left: 0;
+            right: 0;
+            margin: auto;
+            font-size: 34px;
+            font-weight: bold;
+            font-family: 微软雅黑;
+            text-align: center;
+            color: #fff;
+
+        }
+
+        .numConpany {
+            display: inline-block;
+            width: 30px;
+            height: 75%;
+            background-color: #22529b;
+        }
+    </style>
+
+</head>
+<body style="background-color: #0e2a42;">
+<div id="echartsPage">
+    <div id="titleSpan" class="titleSpan">
+        <span>企业统计</span>
+    </div>
+
+    <img src="../../Images/Common/左上线.png" style="width: 60%;height: 60%;position: absolute;top: 3.8%;z-index:-1;">
+    <img src="../../Images/Common/右下线1.png"
+         style="width: 50%;height: 50%;position: absolute;bottom: 0;right: 0;z-index:-1;">
+    <div style="width: 65%;height: 100%;position: relative;float: left;padding-top: 6%">
+
+
+        <div  style="overflow-y: visible;height: 48%;width: 100%;">
+
+
+            <div id="titleDivColor"
+                 style="margin-left:8%;height: 30px;line-height: 30px;color: #fff; width: 88%;background-color: #0a4164">
+                <span style="font-size: 24px;margin-left: 10px;">企业分布情况</span>
+            </div>
+            <div style="margin-left:8%;width: 88%;height: 88%;">
+                <div id="directAreaCompanyInfo" style="width: 100%;height: 100%;"></div>
+            </div>
+
+        </div>
+
+
+        <div style="height: 48%;width: 100%;">
+            <div id="titleDivColor1"
+                 style="margin-left:8%;height: 30px;line-height: 30px;color: #fff; width: 88%;background-color: #0a4164">
+                <span style="font-size: 24px;margin-left: 10px;">各行业企业分布情况</span>
+            </div>
+            <div style="margin-left:8%;width: 88%;height: 88%;">
+                <div id="industryCompanyInfo" style="width: 100%;height: 100%;"></div>
+            </div>
+        </div>
+    </div>
+
+    <div style="height: 7%;position: absolute;top: 5%;left: 70%;">
+        <div style="margin:0 auto;">
+            <div style="width: 25px;height: 25px;vertical-align:bottom;background-image: url('../../Images/Common/时钟.png');background-size: 100% 100%;display: inline-block;"></div>
+            <span id="showTime" style="color: #fff;font-size: 16px;">0000-00-00 00:00:00</span>
+        </div>
+    </div>
+
+    <div style="position: relative;width: 30%;height: 100%;text-align: center;float: left;padding-top: 6%">
+
+
+
+        <div style="overflow-y: visible;height: 18%; width: 100%;">
+            <div style="margin-left:8%;height: 30px;line-height: 30px;color: #fff; width: 88%;background-color: #0a4164;text-align: left">
+                <span style="font-size: 24px;margin-left: 10px;">垦利区企业总数</span>
+            </div>
+            <div style="margin-left:8%;width: 88%;height: 65%;text-align: center;font-size: 32px;color: #fef601;margin-top: 2%">
+                <div id="numOne" class="numConpany">
+                    1
+                </div>
+                <div id="numTwo" class="numConpany">
+                    1
+                </div>
+                <div id="numThree" class="numConpany">
+                    1
+                </div>
+                <div id="numFour" class="numConpany">
+                    1
+                </div>
+                <div id="numFive" class="numConpany">
+                    1
+                </div>
+                <div id="numSix" class="numConpany">
+                    1
+                </div>
+                <div style="display: inline-block;width: 30px;height: 75%;color:#fff;">
+                    家
+                </div>
+
+
+            </div>
+
+        </div>
+
+        <div style="overflow-y: visible;height: 40%; width: 100%;">
+
+
+            <div style="margin-left:8%;height: 30px;line-height: 30px;color: #fff; width: 88%;background-color: #0a4164;text-align: left">
+                <span style="font-size: 24px;margin-left: 10px;">企业类型占比</span>
+            </div>
+            <div style="margin-left:8%;width: 88%;height: 80%;">
+                <div id="companyTypeEchart" style="height: 100%;width: 100%;"></div>
+            </div>
+
+        </div>
+        <div style="overflow-y: visible;height: 40%; width: 100%;">
+
+
+            <div style="margin-left:8%;height: 30px;line-height: 30px;color: #fff; width: 88%;background-color: #0a4164;text-align: left">
+                <span style="font-size: 24px;margin-left: 10px;">企业规模占比</span>
+            </div>
+            <div style="margin-left:8%;width: 88%;height: 80%;">
+                <div id="scaleCodeEchart" style="height: 100%;width: 100%;"></div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+<script src="../../Scripts/Echarts/echarts-3.8.4/echarts.min.js"></script>
+<script src="../../ProjectScripts/Common/common.js"></script>
+<script src="../../ProjectScripts/Common/convertor_offline.js"></script>
+<script src="../../ProjectScripts/Inseption/InspectionStatistics.js"></script>
+</body>
+</html>
