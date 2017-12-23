@@ -144,7 +144,7 @@ function loadAreaAlarmEchart(){
                     },
                     {
                         show: "true",
-                        start: 20,
+                        start: 40,
                         end: 100,
 
                         textStyle: {
