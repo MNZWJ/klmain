@@ -474,7 +474,6 @@ function loadDeathTollInfo() {
         success: function (result) {
             var data = [];
             var legendData = [];
-            debugger;
             $.each(result, function (i, n) {
                 data.push({name: tool[n.name], type: 'bar', barMaxWidth: 40, stack: n.stack, data: n.num});
                 legendData.push(tool[n.name]);

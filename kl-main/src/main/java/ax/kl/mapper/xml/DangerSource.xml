@@ -43,10 +43,10 @@
 
     <!--危险源化学品信息-->
     <select id="getChemicalsInfoListBySourceId" resultMap="ChemicalsInfo">
-        SELECT ci.* FROM TB_BASE_DANGERSOURCE_INFO di
-        JOIN TB_REL_DRESOURCE_CHEMICAL dc on dc.SourceId=di.SourceId
-        JOIN TB_BASE_CHEMICAL_INFO ci ON ci.ChemId=dc.ChemId
-        WHERE di.SourceId=#{sourceId}
+        SELECT bcc.ChemId,bcc.ChemName,bcc.CAS FROM TB_BASE_DANGERSOURCE_INFO bdi
+        JOIN TB_REL_DRESOURCE_CHEMICAL rdc ON rdc.SourceId=bdi.SourceId
+        JOIN TB_BASE_CHEMICAL_CATALOG bcc ON bcc.ChemId=rdc.ChemId
+        WHERE bdi.SourceId=#{sourceId}
     </select>
 
     <!--重大危险源各等级数量-->
