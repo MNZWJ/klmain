@@ -407,6 +407,16 @@ function companyAdd() {
 //修改
 function companyEdit() {
     eventFlag="edit";
+    //清空表单
+    $(':input', '#companyForm')
+        .not(':button, :submit, :reset')
+        .val('')
+        .removeAttr('checked')
+        .removeAttr('selected');
+    $('#companyId').selectpicker('val', '');
+    $('#accidentType').selectpicker('val', '');
+    $('#rank').selectpicker('val', '');
+    $('#status').selectpicker('val', '');
     var row = $("#MajorTable").bootstrapTable("getSelections");//获取所有选中的行
     if (row.length !==1) {
         BootstrapDialog.alert({
@@ -443,6 +453,7 @@ function companyEdit() {
         url: '/MajorDSInfoEntry/getSourceInfo',
         data: {sourceId: company},
         success: function (result) {
+            debugger;
             //清空表单
             $(':input', '#companyForm')
                 .not(':button, :submit, :reset')
@@ -458,7 +469,7 @@ function companyEdit() {
                 $('#accidentType').selectpicker('val', result[0].accidentType.split(','));//多选时
             }
             $('#rank').selectpicker('val', result[0].rank);
-            $('#status').selectpicker('val', result[0].rank);
+            $('#status').selectpicker('val', result[0].status);
         },
         error: function () {
             BootstrapDialog.alert({
