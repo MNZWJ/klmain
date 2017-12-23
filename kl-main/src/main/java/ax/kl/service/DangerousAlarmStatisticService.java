@@ -61,4 +61,10 @@ public interface DangerousAlarmStatisticService {
      */
     public List<Map<String,String>> getAreaAlarmMonth();
 
+    /**
+     * 获取月度报警次数统计
+     * @return
+     */
+    public List<Map<String,String>> getMonthAllAlarmCount();
+
 }

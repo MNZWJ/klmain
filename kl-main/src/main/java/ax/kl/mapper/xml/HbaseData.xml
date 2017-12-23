@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ax.kl.mapper.HbaseDataMapper">
+
+    <!--企业信息查询-->
+    <select id="getCompanyDict" resultType="java.util.HashMap">
+        select t.UniqueCode,t.CompanyName from TB_BASE_COMPANY_INFO t where len(ISNULL(t.UniqueCode, ''))>0
+    </select>
+
+    <!--重大危险源信息查询-->
+    <select id="getDresourceDict" resultType="java.util.HashMap">
+        select t.UniqueCode,t.SourceName from TB_BASE_DANGERSOURCE_INFO t
+         WHERE len(ISNULL(t.UniqueCode, ''))>0
+         <if test="companyCode!=null and companyCode!=''">
+             and UniqueCode like #{companyCode}+'%'
+         </if>
+    </select>
+
+    <!--工艺单元信息查询-->
+    <select id="getUnitDict" resultType="java.util.HashMap">
+        select t.UniqueCode,t.UnitName from TB_BASE_PROCESS_UNIT t
+        WHERE len(ISNULL(t.UniqueCode, ''))>0
+        <if test="dresourceCode!=null and dresourceCode!=''">
+            and UniqueCode like #{dresourceCode}+'%'
+        </if>
+    </select>
+
+    <!--设备信息查询-->
+    <select id="getEquipDict" resultType="java.util.HashMap">
+        select t.UniqueCode,t.EquipName from TB_BASE_EQUIP_INFO t
+        WHERE len(ISNULL(t.UniqueCode, ''))>0
+        <if test="unitCode!=null and unitCode!=''">
+            and UniqueCode like #{unitCode}+'%'
+        </if>
+    </select>
+
+    <!--指标信息查询-->
+    <select id="getTargetDict" resultType="java.util.HashMap">
+        select t.TargetCode,t.TargetName,t.Unit from TB_BASE_MONITOR_TARGET t
+    </select>
+
+    <!--报警信息查询-->
+    <select id="getAlarmDict" resultType="java.util.HashMap">
+        select t.TypeCode,t.TypeName from TB_BASE_ALARM_TYPE t
+    </select>
+
+</mapper>

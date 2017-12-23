@@ -1,6 +1,7 @@
 package ax.kl.mapper;
 
 import ax.kl.entity.DangerSourceInfo;
+import ax.kl.entity.EquipInfo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -32,6 +33,13 @@ public interface DynamicRiskCloudMapper {
      * @return
      */
     public List<Map<String,String>> getProcessUnitData(@Param("sourceId")String sourceId);
+
+    /**
+     * 获取设备报警信息
+     * @param sourceId
+     * @return
+     */
+    public List<EquipInfo> getEquipAlarmInfo(@Param("sourceId")String sourceId);
 
 
 }

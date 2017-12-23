@@ -1,7 +1,7 @@
 package ax.kl.service.impl;
 
 import ax.kl.entity.DangerSourceInfo;
-import ax.kl.entity.ProcessUnit;
+import ax.kl.entity.EquipInfo;
 import ax.kl.mapper.DynamicRiskCloudMapper;
 import ax.kl.service.DynamicRiskCloudService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author: ZhenpengSu
@@ -77,4 +78,22 @@ public class DynamicRiskCloudServiceImpl implements DynamicRiskCloudService {
     public List<Map<String,String>> getProcessUnitData(String sourceId) {
         return dynamicRiskCloudMapper.getProcessUnitData(sourceId);
     }
+
+    /**
+     * 获取设备报警信息
+     *
+     * @param sourceId
+     * @return
+     */
+    @Override
+    public Map<String, List<EquipInfo>> getEquipAlarmInfo(String sourceId) {
+
+        List<EquipInfo> equipList=dynamicRiskCloudMapper.getEquipAlarmInfo(sourceId);
+
+        Map<String,List<EquipInfo>> map=equipList.stream().collect(Collectors.groupingBy(EquipInfo::getUnitId));
+
+        return map;
+    }
+
+
 }

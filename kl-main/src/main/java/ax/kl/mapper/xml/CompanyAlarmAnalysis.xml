@@ -3,9 +3,60 @@
 <mapper namespace="ax.kl.mapper.CompanyAlarmAnalysisMapper">
 
 
+    <select id="getAlarmNum" resultType="java.util.Map">
+        SELECT ci.CompanyName,ci.CompanyId, STUFF((
+        SELECT ','+num FROM (
+        SELECT cast(ISNULL(SUM(da.AlarmCount), 0) as VARCHAR) as num,[at].TypeCode
+        FROM TB_STATIS_COMPANY_DAY_ALARM da
+        right JOIN TB_BASE_ALARM_TYPE at ON (da.AlarmType=[at].TypeCode and da.IDCard='ZT' AND
+        da.CompanyCode=ci.UniqueCode
+
+        <if test="startDate!='' and startDate!= null ">
+            AND da.AlarmDate&gt;=#{startDate}
+        </if>
+        <if test="endDate!='' and endDate!= null ">
+            AND da.AlarmDate &lt;=#{endDate}
+        </if>
 
 
+        )
+        GROUP BY [at].TypeCode
+        UNION ALL
 
+        SELECT cast(ISNULL(SUM(da.AlarmCount), 0) as VARCHAR)as num,mt.TargetCode
+        FROM TB_STATIS_COMPANY_DAY_ALARM da
+        right JOIN TB_BASE_MONITOR_TARGET mt ON (da.AlarmType=mt.TargetCode and da.IDCard='ZB' AND
+        da.CompanyCode=ci.UniqueCode
+
+        <if test="startDate!='' and startDate!= null ">
+            AND da.AlarmDate&gt;=#{startDate}
+        </if>
+        <if test="endDate!='' and endDate!= null ">
+            AND da.AlarmDate &lt;=#{endDate}
+        </if>
+
+        )
+        where len(mt.LevelCode)=6 GROUP BY mt.TargetCode
+
+        ) taba
+        ORDER BY TypeCode
+        for xml path('')
+
+
+        ), 1, 1, '') as num
+        FROM TB_BASE_COMPANY_INFO ci
+        WHERE  ci.CompanyName LIKE '%'+#{companyName}+'%'
+
+    </select>
+
+
+    <select id="getAlarmTypeList" resultType="java.util.Map">
+        SELECT [at].TypeCode,[at].TypeName FROM TB_BASE_ALARM_TYPE at
+UNION ALL
+SELECT mt.TargetCode,mt.TargetName FROM TB_BASE_MONITOR_TARGET mt WHERE len(mt.LevelCode)=6
+
+ORDER BY TypeCode
+    </select>
 
 
 </mapper>

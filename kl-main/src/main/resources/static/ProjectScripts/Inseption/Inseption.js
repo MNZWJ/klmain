@@ -101,7 +101,8 @@ function initTable() {
 
 
                     return index + 1;
-                }
+                },
+                width: '14%'
             }
             ,
 
@@ -110,16 +111,57 @@ function initTable() {
                 field: 'chemName',
                 title: '化学品名称',
                 halign: 'center',
-                width: '40%',
+                width: '28%',
                 cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis'}};
+                    return {classes: '', css:  {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
                 }
             }, {
                 field: 'cAS',
                 title: 'CAS',
                 halign: 'center',
-                width: '50%'
-            }]
+                width: '21%',
+                cellStyle: function (value, row, index, field) {
+                    return {classes: '', css:  {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                },
+                formatter: function (value, row, index) {
+                    if(value==undefined){
+                        value="";
+                    }
+                    return '<span title="'+value+'">'+value+'</span>'
+
+                }
+            }, {
+                field: 'dreserves',
+                title: '设计储量',
+                halign: 'center',
+                width: '21%',
+                cellStyle: function (value, row, index, field) {
+                    return {classes: '', css:  {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                },
+                formatter: function (value, row, index) {
+                    if(value==undefined){
+                        value="";
+                    }
+                    return '<span title="'+value+'">'+value+'</span>'
+
+                }
+            }, {
+                field: 'unit',
+                title: '计量单位',
+                halign: 'center',
+                width: '16%',
+                cellStyle: function (value, row, index, field) {
+                    return {classes: '', css:  {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                },
+                formatter: function (value, row, index) {
+                    if(value==undefined){
+                        value="";
+                    }
+                    return '<span title="'+value+'">'+value+'</span>'
+
+                }
+            }
+]
     });
     $("#riskTable").bootstrapTable("destroy");
     //危险源表格
@@ -163,7 +205,8 @@ function initTable() {
 
 
                     return index + 1;
-                }
+                },
+                width: '10%',
             }
             ,
 
@@ -174,23 +217,63 @@ function initTable() {
                 halign: 'center',
                 width: '30%',
                 cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis'}};
+                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                },
+                formatter: function (value, row, index) {
+                    if(value==undefined){
+                        value="";
+                    }
+                    return '<span title="'+value+'">'+value+'</span>'
+
                 }
             }, {
                 field: 'rank',
                 title: '危险源等级',
                 halign: 'center',
-                width: '20%'
+                width: '20%',
+                align: 'center',
+                cellStyle: function (value, row, index, field) {
+                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                },
+                formatter: function (value, row, index) {
+                    if(value==undefined){
+                        value="";
+                    }
+                    return '<span title="'+value+'">'+value+'</span>'
+
+                }
             }, {
                 field: 'OutPersonCount',
                 title: '500米范围内人数估值',
                 halign: 'center',
-                width: '20%'
+                width: '25%',
+                cellStyle: function (value, row, index, field) {
+                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                },
+                formatter: function (value, row, index) {
+                    if(value==undefined){
+                        value="";
+                    }
+                    return '<span title="'+value+'">'+value+'</span>'
+
+                }
+
             }, {
                 field: 'recordDate',
                 title: '投用时间',
                 halign: 'center',
-                width: '30%'
+                width: '15%',
+                cellStyle: function (value, row, index, field) {
+                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                },
+                formatter: function (value, row, index) {
+                    if(value==undefined){
+                        value="";
+                    }
+                    return '<span title="'+value+'">'+value+'</span>'
+
+                }
+
             }]
     });
     $("#companyArtTable").bootstrapTable("destroy");
@@ -235,7 +318,8 @@ function initTable() {
 
 
                     return index + 1;
-                }
+                },
+                width: '10%',
             }
             ,
 
@@ -246,13 +330,30 @@ function initTable() {
                 halign: 'center',
                 width: '40%',
                 cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis'}};
+                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                },
+                formatter: function (value, row, index) {
+                    if(value==undefined){
+                        value="";
+                    }
+                    return '<span title="'+value+'">'+value+'</span>'
+
                 }
             }, {
                 field: 'monitorUnit',
                 title: '重点监控单元',
                 halign: 'center',
-                width: '50%'
+                width: '50%',
+                cellStyle: function (value, row, index, field) {
+                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                },
+                formatter: function (value, row, index) {
+                    if(value==undefined){
+                        value="";
+                    }
+                    return '<span title="'+value+'">'+value+'</span>'
+
+                }
             }]
     });
 
@@ -481,12 +582,13 @@ function loadScaleCode(){
                     },
                     shadowBlur: 40,
                     shadowColor: 'rgba(40, 40, 40,0.5)',
+
                 }
             };
 
             scaleCodeOption = {
 
-                color: ['#fbf31f', '#ef8938','#ffe01f','#22529b'],
+                color: ['#ed2d2d', '#ef8938','#ffe01f','#22529b'],
 
 
 
@@ -507,30 +609,20 @@ function loadScaleCode(){
                     name: '企业类型占比',
                     type: 'pie',
                     //radius: ['65%', '85%'],
-                    avoidLabelOverlap: false,
+                    avoidLabelOverlap: true,
                     itemStyle: dataStyle,
-                    // label: {
-                    //     normal: {
-                    //         show: false,
-                    //         position: 'center'
-                    //     },
-                    //     emphasis: {
-                    //         show: true,
-                    //         formatter: function(param) {
-                    //             return param.percent.toFixed(0) + '%';
-                    //         },
-                    //         textStyle: {
-                    //             fontSize: '30',
-                    //             fontWeight: 'bold',
-                    //             color:'#fff'
-                    //         }
-                    //     }
-                    // },
-                    // labelLine: {
-                    //     normal: {
-                    //         show: true
-                    //     }
-                    // },
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'outside'
+                        }
+
+                    },
+                    labelLine: {
+                        normal: {
+                            show: true
+                        }
+                    },
                     data: data
                 }]
             }
@@ -618,11 +710,18 @@ function loadCompanyType(){
                     label: {
                         show: true
                     },
-                    labelLine: {
-                        show: true
-                    },
+
+                    position:'inside',
                     shadowBlur: 40,
                     shadowColor: 'rgba(40, 40, 40,0.5)',
+                    formatter: function(params){
+                        var name=params.name;
+                        if(name.length>4){
+                            return name.substring(0,4)+"\n"+name.substring(5);
+                        }
+                        return name;
+                    }
+
                 }
             };
 
@@ -649,30 +748,27 @@ function loadCompanyType(){
                     name: '企业类型占比',
                     type: 'pie',
                     //radius: ['65%', '85%'],
-                    avoidLabelOverlap: false,
+                    avoidLabelOverlap: true,
                     itemStyle: dataStyle,
-                    // label: {
-                    //     normal: {
-                    //         show: false,
-                    //         position: 'center'
-                    //     },
-                    //     emphasis: {
-                    //         show: true,
-                    //         formatter: function(param) {
-                    //             return param.percent.toFixed(0) + '%';
-                    //         },
-                    //         textStyle: {
-                    //             fontSize: '30',
-                    //             fontWeight: 'bold',
-                    //             color:'#fff'
-                    //         }
-                    //     }
-                    // },
-                    // labelLine: {
-                    //     normal: {
-                    //         show: true
-                    //     }
-                    // },
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'outside',
+                            formatter: function(params){
+                                var name=params.name;
+                                if(name.length>4){
+                                    return name.substring(0,4)+"\n"+name.substring(5);
+                                }
+                                return name;
+                            },
+                        },
+
+                    },
+                    labelLine: {
+                        normal: {
+                            show: true
+                        }
+                    },
                     data: data
                 }]
             };
@@ -773,12 +869,13 @@ function loadIndustryCompany(){
                         dataZoom: [
                             {
                                 type:'inside',
-
+                                start: 0,
+                                end: 20,
                             },
                             {
                                 show: "true",
                                 start: 0,
-                                end: 100,
+                                end: 60,
 
                                 textStyle: {
                                     color: '#fff'
@@ -884,12 +981,13 @@ function loadDirectAreaCompany(){
                         dataZoom: [
                             {
                                 type:'inside',
-
+                                start: 0,
+                                end: 60,
                             },
                             {
                                 show: "true",
                                 start: 0,
-                                end: 100,
+                                end: 60,
 
                                 textStyle: {
                                     color: '#fff'

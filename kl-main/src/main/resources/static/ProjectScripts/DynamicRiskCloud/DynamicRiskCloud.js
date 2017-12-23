@@ -3,7 +3,8 @@ var hazardList = [];
 var sourceId = "";
 var scanHeight = 0;
 //判断是否初始化表格
-var tableFlag=0;
+var tableFlag = 0;
+var methodRefresh="";
 $(function () {
     //获取浏览器高度
     scanHeight = $(window).height();
@@ -15,9 +16,13 @@ $(function () {
     //模态窗关闭事件
     $('#myModal').on('hidden.bs.modal', function () {
 
-
+        methodRefresh=setInterval(function(){
+            searchCompanyList();
+        },1000*60*3);
     });
-
+    methodRefresh=setInterval(function(){
+        searchCompanyList();
+    },1000*60*3);
 
 });
 
@@ -197,7 +202,10 @@ function heatMap() {
     map.clearOverlays();
     heatmapOverlay = new BMapLib.HeatmapOverlay({"radius": 26});
     map.addOverlay(heatmapOverlay);
-    heatmapOverlay.setDataSet({data: headPoints, max: 100});
+    setTimeout(function () {
+        heatmapOverlay.setDataSet({data: headPoints, max: 100});
+    },500);
+
 }
 
 var curZoomFlag = 7;
@@ -226,55 +234,60 @@ function onZoomChanged() {
 //加载重大危险源点
 function loadHazard(hazardList) {
     map.clearOverlays();
-    $.each(hazardList, function (i, n) {
 
-        var tempPoint = new BMap.Point(n.longt, n.lat);
-        var imageUrl = "";
-        if (n.colorFlag == "1") {
-            imageUrl = "../../Images/Common/红点.png";
-        } else if (n.colorFlag == "2") {
-            imageUrl = "../../Images/Common/橙点.png";
-        } else if (n.colorFlag == "3") {
-            imageUrl = "../../Images/Common/黄点.png";
-        } else if (n.colorFlag == "4") {
-            imageUrl = "../../Images/Common/蓝点.png";
-        }
-        // var myIcon = new BMap.Icon(imageUrl, new BMap.Size(39, 30));
-        //
-        // var marker = new BMap.Marker(wgs2bd(tempPoint), {
-        //     title: n.companyName+"\n"+n.sourceName,
-        //     icon: myIcon,
-        //     offset: new BMap.Size(0, -40)
-        // });
+    setTimeout(function(){
+        $.each(hazardList, function (i, n) {
 
-        var html = '<a title="' +n.companyName+'\n'+ n.sourceName + '" ><div style="position: absolute; padding: 0pt; width: 19px; height: 25px; line-height:25px; overflow: visible;background-size:19px 25px;background-image:url(' + imageUrl + ');text-align:center;white-space : nowrap" ><span style="margin-left:21px;font-size:12px;color: #000;" >' + n.simpleName + '</span>';
-        + '</div></a>';
-        var tempPoint = new BMap.Point(n.longt, n.lat);
-        var marker = new BMapLib.RichMarker(html, wgs2bd(tempPoint), {
+            var tempPoint = new BMap.Point(n.longt, n.lat);
+            var imageUrl = "";
+            if (n.colorFlag == "1") {
+                imageUrl = "../../Images/Common/红点.png";
+            } else if (n.colorFlag == "2") {
+                imageUrl = "../../Images/Common/橙点.png";
+            } else if (n.colorFlag == "3") {
+                imageUrl = "../../Images/Common/黄点.png";
+            } else if (n.colorFlag == "4") {
+                imageUrl = "../../Images/Common/蓝点.png";
+            }
+            // var myIcon = new BMap.Icon(imageUrl, new BMap.Size(39, 30));
+            //
+            // var marker = new BMap.Marker(wgs2bd(tempPoint), {
+            //     title: n.companyName+"\n"+n.sourceName,
+            //     icon: myIcon,
+            //     offset: new BMap.Size(0, -40)
+            // });
 
-            "anchor": new BMap.Size(-20, -3),
-            "enableDragging": false
+            var html = '<a title="' + n.companyName + '\n' + n.sourceName + '" ><div style="position: absolute; padding: 0pt; width: 19px; height: 25px; line-height:25px; overflow: visible;background-size:19px 25px;background-image:url(' + imageUrl + ');text-align:center;white-space : nowrap" ><span style="margin-left:21px;font-size:12px;color: #000;" >' + n.simpleName + '</span>';
+            +'</div></a>';
+            var tempPoint = new BMap.Point(n.longt, n.lat);
+            var marker = new BMapLib.RichMarker(html, wgs2bd(tempPoint), {
+
+                "anchor": new BMap.Size(-20, -3),
+                "enableDragging": false
+            });
+
+
+            map.addOverlay(marker);
+            marker.customData = {
+                sourceId: n.sourceId,
+                riskWarn: n.riskWarn,
+                colorFlag: n.colorFlag,
+                title: n.sourceName,
+                generalHidden: n.generalHidden,
+                majorHidden: n.majorHidden
+            };
+
+            marker.addEventListener("onclick", onMarkClick);
+
+
         });
+    },500);
 
-
-        map.addOverlay(marker);
-        marker.customData = {
-            sourceId: n.sourceId,
-            riskWarn: n.riskWarn,
-            colorFlag: n.colorFlag,
-            title: n.sourceName,
-            generalHidden: n.generalHidden,
-            majorHidden: n.majorHidden
-        };
-
-        marker.addEventListener("onclick", onMarkClick);
-
-
-    });
 }
 
 //重大危险源点击事件
 function onMarkClick(e) {
+    clearInterval(methodRefresh);
     sourceId = e.target.customData.sourceId;
     var riskWarn = e.target.customData.riskWarn;
     var colorFlag = e.target.customData.colorFlag;
@@ -325,9 +338,46 @@ function onMarkClick(e) {
                     riskType = "有毒气、可燃气体报警";
                     imgUrl = "../../Images/Common/气体检测报警.png";
                 }
+                var alarmData=null;
+                $.ajax({
+                    type: 'post',
+                    async: false,
+                    url: '/DynamicRiskCloud/getEquipAlarmInfo',
+                    data: {sourceId: sourceId},
+                    success: function (alarmDataList) {
+                        alarmData=alarmDataList;
+                    }
+                });
 
 
-                strDiv += "<tr><td style='padding-left:10px;width: 49.5%;height: 100px;border: solid 1px #000;'>" + "<span>名称：" + n.UnitName + "</span><br/>" + "<span >有毒气、可燃气体报警<img style='width: 40px;height: 40px;margin-left: 10px;' src='" + imgUrl + "'></span>" + "</td>" + "<td  style='width: 50%;height: 100px;border: solid 1px #000;font-size:0;'></td ></tr>"
+                strDiv += "<tr><td style='padding-left:10px;width: 49.5%;height: 100px;border: solid 1px #000;'>" + "<span>名称：" + n.UnitName + "</span><br/>" + "<span >有毒气、可燃气体报警<img style='width: 40px;height: 40px;margin-left: 10px;' src='" + imgUrl + "'></span>" + "</td>" + "<td  style='width: 50%;height: 100px;border: solid 1px #000;'>" +
+
+                    "<table style='width: 100%;height: 100%;table-layout: fixed'>";
+                if(alarmData!=null&&alarmData!=""&&alarmData[n.UnitId]!=undefined&&alarmData[n.UnitId].length>0){
+                    strDiv +="<tr><td style='width: 10%;'>" +
+                    "<a onclick='movePictLeft(\""+n.UnitId+"\")' class='left' href='#' role='button'><span class='glyphicon glyphicon-chevron-left'  aria-hidden='true'></span></a>" +
+                    "</td><td style='width: 80%;'><div id='"+n.UnitId+"' style='width: 100%;height: 100%;overflow-x: hidden'><ul style='width:"+alarmData[n.UnitId].length*100+"px;position: relative;top: 50%;margin-top: -40px;'>";
+                    $.each(alarmData[n.UnitId],function(j,m){
+                        var imgName="";
+                        if(parseInt(m.alarmNum)>0){
+                            imgName=m.alarmPict;
+                        }else{
+                            imgName=m.normalPict;
+                        }
+                        strDiv +="<li style='width: 100px;text-align: center;overflow: hidden;white-space: nowrap;text-overflow: ellipsis'><img title='"+m.equipName+"' src='../../Images/EquipIcon/"+imgName+".png' style='width: 50px;height: 50px;'></img><br/><span  title='"+m.equipName+"'>" +
+                        m.equipName
+                        +"</span></li>";
+                    })
+
+
+
+
+                    strDiv +="</ul></div></td><td style='width: 10%;' align='right'>" +
+                    "<a onclick='movePictRight(\""+n.UnitId+"\")' class='right' href='#' role='button'><span class='glyphicon glyphicon-chevron-right'  aria-hidden='true'></span></a>"
+                    + "</td></tr>";
+                }
+
+                strDiv += "</table></td ></tr>";
             });
             $("#unitDiv").html(strDiv);
         },
@@ -340,6 +390,13 @@ function onMarkClick(e) {
     $('#myModal').modal('show');
 
 
+}
+
+function movePictLeft(x){
+    document.getElementById(x).scrollLeft=document.getElementById(x).scrollLeft-100;
+}
+function movePictRight(x){
+    document.getElementById(x).scrollLeft=document.getElementById(x).scrollLeft+100;
 }
 
 
@@ -589,10 +646,10 @@ function initTable() {
 //查看事故隐患
 function showTable() {
     $("#hiddenAccidentModal").modal("show");
-    if(tableFlag==0){
+    if (tableFlag == 0) {
         initTable();
-        tableFlag=1;
-    }else if(tableFlag==1){
+        tableFlag = 1;
+    } else if (tableFlag == 1) {
         $("#hiddenRiskTable").bootstrapTable("refresh");
     }
 
@@ -600,13 +657,13 @@ function showTable() {
 
 
 //适应页面大小
-function resizePage(){
+function resizePage() {
 
 
     //获取浏览器高度
     scanHeight = $(window).height();
 
-    tableFlag=0;
+    tableFlag = 0;
 
 }
 

@@ -1,6 +1,7 @@
 package ax.kl.service;
 
 import ax.kl.entity.DangerSourceInfo;
+import ax.kl.entity.EquipInfo;
 
 import java.util.List;
 import java.util.Map;
@@ -24,4 +25,15 @@ public interface DynamicRiskCloudService {
      * @return
      */
     public List<Map<String,String>> getProcessUnitData(String sourceId);
+
+
+    /**
+     * 获取设备报警信息
+     * @param sourceId
+     * @return
+     */
+    public Map<String,List<EquipInfo>> getEquipAlarmInfo(String sourceId);
+
+
+
 }

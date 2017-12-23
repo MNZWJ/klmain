@@ -98,4 +98,29 @@ public class DangerousAlarmStatisticServiceImpl implements DangerousAlarmStatist
     public List<Map<String, String>> getAreaAlarmMonth() {
         return dangerousAlarmStatisticMapper.getAreaAlarmMonth();
     }
+
+    /**
+     * 获取月度报警次数统计
+     *
+     * @return
+     */
+    @Override
+    public List<Map<String, String>> getMonthAllAlarmCount() {
+
+        List<Map<String, String>> list=dangerousAlarmStatisticMapper.getMonthAllAlarmCount();
+        for(int i=list.size()-2;i>=0;i--){
+
+            String alarm=list.get(i).get("alarmCount");
+            String lastAlarm=list.get(i+1).get("alarmCount");
+            Double proportion=Double.valueOf((Integer.parseInt(alarm)-Integer.parseInt(lastAlarm)))/Integer.parseInt(lastAlarm);
+
+            list.get(i).put("alarmUp",String.format("%.2f",proportion));
+        }
+        if(list.size()>5){
+            list.remove(list.size()-1);
+        }
+
+
+        return list;
+    }
 }

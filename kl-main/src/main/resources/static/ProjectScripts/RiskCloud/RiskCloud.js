@@ -335,7 +335,7 @@ function onMarkClick(e) {
                 }
 
 
-                strDiv+="<tr><td style='padding-left:10px;width: 49.5%;height: 100px;border: solid 1px #000;'>"+"<span>名称："+n.unitName+"</span><br/>"+"<span >火灾爆炸指数："+n.realFEI+"</span><br/>"+"<span style='background-color: "+FeiColor+"'>级别："+FeiLevel+"</span>"+"</td>"+"<td  style='width: 50%;height: 100px;border: solid 1px #000;font-size:0;'></td ></tr>"
+                strDiv+="<tr><td style='padding-left:10px;width: 100%;height: 100px;border: solid 1px #000;'>"+"<span>名称："+n.unitName+"</span><br/>"+"<span >火灾爆炸指数："+n.realFEI+"</span><br/>"+"<span style='background-color: "+FeiColor+"'>级别："+FeiLevel+"</span>"+"</td>"+"</tr>"
             });
             $("#unitDiv").html(strDiv);
         },
@@ -430,6 +430,7 @@ function openCondition(){
 
                         return index + 1;
                     },
+                    width:'5%'
 
                 }
                 ,
@@ -441,30 +442,78 @@ function openCondition(){
                     halign: 'center',
 
                     cellStyle: function (value, row, index, field) {
-                        return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis'}};
-                    }
+                        return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                    },
+                    formatter: function (value, row, index) {
+                        if(value==undefined){
+                            value="";
+                        }
+                        return '<span title="'+value+'">'+value+'</span>'
+
+                    },
+                    width:'25%'
                 }, {
                     field: 'environment',
                     title: '周边环境名称',
                     halign: 'center',
 
                     cellStyle: function (value, row, index, field) {
-                        return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis'}};
-                    }
+                        return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                    },
+                    formatter: function (value, row, index) {
+                        if(value==undefined){
+                            value="";
+                        }
+                        return '<span title="'+value+'">'+value+'</span>'
+
+                    },
+                    width:'23%'
                 }, {
                     field: 'realDistance',
                     title: '实际距离',
-                    halign: 'center'
+                    halign: 'center',
+                    cellStyle: function (value, row, index, field) {
+                        return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                    },
+                    formatter: function (value, row, index) {
+                        if(value==undefined){
+                            value="";
+                        }
+                        return '<span title="'+value+'">'+value+'</span>'
 
+                    },
+                    width:'14%'
                 }, {
                     field: 'standardDistance',
                     title: '标准要求',
-                    halign: 'center'
+                    halign: 'center',
+                    cellStyle: function (value, row, index, field) {
+                        return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                    },
+                    formatter: function (value, row, index) {
+                        if(value==undefined){
+                            value="";
+                        }
+                        return '<span title="'+value+'">'+value+'</span>'
+
+                    },
+                    width:'14%'
 
                 }, {
                     field: 'conformance',
                     title: '与标准符合性',
-                    halign: 'center'
+                    halign: 'center',
+                    cellStyle: function (value, row, index, field) {
+                        return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                    },
+                    formatter: function (value, row, index) {
+                        if(value==undefined){
+                            value="";
+                        }
+                        return '<span title="'+value+'">'+value+'</span>'
+
+                    },
+                    width:'19%'
 
                 }]
         });

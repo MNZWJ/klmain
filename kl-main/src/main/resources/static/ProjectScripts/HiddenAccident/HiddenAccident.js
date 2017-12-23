@@ -99,14 +99,11 @@ function loadHazardList(hazardList) {
 
         var imagUrl = "";
         switch (true) {
-            case n.rank==SourceDangerIdOne:
-                imagUrl = "../../Images/Common/红色.png"; break;
-            case n.rank==SourceDangerIdTwo  :
+            case n.rank=="一般隐患":
                 imagUrl = "../../Images/Common/橙色.png"; break;
-            case n.rank==SourceDangerIdThree  :
-                imagUrl = "../../Images/Common/黄色.png"; break;
-            case n.rank==SourceDangerIdFour :
-                imagUrl = "../../Images/Common/蓝色.png"; break;
+            case n.rank=="重大隐患"  :
+                imagUrl = "../../Images/Common/红色.png"; break;
+
             default: imagUrl = "../../Images/Common/绿色.png"; break;
         }
         var html = '<a title="' + n.sourceName + '" onclick="onMarkClick(\''+n.sourceId+'\',\''+n.sourceName+'\')"><div style="position: absolute; padding: 0pt; width: 51px; height: 25px; line-height:25px; overflow: hidden;background-size:51px 25px;background-image:url(' + imagUrl + ');text-align:center" ><span style="font-weight:bold;font-size:14px;color: #000;" >' + n.num + '</span>';
