@@ -86,7 +86,10 @@ function saveData(){
                 return false;
             }
             $.each(unitList, function () {
-                unit[this.name] = this.value
+                if(this.name=="unitId"){
+                    unit[this.name] = unitId;
+                }
+                unit[this.name] = this.value;
             });
 
 
@@ -745,7 +748,7 @@ function unitEdit() {
     $('#collapseOne').collapse('show');
     $('#collapseTwo').collapse('hide');
     $("#btn_save").show();
-    $("#addEquip").hide();
+    $("#addEquip").show();
     $("#delEquip").show();
     $("#unitForm").data('bootstrapValidator').removeField("UniqueCodeU");//删除编码验证
 }
@@ -950,7 +953,7 @@ function checkEquipTable(obj){
     if(obj!=null){
         for(var key in obj){
             for(var item in obj[key]){
-                if(item!='equipId'){
+                if(item!='equipId'&&item!='state'){
                     if(obj[key][item]==''||obj[key][item]==null){
                         count++;
                         BootstrapDialog.alert({

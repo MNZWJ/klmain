@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -98,6 +99,15 @@ public class ProcessUnitServiceImpl implements ProcessUnitService {
      */
     public void delProcessUnit(String[] idLists){
         this.processUnitMapper.delProcessUnit(idLists);
+        for(String id:idLists){
+            List<EquipInfo> equipInfos=this.equipInfoMapper.getEquipInfoList(id);
+            StringBuilder ids=new StringBuilder();
+            for(EquipInfo e:equipInfos){
+                ids.append(e.getEquipId()).append(",");
+            }
+            String[] equipIds=ids.substring(0,ids.length()-1).split(",");
+            this.equipInfoMapper.deleteEquipInfo(equipIds);
+        }
 
     }
 
