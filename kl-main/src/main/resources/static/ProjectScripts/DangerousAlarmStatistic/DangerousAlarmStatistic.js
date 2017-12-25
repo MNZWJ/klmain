@@ -393,7 +393,9 @@ function loadAlarmTypeMonthEchart(){
                                 // fontSize:20
                             },
                             pageIconColor:'#fff',
-                            pageTextStyle:'#fff'
+                            pageTextStyle:{
+                                color:'#fff'
+                            }
                         },
 
                         singleAxis: {
@@ -499,7 +501,9 @@ function loadTodayEquipTypeCountEchart(){
                                 // fontSize: 20
                             },
                             pageIconColor:'#fff',
-                            pageTextStyle:'#fff',
+                            pageTextStyle:{
+                                color:'#fff'
+                            },
                             pageIconSize:12
 
                         },
@@ -794,7 +798,9 @@ function loadTodayAlarmTypeEchart(){
                     itemWidth:20,
                     pageIconSize:10,
                     pageIconColor:'#fff',
-                    pageTextStyle:'#fff',
+                    pageTextStyle:{
+                        color:'#fff'
+                    },
                     pageIconSize:12
                 },
 
