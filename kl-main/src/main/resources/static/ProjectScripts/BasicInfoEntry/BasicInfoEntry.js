@@ -100,19 +100,7 @@ $(function () {
                     users.push(rowData);
                     return "<a href='javascript:look(\""+rowData.companyId+"\")'>" + value + "</a>";
                 }
-            },/*{
-                field: 'legalPerson',
-                title: '法人代表',
-                halign: 'center',
-                align:'center',
-                width:'5%',
-            }, {
-                field: 'contactWay',
-                title: '联系方式',
-                halign: 'center',
-                align:'center',
-                width:'8%',
-            }, */ {
+            },{
                 field: 'safeManageRank',
                 title: '安全管理分级',
                 halign: 'center',
@@ -177,20 +165,7 @@ $(function () {
                         return "";
                     }
                 }
-
-            }, /*{
-                field: 'area',
-                title: '行政区域',
-                halign: 'center',
-                width:'9%',
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                },
-                formatter: function (value, row, index) {
-                    return '<span title="'+value+'">'+value+'</span>'
-
-                }
-            },*/
+            },
             {
                 field: 'directArea',
                 title: '直属区域',
@@ -1266,6 +1241,7 @@ $('#btn_save').click(function () {
                         callback: function () {
                             $('#myModal').modal('hide');
                             $("#enterpriseTable").bootstrapTable("refresh");
+                            getCompanyList();
                         }
                     });
                 }

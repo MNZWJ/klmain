@@ -7,9 +7,9 @@
         INSERT INTO TB_BASE_COMPANY_INFO ( CompanyId,
         CompanyName,        UniqueCode,        Area,        LegalPerson,        ContactWay,        SafeManageRank,
         StandardRank,        OperatingState,        Longt,        Lat,        ScaleCode,        TypeCode,
-        DirectArea,SimpleName        )        VALUES        (       #{companyId},
+        DirectArea,SimpleName ,SuperVisionUnit       )        VALUES        (       #{companyId},
         #{ companyName },#{ uniqueCode },#{ area },#{ legalPerson },#{ contactWay },#{ safeManageRank }, #{ standardRank },
-         #{ operatingState }, #{ longt },#{ lat },#{ scaleCode },#{ typeCode },#{ directArea }   ,#{simpleName}     )
+         #{ operatingState }, #{ longt },#{ lat },#{ scaleCode },#{ typeCode },#{ directArea } ,#{simpleName} ,#{superVisionUnit}   )
     </insert>
 
     <!--更新企业信息-->
@@ -18,7 +18,7 @@
         SET CompanyName =#{ companyName }, UniqueCode =#{ uniqueCode }, Area =#{ area }, LegalPerson =#{ legalPerson },
         ContactWay =#{ contactWay }, SafeManageRank =#{ safeManageRank }, StandardRank =#{ standardRank },
         OperatingState =#{ operatingState }, Longt =#{ longt }, Lat =#{ lat }, ScaleCode =#{ scaleCode },
-        TypeCode =#{ typeCode }, DirectArea =#{ directArea },SimpleName=#{simpleName}
+        TypeCode =#{ typeCode }, DirectArea =#{ directArea },SimpleName=#{simpleName},SuperVisionUnit=#{superVisionUnit}
         WHERE
         CompanyId =#{ companyId }
     </update>
