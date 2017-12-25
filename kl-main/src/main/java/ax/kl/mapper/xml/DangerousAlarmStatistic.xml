@@ -91,10 +91,14 @@ WHERE  da.IDCode='ZT'
 	</select>
 
 	<!--本月行业报警统计-->
-	<select id="getIndustryAlarmMonth" resultType="java.util.Map">
+	<select id="getIndustryAlarmMonth" resultType="java.util.Map" >
 
 SELECT
-TOP 5
+	<if	test="staticIndustryList.length ==0">
+		TOP 5
+	</if>
+
+
 		sda.DictName,
 	STUFF(
 		(
@@ -169,6 +173,15 @@ TOP 5
 				) AS taba ) AS total
 
 FROM TB_SYS_DATADICT sda WHERE sda.TypeId='29485cb6-bf2e-4892-ab3a-083ffbb2e6f9'
+
+		<if	test="staticIndustryList!=null and staticIndustryList.length >0">
+
+			AND sda.DictId IN
+			<foreach collection="staticIndustryList" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+
+		</if>
 
 ORDER BY total DESC
 

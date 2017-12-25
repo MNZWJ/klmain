@@ -203,7 +203,6 @@ function initTable(){
         },
         columns: [
             {
-
                 title: '序号',
                 field: 'number1',
                 formatter: function (value, row, index) {

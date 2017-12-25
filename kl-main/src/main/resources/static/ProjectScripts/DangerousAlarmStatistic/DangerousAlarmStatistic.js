@@ -1,5 +1,5 @@
 var scanHeight=0;
-
+var staticIndustryStr="";
 $(function () {
     setInterval(function(){
         $("#showTime").html(convert(new Date()));
@@ -198,6 +198,7 @@ function loadIndustryAlarmEchart(){
     $.ajax({
        type:'post',
        url:'/DangerousAlarmStatistic/getIndustryAlarmMonth',
+        data:{staticIndustryStr:staticIndustryStr},
         success:function(result){
            var data=[];
             var xData = [];
@@ -219,19 +220,6 @@ function loadIndustryAlarmEchart(){
                 url:'/DangerousAlarmStatistic/getAlarmTypeList' ,
                 success:function (alarmList) {
 
-
-                    // $.ajax({
-                    //     type: 'get',
-                    //     async:false,
-                    //     url: "/SysDictionary/getDataDictList?typeId=" + IndustryCodeDictId,
-                    //     success: function (dataResult) {
-                    //
-                    //         $.each(dataResult, function (i, n) {
-                    //             xData.push(n.dictName);
-                    //         });
-                    //     }});
-
-
                     var legend = [];
                     legend.push({dim: 0, name: '行业',type: 'category', data: xData, inverse: true, nameLocation: 'start'})
                     $.each(alarmList, function (i, n) {
@@ -239,6 +227,42 @@ function loadIndustryAlarmEchart(){
                         legend.push({dim: i+1, name: n.TypeName});
 
                     });
+
+                    $.ajax({
+                        type: 'get',
+                        async:false,
+                        url: "/SysDictionary/getDataDictList?typeId=" + IndustryCodeDictId,
+                        success: function (dataResult) {
+                            var str="";
+                            var checkId="";
+                            $.each(dataResult, function (i, n) {
+                                var checkFlag="";
+
+                                $.each(xData,function(j,m){
+                                    if(m==n.dictName){
+                                        checkFlag="checked"
+                                        checkId+=n.dictId+',';
+
+                                    }
+                                });
+
+                                str+="<div class='col-xs-4' style='text-align: left'  >";
+                                str+="<nobr ><input id='"+n.dictId+"' name='"+n.dictId+"' type='checkbox' "+checkFlag+">  <label for='"+n.dictId+"'>"+n.dictName+"</label></nobr>";
+                                str+="</div>";
+
+                            });
+                            $("#hangYeUl").html('');
+                            $("#hangYeUl").append(str);
+                            $("#selectIndustry").val(checkId.substring(0,checkId.length-1));
+
+                            $('input').iCheck({
+                                checkboxClass: 'icheckbox_flat-blue',
+                                radioClass: 'iradio_square',
+                                increaseArea: '20%' // optional
+                            });
+                        }});
+
+
                     legend.push({dim: alarmList.length+1, name: '合计'})
                     var lineStyle = {
                         normal: {
@@ -870,4 +894,33 @@ function convert(date) {
     var seconds = today.getSeconds() > 9 ? today.getSeconds() : "0" + today.getSeconds();
 
     return today.getFullYear() + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
+}
+
+//打开模态窗
+function openModel(){
+    $("#myModal").modal("show");
+
+    $('input[type="checkbox"]').iCheck('uncheck');
+    var checkId= $("#selectIndustry").val();
+    if(checkId!=""){
+        $.each(checkId.split(','),function(i,n){
+            $("#"+n).iCheck('check');
+        });
+    }
+
+
+}
+
+//重新加载行业echart
+function loadIndustryAlarm(){
+    var industryStr = "";
+    var industryList = $('#hangYe')[0];
+    for(var i=0;i<industryList.length;i++){
+        if(industryList[i].checked){
+            industryStr+=industryList[i].attributes.name.nodeValue+",";
+        }
+    }
+    staticIndustryStr=industryStr;
+    loadIndustryAlarmEchart();
+    $("#myModal").modal("hide");
 }

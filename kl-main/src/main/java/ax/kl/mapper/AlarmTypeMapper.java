@@ -25,7 +25,7 @@ public interface AlarmTypeMapper {
      * @param typeCode
      * @return
      */
-    int validateTypeCode(@Param("TypeCode") String typeCode);
+    int validateTypeCode(@Param("typeCode") String typeCode);
 
     /**
      * 更新报警代码信息
@@ -35,10 +35,10 @@ public interface AlarmTypeMapper {
 
     /**
      * 通过名称获取报警代码信息
-     * @param typeName
+     * @param searchName
      * @return
      */
-    List<AlarmType> getAlarmTypeList(Page page, @Param("typeName") String typeName);
+    List<AlarmType> getAlarmTypeList(Page page, @Param("searchName") String searchName);
 
 
     /**

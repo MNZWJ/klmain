@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ax.kl.mapper.ChemicalsCataLogMapper">
+
+    <!--化学品信息展示-->
+    <select id="getChemicalCataLogInfoList" resultType="ax.kl.entity.ChemicalCataLog">
+        SELECT  <include refid="queryList"/>
+    </select>
+
+    <sql id="queryList">
+         * FROM TB_BASE_CHEMICAL_CATALOG
+        WHERE ChemId IS not  NULL
+        <if test="chemName !=null and chemName!=''">
+            AND chemName LIKE '%'+ #{chemName} + '%'
+        </if>
+        <if test="cas !=null and cas!=''">
+            AND cas  LIKE '%'+ #{cas} + '%'
+        </if>
+    </sql>
+
+    <!--获取待导出的化学品信息的总数-->
+    <select id="getExportMajorCount" resultType="int">
+        select COUNT(*) from
+        TB_BASE_CHEMICAL_CATALOG
+        WHERE ChemId IS not  NULL
+        <if test="chemName !=null and chemName!=''">
+            AND chemName LIKE '%'+ #{chemName} + '%'
+        </if>
+        <if test="cas !=null and cas!=''">
+            AND cas  LIKE '%'+ #{cas} + '%'
+        </if>
+    </select>
+
+    <!--获取待导出的化学品信息列表-->
+    <select id="getExportMajor" resultType="ax.kl.entity.ChemicalCataLog">
+        select tt.* from (
+        select top ${pageSize} row_number() over(ORDER BY ChemId) as rownum,
+        <include refid="queryList"/>
+        ) tt where tt.rownum &gt; #{pageIndex}
+    </select>
+
+
+
+
+
+</mapper>

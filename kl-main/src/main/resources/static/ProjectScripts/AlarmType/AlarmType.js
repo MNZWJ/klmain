@@ -1,5 +1,9 @@
 //屏幕高度
 var scanHeight="";
+
+//存放增改标志
+var flag="";
+
 //开启页面直接加载
 $(function () {
     //初始化表格
@@ -33,62 +37,23 @@ function saveData(){
     $("#btn_save").on("click", function () {
 
         //获取表单对象
-        var bootstrapValidator = $("#unitForm").data('bootstrapValidator');
+        var bootstrapValidator = $("#alarmForm").data('bootstrapValidator');
         //手动触发验证
         bootstrapValidator.validate();
         if (bootstrapValidator.isValid()) {
             //表单提交的方法、比如ajax提交
-            var unit = new Object();
-            //获取表单中输入的值和对应的表单控件名放入unit对象
-            var unitList = $('#unitForm').serializeArray();
-            //检验表单
-            var end = checkForm(unitList);
-            var c=false;
-            $.each(unitList, function () {
-
-                if(this.name=="unitId"){
-                    unit[this.name] = unitId;
-                }
-                if(this.name=='SourceId'){
-                    c=true;
-                }
-                unit[this.name] = this.value;
+            var alarm = new Object();
+            //获取表单中输入的值和对应的表单控件名放入alarm对象
+            var alarmList = $('#alarmForm').serializeArray();
+            $.each(alarmList, function () {
+                alarm[this.name] = this.value;
             });
-            if (!end) {
-                return false;
-            }
-            if(!c){
-                BootstrapDialog.alert({
-                    title: '错误',
-                    message: '请选择重大危险源！！！',
-                    size: BootstrapDialog.SIZE_SMALL,
-                    type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
 
-                    closable: false, // <-- Default value is false
-                    draggable: true, // <-- Default value is false
-                    buttonLabel: '确定', // <-- Default value is 'OK',
-
-                });
-                return false;
-            }
-
-
-            //获取折叠面板equipInfoTable表格中的值
-            var equipInfoTable = $('#equipInfoTable').bootstrapTable('getData');
-            var e = checkEquipTable(equipInfoTable);
-            if (!e) {
-                return false;
-            }
-            //,"deleteIds":equipIds.substring(0,equipIds.length-1)
-            var cmd = {
-                "unit": unit,
-                "equipInfoTable": equipInfoTable,
-                "deleteIds": equipIds.substring(0, equipIds.length - 1)
-            };
+            var cmd={alarm:alarm,flag:flag};
 
             $.ajax({
                 type: 'post',
-                url: '/ProcessUnit/saveData',
+                url: '/AlarmType/saveData',
                 //将sysOrg对象的JSON类型参数传到后台
                 data: {cmd: JSON.stringify(cmd)},
                 success: function (result) {
@@ -107,7 +72,7 @@ function saveData(){
                                 //将弹出框隐藏
                                 $('#myModal').modal('hide');
                                 //更新数据表格
-                                $("#processUnitTable").bootstrapTable("refresh");
+                                $("#alarmTypeTable").bootstrapTable("refresh");
                             }
                         });
 
@@ -134,73 +99,6 @@ function saveData(){
 
 }
 
-//获取企业集合
-function getCompanyList() {
-    $.ajax({
-        type: 'get',
-        async: false,
-        url: '/EnterpriseInfo/getCompanyList',
-        success: function (result) {
-            var companyList = eval(result);
-            $.each(companyList, function (i) {
-                $('#CompanyName').append("<option value='" + companyList[i].companyId + "'>" + companyList[i].companyName + "</option>");
-            });
-            $('#CompanyName').selectpicker('val','');
-            $('#CompanyName .selectpicker').selectpicker('refresh',{});
-        },
-        error: function () {
-            alert("请求失败");
-        }
-    });
-}
-
-//获取所有危险源
-function getDangerSource() {
-    $.ajax({
-        type: 'get',
-        url: '/DangerSource/getAllDSource',
-        async: false,
-        data: {sourceId: ''},
-        contentType : 'application/json;charset=utf-8',
-        success: function (result) {
-            sourceList = result;
-        }
-    });
-}
-
-//获取所有设备类型
-function getEquipType() {
-    $.ajax({
-        url: '/EquipType/getEquipTypeTreeList',
-        async: false,
-        type: "get",
-        dataType: 'json',
-        contentType : 'application/json;charset=utf-8',
-        success: function (n) {
-            var arr=n[0].nodes;
-            $.each(arr, function (i) {
-                equipList.push({ value:arr[i].id, text: arr[i].text });
-            });
-        }
-    });
-}
-
-//获取所有设备状态
-function getEquipStatus() {
-    $.ajax({
-        url: '/SysDictionary/getDataDictList?typeId=1c42a1c0-5701-47e2-894a-0987e70c58bd',
-        async: false,
-        type: "get",
-        dataType: 'json',
-        contentType : 'application/json;charset=utf-8',
-        success: function (n) {
-            $.each(n, function (i) {
-                equipStatusList.push({ value:n[i].dictId, text: n[i].dictName });
-            });
-        }
-    });
-}
-
 //清空查询条件
 function clearRole() {
     $("#searchName").val('');//清空查询框
@@ -211,18 +109,18 @@ function initTable(){
     //获取浏览器高度
     var scanHeight = $(window).height();
     //加载列表
-    $('#processUnitTable').bootstrapTable({
+    $('#alarmTypeTable').bootstrapTable({
         height: scanHeight ,
         striped: true,      //是否显示行间隔色
         cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
         method: 'get',//请求方式
-        url: '/ProcessUnit/getProcessUnitList',//请求url
+        url: '/AlarmType/getAlarmTypeList',//请求url
         pagination: 'true',//显示分页条
         paginationLoop: 'true',//启用分页条无限循环功能
         pageNumber: 1,                       //初始化加载第一页，默认第一页
-        pageSize: 5,                       //每页的记录行数（*）
+        pageSize: 10,                       //每页的记录行数（*）
         pageList: [5,10, 25, 50, 100],        //可供选择的每页的行数（*）
-        toolbar: '#unitToolbar',                //工具按钮用哪个容器
+        toolbar: '#alarmToolbar',                //工具按钮用哪个容器
         clickToSelect: true,//是否启用点击选中行
         sidePagination: 'server',//'server'或'client'服务器端分页
         showRefresh: 'true',//是否显示 刷新按钮
@@ -231,7 +129,7 @@ function initTable(){
         // 设置为 ''  在这种情况下传给服务器的参数为：pageSize,pageNumber
         sortStable: true,//设置为 true 将获得稳定的排序，我们会添加_position属性到 row 数据中。
         selectItemName: 'state',
-        uniqueId:'unitId',
+        uniqueId:'typeCode',
         rowStyle: function () {//自定义行样式
             return "bootTableRow";
         },
@@ -247,76 +145,51 @@ function initTable(){
             });
         },onClickRow:function(row, $element){
 
-            $("#processUnitTable").bootstrapTable("uncheckAll");
-            $("#processUnitTable").bootstrapTable("checkBy",{field:'Id',values:[row.unitId]})
+            $("#alarmTypeTable").bootstrapTable("uncheckAll");
+            $("#alarmTypeTable").bootstrapTable("checkBy",{field:'Id',values:[row.typeCode]})
         },
         columns: [{
             title: '序号',
             field: 'number1',
+            width: '5%',
             formatter: function (value, row, index) {
-                var page = $('#processUnitTable').bootstrapTable('getOptions');
+                var page = $('#alarmTypeTable').bootstrapTable('getOptions');
 
                 return (page.pageNumber - 1) * page.pageSize + index + 1;
-            }
+            },
+            halign: 'center',
+            align:'center'
         }, {
             field: 'state',
+            width: '5%',
             checkbox: true
         },{
-                field: 'unitName',
-                title: '工艺单元名称',
+                field: 'typeCode',
+                title: '唯一编码',
                 halign: 'center',
-                align:'center',
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                },
-                formatter: function (value, rowData, rowIndex) {
-                    return "<a href='javascript:look(\""+rowData.unitId+"\")'>" + value + "</a>";
-                }
+                width: '30%',
+                align:'center'
             },{
-            field: 'companyName',
-            title: '企业名称',
+            field: 'typeName',
+            title: '报警类型名称',
+            width: '40%',
             halign: 'center',
             align:'center'
         },{
-            field: 'sourceId',
-            title: '危险源名称',
+            field: 'iDCode',
+            title: '识别码',
+            width: '20%',
             halign: 'center',
             align:'center',
             formatter: function (value, row, index) {
-                $.each(sourceList, function (i, n) {
-                    if (value == n.sourceId) {
-                        sourceName = n.sourceName;
-
-                    }
-                });
-                return sourceName;
+                if(value=='ZB'){
+                    return '指标';
+                }
+                else if(value=='ZT'){
+                    return '状态';
+                }
             }
-        },{
-            field: 'uniqueCodeU',
-            title: '唯一编码',
-            halign: 'center',
-            align:'center'
-        },{
-                field: 'fEI',
-                title: '火灾爆炸指数F&EI',
-                halign: 'center',
-                align:'center'
-            },   {
-                field: 'afterFEI',
-                title: '补偿后的F&EI',
-                halign: 'center',
-                align:'center'
-            },{
-                field: 'dangerRank',
-                title: '危险等级',
-                halign: 'center',
-                align:'center'
-            },   {
-                field: 'afterDangerRank',
-                title: '补偿后的危险等级',
-                halign: 'center',
-                align:'center'
-            }
+        }
         ]
     });
 }
@@ -400,6 +273,7 @@ function searchMenus() {
 
 //新增报警类型
 function alarmAdd() {
+    flag="add";
     //重置指定表单的控件
     $('#alarmForm')[0].reset();
 
@@ -427,6 +301,7 @@ function alarmAdd() {
 
 //修改报警类型
 function alarmEdit() {
+    flag="edit";
     //清空表单
     $(':input', '#alarmForm')
         .not(':button, :submit, :reset')
@@ -468,7 +343,7 @@ function alarmEdit() {
 
     $("#myModalLabel").text("修改");
     $('#myModal').modal('show');
-    // $("#unitForm").data('bootstrapValidator').removeField("UniqueCodeU");//删除编码验证
+     $("#alarmForm").data('bootstrapValidator').removeField("typeCode");//删除编码验证
 }
 
 //删除报警类型

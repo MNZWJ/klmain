@@ -88,8 +88,8 @@ public class DangerousAlarmStatisticController {
     @ApiOperation("获取本月行业报警统计")
     @RequestMapping(value = "/getIndustryAlarmMonth",method = RequestMethod.POST)
     @ResponseBody
-    public List<Map<String,String>> getIndustryAlarmMonth(){
-        return dangerousAlarmStatisticService.getIndustryAlarmMonth();
+    public List<Map<String,String>> getIndustryAlarmMonth(String staticIndustryStr){
+        return dangerousAlarmStatisticService.getIndustryAlarmMonth(staticIndustryStr);
     }
 
 

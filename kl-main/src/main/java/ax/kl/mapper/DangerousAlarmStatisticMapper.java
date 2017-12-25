@@ -1,5 +1,6 @@
 package ax.kl.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -53,7 +54,7 @@ public interface DangerousAlarmStatisticMapper {
      * 获取本月行业报警统计数据
      * @return
      */
-    public List<Map<String,String>> getIndustryAlarmMonth();
+    public List<Map<String,String>> getIndustryAlarmMonth(@Param("staticIndustryList") String[] staticIndustryList);
 
     /**
      * 本月行政区域报警情况统计

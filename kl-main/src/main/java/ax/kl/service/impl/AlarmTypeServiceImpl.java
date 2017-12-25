@@ -31,21 +31,33 @@ public class AlarmTypeServiceImpl implements AlarmTypeService {
 
     @Override
     public String saveOrUpdateData(String cmd) {
-        return null;
+        JSONObject jsstr = JSONObject.parseObject(cmd);
+        AlarmType alarm=(AlarmType)JSONObject.toJavaObject(jsstr.getJSONObject("alarm"),AlarmType.class);
+        String flag=jsstr.getString("flag");
+        if(flag.equals("add")){
+            this.alarmTypeMapper.insertAlarmType(alarm);
+            return alarm.getTypeCode();
+        }else{
+            this.alarmTypeMapper.updateAlarmType(alarm);
+        }
+
+        return "";
     }
 
     @Override
     public boolean validateTypeCode(String typeCode) {
-        return false;
+        int count=alarmTypeMapper.validateTypeCode(typeCode);
+        return count==0;
     }
 
     @Override
     public Page<AlarmType> getAlarmTypeList(Page page, String searchName) {
-        return null;
+        page.setRecords(alarmTypeMapper.getAlarmTypeList(page,searchName));
+        return page;
     }
 
     @Override
     public void delAlarmType(String[] idLists) {
-
+        alarmTypeMapper.delAlarmType(idLists);
     }
 }

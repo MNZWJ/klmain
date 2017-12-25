@@ -85,8 +85,13 @@ public class DangerousAlarmStatisticServiceImpl implements DangerousAlarmStatist
      * @return
      */
     @Override
-    public List<Map<String, String>> getIndustryAlarmMonth() {
-        return dangerousAlarmStatisticMapper.getIndustryAlarmMonth();
+    public List<Map<String, String>> getIndustryAlarmMonth(String staticIndustryStr) {
+        String[] staticIndustryList=new String[]{};
+        if(!"".equals(staticIndustryStr)){
+            staticIndustryList= staticIndustryStr.split(",");
+        }
+
+        return dangerousAlarmStatisticMapper.getIndustryAlarmMonth(staticIndustryList);
     }
 
     /**

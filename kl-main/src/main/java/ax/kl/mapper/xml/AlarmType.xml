@@ -8,8 +8,8 @@
         SELECT *
           from TB_BASE_ALARM_TYPE
          WHERE 1=1
-        <if test="typeName != null and typeName !='' ">
-            AND TypeName LIKE CONCAT(CONCAT('%',#{typeName}),'%')
+        <if test="searchName != null and searchName !='' ">
+            AND TypeName LIKE CONCAT(CONCAT('%',#{searchName}),'%')
         </if>
     </select>
 
