@@ -4,10 +4,8 @@ import ax.kl.mapper.DangerSourceStatisticsMapper;
 import ax.kl.service.DangerSourceStatisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 
 /**
  * 重大危险源统计
@@ -15,7 +13,7 @@ import java.util.Map;
  */
 @Service
 public class DangerSourceStatisticsServiceImpl implements DangerSourceStatisticsService {
-    private final String[] year={"y2013","y2014","y2015","y2016","y2017"};
+    private String[] year=getYear();
     private final String[] deathToll={"a","b","c","d"};
 
     @Autowired
@@ -27,7 +25,8 @@ public class DangerSourceStatisticsServiceImpl implements DangerSourceStatistics
      */
     @Override
     public List<Map<String,Object>> getFiveYearCountInfo(){
-        return getSacle(dSSMapper.getFiveYearCountInfo());
+        List<Map<String,Object>> list =getSacle(dSSMapper.getFiveYearCountInfo(year[0],year[1],year[2],year[3],year[4]));
+        return list;
     }
 
     /**
@@ -36,7 +35,7 @@ public class DangerSourceStatisticsServiceImpl implements DangerSourceStatistics
      */
     @Override
     public List<Map<String,String>> getFiveYearCountbarInfo(){
-        return dSSMapper.getFiveYearCountbarInfo();
+        return dSSMapper.getFiveYearCountbarInfo(year[0],year[1],year[2],year[3],year[4]);
     };
 
     /**
@@ -45,7 +44,7 @@ public class DangerSourceStatisticsServiceImpl implements DangerSourceStatistics
      */
     @Override
     public List<Map<String,Object>> getFiveYearAccitentTypeScale(){
-        return getSacle(dSSMapper.getFiveYearAccitentTypeScale());
+        return getSacle(dSSMapper.getFiveYearAccitentTypeScale(year[0],year[1],year[2],year[3],year[4]));
     };
 
     /**
@@ -120,7 +119,7 @@ public class DangerSourceStatisticsServiceImpl implements DangerSourceStatistics
             }
         }
         for (int i=0;i<list.size();i++){
-            Map<String,Object> map =new HashMap<>();
+            Map<String,Object> map =new HashMap<>(3);
             Map<String,Object> m =list.get(i);
             int[] result=new int[year.length];
             for (int j=0;j<result.length;j++){
@@ -135,8 +134,23 @@ public class DangerSourceStatisticsServiceImpl implements DangerSourceStatistics
             }
             map.put("dictName",list.get(i).get("dictName"));
             map.put("num",result);
+            map.put("year",year);
             data.add(map);
         }
         return data;
+    }
+
+    /**
+     * 近五年年份，因可作为数据库列名，顾每年年份前加'y'字符
+     * @return
+     */
+    private String[] getYear(){
+        String[] year = new String[5];
+        Calendar calendar =Calendar.getInstance();
+        for (int i = 0;i < year.length;i++){
+            int y = calendar.get(Calendar.YEAR) - year.length + i +1;
+            year[i]="y"+y;
+        }
+        return year;
     }
 }

@@ -2,16 +2,15 @@ var scanHeight=0;
 
 $(function () {
     //获取浏览器高度
-    var year =['2013年','2014年','2015年','2016年','2017年'];
     scanHeight = $(window).height();
 
     $("#fullDiv").height(scanHeight+'px');
     //近五年重大危险源数量统计
-    loadfiveYearCountEchart(year);
+    loadfiveYearCountEchart();
 
     //近五年可能引发的事故类型占比
 
-    loadfiveYearAccitentTypeScale(year);
+    loadfiveYearAccitentTypeScale();
 
     //可能引发事故类型占比
     loadDSAccidenTypeScale();
@@ -30,7 +29,7 @@ $(function () {
 
 /**近五年重大危险源数量统计*/
 var fiveYearCountInfo=null;
-function loadfiveYearCountEchart(year){
+function loadfiveYearCountEchart(){
     if(fiveYearCountInfo!=null){
         fiveYearCountInfo.dispose();
         fiveYearCountInfo=null;
@@ -41,6 +40,7 @@ function loadfiveYearCountEchart(year){
         success:function(result){
             var data=[];
             var dataName=[];
+            var year=[];
             /**柱状图*/
             $.each(result,function(i,n){
                 dataName.push(n.dictName);
@@ -54,6 +54,11 @@ function loadfiveYearCountEchart(year){
                 success: function (dataResult) {
                     $.each(dataResult,function(i,n){
                         data.push({name: n.dictName, type: 'line',yAxisIndex: 1,data:n.num});
+                        if (i==0){
+                            $.each(n.year,function (i,n) {
+                                year.push(n.replace("y","")+"年");
+                            })
+                        }
                     });
                 }
             });
@@ -150,14 +155,14 @@ function loadfiveYearCountEchart(year){
 
 /**近五年可能引发的事故类型占比*/
 var FiveYearAccitentTypeScale=null;
-function loadfiveYearAccitentTypeScale(year){
+function loadfiveYearAccitentTypeScale(){
     if(FiveYearAccitentTypeScale!=null){
         FiveYearAccitentTypeScale.dispose();
         FiveYearAccitentTypeScale=null;
     }
     var data=[];
     var dataName=[];
-
+    var year=[];
     $.ajax({
         type: 'get',
         async:false,
@@ -165,8 +170,12 @@ function loadfiveYearAccitentTypeScale(year){
         success: function (dataResult) {
             $.each(dataResult,function(i,n){
                 dataName.push(n.dictName);
-
                 data.push({name: n.dictName, type: 'line',data:n.num,areaStyle: {normal: {}}});
+                if (i==0){
+                    $.each(n.year,function (i,n) {
+                        year.push(n.replace("y","")+"年");
+                    })
+                }
             });
             var option = {
                 tooltip: {
