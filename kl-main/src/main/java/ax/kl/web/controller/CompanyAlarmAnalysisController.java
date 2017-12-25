@@ -61,5 +61,16 @@ public class CompanyAlarmAnalysisController {
         return companyAlarmAnalysisService.getAlarmNum(startDate,endDate,companyName);
     }
 
+    @ApiOperation(value = "报警详细信息列表")
+    @RequestMapping(value = "/getAlarmDataList", method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String,Object> getDataList(@RequestParam Map<String,String> paraMap,@RequestParam String companyCode,
+                                          @RequestParam String targetCode,@RequestParam String startDate,@RequestParam String endDate) {
+        int pageSize=Integer.parseInt(paraMap.get("pageSize"));
+        int pageNumber=Integer.parseInt(paraMap.get("pageNumber"));
+        Map<String,Object> map = this.companyAlarmAnalysisService.loadAlarmDataList(pageNumber,pageSize,companyCode,
+                targetCode,startDate,endDate);
+        return map ;
+    }
 
 }
