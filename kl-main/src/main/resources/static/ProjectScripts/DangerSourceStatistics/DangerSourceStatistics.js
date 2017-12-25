@@ -2,7 +2,7 @@ var scanHeight=0;
 
 $(function () {
     //获取浏览器高度
-    var year =['2017年','2018年','2019年','2020年','2021年'];
+    var year =['2013年','2014年','2015年','2016年','2017年'];
     scanHeight = $(window).height();
 
     $("#fullDiv").height(scanHeight+'px');
