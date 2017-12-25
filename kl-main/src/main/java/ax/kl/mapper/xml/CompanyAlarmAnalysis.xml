@@ -12,7 +12,7 @@
         SELECT top 100[at].TypeCode,[at].TypeName FROM TB_BASE_ALARM_TYPE at
         where IDCode='ZT' ORDER by TypeCode
         )
-        SELECT ci.CompanyName,ci.CompanyId,
+        SELECT ci.CompanyName,ci.CompanyId,ci.UniqueCode as CompanyCode,
         (select ISNULL(SUM(da.AlarmCount), 0) as totalNum from TB_STATIS_COMPANY_DAY_ALARM da
         where da.CompanyCode=ci.UniqueCode
         <if test="startDate!='' and startDate!= null ">
@@ -64,10 +64,10 @@
 
 
     <select id="getAlarmTypeList" resultType="java.util.Map">
-   select * from(SELECT top 100 mt.TargetCode as TypeCode,mt.TargetName  as TypeName
+   select * from(SELECT top 100 mt.TargetCode+'_ZB' as TypeCode,mt.TargetName  as TypeName
       FROM TB_BASE_MONITOR_TARGET mt WHERE len(mt.LevelCode)=6 ORDER by LevelCode) t1
     UNION ALL
- select * from (SELECT top 100[at].TypeCode,[at].TypeName FROM TB_BASE_ALARM_TYPE at
+ select * from (SELECT top 100[at].TypeCode+'_ZT' as typeCode,[at].TypeName FROM TB_BASE_ALARM_TYPE at
         where IDCode='ZT' ORDER by TypeCode) t2
     </select>
 

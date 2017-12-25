@@ -4,21 +4,12 @@ import ax.kl.entity.MonitorData;
 import ax.kl.hbase.*;;
 import ax.kl.mapper.HbaseDataMapper;
 import ax.kl.service.MHistoryDataService;
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.hbase.CellUtil;
-import org.apache.hadoop.hbase.HBaseConfiguration;
-import org.apache.hadoop.hbase.TableName;
-import org.apache.hadoop.hbase.client.*;
-import org.apache.hadoop.hbase.client.coprocessor.AggregationClient;
-import org.apache.hadoop.hbase.client.coprocessor.LongColumnInterpreter;
 import org.apache.hadoop.hbase.filter.*;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.apache.hadoop.hbase.filter.FilterList.Operator;
 import org.apache.hadoop.hbase.filter.CompareFilter.CompareOp;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -33,16 +24,26 @@ public class MHistoryDataServiceImpl implements MHistoryDataService {
     @Autowired
     HbaseDataMapper hbaseDataMapper;
 
+    /**
+     * 插入报警数据
+     */
     public void insertData(){
         //提供row key
         List<HbaseDataEntity> list = new ArrayList<HbaseDataEntity>();
-        for(int i=0;i<100;i++){
+        for(int i=0;i<5;i++){
+            SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String nowDate =  sdf.format( new  Date());
+
             HbaseDataEntity entitys = new HbaseDataEntity();
             entitys.setTableName("tb_realtime_alarm");
-            entitys.setMobileKey("3704197890101G101_"+ System.currentTimeMillis());
+            entitys.setMobileKey("3705210120101CG01_WD10"+i+"_L0_"+ System.currentTimeMillis());
             Map<String, Map<String, String>> familyMaps = new HashMap<String, Map<String, String>>();
             Map<String, String> columnMaps = new HashMap<>();
-            columnMaps.put("targetCode", "wd"+i);
+            columnMaps.put("targetCode", "WD");
+            columnMaps.put("alarmCode", "L0");
+            columnMaps.put("realValue", "0.7");
+            columnMaps.put("alarmDate", nowDate);
+            columnMaps.put("status", "1");
             familyMaps.put("cf1", columnMaps);
             entitys.setColumns(familyMaps);
             list.add(entitys);
