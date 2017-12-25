@@ -1,7 +1,8 @@
 package ax.kl.web.controller;
 
+import ax.kl.entity.ChemicalCataLog;
 import ax.kl.entity.ChemicalsInfo;
-import ax.kl.service.ChemicalsInfoService;
+import ax.kl.service.ChemicalsCataLogService;
 import com.baomidou.mybatisplus.plugins.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,46 +22,53 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 化学品列表展示
- * @author wangbiao
- * Date 2017/12/07
+ * 化学品危险目录
+ * @author Created by mxl
+ * @version 创建时间：${date} ${time}
  */
 @CrossOrigin
+@RequestMapping(value = "/ChemicalsCataLog")
+@Api(value = "/ChemicalsCataLog",tags = "化学品信息展示")
 @Controller
-@RequestMapping("/Chemicals")
-@Api(value = "/Chemicals",tags = "化学品列表")
-public class ChemicalsController {
+public class ChemicalsCataLogController {
 
     @Autowired
-    ChemicalsInfoService chemicalsInfoService;
+    ChemicalsCataLogService chemicalsCataLogService;
 
-    @ApiOperation(value = "化学品列表页面")
-    @RequestMapping(value = "/ChemicalsIndex", method = RequestMethod.GET)
-    public String doView(){
-        return "/Chemicals/ChemicalsIndex";
+
+    @ApiOperation(value = "化学品信息展示")
+    @RequestMapping(value = "/ChemicalsCataLog", method = RequestMethod.GET)
+    public String doView() {
+            return "/ChemicalsCataLog/ChemicalsCataLog";
     }
 
-    @ApiOperation(value = "获取化学品列表")
-    @RequestMapping(value = "/getChemicalsList",method = RequestMethod.GET)
+    /**
+     * 获取化学品信息列表
+     * @param
+     * @author
+     * @return
+     */
+    @RequestMapping(value = "/getChemicalCataLogInfoList", method = RequestMethod.GET)
+    @ApiOperation(value = "获取化学品信息列表")
     @ResponseBody
-    public Map<String,Object> getChemicalsList(@RequestParam Map<String,String> param){
-        Page page =new Page();
+    public Map<String,Object> getChemicalCataLogInfoList(@RequestParam Map<String, String> param) {
         int pageSize=Integer.parseInt(param.get("pageSize"));
         int pageNumber=Integer.parseInt(param.get("pageNumber"));
+        Page page=new Page();
         page.setCurrent(pageNumber);
         page.setSize(pageSize);
-        Page<ChemicalsInfo> list=chemicalsInfoService.getChemicalsList(page,param);
+
+        Page<ChemicalCataLog> list = chemicalsCataLogService.getChemicalCataLogInfoList(page,param);
         Map<String,Object> map=new HashMap<>();
         map.put("total",list.getTotal());
         map.put("rows",list.getRecords());
-        return map;
+        return map ;
     }
 
-
-       @RequestMapping(value = "/exportExcel", method = RequestMethod.GET)
+    @RequestMapping(value = "/exportExcel", method = RequestMethod.GET)
     @ApiOperation(value = "导出化学品列表")
     public void exportExcel(HttpServletResponse response, @RequestParam String chemName,
-                            @RequestParam String companyName){
+                            @RequestParam String cas){
         try{
             // 最重要的就是使用SXSSFWorkbook，表示流的方式进行操作
             // 在内存中保持100行，超过100行将被刷新到磁盘
@@ -87,7 +95,7 @@ public class ChemicalsController {
 
             //3.2创建列标题;并且设置列标题
             Row row2 = sheet.createRow(1);
-            String[] titles = {"化学品名称","CAS","企业名称","设计储量","单位"};
+            String[] titles = {"化学品名称","别名","CAS","化学品危险类别","剧毒","重点监管","易制毒","易制爆"};
             for(int i=0;i<titles.length;i++)
             {
                 Cell cell2 = row2.createCell(i);
@@ -101,34 +109,38 @@ public class ChemicalsController {
             contentStyle.setWrapText(true);//设置自动换行
             contentStyle.setVerticalAlignment(VerticalAlignment.CENTER);//垂直居中
 
-            List<ChemicalsInfo> list = new ArrayList<ChemicalsInfo>();
+            List<ChemicalCataLog> list = new ArrayList<ChemicalCataLog>();
             // 数据库中存储的数据行
             int page_size = 10000;
             // 求数据库中待导出数据的总行数
-            int list_count = this.chemicalsInfoService.getExportMajorCount(chemName,companyName);
+            int list_count = this.chemicalsCataLogService.getExportMajorCount(chemName,cas);
             // 根据行数求数据提取次数
             int export_times = list_count % page_size > 0 ? list_count / page_size
                     + 1 : list_count / page_size;
             // 按次数将数据写入文件
             for (int j = 0; j < export_times; j++) {
-                list = this.chemicalsInfoService.getExportMajor(j,(j+1)*page_size,chemName,companyName);
+                list = this.chemicalsCataLogService.getExportMajor(j,(j+1)*page_size,chemName,cas);
                 int len = list.size() < page_size ? list.size() : page_size;
                 for (int i = 0; i < len; i++) {
                     Row row_value = sheet.createRow(j * page_size + i + 2);
                     Cell cel0_value = row_value.createCell(0);
                     cel0_value.setCellStyle(contentStyle);//设置样式
                     cel0_value.setCellValue(list.get(i).getChemName());
-
                     Cell cel1_value = row_value.createCell(1);
                     cel1_value.setCellStyle(contentStyle);//设置样式
-                    cel1_value.setCellValue(list.get(i).getCAS());
-
+                    cel1_value.setCellValue(list.get(i).getAlisaName());
                     Cell cel2_value = row_value.createCell(2);
-                    cel2_value.setCellValue(list.get(i).getCompanyName());
+                    cel2_value.setCellValue(list.get(i).getCAS());
                     Cell cel3_value = row_value.createCell(3);
-                    cel3_value.setCellValue(list.get(i).getDreserves());
+                    cel3_value.setCellValue(list.get(i).getDangerType());
                     Cell cel4_value = row_value.createCell(4);
-                    cel4_value.setCellValue(list.get(i).getUnit());
+                    cel4_value.setCellValue(list.get(i).getHtoxic());
+                    Cell cel5_value = row_value.createCell(5);
+                    cel5_value.setCellValue(list.get(i).getSupervise());
+                    Cell cel6_value = row_value.createCell(6);
+                    cel6_value.setCellValue(list.get(i).getPoison());
+                    Cell cel7_value = row_value.createCell(7);
+                    cel7_value.setCellValue(list.get(i).getDetonating());
                 }
                 list.clear(); // 每次存储len行，用完了将内容清空，以便内存可重复利用
             }
@@ -136,7 +148,7 @@ public class ChemicalsController {
             //直接获取输出，直接输出excel（优先使用）
             OutputStream output=response.getOutputStream();
             response.reset();
-            response.setHeader("Content-disposition", "attachment; filename="+ URLEncoder.encode("化学品信息列表.xlsx", "utf-8"));
+            response.setHeader("Content-disposition", "attachment; filename="+ URLEncoder.encode("化学品目录列表.xlsx", "utf-8"));
             response.setContentType("application/msexcel");
             wb.write(output);
             output.close();
