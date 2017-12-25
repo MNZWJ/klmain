@@ -7,7 +7,7 @@
 
         SELECT
         di.SourceId,di.SourceName,di.Longt,di.Lat,COUNT(hd.DangerId) AS num,
-        hd.Rank
+        SUM(CASE WHEN hd.Rank='重大隐患' THEN 1 ELSE 0 END) AS Rank
         FROM
         TB_BASE_DANGERSOURCE_INFO di
         JOIN TB_BASE_COMPANY_INFO ci ON di.CompanyId=ci.CompanyId
@@ -30,7 +30,7 @@
         </if>
         AND  hd.DangerId IS NOT NULL
         AND isnull(hd.Rectification,'')!='已整改'
-        GROUP BY di.SourceId,di.SourceName,di.Longt,di.Lat,hd.Rank
+        GROUP BY di.SourceId,di.SourceName,di.Longt,di.Lat
 
 
     </select>
@@ -48,6 +48,7 @@
         </if>
 
         AND isnull(hd.Rectification,'')!='已整改'
+        ORDER BY hd.Rank DESC
     </select>
 
     <!--获取所有事故隐患-->

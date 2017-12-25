@@ -98,14 +98,13 @@ function loadHazardList(hazardList) {
     $.each(hazardList, function (i, n) {
 
         var imagUrl = "";
-        switch (true) {
-            case n.rank=="一般隐患":
-                imagUrl = "../../Images/Common/橙色.png"; break;
-            case n.rank=="重大隐患"  :
-                imagUrl = "../../Images/Common/红色.png"; break;
-
-            default: imagUrl = "../../Images/Common/绿色.png"; break;
+        if(parseInt(n.rank)>0){
+            imagUrl = "../../Images/Common/红色.png";
+        }else{
+            imagUrl = "../../Images/Common/橙色.png";
         }
+
+
         var html = '<a title="' + n.sourceName + '" onclick="onMarkClick(\''+n.sourceId+'\',\''+n.sourceName+'\')"><div style="position: absolute; padding: 0pt; width: 51px; height: 25px; line-height:25px; overflow: hidden;background-size:51px 25px;background-image:url(' + imagUrl + ');text-align:center" ><span style="font-weight:bold;font-size:14px;color: #000;" >' + n.num + '</span>';
         + '</div></a>';
         var tempPoint = new BMap.Point(n.longt, n.lat);
@@ -324,6 +323,30 @@ function initTable(){
                     return '<span title="'+value+'">'+value+'</span>'
 
                 }
+            },{
+                field: 'source',
+                title: '隐患类别',
+                halign: 'center',
+                width: '100px',
+                cellStyle: function (value, row, index, field) {
+                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                },
+                formatter: function (value, row, index) {
+                    return '<span title="' + value + '">' + value + '</span>'
+
+                }
+            }, {
+                field: 'rank',
+                title: '隐患级别',
+                halign: 'center',
+                width: '100px',
+                cellStyle: function (value, row, index, field) {
+                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                },
+                formatter: function (value, row, index) {
+                    return '<span title="' + value + '">' + value + '</span>'
+
+                }
             }, {
                 field: 'area',
                 title: '行政区划',
@@ -360,31 +383,7 @@ function initTable(){
                     return '<span title="' + value + '">' + value + '</span>'
 
                 }
-            }, {
-                field: 'source',
-                title: '隐患类别',
-                halign: 'center',
-                width: '100px',
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                },
-                formatter: function (value, row, index) {
-                    return '<span title="' + value + '">' + value + '</span>'
-
-                }
-            }, {
-                field: 'rank',
-                title: '隐患级别',
-                halign: 'center',
-                width: '100px',
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                },
-                formatter: function (value, row, index) {
-                    return '<span title="' + value + '">' + value + '</span>'
-
-                }
-            }, {
+            },  {
                 field: 'upReportDate',
                 title: '上报日期',
                 halign: 'center',
