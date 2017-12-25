@@ -1,6 +1,7 @@
 package ax.kl.service;
 
 import ax.kl.entity.ChemicalsInfo;
+import ax.kl.entity.CompanyChemical;
 import com.baomidou.mybatisplus.plugins.Page;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public interface ChemicalsInfoService {
      * @param param
      * @return
      */
-    Page<ChemicalsInfo> getChemicalsList(Page page, Map<String, String> param);
+    Page<CompanyChemical> getChemicalsList(Page page, Map<String, String> param);
 
     /**
      * 获取待导出的化学品信息总数
@@ -34,5 +35,5 @@ public interface ChemicalsInfoService {
      * @param companyName
      * @return
      */
-    List<ChemicalsInfo> getExportMajor(int pageIndex, int pageSize, String chemName, String companyName);
+    List<CompanyChemical> getExportMajor(int pageIndex, int pageSize, String chemName, String companyName);
 }

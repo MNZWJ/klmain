@@ -1,6 +1,7 @@
 package ax.kl.web.controller;
 
 import ax.kl.entity.ChemicalsInfo;
+import ax.kl.entity.CompanyChemical;
 import ax.kl.service.ChemicalsInfoService;
 import com.baomidou.mybatisplus.plugins.Page;
 import io.swagger.annotations.Api;
@@ -49,7 +50,7 @@ public class ChemicalsController {
         int pageNumber=Integer.parseInt(param.get("pageNumber"));
         page.setCurrent(pageNumber);
         page.setSize(pageSize);
-        Page<ChemicalsInfo> list=chemicalsInfoService.getChemicalsList(page,param);
+        Page<CompanyChemical> list=chemicalsInfoService.getChemicalsList(page,param);
         Map<String,Object> map=new HashMap<>();
         map.put("total",list.getTotal());
         map.put("rows",list.getRecords());
@@ -101,7 +102,7 @@ public class ChemicalsController {
             contentStyle.setWrapText(true);//设置自动换行
             contentStyle.setVerticalAlignment(VerticalAlignment.CENTER);//垂直居中
 
-            List<ChemicalsInfo> list = new ArrayList<ChemicalsInfo>();
+            List<CompanyChemical> list = new ArrayList<CompanyChemical>();
             // 数据库中存储的数据行
             int page_size = 10000;
             // 求数据库中待导出数据的总行数
@@ -124,7 +125,7 @@ public class ChemicalsController {
                     cel1_value.setCellValue(list.get(i).getCAS());
 
                     Cell cel2_value = row_value.createCell(2);
-                    cel2_value.setCellValue(list.get(i).getCompanyName());
+                    cel2_value.setCellValue(list.get(i).getCompanyId());
                     Cell cel3_value = row_value.createCell(3);
                     cel3_value.setCellValue(list.get(i).getDreserves());
                     Cell cel4_value = row_value.createCell(4);
@@ -142,7 +143,7 @@ public class ChemicalsController {
             output.close();
             wb.dispose();
         }catch (Exception e){
-
+            e.printStackTrace();
         }
     }
 
