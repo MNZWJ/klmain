@@ -31,6 +31,10 @@ public class CompanyChemical {
     @ApiModelProperty("所属企业")
     private String companyId;
 
+    @TableField("CompanyName")
+    @ApiModelProperty("所属企业")
+    private String companyName;
+
     @TableField("CAS")
     @ApiModelProperty("CAS")
     private String cAS;

@@ -83,6 +83,7 @@ $(function () {
             halign: 'center',
             align: 'center',
             width: '2%',
+            valign:'middle',
             formatter: function (value, row, index) {
                 var page = $('#MajorTable').bootstrapTable('getOptions');
                 return (page.pageNumber - 1) * page.pageSize + index + 1;
@@ -90,12 +91,14 @@ $(function () {
         }, {
             field: 'state',
             checkbox: true,
-            width:'2%'
+            valign:'middle',
+            width:'2%',
         }, {
             field: 'sourceName',
             title: '危险源名称',
             halign: 'center',
             width:'10%',
+            valign:'middle',
             cellStyle: function (value, row, index, field) {
                 return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
             },
@@ -108,6 +111,7 @@ $(function () {
             title: '企业名称',
             halign: 'center',
             width:'10%',
+            valign:'middle',
             cellStyle: function (value, row, index, field) {
                 return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
             },
@@ -120,27 +124,30 @@ $(function () {
             title: 'R值',
             halign: 'center',
             align: 'center',
-            width:'2%'
+            width:'2%',
+                valign:'middle',
         }, {
             field: 'rank',
             title: '危险源等级',
             halign: 'center',
             align: 'center',
-            width:'4%'
+            width:'4%',
+                valign:'middle',
         },
             {
                 field: 'validity',
                 title: '有效期',
                 halign: 'center',
                 align: 'center',
-                width:'4%'
-
+                width:'4%',
+                valign:'middle',
             },
             {
                 field: 'accidentType',
-                title: '事故类型',
+                title: '可能引发<br/>事故类型',
                 halign: 'center',
                 width:'5%',
+                valign:'middle',
                   cellStyle: function (value, row, index, field) {
                       return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
                   },
@@ -154,17 +161,20 @@ $(function () {
             },
             {
                 field: 'deathToll',
-                title: '事故死亡人数',
+                title: '可能引发事<br/>故死亡人数',
                 halign: 'center',
                 align: 'right',
-                width:'4%'
+                valign:'middle',
+                width:'4%',
+
             },
             {
                 field: 'recordDate',
                 title: '登记日期',
                 halign: 'center',
                 align: 'center',
-                width:'4%'
+                width:'4%',
+                valign:'middle',
             }
         ]
     });
@@ -592,7 +602,7 @@ function initTable(x) {
                     title: '与标准符合性',
                     emptytext: '请选择',
                     source: function () {
-                        var result = [{value:'1',text:'符合'},{value:'0',text:'不符合'}];
+                        var result = [{value:'符合',text:'符合'},{value:'不符合',text:'不符合'}];
                         return result;
                     }
                 }

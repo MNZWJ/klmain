@@ -1,5 +1,6 @@
+//存放查询的化学品名称
 var chemName = "";
-var equipName = "";
+//存放查询的企业
 var companyName = "";
 $(function () {
     //获取浏览器高度
@@ -46,7 +47,6 @@ $(function () {
             {
                 title: '序号',
                 halign: 'center',
-                width: '5%',
                 align: 'center',
                 formatter: function (value, row, index) {
                     var page = $('#table').bootstrapTable('getOptions');
@@ -57,7 +57,6 @@ $(function () {
                 title: '化学品名称',
                 halign: 'center',
                 align: 'left',
-                width: '13.57%',
                 class: "bootTableRow",
                 formatter: function (value, row, index) {
                     return '<span title="'+value+'">'+value+'</span>'
@@ -67,55 +66,31 @@ $(function () {
                 title: 'CAS',
                 halign: 'center',
                 align: 'left',
-                width: '13.57%',
                 class: "bootTableRow"
-            }, {
-                field: 'equipName',
-                title: '设备名称',
-                halign: 'center',
-                align: 'left',
-                width: '13.57%',
-                class: "bootTableRow",
-                formatter: function (value, row, index) {
-                    return '<span title="'+value+'">'+value+'</span>'
-                }
-            }, {
-                field: 'unitName',
-                title: '工艺单元名称',
-                halign: 'center',
-                align: 'left',
-                width: '13.57%',
-                class: "bootTableRow",
-                formatter: function (value, row, index) {
-                    return '<span title="'+value+'">'+value+'</span>'
-                }
             },{
-                field: 'sourceName',
-                title: '危险源名称',
-                halign: 'center',
-                align: 'left',
-                width: '13.57%',
-                class: "bootTableRow",
-                formatter: function (value, row, index) {
-                    return '<span title="'+value+'">'+value+'</span>'
-                }
-            },{
-                field: 'companyName',
+                field: 'companyId',
                 title: '企业名称',
                 halign: 'center',
                 align: 'left',
-                width: '13.57%',
                 class: "bootTableRow",
                 formatter: function (value, row, index) {
                     return '<span title="'+value+'">'+value+'</span>'
                 }
             },{
-                field: 'area',
-                title: '行政区域',
+                field: 'dreserves',
+                title: '设计储量',
                 halign: 'center',
                 align: 'left',
                 class: "bootTableRow",
-                width: '13.57%',
+                formatter: function (value, row, index) {
+                    return '<span title="'+value+'">'+value+'</span>'
+                }
+            },{
+                field: 'unit',
+                title: '单位',
+                halign: 'center',
+                align: 'left',
+                class: "bootTableRow",
                 formatter: function (value, row, index) {
                     return '<span title="'+value+'">'+value+'</span>'
                 }
@@ -147,7 +122,6 @@ function getCompanyList() {
 //表格返回参数方法
 function queryParams(pageReqeust) {
     pageReqeust.chemName = chemName;
-    pageReqeust.equipName = equipName;
     pageReqeust.companyName = companyName;
     return pageReqeust;
 }
@@ -157,8 +131,7 @@ function queryParams(pageReqeust) {
  */
 function search() {
     chemName = $("#chemName").val();
-    equipName = $("#equipName").val();
-    companyName = $("#companyName").val();
+    companyName = $("#companyName").selectpicker('val');
     $("#table").bootstrapTable("refresh", {})
 }
 
@@ -167,17 +140,15 @@ function search() {
  */
 function clean() {
     $("#chemName").val("");
-    $("#equipName").val("");
-    $("#companyName").val("");
+    $('#companyName').selectpicker('val','');
 }
 
 //导出Excel
 function exportExcel(){
     chemName = chemName==null?"":chemName;
-    equipName = equipName==null?"":equipName;
     companyName = companyName==null?"":companyName;
     var url = "/Chemicals/exportExcel?chemName="+chemName
-        +"&equipName="+equipName+"&companyName="+companyName;
+        +"&companyName="+companyName;
     window.top.location.href=url;
 }
 

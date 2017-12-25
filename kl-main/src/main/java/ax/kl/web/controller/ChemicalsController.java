@@ -60,7 +60,7 @@ public class ChemicalsController {
     @RequestMapping(value = "/exportExcel", method = RequestMethod.GET)
     @ApiOperation(value = "导出化学品列表")
     public void exportExcel(HttpServletResponse response, @RequestParam String chemName,
-                            @RequestParam String equipName, @RequestParam String companyName){
+                             @RequestParam String companyName){
         try{
             // 最重要的就是使用SXSSFWorkbook，表示流的方式进行操作
             // 在内存中保持100行，超过100行将被刷新到磁盘
@@ -87,7 +87,7 @@ public class ChemicalsController {
 
             //3.2创建列标题;并且设置列标题
             Row row2 = sheet.createRow(1);
-            String[] titles = {"化学品名称","CAS","设备名称","工艺单元名称","危险源名称","企业名称","行政区域"};
+            String[] titles = {"化学品名称","CAS","企业名称","设计储量","单位"};
             for(int i=0;i<titles.length;i++)
             {
                 Cell cell2 = row2.createCell(i);
@@ -105,13 +105,13 @@ public class ChemicalsController {
             // 数据库中存储的数据行
             int page_size = 10000;
             // 求数据库中待导出数据的总行数
-            int list_count = this.chemicalsInfoService.getExportMajorCount(chemName,equipName,companyName);
+            int list_count = this.chemicalsInfoService.getExportMajorCount(chemName,companyName);
             // 根据行数求数据提取次数
             int export_times = list_count % page_size > 0 ? list_count / page_size
                     + 1 : list_count / page_size;
             // 按次数将数据写入文件
             for (int j = 0; j < export_times; j++) {
-                list = this.chemicalsInfoService.getExportMajor(j,(j+1)*page_size,chemName,equipName,companyName);
+                list = this.chemicalsInfoService.getExportMajor(j,(j+1)*page_size,chemName,companyName);
                 int len = list.size() < page_size ? list.size() : page_size;
                 for (int i = 0; i < len; i++) {
                     Row row_value = sheet.createRow(j * page_size + i + 2);
@@ -124,15 +124,11 @@ public class ChemicalsController {
                     cel1_value.setCellValue(list.get(i).getCAS());
 
                     Cell cel2_value = row_value.createCell(2);
-                    cel2_value.setCellValue(list.get(i).getEquipName());
+                    cel2_value.setCellValue(list.get(i).getCompanyName());
                     Cell cel3_value = row_value.createCell(3);
-                    cel3_value.setCellValue(list.get(i).getUnitName());
+                    cel3_value.setCellValue(list.get(i).getDreserves());
                     Cell cel4_value = row_value.createCell(4);
-                    cel4_value.setCellValue(list.get(i).getSourceName());
-                    Cell cel5_value = row_value.createCell(5);
-                    cel5_value.setCellValue(list.get(i).getCompanyName());
-                    Cell cel6_value = row_value.createCell(6);
-                    cel6_value.setCellValue(list.get(i).getArea());
+                    cel4_value.setCellValue(list.get(i).getUnit());
                 }
                 list.clear(); // 每次存储len行，用完了将内容清空，以便内存可重复利用
             }
