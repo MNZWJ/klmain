@@ -24,6 +24,7 @@ import java.util.UUID;
 @Transactional
 @Service
 public class ProcessUnitServiceImpl implements ProcessUnitService {
+
     @Autowired
     ProcessUnitMapper processUnitMapper;
 
@@ -109,9 +110,6 @@ public class ProcessUnitServiceImpl implements ProcessUnitService {
                 String[] equipIds=ids.substring(0,ids.length()-1).split(",");
                 this.equipInfoMapper.deleteEquipInfo(equipIds);
             }
-
         }
-
     }
-
 }

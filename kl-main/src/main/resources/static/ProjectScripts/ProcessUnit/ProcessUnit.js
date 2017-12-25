@@ -265,7 +265,7 @@ function initTable(){
         pagination: 'true',//显示分页条
         paginationLoop: 'true',//启用分页条无限循环功能
         pageNumber: 1,                       //初始化加载第一页，默认第一页
-        pageSize: 5,                       //每页的记录行数（*）
+        pageSize: 10,                       //每页的记录行数（*）
         pageList: [5,10, 25, 50, 100],        //可供选择的每页的行数（*）
         toolbar: '#unitToolbar',                //工具按钮用哪个容器
         clickToSelect: true,//是否启用点击选中行
