@@ -52,7 +52,7 @@ $(function () {
     //绑定保存按钮提交事件
     $("#btn_save").on("click", function () {
         //获取表单对象
-        var bootstrapValidator = $("#unitForm").data('bootstrapValidator');
+        var bootstrapValidator = $("#sysorgForm").data('bootstrapValidator');
         //手动触发验证
         bootstrapValidator.validate();
 
@@ -60,7 +60,7 @@ $(function () {
             //表单提交的方法、比如ajax提交
             var sysOrg = {};
             //获取表单中输入的值和对应的表单控件名放入sysOrg对象
-            var sysOrgList = $('#unitForm').serializeArray();
+            var sysOrgList = $('#sysorgForm').serializeArray();
             $.each(sysOrgList, function () {
                 sysOrg[this.name] = this.value
             });
@@ -143,13 +143,12 @@ $(function () {
 //模态窗关闭事件
     $('#myModal').on('hidden.bs.modal', function () {
         //重置这个表单里面的所有控件
-        $(':input', '#unitForm')
+        $(':input', '#sysorgForm')
             .not(':button, :submit, :reset')
             .val('')
             .removeAttr('checked')
             .removeAttr('selected');
-        $("#unitForm").data('bootstrapValidator').destroy();
-        $('#unitForm').data('bootstrapValidator', null);
+        $('#sysorgForm').data('bootstrapValidator', null);
         formValidator();
     });
 
@@ -278,7 +277,7 @@ function queryParams(pageReqeust) {
 //form验证规则
 function formValidator() {
 //表单验证
-    $("#unitForm").bootstrapValidator({
+    $("#sysorgForm").bootstrapValidator({
         feedbackIcons: {
             valid: 'glyphicon glyphicon-ok',
             invalid: 'glyphicon glyphicon-remove',
@@ -368,17 +367,17 @@ function sysorgAdd() {
     getTypeList();
 
     //重置指定表单的控件
-    $('#unitForm')[0].reset();
+    $('#sysorgForm')[0].reset();
 
     //清空表单
-    $(':input', '#unitForm')
+    $(':input', '#sysorgForm')
         .not(':button, :submit, :reset')
         .val('')
         .removeAttr('checked')
         .removeAttr('selected');
 
 
-    $("#unitForm").data('bootstrapValidator').resetForm(false)
+    $("#sysorgForm").data('bootstrapValidator').resetForm(false)
     //获取鼠标点击的树的节点的元素
     var node = $("#tree").treeview('getSelected');
     if (node.length <= 0) {
@@ -422,7 +421,7 @@ function sysorgAdd() {
 function sysorgEdit() {
 
     //清空表单
-    $(':input', '#unitForm')
+    $(':input', '#sysorgForm')
         .not(':button, :submit, :reset')
         .val('')
         .removeAttr('checked')
@@ -448,9 +447,11 @@ function sysorgEdit() {
     getTypeList(rows[0].orgType);
 
     for (var p in rows[0]) {
-        $("#unitForm").find(":input[name='" + p + "']").val(rows[0][p]);
+        $("#sysorgForm").find(":input[name='" + p + "']").val(rows[0][p]);
 
     }
+
+    $('#organiseName').val( rows[0].organiseName);
     $('#orgType').selectpicker('val', rows[0].orgType);
     $("#myModalLabel").text("修改");
     $('#myModal').modal('show');
