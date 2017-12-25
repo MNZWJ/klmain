@@ -53,7 +53,7 @@ public interface DangerousAlarmStatisticService {
      * 获取本月行业报警统计数据
      * @return
      */
-    public List<Map<String,String>> getIndustryAlarmMonth();
+    public List<Map<String,String>> getIndustryAlarmMonth(String staticIndustryStr);
 
     /**
      * 本月行政区域报警情况统计
