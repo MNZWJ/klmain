@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * 基本信息录入
+ * 企业基本信息录入
  * @author Created by mxl
  * @version 创建时间：${date} ${time}
  */
