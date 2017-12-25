@@ -4,39 +4,58 @@
 
     <!--近五年重大危险源统计折线-->
     <select id="getFiveYearCountInfo" resultType="java.util.Map">
-        SELECT dictName,y2013,y2014,y2015,y2016,y2017
-        FROM(
-        SELECT 'y'+SUBSTRING(di.RecordDate,0,5) AS year,d.DictName,di.SourceId,d.DictOrder
+        DECLARE
+        @strSql nvarchar(1000),@year0 nvarchar(5),@year1 nvarchar(5),
+        @year2 nvarchar(5),@year3 nvarchar(5),@year4 nvarchar(5)
+        SET @year0= #{year0} SET @year1= #{year1} SET @year2= #{year2} SET @year3= #{year3} SET @year4= #{year4}
+        SET @strSql= 'SELECT '+@year0+','+@year1+','+@year2+','+@year3+','+@year4+' FROM(
+        SELECT ''y''+SUBSTRING(di.RecordDate,0,5) AS year,d.DictName,di.SourceId,d.DictOrder
         FROM TB_BASE_DANGERSOURCE_INFO di
         RIGHT JOIN TB_SYS_DATADICT d ON di.Rank = d.DictId
-		WHERE d.TypeId = '8ea8562f-e58b-461c-9485-a967bc5e29ca') AS t
-        pivot(COUNT(t.SourceId) FOR t.year IN(y2013,y2014,y2015,y2016,y2017)) AS t1
-        ORDER BY DictOrder
+                WHERE d.TypeId = ''8ea8562f-e58b-461c-9485-a967bc5e29ca'') AS t
+        pivot(COUNT(t.SourceId) FOR t.year IN ('+@year0+','+@year1+','+@year2+','+@year3+','+@year4+')) AS t1
+        ORDER BY DictOrder'
+         PRINT (@strSql)
+         EXEC (@strSql)
     </select>
 
     <!--近五年重大危险源统计柱状图-->
     <select id="getFiveYearCountbarInfo" resultType="java.util.Map">
-        SELECT dictName,convert(VARCHAR,y2013)+','+convert(VARCHAR,y2013+y2014)+
-          ','+convert(VARCHAR,y2013+y2014+y2015)+','+convert(VARCHAR,y2013+y2014+y2015+y2016)+
-          ','+convert(VARCHAR,y2013+y2014+y2015+y2016+y2017) AS num
-          FROM(SELECT d.DictName,d.DictOrder,di.SourceId,'y'+SUBSTRING(di.RecordDate,0,5) AS year
+         DECLARE
+        @strSql nvarchar(1000),@year0 nvarchar(5),@year1 nvarchar(5),
+        @year2 nvarchar(5),@year3 nvarchar(5),@year4 nvarchar(5)
+        SET @year0= #{year0} SET @year1= #{year1} SET @year2= #{year2} SET @year3= #{year3} SET @year4= #{year4}
+        SET @strSql= 'SELECT dictName,CAST('+@year4+' AS VARCHAR) + '',''+
+        CAST('+@year4+'+'+@year3+' AS VARCHAR)+'',''+
+        CAST('+@year4+'+'+@year3+'+'+@year2+' AS VARCHAR)+'',''+
+		 CAST('+@year4+'+'+@year3+'+'+@year2+'+'+@year1+' AS VARCHAR)+'',''+
+        CAST('+@year4+'+'+@year3+'+'+@year2+'+'+@year1+'+'+@year0+' AS VARCHAR) as num
+          FROM(SELECT d.DictName,d.DictOrder,di.SourceId,''y''+SUBSTRING(di.RecordDate,0,5) AS year
         FROM TB_BASE_DANGERSOURCE_INFO di
         RIGHT JOIN TB_SYS_DATADICT d ON di.Rank = d.DictId
-        WHERE d.TypeId = '8ea8562f-e58b-461c-9485-a967bc5e29ca') AS t
-        PIVOT(COUNT(t.SourceId) for t.year IN (y2013,y2014,y2015,y2016,y2017)) AS t1
-        ORDER BY DictOrder
+        WHERE d.TypeId = ''8ea8562f-e58b-461c-9485-a967bc5e29ca'') AS t
+        PIVOT(COUNT(t.SourceId) for t.year IN ('+@year4+','+@year3+','+@year2+','+@year1+','+@year0+')) AS t1
+        ORDER BY DictOrder'
+        PRINT(@strSql)
+        EXEC (@strSql)
     </select>
 
     <!--近五年可能引发的事故类型占比-->
     <select id="getFiveYearAccitentTypeScale" resultType="java.util.Map">
-        SELECT dictName, y2013,y2014,y2015,y2016,y2017
-        FROM (SELECT sd.DictName,sd.DictOrder,rda.RelationId,'y'+SUBSTRING(bdi.RecordDate,0,5) AS year
+        DECLARE
+        @strSql nvarchar(1000),@year0 nvarchar(5),@year1 nvarchar(5),
+        @year2 nvarchar(5),@year3 nvarchar(5),@year4 nvarchar(5)
+        SET @year0= #{year0} SET @year1= #{year1} SET @year2= #{year2} SET @year3= #{year3} SET @year4= #{year4}
+        SET @strSql='SELECT dictName, '+@year4+','+@year3+','+@year2+','+@year1+','+@year0+'
+        FROM (SELECT sd.DictName,sd.DictOrder,rda.RelationId,''y''+SUBSTRING(bdi.RecordDate,0,5) AS year
         FROM TB_REL_DRESOURCE_ACCIDENTYPE rda
         JOIN TB_BASE_DANGERSOURCE_INFO bdi ON bdi.SourceId=rda.SourceId
         RIGHT JOIN TB_SYS_DATADICT sd ON sd.DictId=rda.TypeId
-        WHERE sd.TypeId='61c44efb-ec19-4f92-9c47-507dee5b4bbe') AS t
-        pivot(COUNT(t.RelationId) for t.year in (y2013,y2014,y2015,y2016,y2017)) AS pvt
-        ORDER BY DictOrder
+        WHERE sd.TypeId=''61c44efb-ec19-4f92-9c47-507dee5b4bbe'') AS t
+        pivot(COUNT(t.RelationId) for t.year in ('+@year4+','+@year3+','+@year2+','+@year1+','+@year0+')) AS pvt
+        ORDER BY DictOrder'
+        PRINT(@strSql)
+        EXEC (@strSql)
     </select>
 
     <!--可能引起的事故类型占比-->
