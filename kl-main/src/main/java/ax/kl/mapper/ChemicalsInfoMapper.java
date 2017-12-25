@@ -1,6 +1,7 @@
 package ax.kl.mapper;
 
 import ax.kl.entity.ChemicalsInfo;
+import ax.kl.entity.CompanyChemical;
 import com.baomidou.mybatisplus.plugins.Page;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -23,7 +24,7 @@ public interface ChemicalsInfoMapper {
      * @param companyName 企业名称
      * @return
      */
-    List<ChemicalsInfo> getChemicalsList(Page page, @Param("chemName") String chemName, @Param("companyName") String companyName);
+    List<CompanyChemical> getChemicalsList(Page page, @Param("chemName") String chemName, @Param("companyName") String companyName);
 
     /**
      * 获取待导出的化学品信息总数
@@ -41,8 +42,8 @@ public interface ChemicalsInfoMapper {
      * @param companyName
      * @return
      */
-    List<ChemicalsInfo> getExportMajor(@Param("pageIndex") int pageIndex, @Param("pageSize") int pageSize,
-                                          @Param("chemName") String chemName, @Param("companyName") String companyName);
+    List<CompanyChemical> getExportMajor(@Param("pageIndex") int pageIndex, @Param("pageSize") int pageSize,
+                                         @Param("chemName") String chemName, @Param("companyName") String companyName);
 
 
 }

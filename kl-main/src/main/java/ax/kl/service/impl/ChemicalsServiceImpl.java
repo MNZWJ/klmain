@@ -1,6 +1,7 @@
 package ax.kl.service.impl;
 
 import ax.kl.entity.ChemicalsInfo;
+import ax.kl.entity.CompanyChemical;
 import ax.kl.entity.DangerSourceInfo;
 import ax.kl.mapper.ChemicalsInfoMapper;
 import ax.kl.service.ChemicalsInfoService;
@@ -30,7 +31,7 @@ public class ChemicalsServiceImpl implements ChemicalsInfoService {
      * @return
      */
     @Override
-    public Page<ChemicalsInfo> getChemicalsList(Page page,Map<String, String> param) {
+    public Page<CompanyChemical> getChemicalsList(Page page,Map<String, String> param) {
         page.setRecords(chemicalsInfoMapper.getChemicalsList(page,param.get("chemName"),param.get("companyName")));
         return page;
     }
@@ -53,7 +54,7 @@ public class ChemicalsServiceImpl implements ChemicalsInfoService {
      * @return
      */
     @Override
-    public List<ChemicalsInfo> getExportMajor(int pageIndex, int pageSize, String chemName,  String companyName){
+    public List<CompanyChemical> getExportMajor(int pageIndex, int pageSize, String chemName, String companyName){
         return this.chemicalsInfoMapper.getExportMajor(pageIndex,pageSize,chemName,companyName);
     }
 }
