@@ -76,7 +76,7 @@ public class AlarmTypeController {
     @RequestMapping(value = "/validateTypeCode",method = RequestMethod.POST)
     @ResponseBody
     public JSONObject validateTypeCode(@RequestParam Map<String,String> param){
-        String typeCode = param.get("TypeCode");
+        String typeCode = param.get("typeCode");
         Map<String,String> map =new HashMap<>(1);
         boolean result = alarmTypeService.validateTypeCode(typeCode);
         JSONObject obj=new JSONObject();
