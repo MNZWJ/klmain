@@ -4,38 +4,38 @@
 
     <!--近五年重大危险源统计折线-->
     <select id="getFiveYearCountInfo" resultType="java.util.Map">
-        SELECT dictName,y2017,y2018,y2019,y2020,y2021
+        SELECT dictName,y2013,y2014,y2015,y2016,y2017
         FROM(
         SELECT 'y'+SUBSTRING(di.RecordDate,0,5) AS year,d.DictName,di.SourceId,d.DictOrder
         FROM TB_BASE_DANGERSOURCE_INFO di
         RIGHT JOIN TB_SYS_DATADICT d ON di.Rank = d.DictId
 		WHERE d.TypeId = '8ea8562f-e58b-461c-9485-a967bc5e29ca') AS t
-        pivot(COUNT(t.SourceId) FOR t.year IN(y2017,y2018,y2019,y2020,y2021)) AS t1
+        pivot(COUNT(t.SourceId) FOR t.year IN(y2013,y2014,y2015,y2016,y2017)) AS t1
         ORDER BY DictOrder
     </select>
 
     <!--近五年重大危险源统计柱状图-->
     <select id="getFiveYearCountbarInfo" resultType="java.util.Map">
-        SELECT dictName,convert(VARCHAR,y2017)+','+convert(VARCHAR,y2017+y2018)+
-          ','+convert(VARCHAR,y2017+y2018+y2019)+','+convert(VARCHAR,y2017+y2018+y2019+y2020)+
-          ','+convert(VARCHAR,y2017+y2018+y2019+y2020+y2021) AS num
+        SELECT dictName,convert(VARCHAR,y2013)+','+convert(VARCHAR,y2013+y2014)+
+          ','+convert(VARCHAR,y2013+y2014+y2015)+','+convert(VARCHAR,y2013+y2014+y2015+y2016)+
+          ','+convert(VARCHAR,y2013+y2014+y2015+y2016+y2017) AS num
           FROM(SELECT d.DictName,d.DictOrder,di.SourceId,'y'+SUBSTRING(di.RecordDate,0,5) AS year
         FROM TB_BASE_DANGERSOURCE_INFO di
         RIGHT JOIN TB_SYS_DATADICT d ON di.Rank = d.DictId
         WHERE d.TypeId = '8ea8562f-e58b-461c-9485-a967bc5e29ca') AS t
-        PIVOT(COUNT(t.SourceId) for t.year IN (y2017,y2018,y2019,y2020,y2021)) AS t1
+        PIVOT(COUNT(t.SourceId) for t.year IN (y2013,y2014,y2015,y2016,y2017)) AS t1
         ORDER BY DictOrder
     </select>
 
     <!--近五年可能引发的事故类型占比-->
     <select id="getFiveYearAccitentTypeScale" resultType="java.util.Map">
-        SELECT dictName, y2017,y2018,y2019,y2020,y2021
+        SELECT dictName, y2013,y2014,y2015,y2016,y2017
         FROM (SELECT sd.DictName,sd.DictOrder,rda.RelationId,'y'+SUBSTRING(bdi.RecordDate,0,5) AS year
         FROM TB_REL_DRESOURCE_ACCIDENTYPE rda
         JOIN TB_BASE_DANGERSOURCE_INFO bdi ON bdi.SourceId=rda.SourceId
         RIGHT JOIN TB_SYS_DATADICT sd ON sd.DictId=rda.TypeId
         WHERE sd.TypeId='61c44efb-ec19-4f92-9c47-507dee5b4bbe') AS t
-        pivot(COUNT(t.RelationId) for t.year in (y2017,y2018,y2019,y2020,y2021)) AS pvt
+        pivot(COUNT(t.RelationId) for t.year in (y2013,y2014,y2015,y2016,y2017)) AS pvt
         ORDER BY DictOrder
     </select>
 

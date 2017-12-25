@@ -15,7 +15,7 @@ import java.util.Map;
  */
 @Service
 public class DangerSourceStatisticsServiceImpl implements DangerSourceStatisticsService {
-    private final String[] year={"y2017","y2018","y2019","y2020","y2021"};
+    private final String[] year={"y2013","y2014","y2015","y2016","y2017"};
     private final String[] deathToll={"a","b","c","d"};
 
     @Autowired
