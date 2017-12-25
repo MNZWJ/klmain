@@ -51,6 +51,7 @@ $(function () {
             halign: 'center',
             align: 'center',
             width: '5%',
+            valign:'middle',
             formatter: function (value, row, index) {
                 var page = $('#MajorTable').bootstrapTable('getOptions');
                 return (page.pageNumber - 1) * page.pageSize + index + 1;
@@ -58,11 +59,13 @@ $(function () {
         }, {
             field: 'state',
             checkbox: true,
+            valign:'middle',
             width: '3%'
         }, {
             field: 'companyId',
             title: '企业名称',
             halign: 'center',
+            valign:'middle',
             width:'9%',
             cellStyle: function (value, row, index, field) {
                 return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
@@ -76,6 +79,7 @@ $(function () {
             field: 'sourceName',
             title: '危险源名称',
             halign: 'center',
+            valign:'middle',
             width:'9%',
             cellStyle: function (value, row, index, field) {
                 return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
@@ -89,12 +93,14 @@ $(function () {
             title: 'R值',
             halign: 'center',
             align: 'center',
+            valign:'middle',
             width:'9%'
         }, {
             field: 'rank',
             title: '危险源等级',
             halign: 'center',
             align: 'center',
+            valign:'middle',
             width:'9%'
         },
            /* {
@@ -115,6 +121,7 @@ $(function () {
                 title: '有效期',
                 halign: 'center',
                 align: 'center',
+                valign:'middle',
                 width:'9%'
 
             },
@@ -123,6 +130,7 @@ $(function () {
                 title: '状态',
                 halign: 'center',
                 align: 'center',
+                valign:'middle',
                 width:'9%',
                 cellStyle: function (value, row, index, field) {
                     return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
@@ -134,21 +142,18 @@ $(function () {
             },
             {
                 field: 'accidentType',
-                title: '事故类型',
+                title: '可能引发<br/>事故类型',
                 halign: 'center',
-                width:'9%',
-               /*  cellStyle: function (value, row, index, field) {
-                     return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                 },
-                 formatter: function (value, row, index) {
-                     return '<span title="'+value+'">'+value+'</span>'
-                 }*/
+                align: 'center',
+                valign:'middle',
+                width:'9%'
             },
             {
                 field: 'deathToll',
-                title: '事故死亡人数',
+                title: '可能引发事故<br/>死亡人数',
                 halign: 'center',
                 align: 'right',
+                valign:'middle',
                 width:'9%'
             },
             {
@@ -156,6 +161,7 @@ $(function () {
                 title: '登记日期',
                 halign: 'center',
                 align: 'center',
+                valign:'middle',
                 width:'9%'
                 /* cellStyle: function (value, row, index, field) {
                      return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
@@ -168,6 +174,7 @@ $(function () {
                 field: 'outPersonCount',
                 title: '500米人数估值',
                 halign: 'center',
+                valign:'middle',
                 align: 'right'
             }
         ]

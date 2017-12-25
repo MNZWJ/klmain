@@ -147,21 +147,22 @@ $(function () {
                 title: '可能引发<br/>事故类型',
                 halign: 'center',
                 width:'5%',
-                valign:'middle',
-                  cellStyle: function (value, row, index, field) {
-                      return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                  },
-                  formatter: function (value, row, index) {
-                    if(value!=undefined){
-                        return '<span title="'+value+'">'+value+'</span>'
-                    }else{
-                        return "";
-                    }
-                  }
+                align: 'center',
+                valign:'middle'
+                  // cellStyle: function (value, row, index, field) {
+                  //     return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                  // },
+                  // formatter: function (value, row, index) {
+                  //   if(value!=undefined){
+                  //       return '<span title="'+value+'">'+value+'</span>'
+                  //   }else{
+                  //       return "";
+                  //   }
+                  // }
             },
             {
                 field: 'deathToll',
-                title: '可能引发事<br/>故死亡人数',
+                title: '可能引发事故<br/>死亡人数',
                 halign: 'center',
                 align: 'right',
                 valign:'middle',
