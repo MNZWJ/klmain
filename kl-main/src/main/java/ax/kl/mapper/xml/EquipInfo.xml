@@ -13,8 +13,8 @@
 
     <!--插入设备信息-->
     <insert id="insertEquipInfo" parameterType="ax.kl.entity.EquipInfo">
-        INSERT INTO TB_BASE_EQUIP_INFO (EquipId,UniqueCode,UnitId,EquipName,EquipType)
-        VALUES(#{equipId},#{uniqueCode},#{unitId},#{equipName},#{equipType})
+        INSERT INTO TB_BASE_EQUIP_INFO (EquipId,UniqueCode,UnitId,EquipName,EquipType,EquipStatus)
+        VALUES(#{equipId},#{uniqueCode},#{unitId},#{equipName},#{equipType},#{equipStatus})
     </insert>
 
 
@@ -29,7 +29,8 @@
         UPDATE TB_BASE_EQUIP_INFO
             SET UniqueCode=#{uniqueCode},
                  EquipName=#{equipName},
-                 EquipType=#{equipType}
+                 EquipType=#{equipType},
+                 EquipStatus=#{equipStatus}
           WHERE  EquipId=#{equipId}
     </update>
 </mapper>

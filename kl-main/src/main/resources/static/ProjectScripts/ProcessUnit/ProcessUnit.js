@@ -10,6 +10,9 @@ var state=false;
 //存放所有设备类型
 var equipList = [];
 
+//存放所有设备状态
+var equipStatusList = [];
+
 //存放危险源名称
 var sourceName="";
 
@@ -40,6 +43,9 @@ $(function () {
 
     //获取设备类型集合
     getEquipType();
+    
+    //获取设备状态集合
+    getEquipStatus();
 
     initEquip();
 
@@ -219,6 +225,22 @@ function getEquipType() {
             var arr=n[0].nodes;
             $.each(arr, function (i) {
                 equipList.push({ value:arr[i].id, text: arr[i].text });
+            });
+        }
+    });
+}
+
+//获取所有设备状态
+function getEquipStatus() {
+    $.ajax({
+        url: '/SysDictionary/getDataDictList?typeId=1c42a1c0-5701-47e2-894a-0987e70c58bd',
+        async: false,
+        type: "get",
+        dataType: 'json',
+        contentType : 'application/json;charset=utf-8',
+        success: function (n) {
+            $.each(n, function (i) {
+                equipStatusList.push({ value:n[i].dictId, text: n[i].dictName });
             });
         }
     });
@@ -449,13 +471,30 @@ function initEquip() {
                     }
                 }
 
+            },{
+                field: 'equipStatus',
+                title: '设备状态',
+                halign: 'center',
+                align:'center',
+                editable:{
+                    type: 'select',
+                    title: '请选择',
+                    source: function () {
+                        return equipStatusList;
+                    },
+                    validate: function (value) { //字段验证
+                        if (!$.trim(value)) {
+                            return '不能为空';
+                        }
+                    }
+                }
             }
         ]
     });
     //新增
     $('#addEquip').click(function(){
         $('#equipInfoTable').bootstrapTable('selectPage', 1);
-        var data = {equipName: '',equipType:'',uniqueCode:'',equipId:''};
+        var data = {equipName: '',equipType:'',uniqueCode:'',equipId:'',equipStatus:''};
         $('#equipInfoTable').bootstrapTable('prepend', data);
     });
 //删除
@@ -743,6 +782,7 @@ function unitEdit() {
             }
             //下拉框赋值
             $('#equipType').selectpicker('val', result[0].equipType);
+            $('#equipStatus').selectpicker('val', result[0].equipStatus);
             $("#equipName").val(result[0].equipName);
             $("#uniqueCode").val(result[0].uniqueCode);
             equipId=result[0].equipId;
