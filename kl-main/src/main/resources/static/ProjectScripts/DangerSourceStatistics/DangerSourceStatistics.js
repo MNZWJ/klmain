@@ -255,8 +255,8 @@ function loadDSourceEquipType(rank) {
     if(rank!=null||rank!=undefined){
         rankId =rank.id;
         var rankName=rank.innerHTML;
-        if (rankName.length>5){
-            rankName = rankName.substring(0,5)+"...";
+        if (rankName.length>2){
+            rankName = rankName.substring(0,2);
         }
         $("#defaultType").html(rankName);
     }
