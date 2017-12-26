@@ -34,10 +34,10 @@ public interface DangerSourceStatisticsMapper {
                                                           @Param("year4")String year4);
 
     /**
-     * 可能引起的事故类型占比
+     * 危险源涉及的存储设备类型占比
      * @return
      */
-    List<Map<String,String>> getDSAccidenTypeScale(@Param("rank")String rank);
+    List<Map<String,String>> getDSAccidenEquip(@Param("typeId")String typeId);
 
     /**
      * 安全标准化级别占比

@@ -114,4 +114,13 @@ public class EquipTypeServiceImpl implements EquipTypeService{
                 equipType.getTypeCode(),map.get("typeOrder"));
         return "0";
     };
+
+    /**
+     * 设备类型
+     * @return
+     */
+    @Override
+    public List<Map<String,String>> getEquipType(){
+        return equipTypeMapper.getEquipType();
+    };
 }

@@ -125,6 +125,10 @@
             height: 75%;
             background-color: #22529b;
         }
+
+       #rankMenu li a:hover{
+            background:#0e76a8;
+        }
     </style>
 
 
@@ -347,7 +351,19 @@
 
 
             <div style="margin-left:8%;height: 30px;line-height: 30px;color: #fff; width: 88%;background-color: #0a4164;text-align: left">
+
                 <span style="font-size: 24px;margin-left: 10px;">可能引发事故类型占比</span>
+
+                <div style="line-height:28px;color: #fff;height: 28px;float: right;margin-right:10px;margin-top: 1px;cursor: pointer;" >
+                    <div class="btn-group dropdown">
+                        <span data-toggle="dropdown">
+                            <a id="defaultRank"></a>
+                            <span class="glyphicon glyphicon-triangle-bottom" ></span>
+                        </span>
+                        <ul id="rankMenu" class="dropdown-menu" role="menu" style="background-color: #0e2a42;min-width: 100%">
+                        </ul>
+                    </div>
+                </div>
             </div>
             <div style="margin-left:8%;width: 88%;height: 80%;">
                 <div id="DSAccidenTypeEchart" style="height: 100%;width: 100%;"></div>
