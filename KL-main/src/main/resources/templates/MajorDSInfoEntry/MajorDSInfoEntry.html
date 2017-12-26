@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <#include "/Common/Layout.html" />
+    <#include "/MajorDSInfoEntry/MajorDSInfoImport.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link rel="stylesheet" href="../../Scripts/bootstrap-table/bootstrap-table.min.css"/>
     <link rel="stylesheet" href="../../Scripts/bootstrape-select/css/bootstrap-select.min.css">
@@ -76,9 +77,9 @@
             <table id="MajorTable" class="table  table-striped table-bordered table-hover"
                    style="table-layout: fixed;" >
             </table>
-            <div id="sysorgToolbar" class="toolbar" role="toolbar">
+            <div id="sysorgToolbar" class="toolbar" role="toolbar"style="margin-bottom: -10px;">
                 <form class="form-inline" role="form">
-                    <div class="form-group">
+                    <div class="form-group" style="margin-right: -20px;margin-bottom: -10px;">
                         <label class="xs-only" for="searchCompanyName">企业名称：</label>
                         <select placeholder="请选择" class="selectpicker" style="width: 115px;" data-style="btn-default" id="searchCompanyName" data-live-search="true">                                                >
                         </select>
@@ -102,6 +103,12 @@
                     </button>
                     <button class="btn btn-danger" type="button" onclick="companyDel()">
                         <span class="glyphicon glyphicon-minus"></span> 删除
+                    </button>
+                    <button class="btn btn-default" type="button" onclick="downloadModel()">
+                        <span class="glyphicon glyphicon-download-alt" type="button"></span>模板下载
+                    </button>
+                    <button class="btn btn-default" type="button" onclick="inputFile()">
+                        <span class="glyphicon glyphicon-import" type="button"></span>导入
                     </button>
                 </form>
             </div>

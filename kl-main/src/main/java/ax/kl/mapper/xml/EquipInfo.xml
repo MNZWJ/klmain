@@ -17,6 +17,15 @@
         VALUES(#{equipId},#{uniqueCode},#{unitId},#{equipName},#{equipType},#{equipStatus})
     </insert>
 
+    <!--插入List集合设备信息-->
+    <insert id="insertList" parameterType="java.util.List">
+        INSERT INTO TB_BASE_EQUIP_INFO (EquipId,UniqueCode,UnitId,EquipName,EquipType,EquipStatus)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.equipId},#{item.uniqueCode},#{item.unitId},#{item.equipName},#{item.equipType},#{item.equipStatus})
+        </foreach>
+    </insert>
+
 
     <delete id="deleteEquipInfo">
         DELETE FROM TB_BASE_EQUIP_INFO WHERE EquipId IN
@@ -33,4 +42,16 @@
                  EquipStatus=#{equipStatus}
           WHERE  EquipId=#{equipId}
     </update>
+
+
+    <!--获取所有的设备类型-->
+    <select id="getEquipType" resultType="java.util.Map">
+        SELECT TypeCode,TypeName FROM TB_BASE_EQUIP_TYPE
+    </select>
+
+    <!--获取所有的设备使用状态-->
+    <select id="getEquipStatus" resultType="java.util.Map">
+        SELECT DictId,DictName FROM TB_SYS_DATADICT
+        WHERE TypeId='1c42a1c0-5701-47e2-894a-0987e70c58bd'
+    </select>
 </mapper>
