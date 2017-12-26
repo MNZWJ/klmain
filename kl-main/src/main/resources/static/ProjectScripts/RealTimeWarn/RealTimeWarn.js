@@ -46,6 +46,9 @@ function initTable() {
                 title: '序号',
                 field: 'number1',
                 valign: "middle",
+                halign: 'center',
+                align: 'center',
+                width:'5%',
                 formatter: function (value, row, index) {
                     return  index + 1;
                 },
@@ -62,7 +65,7 @@ function initTable() {
                     title: '企业',
                     halign: 'center',
                     align: 'center',
-
+                    width:'12%',
                     valign: "middle",
                     colspan: 1,
                     rowspan: 3,
@@ -79,7 +82,7 @@ function initTable() {
                     title: '重大危险源',
                     halign: 'center',
                     align: 'center',
-
+                    width:'12%',
                     valign: "middle",
                     colspan: 1,
                     rowspan: 3,
@@ -96,7 +99,7 @@ function initTable() {
                     title: '固有风险',
                     valign: "middle",
                     align: "center",
-                     width: 'auto',
+
                     colspan: 5,
                     rowspan: 1,
                     cellStyle: function (value, row, index, field) {
@@ -118,7 +121,7 @@ function initTable() {
 
                     valign: "middle",
                     align: "center",
-
+                    width:'6%',
                     colspan: 1,
                     rowspan: 2,
                     formatter:function(value,row,index){
@@ -157,7 +160,7 @@ function initTable() {
                 field: 'rank',
                 valign: "middle",
                 align: "center",
-
+                width:'9%',
                 colspan: 1,
                 rowspan: 2,
 
@@ -180,7 +183,7 @@ function initTable() {
                 field: 'fEI',
                 valign: "middle",
                 align: "center",
-
+                width:'8%',
                 colspan: 1,
                 rowspan: 2,
                 formatter:function(value,row,index){
@@ -228,7 +231,7 @@ function initTable() {
                 title: '风险',
                 valign: "middle",
                 align: "center",
-
+                width:'6%',
                 colspan: 1,
                 rowspan: 2,
                 formatter:function(value,row,index){
@@ -274,7 +277,7 @@ function initTable() {
                 field:'airStatusNum',
                 valign: "middle",
                 align: "center",
-
+                width:'9%',
                 colspan: 1,
                 rowspan: 2,
                 cellStyle:function cellStyle(value, row, index, field) {
@@ -293,7 +296,7 @@ function initTable() {
                 field:'processUnitNum',
                 valign: "middle",
                 align: "center",
-
+                width:'8%',
                 colspan: 1,
                 rowspan: 2,
                 cellStyle:function cellStyle(value, row, index, field) {
@@ -313,7 +316,7 @@ function initTable() {
                     field:'conditionNum',
                     valign: "middle",
                     align: "center",
-
+                    width:'8%',
                     colspan: 1,
                     rowspan: 1,
 
@@ -333,7 +336,7 @@ function initTable() {
                     field:'protectionNum',
                     valign: "middle",
                     align: "center",
-
+                    width:'9%',
                     colspan: 1,
                     rowspan: 1,
                     cellStyle:function cellStyle(value, row, index, field) {
@@ -352,7 +355,7 @@ function initTable() {
                     field:'generalHidden',
                     valign: "middle",
                     align: "center",
-
+                    width:'6%',
                     colspan: 1,
                     rowspan: 1,
                     cellStyle:function cellStyle(value, row, index, field) {
@@ -371,7 +374,7 @@ function initTable() {
                     field:'majorHidden',
                     valign: "middle",
                     align: "center",
-
+                    width:'6%',
                     colspan: 1,
                     rowspan: 1,
                     cellStyle:function cellStyle(value, row, index, field) {
@@ -425,7 +428,7 @@ function initSocket(){
             // alert("连接成功");
             stompClient.subscribe('/topic/RealTimeWarnRealTimeWarnData', function (response) {
 
-                if(methodRefresh) {
+
 
                     var returnData = response.body;
 
@@ -433,7 +436,7 @@ function initSocket(){
 
                     $("#table").bootstrapTable("load", data);
 
-                }
+
             });
         },
         function errorCallBack(error) {
