@@ -5,20 +5,27 @@ import ax.kl.mapper.MajorDSInfoEntryMapper;
 import ax.kl.service.MajorDSInfoEntryService;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.plugins.Page;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.io.InputStream;
+import java.util.*;
 
 /**
  * 重大危险源信息录入
  * @author Created by mxl
  * @version 创建时间：${date} ${time}
  */
-@Transactional
+
 @Service
 public class MajorDSInfoEntryServiceImpl implements MajorDSInfoEntryService {
     @Autowired
@@ -71,6 +78,7 @@ public class MajorDSInfoEntryServiceImpl implements MajorDSInfoEntryService {
      * @param cmd
      * @return
      */
+    @Transactional
     @Override
     public String  saveOrUpdateData(String  cmd){
         JSONObject jsstr = JSONObject.parseObject(cmd);
@@ -141,5 +149,97 @@ public class MajorDSInfoEntryServiceImpl implements MajorDSInfoEntryService {
         page.setRecords(majorDSInfoEntryMapper.getChemicalInfoByCompany(page,param.get("chemName"),param.get("cas"),param.get("companyId")));
         return page;
     }
+
+    /**
+     * 文件导入
+     * @param file
+     * @return
+     */
+    @Transactional
+    @Override
+    public String inputFile(MultipartFile file) {
+        String companyId="";
+        String sourceId="";
+        InputStream is;
+        POIFSFileSystem fs;
+        Workbook book =null;
+        String result ="";
+
+        //存放文件中工艺单元的唯一编码
+        List<String> pUniqueCode=new ArrayList<>();
+        //存放文件中设备信息的唯一编码
+        List<String> eUniqueCode=new ArrayList<>();
+        String dangerRank="最轻,较轻,中等,很大,非常大";
+        //计算保存成功条数
+        int in =0;
+        int ine=0;
+        List<ProcessUnit> list =new ArrayList<ProcessUnit>();
+        List<EquipInfo> list1 =new ArrayList<EquipInfo>();
+        try {
+            is = file.getInputStream();
+            /**判断Excel版本*/
+            if (file.getOriginalFilename().indexOf("xlsx")>-1){
+                book = new XSSFWorkbook(is);
+            }
+            else {
+                fs = new POIFSFileSystem(is);
+                book = new HSSFWorkbook(fs);
+            }
+            if (book.getNumberOfSheets() ==0) {
+                return "获取工作簿失败，请重新上传";
+            }
+            //导入第一页的重大危险源信息
+            Sheet sheet = book.getSheetAt(0);
+            int rowSum=sheet.getLastRowNum();
+            //导入第二页的装置设施周围环境信息
+            Sheet sheet1 = book.getSheetAt(1);
+            int rowSum1=sheet1.getLastRowNum();
+            //导入第三页的法律保护区信息
+            Sheet sheet2 = book.getSheetAt(0);
+            int rowSum2=sheet2.getLastRowNum();
+            //导入第四页的危险源相关化学品信息
+            Sheet sheet3 = book.getSheetAt(1);
+            int rowSum13=sheet3.getLastRowNum();
+
+
+        }catch (Exception e){
+            System.out.printf("失败："+e.getMessage());
+        }
+
+        return "成功插入工艺单元"+in+"条。<br>成功插入设备信息"+ine+"条";
+    }
+
+    /**
+     * 导入重大危险源信息
+     *
+     */
+    private String importDangerSourceInfo(){
+        return "";
+    }
+
+    /**
+     * 导入装置设施周围环境信息
+     *
+     */
+    private String importFacilitiesCondition(){
+        return "";
+    }
+
+    /**
+     * 导入法律保护区信息
+     *
+     */
+    private String importLegalProtection(){
+        return "";
+    }
+
+    /**
+     * 导入危险源相关化学品信息
+     *
+     */
+    private String importChemical(){
+        return "";
+    }
+
 
 }
