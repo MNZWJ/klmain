@@ -646,7 +646,7 @@ function loadMonthAlarmCount() {
                         }
                     };
                 },
-                width: '5%',
+                width: '15%',
             }
             ,
 
@@ -654,9 +654,9 @@ function loadMonthAlarmCount() {
 
                 field: 'MonthDay',
                 title: '月份',
-                halign: 'left',
+                halign: 'center',
                 align: 'center',
-                width: '55%',
+                width: '40%',
                 cellStyle: function (value, row, index, field) {
                     return {
                         classes: '',
@@ -677,9 +677,9 @@ function loadMonthAlarmCount() {
             }, {
                 field: 'alarmCount',
                 title: '报警次数',
-                halign: 'left',
+                halign: 'center',
                 align: 'center',
-                width: '40%',
+                width: '45%',
                 cellStyle: function (value, row, index, field) {
                     return {
                         classes: '',
@@ -700,7 +700,7 @@ function loadMonthAlarmCount() {
             }, {
                 field: 'alarmUp',
                 title: '环比增长',
-                halign: 'left',
+                halign: 'center',
                 align: 'center',
                 width: '40%',
                 cellStyle: function (value, row, index, field) {
@@ -782,7 +782,7 @@ function initLoadCompanyAlarmTable() {
                         }
                     };
                 },
-                width: '5%',
+                width: '15%',
             }
             ,
 
@@ -791,7 +791,7 @@ function initLoadCompanyAlarmTable() {
                 field: 'CompanyName',
                 title: '企业',
                 halign: 'center',
-                width: '55%',
+                width: '50%',
                 cellStyle: function (value, row, index, field) {
                     return {
                         classes: '',
@@ -812,9 +812,9 @@ function initLoadCompanyAlarmTable() {
             }, {
                 field: 'AlarmNum',
                 title: '报警次数',
-                halign: 'left',
+                halign: 'center',
                 align: 'center',
-                width: '40%',
+                width: '35%',
                 cellStyle: function (value, row, index, field) {
                     return {
                         classes: '',
