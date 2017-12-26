@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
@@ -100,5 +101,19 @@ public class MajorDSInfoEntryController {
         map.put("total",list1.getTotal());
         map.put("rows",list1.getRecords());
         return map ;
+    }
+
+    @ApiOperation(value = "导入事故隐患")
+    @RequestMapping(value = "/inputFile",method = RequestMethod.POST)
+    @ResponseBody
+    public String inputHAccident(@RequestParam("file") MultipartFile file){
+        String result ="";
+        try {
+            result = this.majorDSInfoEntryService.inputFile(file);
+        }catch (Exception e){
+            System.out.printf(e.getMessage());
+            result = e.getMessage();
+        }
+        return result;
     }
 }

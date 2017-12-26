@@ -1054,6 +1054,7 @@ function checkEquipTable(obj){
 }
 
 
+
 //模版下载
 function downloadModel() {
     window.location.href= "./../../Temp/工艺单元_设备信息导入模版.xlsx";
@@ -1089,7 +1090,7 @@ function FileInput () {
             showPreview: false,//是否显示预览区域
             autoReplace: true,
             dropZoneEnabled: false,//是否显示拖拽区域
-            showRemove: false,//显示移除按钮
+            showRemove: true,//显示移除按钮
             uploadLabel: '导入',
             browseClass: "btn btn-primary", //按钮样式
             maxFileCount: 1, //表示允许同时上传的最大文件个数

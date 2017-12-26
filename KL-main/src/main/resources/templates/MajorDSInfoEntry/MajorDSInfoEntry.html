@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <#include "/Common/Layout.html" />
-    <#include "/MajorDSInfoEntry/MajorDSInfoImport.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link rel="stylesheet" href="../../Scripts/bootstrap-table/bootstrap-table.min.css"/>
     <link rel="stylesheet" href="../../Scripts/bootstrape-select/css/bootstrap-select.min.css">
@@ -15,6 +14,11 @@
     <script src="../../Scripts/bootstrape-select/js/bootstrap-select.js"></script>
     <script src="../../Scripts/bootstrape-select/js/bootstrap-select.min.js"></script>
     <script src="../../Scripts/bootstrape-select/js/i18n/defaults-zh_CN.js"></script>
+
+<!--导入所用css和js-->
+    <link rel="stylesheet" href="../../Scripts/bootStrap-fileinput/css/fileinput.css"/>
+    <script src="../../Scripts/bootStrap-fileinput/js/fileinput.js"></script>
+    <script src="../../Scripts/bootStrap-fileinput/js/locales/zh.js"></script>
 
     <style>
         .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
@@ -77,9 +81,9 @@
             <table id="MajorTable" class="table  table-striped table-bordered table-hover"
                    style="table-layout: fixed;" >
             </table>
-            <div id="sysorgToolbar" class="toolbar" role="toolbar"style="margin-bottom: -10px;">
+            <div id="sysorgToolbar" class="toolbar" role="toolbar"style="margin-bottom: -13px;">
                 <form class="form-inline" role="form">
-                    <div class="form-group" style="margin-right: -20px;margin-bottom: -10px;">
+                    <div class="form-group" style="margin-right: -20px;">
                         <label class="xs-only" for="searchCompanyName">企业名称：</label>
                         <select placeholder="请选择" class="selectpicker" style="width: 115px;" data-style="btn-default" id="searchCompanyName" data-live-search="true">                                                >
                         </select>
@@ -356,6 +360,24 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+<!--导入框-->
+<div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="myFileLabel"
+     style="height:300px;margin: auto">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header"  >
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myFileLabel">请选择Excel文件</h4>
+            </div>
+            <div class="modal-body" id="fileDiv">
+                <input type="file" name="file" id="file" class="file-loading"/>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="../../ProjectScripts/Common/common.js"></script>
 <script src="../../ProjectScripts/MajorDSInfoEntry/MajorDSInfoEntry.js"></script>
 </body>

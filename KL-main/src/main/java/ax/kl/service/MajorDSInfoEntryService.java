@@ -2,6 +2,7 @@ package ax.kl.service;
 
 import ax.kl.entity.*;
 import com.baomidou.mybatisplus.plugins.Page;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -60,4 +61,10 @@ public interface MajorDSInfoEntryService {
      */
     Page<ChemicalCataLog> getChemicalInfoByCompany(Page page, Map<String, String> param);
 
+    /**
+     * 文件导入
+     * @param file
+     * @return
+     */
+    String inputFile(MultipartFile file);
 }
