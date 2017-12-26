@@ -181,12 +181,14 @@ function initTable(){
                     var page = $('#table').bootstrapTable('getOptions');
 
                     return (page.pageNumber - 1) * page.pageSize + index + 1;
-                }
+                },
+                width:'6%'
             }
             ,
             {
                 field:'state',
-                checkbox: true
+                checkbox: true,
+                width:'5%'
             },
             {
 
