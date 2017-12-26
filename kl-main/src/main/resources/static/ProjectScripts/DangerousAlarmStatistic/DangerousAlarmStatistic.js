@@ -621,18 +621,6 @@ function loadMonthAlarmCount() {
             return "bootTableRow";
         },
         onLoadError: function () {
-
-
-            BootstrapDialog.alert({
-                title: '错误',
-                size: BootstrapDialog.SIZE_SMALL,
-                message: '表格加载失败！',
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定', // <-- Default value is 'OK',
-
-            });
         },
 
         columns: [
@@ -769,18 +757,6 @@ function initLoadCompanyAlarmTable() {
             return "bootTableRow";
         },
         onLoadError: function () {
-
-
-            BootstrapDialog.alert({
-                title: '错误',
-                size: BootstrapDialog.SIZE_SMALL,
-                message: '表格加载失败！',
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定', // <-- Default value is 'OK',
-
-            });
         },
 
         columns: [

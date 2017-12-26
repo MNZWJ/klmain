@@ -81,16 +81,6 @@ $(function () {
             return "bootTableRow";
         },
         onLoadError: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                message: '表格加载失败！',
-                size: BootstrapDialog.SIZE_SMALL,
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定' // <-- Default value is 'OK',
-
-            });
         },
         onClickRow: function (row, $element) {
             $("#roleTable").bootstrapTable("uncheckAll");

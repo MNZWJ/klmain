@@ -121,17 +121,6 @@ function onMarkClick(e) {
             };
         },
         error: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                message: '请检查网络连接！',
-                size: BootstrapDialog.SIZE_SMALL,
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定', // <-- Default value is 'OK',
-
-            });
         }
 
     });
@@ -234,34 +223,22 @@ function initTable() {
         onLoadSuccess:function(result){
         },
         onLoadError: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                size: BootstrapDialog.SIZE_SMALL,
-                message: '表格加载失败！',
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定', // <-- Default value is 'OK',
-
-            });
         },
         columns: [
             {
 
                 title: '序号',
+                halign: 'center',
+                align: 'center',
                 formatter: function (value, row, index) {
-
-
                     return index + 1;
                 }
-            }
-            ,
-
+            },
             {
-
                 field: 'chemName',
                 title: '化学品名称',
                 halign: 'center',
+                align: 'left',
                 width: '40%',
                 class: "bootTableRow",
                 formatter: function (value, row, index) {
@@ -272,6 +249,7 @@ function initTable() {
                 field: 'cAS',
                 title: 'CAS',
                 halign: 'center',
+                align: 'center',
                 width: '50%'
             }]
     });
@@ -387,6 +365,9 @@ function loadDSAccidenType(rank){
 function rankMenu() {
     //事故等级菜单
     var rankMenu =document.getElementById("rankMenu");
+    if ($("#rankMenu li").length!=0){
+        return
+    }
     $.ajax({
         type:'get',
         url: "/SysDictionary/getDataDictList?typeId=" + MajorHazardRank,

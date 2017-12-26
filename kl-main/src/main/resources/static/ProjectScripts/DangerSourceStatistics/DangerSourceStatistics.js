@@ -73,7 +73,7 @@ function loadfiveYearCountEchart(){
                         }
                     }
                 },
-                color: ["#ed2d2d","#ff881f","#ffe01f","#0e77ab"],
+                color: ["#ab382c","#ef8938","#dfd728","#0e59cb"],
                 legend: {
                     data:dataName,
                     textStyle:{
@@ -187,7 +187,7 @@ function loadfiveYearAccitentTypeScale(){
                         }
                     }
                 },
-                color: [ "#00544a", "#6ca748","#a5a5a5"],
+                color: [ "#e87f15", "#c82222","#639023"],
                 legend: {
                     data:dataName,
                     textStyle:{
@@ -288,7 +288,7 @@ function loadDSourceEquipType(rank) {
 
             var option = {
 
-                color: ["#ed2d2d","#ff881f","#ffe01f","#0e77ab"],
+                color: ["#ab382c","#ef8938","#dfd728","#0e59cb"],
                 tooltip: {
                     trigger: 'item',
                     formatter: "{b}: {c} ({d}%)"
@@ -383,7 +383,7 @@ function loadStandardRankScale() {
 
             var option = {
 
-                color: [ "#00544a", "#6ca748","#a5a5a5"],
+                color: [ "#c82222","#e87f15", "#166eaa","#639023","#9c9c9c","#316b70"],
                 tooltip: {
                     trigger: 'item',
                     formatter: "{b}: {c} ({d}%)"
@@ -391,8 +391,6 @@ function loadStandardRankScale() {
                 series: [{
                     name: '安全标准化级别占比',
                     type: 'pie',
-                    //radius: ['65%', '85%'],
-                    avoidLabelOverlap: false,
                     itemStyle: dataStyle,
                     data: data
                 }]
@@ -442,7 +440,7 @@ function loadRankAndAccenTypeAreaInfo(acc) {
                                 type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
                             }
                         },
-                        color: ["#ed2d2d", "#ff881f", "#ffe01f", "#0e77ab", "#00544a", "#6ca748","a5a5a5"],
+                        color: ["#ab382c","#ef8938","#dfd728","#0e59cb"],
                         legend: {
                             data: legendData,
                             textStyle: {
@@ -551,7 +549,7 @@ function loadDeathTollInfo() {
                                 type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
                             }
                         },
-                        color: ["#0e77ab", "#ffe01f", "#ff881f", "#ed2d2d"],
+                        color: ["#0e59cb","#dfd728","#ef8938","#ab382c"],
                         legend: {
                             data: legendData,
                             textStyle: {

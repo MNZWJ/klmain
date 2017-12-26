@@ -1,4 +1,3 @@
-
 var scanHeight = "";
 $(function () {
     //获取浏览器高度
@@ -36,11 +35,9 @@ function initTable() {
         rowStyle: function () {//自定义行样式
             return "bootTableRow";
         },
-
+        onLoadError: function () {
+        },
         onClickRow: function (row, $element) {
-
-            // $("#roleTable").bootstrapTable("uncheckAll");
-            // $("#roleTable").bootstrapTable("checkBy", {field: 'roleId', values: [row.roleId]})
         },
         undefinedText:'',
         columns: [

@@ -53,14 +53,12 @@ function initTable(){
                     field: 'CompanyName',
                     valign: "middle",
                     halign: 'center',
-                    align: 'center',
+                    align: 'left',
                     colspan: 1,
                     rowspan: 2,
                     width:'24%'
                 },{
-
                     title: '报警统计',
-
                     halign: 'center',
                     align: 'center',
                     colspan: (result.length+1),
@@ -108,16 +106,6 @@ function initTable(){
             return "bootTableRow";
         },
         onLoadError: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                message: '表格加载失败！',
-                size: BootstrapDialog.SIZE_SMALL,
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定', // <-- Default value is 'OK',
-
-            });
         },
         onClickRow: function (row, $element) {
 
@@ -203,16 +191,6 @@ function detailTable(companyCode,targetCode,startDate,endDate){
             return "bootTableRow";
         },
         onLoadError: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                message: '表格加载失败！',
-                size: BootstrapDialog.SIZE_SMALL,
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定', // <-- Default value is 'OK',
-
-            });
         },
         columns: [
             {

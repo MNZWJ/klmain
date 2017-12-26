@@ -86,16 +86,6 @@ $(function () {
             return "bootTableRow";
         },
         onLoadError: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                message: '表格加载失败！',
-                size: BootstrapDialog.SIZE_SMALL,
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定' // <-- Default value is 'OK',
-
-            });
         },
         onClickRow: function (row, $element) {
             $("#roleTable").bootstrapTable("uncheckAll");
@@ -193,11 +183,34 @@ function saveRoleMenu() {
         async:false,
         data:{roleId:roleId,userId:userId},
         success: function (result) {
-            if(result)
-                alert("保存成功！");
+            if(result){
+                BootstrapDialog.alert({
+
+                    title: "提示",
+                    message: "保存成功！",
+                    size: BootstrapDialog.SIZE_SMALL,
+                    type: BootstrapDialog.TYPE_SUCCESS, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+
+                    callback: function () {
+
+                        $('#myModal').modal('hide');
+                        $("#roleTable").bootstrapTable("refresh");
+                    }
+                });
+            }
         },
         error:function (e) {
-            alert("保存失败！");
+            BootstrapDialog.alert({
+                title: '错误',
+                message: '保存失败！',
+                size: BootstrapDialog.SIZE_SMALL,
+                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+
+                closable: false, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                buttonLabel: '确定', // <-- Default value is 'OK',
+
+            });
         }
     });
 }

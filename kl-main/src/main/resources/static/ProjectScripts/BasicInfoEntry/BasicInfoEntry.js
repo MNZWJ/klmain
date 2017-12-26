@@ -61,15 +61,6 @@ $(function () {
             return "bootTableRow";
         },
         onLoadError: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                message: '表格加载失败！',
-                size: BootstrapDialog.SIZE_SMALL,
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定' // <-- Default value is 'OK',
-            });
         },
         columns: [
             {
@@ -457,15 +448,6 @@ function look(companyId) {
             $('#directArea').selectpicker('val', result[0].directArea);
         },
         error: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                message: '请检查网络连接！',
-                size: BootstrapDialog.SIZE_SMALL,
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定', // <-- Default value is 'OK',
-            });
         }
     });
     $("#myModelLabel").text("查看");
@@ -600,15 +582,6 @@ function companyEdit() {
             $('#directArea').selectpicker('val', result[0].directArea);
         },
         error: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                message: '请检查网络连接！',
-                size: BootstrapDialog.SIZE_SMALL,
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定', // <-- Default value is 'OK',
-            });
         }
     });
     $('#uniqueCode').attr("readonly","readonly");
@@ -643,15 +616,6 @@ function initTable(x) {
         minimumCountColumns: 2,
         smartDisplay:true,
         onLoadError: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                message: '表格加载失败！',
-                size: BootstrapDialog.SIZE_SMALL,
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定' // <-- Default value is 'OK',
-            });
         },
         onLoadSuccess:function(){
             //当查看时控制可编辑表格不可编辑
@@ -759,15 +723,6 @@ function initCert(x) {
             return "bootTableRow";
         },
         onLoadError: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                message: '表格加载失败！',
-                size: BootstrapDialog.SIZE_SMALL,
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定' // <-- Default value is 'OK',
-            });
         },
         onLoadSuccess:function(){
             //当查看时控制可编辑表格不可编辑
@@ -1030,15 +985,6 @@ function initChemiacalAllTable() {
             }
         },
         onLoadError: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                message: '表格加载失败！',
-                size: BootstrapDialog.SIZE_SMALL,
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定' // <-- Default value is 'OK',
-            });
         },
         columns: [
             {
@@ -1125,15 +1071,6 @@ function initChemicalTable() {
             return "bootTableRow";
         },
         onLoadError: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                message: '表格加载失败！',
-                size: BootstrapDialog.SIZE_SMALL,
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定' // <-- Default value is 'OK',
-            });
         },
         onLoadSuccess:function(){
             //当查看时控制可编辑表格不可编辑
