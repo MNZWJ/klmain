@@ -14,7 +14,8 @@ $(function () {
         }
     });
 
-    // connect();
+
+    initSocket();
 });
 
 //初始化表格
@@ -35,20 +36,7 @@ function initTable() {
         rowStyle: function () {//自定义行样式
             return "bootTableRow";
         },
-        onLoadError: function () {
 
-
-            BootstrapDialog.alert({
-                title: '错误',
-                message: '表格加载失败！',
-                size: BootstrapDialog.SIZE_SMALL,
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定', // <-- Default value is 'OK',
-
-            });
-        },
         onClickRow: function (row, $element) {
 
             // $("#roleTable").bootstrapTable("uncheckAll");
@@ -424,36 +412,36 @@ function resizePage() {
         }
     });
 }
+//初始化socket连接
+function initSocket(){
+    // 建立连接对象（还未发起连接）
+    var socket = new SockJS("http://"+window.location.hostname+":"+window.location.port+"/webSocketServer");
 
+    // 获取 STOMP 子协议的客户端对象
+    var stompClient = Stomp.over(socket);
 
-/////////////////////////////////////
-// var stompClient = null;
-//
-// function connect() {
-//     var socket = new SockJS('/endpointSang');
-//     stompClient = Stomp.over(socket);
-//     stompClient.connect({}, function (frame) {
-//
-//         console.log('Connected:' + frame);
-//         stompClient.subscribe('/topic/getResponse', function (response) {
-//             showResponse(JSON.parse(response.body).name);
-//         })
-//     });
-// }
-// function disconnect() {
-//     if (stompClient != null) {
-//         stompClient.disconnect();
-//     }
-//
-//     console.log('Disconnected');
-// }
-//
-// function showResponse(message) {
-//     alert(message);
-// }
-// function sendName() {
-//
-//     var name = '123';
-//     console.log('name:' + name);
-//     stompClient.send("/welcome", {}, JSON.stringify({'name': name}));
-// }
+    // 向服务器发起websocket连接并发送CONNECT帧
+    stompClient.connect(
+        {},
+        function connectCallback(frame) {
+            // 连接成功时（服务器响应 CONNECTED 帧）的回调方法
+            // alert("连接成功");
+            stompClient.subscribe('/topic/RealTimeWarnRealTimeWarnData', function (response) {
+
+                if(methodRefresh) {
+
+                    var returnData = response.body;
+
+                    var data = JSON.parse(returnData);
+
+                    $("#table").bootstrapTable("load", data);
+
+                }
+            });
+        },
+        function errorCallBack(error) {
+            // 连接失败时（服务器响应 ERROR 帧）的回调方法
+            alert("连接失败");
+        }
+    );
+}
