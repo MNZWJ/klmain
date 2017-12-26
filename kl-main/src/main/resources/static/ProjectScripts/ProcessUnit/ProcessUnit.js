@@ -103,17 +103,6 @@ function saveData(){
                 return false;
             }
             if(!c){
-                BootstrapDialog.alert({
-                    title: '错误',
-                    message: '请选择重大危险源！！！',
-                    size: BootstrapDialog.SIZE_SMALL,
-                    type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-
-                    closable: false, // <-- Default value is false
-                    draggable: true, // <-- Default value is false
-                    buttonLabel: '确定', // <-- Default value is 'OK',
-
-                });
                 return false;
             }
 
@@ -194,7 +183,6 @@ function getCompanyList() {
             $('#CompanyName .selectpicker').selectpicker('refresh',{});
         },
         error: function () {
-            alert("请求失败");
         }
     });
 }
@@ -281,15 +269,6 @@ function initTable(){
             return "bootTableRow";
         },
         onLoadError: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                message: '表格加载失败！',
-                size: BootstrapDialog.SIZE_SMALL,
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定' // <-- Default value is 'OK',
-            });
         },onClickRow:function(row, $element){
 
             $("#processUnitTable").bootstrapTable("uncheckAll");
@@ -321,17 +300,25 @@ function initTable(){
             field: 'companyName',
             title: '企业名称',
             halign: 'center',
-            align:'center'
+            align:'left',
+            cellStyle: function (value, row, index, field) {
+                return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+            },
+            formatter: function (value, row, index) {
+                return '<span title="'+value+'">'+value+'</span>'
+            }
         },{
             field: 'sourceId',
             title: '危险源名称',
             halign: 'center',
-            align:'center',
+            align:'left',
+            cellStyle: function (value, row, index, field) {
+                return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+            },
             formatter: function (value, row, index) {
                 $.each(sourceList, function (i, n) {
                     if (value == n.sourceId) {
                         sourceName = n.sourceName;
-
                     }
                 });
                 return sourceName;

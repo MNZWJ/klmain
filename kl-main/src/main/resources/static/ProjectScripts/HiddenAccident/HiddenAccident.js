@@ -86,7 +86,6 @@ function getHazardList() {
             hazardList = result;
         },
         error: function () {
-            alert("请求失败");
         }
     });
     return hazardList;
@@ -211,7 +210,6 @@ function searchCompanyList() {
             // }
         },
         error: function () {
-            alert("请求失败");
         }
     });
 
@@ -271,24 +269,14 @@ function initTable(){
             return "bootTableRow";
         },
         onLoadError: function () {
-
-
-            BootstrapDialog.alert({
-                title: '错误',
-                size: BootstrapDialog.SIZE_SMALL,
-                message: '表格加载失败！',
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定', // <-- Default value is 'OK',
-
-            });
         },
 
         columns: [
             {
 
                 title: '序号',
+                halign: 'center',
+                align: 'center',
                 formatter: function (value, row, index) {
                     var page = $('#hiddenRiskTable').bootstrapTable('getOptions');
                     return (page.pageNumber - 1) * page.pageSize + index + 1;
@@ -339,6 +327,7 @@ function initTable(){
                 field: 'rank',
                 title: '隐患级别',
                 halign: 'center',
+                align: 'center',
                 width: '100px',
                 cellStyle: function (value, row, index, field) {
                     return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
@@ -387,6 +376,7 @@ function initTable(){
                 field: 'upReportDate',
                 title: '上报日期',
                 halign: 'center',
+                align: 'center',
                 width: '100px',
                 cellStyle: function (value, row, index, field) {
                     return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
@@ -398,6 +388,7 @@ function initTable(){
             }, {
                 field: 'reformTerm',
                 title: '整改期限',
+                align: 'center',
                 halign: 'center',
                 width: '100px',
                 cellStyle: function (value, row, index, field) {
@@ -411,6 +402,7 @@ function initTable(){
                 field: 'rectification',
                 title: '整改情况',
                 halign: 'center',
+                align: 'center',
                 width: '100px',
                 cellStyle: function (value, row, index, field) {
                     return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};

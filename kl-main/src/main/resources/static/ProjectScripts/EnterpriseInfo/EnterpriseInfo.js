@@ -41,15 +41,6 @@ $(function () {
             return "bootTableRow";
         },
         onLoadError: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                message: '表格加载失败！',
-                size: BootstrapDialog.SIZE_SMALL,
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定' // <-- Default value is 'OK',
-            });
         },
         columns: [{
             title: '序号',
@@ -71,7 +62,7 @@ $(function () {
                 title: '企业名称',
                 halign: 'center',
                 class: "bootTableRow",
-                width: "8.8%",
+                width: "8.36%",
                 formatter: function (value, rowData, rowIndex) {
                     users.push(rowData);
                     return "<a href='javascript:look(\""+rowData.companyId+"\")'>" + value + "</a>";
@@ -81,16 +72,15 @@ $(function () {
                 title: '法人代表',
                 halign: 'center',
                 align:'center',
-                width: "8.8%"
+                width: "8.36%"
             }, {
                 field: 'contactWay',
                 title: '联系方式',
                 halign: 'center',
-                align:'center',
+                align:'left',
                 class: "bootTableRow",
-                width: "8.8%",
+                width: "8.36%",
                 formatter: function (value, row, index) {
-                    value = value==undefined?"":value;
                     return '<span title="' + value + '">' + value + '</span>'
                 }
             },  {
@@ -99,7 +89,7 @@ $(function () {
                 halign: 'center',
                 align: 'center',
                 class: "bootTableRow",
-                width: "8.8%"
+                width: "8.36%"
 
             },   {
                 field: 'standardRank',
@@ -107,20 +97,20 @@ $(function () {
                 halign: 'center',
                 align: 'center',
                 class: "bootTableRow",
-                width: "8.8%"
+                width: "8.36%"
             },   {
                 field: 'operatingState',
                 title: '经营状态',
                 halign: 'center',
                 align: 'center',
                 class: "bootTableRow",
-                width: "8.8%"
+                width: "8.36%"
             }, {
                 field: 'industryCode',
                 title: '所属行业',
                 halign: 'center',
                 align: 'left',
-                width: "8.8%",
+                width: "8.36%",
                 class: "bootTableRow",
                 formatter: function (value, row, index) {
                     value = value==undefined?"":value;
@@ -132,14 +122,14 @@ $(function () {
                 title: '企业规模',
                 halign: 'center',
                 align:'center',
-                width: "8.8%",
+                width: "8.36%",
             },
             {
                 field: 'typeCode',
                 title: '企业类型',
                 halign: 'center',
                 align:'center',
-                width: "8.8%",
+                width: "8.36%",
                 class: "bootTableRow",
                 formatter: function (value, row, index) {
                     return '<span title="'+value+'">'+value+'</span>'
@@ -148,7 +138,8 @@ $(function () {
                 field: 'area',
                 title: '行政区域',
                 halign: 'center',
-                width: "8.8%",
+                align: 'left',
+                width: "8.36%",
                 class: "bootTableRow",
                 formatter: function (value, row, index) {
                     return '<span title="'+value+'">'+value+'</span>'
@@ -157,7 +148,8 @@ $(function () {
                 field: 'directArea',
                 title: '直属区域',
                 halign: 'center',
-                width: '8.8%',
+                align:'center',
+                width: '8.36%',
                 class: "bootTableRow",
                 formatter: function (value, row, index) {
                     return '<span title="'+value+'">'+value+'</span>'
@@ -306,15 +298,6 @@ function look(companyId) {
                 }
             },
             error: function () {
-                BootstrapDialog.alert({
-                    title: '错误',
-                    message: '请检查网络连接！',
-                    size: BootstrapDialog.SIZE_SMALL,
-                    type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                    closable: false, // <-- Default value is false
-                    draggable: true, // <-- Default value is false
-                    buttonLabel: '确定', // <-- Default value is 'OK',
-                });
             }
         });
     $('#myModal').modal('show');
@@ -341,15 +324,6 @@ function initTable() {
             return "bootTableRow";
         },
         onLoadError: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                size: BootstrapDialog.SIZE_SMALL,
-                message: '表格加载失败！',
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定', // <-- Default value is 'OK',
-            });
         },
         columns: [
             {
@@ -390,15 +364,6 @@ function initTable() {
             return "bootTableRow";
         },
         onLoadError: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                size: BootstrapDialog.SIZE_SMALL,
-                message: '表格加载失败！',
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定', // <-- Default value is 'OK',
-            });
         },
         columns: [
             {
@@ -413,8 +378,9 @@ function initTable() {
                 title: '危险源名称',
                 halign: 'center',
                 width: '30%',
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis'}};
+                class: "bootTableRow",
+                formatter: function (value, row, index) {
+                    return '<span title="'+value+'">'+value+'</span>'
                 }
             }, {
                 field: 'rank',
@@ -450,15 +416,6 @@ function initTable() {
             return "bootTableRow";
         },
         onLoadError: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                size: BootstrapDialog.SIZE_SMALL,
-                message: '表格加载失败！',
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定', // <-- Default value is 'OK',
-            });
         },
         columns: [
             {

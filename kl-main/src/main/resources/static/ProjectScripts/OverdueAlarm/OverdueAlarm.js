@@ -69,22 +69,14 @@ function initTable() {
             showDiv();
         },
         onLoadError: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                size: BootstrapDialog.SIZE_SMALL,
-                message: '表格加载失败！',
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定', // <-- Default value is 'OK',
-
-            });
         },
 
         columns: [
             {
 
                 title: '序号',
+                halign: 'center',
+                align: 'center',
                 width: '5%',
                 formatter: function (value, row, index) {
                     return index + 1;
@@ -119,6 +111,7 @@ function initTable() {
                 field: 'startDate',
                 title: '开始日期',
                 halign: 'center',
+                align: 'center',
                 width: '20%',
                 cellStyle: function (value, row, index, field) {
                     value = value ==undefined?'-':value;
@@ -132,6 +125,7 @@ function initTable() {
                 field: 'validity',
                 title: '有效期',
                 halign: 'center',
+                align: 'center',
                 width: '20%',
                 cellStyle: function (value, row, index, field) {
                     return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
@@ -179,16 +173,6 @@ function initTable() {
             showDiv();
         },
         onLoadError: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                size: BootstrapDialog.SIZE_SMALL,
-                message: '表格加载失败！',
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定', // <-- Default value is 'OK',
-
-            });
         },
 
         columns: [

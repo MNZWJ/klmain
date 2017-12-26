@@ -41,16 +41,7 @@ function initTable(){
             return "bootTableRow";
         },
         onLoadError: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                message: '表格加载失败！',
-                size: BootstrapDialog.SIZE_SMALL,
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定', // <-- Default value is 'OK',
 
-            });
         },
         onClickRow:function(row, $element){
             $("#dataTable").bootstrapTable("uncheckAll");
@@ -60,6 +51,8 @@ function initTable(){
             {
                 title: '序号',
                 field: 'dataNum',
+                halign: 'center',
+                align: 'center',
                 formatter: function (value, row, index) {
                     var page = $('#dataTable').bootstrapTable('getOptions');
                     return (page.pageNumber - 1) * page.pageSize + index + 1;
@@ -200,7 +193,6 @@ function getCompanyList() {
             $('#searchCompanyName').selectpicker('val','');
         },
         error: function () {
-            alert("请求失败");
         }
     });
 }
@@ -239,7 +231,6 @@ function getDresourceList() {
             $("#qResourceName").selectpicker('val','');
         },
         error: function () {
-            alert("请求失败");
         }
     });
 }
@@ -263,7 +254,6 @@ function getUnitList() {
             $("#qUnitName").selectpicker('val','');
         },
         error: function () {
-            alert("请求失败");
         }
     });
 }
@@ -286,7 +276,6 @@ function getEquipList() {
             $("#qEquipName").selectpicker('val','');
         },
         error: function () {
-            alert("请求失败");
         }
     });
 }
@@ -306,7 +295,6 @@ function getTargetList() {
             $("#qTargetName").selectpicker('val','');
         },
         error: function () {
-            alert("请求失败");
         }
     });
 }
