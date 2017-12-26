@@ -291,7 +291,7 @@ function initEcharts() {
     //加载事故等级占比
     loadSourceRank();
     //加载占比
-    loadDSAccidenType();
+    rankMenu();
     //加载重大危险源行政区划分布情况
     loadDSDistribution();
     //危险源数量
@@ -327,11 +327,12 @@ function getSourceCount() {
 
 var DSAccidenTypeEchart =null;
 //加载可能引发的事故类型
-function loadDSAccidenType(){
-
+function loadDSAccidenType(rank){
+    $("#defaultRank").html(rank.innerHTML);
     $.ajax({
         type:'get',
         url:'/DangerSource/getDSAccidenType',
+        data:{typeId:rank.id},
         contentType:'application/json;charset=utf-8',
         success:function(result){
             var legendData=[];
@@ -365,43 +366,11 @@ function loadDSAccidenType(){
                     trigger: 'item',
                     formatter: "{b}: {c} ({d}%)"
                 },
-                // legend: {
-                //     orient: 'vertical',
-                //     x: '2%',
-                //     top: '30%',
-                //     data: legendData,
-                //     textStyle:{
-                //         color:'#fff'
-                //     }
-                // },
                 series: [{
                     name: '可能引发的事故类型占比',
                     type: 'pie',
-                    //radius: ['65%', '85%'],
                     avoidLabelOverlap: false,
                     itemStyle: dataStyle,
-                    // label: {
-                    //     normal: {
-                    //         show: false,
-                    //         position: 'center'
-                    //     },
-                    //     emphasis: {
-                    //         show: true,
-                    //         formatter: function(param) {
-                    //             return param.percent.toFixed(0) + '%';
-                    //         },
-                    //         textStyle: {
-                    //             fontSize: '30',
-                    //             fontWeight: 'bold',
-                    //             color:'#fff'
-                    //         }
-                    //     }
-                    // },
-                    // labelLine: {
-                    //     normal: {
-                    //         show: true
-                    //     }
-                    // },
                     data: data
                 }]
             };
@@ -414,6 +383,25 @@ function loadDSAccidenType(){
 
 }
 
+//可能发生的事故类型菜单
+function rankMenu() {
+    //事故等级菜单
+    var rankMenu =document.getElementById("rankMenu");
+    $.ajax({
+        type:'get',
+        url: "/SysDictionary/getDataDictList?typeId=" + MajorHazardRank,
+        success:function (result) {
+            $.each(result, function (i, n) {
+                rankMenu.innerHTML+="<li><a id=\""+n.dictId+ "\" style=\"color: #fff\" onclick=loadDSAccidenType(this);>"+n.dictName+"</a></li>";
+                if (i==0){
+                    var rank={id:n.dictId,innerHTML:n.dictName};
+                    loadDSAccidenType(rank);
+                }
+            });
+        }
+    });
+
+}
 
 var sourceRankEchart = null;
 //加载重大危险源等级占比

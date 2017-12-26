@@ -91,8 +91,8 @@ public class DangerSourceController {
     @RequestMapping(value = "/getDSAccidenType")
     @ApiOperation(value = "/getDSAccidenType",tags = "可能引发的事故类型数量")
     @ResponseBody
-    public List<Map<String,String>> getDSAccidenType(){
-        return dangerSourceService.getDSAccidenType();
+    public List<Map<String,String>> getDSAccidenType(@RequestParam String typeId){
+        return dangerSourceService.getDSAccidenType(typeId);
     }
 
     @RequestMapping(value = "/getDSDistribution")

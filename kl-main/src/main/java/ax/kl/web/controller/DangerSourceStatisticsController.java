@@ -51,11 +51,11 @@ public class DangerSourceStatisticsController {
         return dSSService.getFiveYearAccitentTypeScale();
     }
 
-    @ApiOperation(value = "/getDSAccidenTypeScale",tags = "可能引发事故类型统计饼图")
-    @RequestMapping(value = "/getDSAccidenTypeScale",method = RequestMethod.GET)
+    @ApiOperation(value = "/getDSAccidenEquip",tags = "危险源涉及的存储设备类型占比")
+    @RequestMapping(value = "/getDSAccidenEquip",method = RequestMethod.GET)
     @ResponseBody
-    public List<Map<String,String>> getDSAccidenTypeScale(@RequestParam String rank){
-        return dSSService.getDSAccidenTypeScale(rank);
+    public List<Map<String,String>> getDSAccidenEquip(@RequestParam String typeId){
+        return dSSService.getDSAccidenEquip(typeId);
     };
 
     @ApiOperation(value = "/getStandardRankScale",tags = "安全标准化级别占比")

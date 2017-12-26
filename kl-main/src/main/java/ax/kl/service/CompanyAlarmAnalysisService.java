@@ -25,4 +25,15 @@ public interface CompanyAlarmAnalysisService {
      * @return
      */
     public List<Map<String,String>> getAlarmNum(String startDate,String endDate,String companyName);
+
+    /**
+     * 加载报警数据详情
+     * @param pageIndex
+     * @param pageSize
+     * @param companyCode
+     * @param targetCode
+     * @return
+     */
+    Map<String,Object> loadAlarmDataList(int pageIndex,int pageSize,String companyCode,
+                                           String targetCode,String startDate,String endDate);
 }

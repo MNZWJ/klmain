@@ -55,7 +55,7 @@ public interface DangerSourceMapper {
      * 可能引发的事故类型数量
      * @return
      */
-    List<Map<String,String>> getDSAccidenType();
+    List<Map<String,String>> getDSAccidenType(@Param("typeId")String typeId);
 
     /**
      * 重大危险源分布情况

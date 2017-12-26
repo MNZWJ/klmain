@@ -28,10 +28,10 @@ public interface DangerSourceStatisticsService {
     List<Map<String,Object>> getFiveYearAccitentTypeScale();
 
     /**
-     * 可能引起的事故类型占比
+     * 危险源涉及的存储设备类型占比
      * @return
      */
-    List<Map<String,String>> getDSAccidenTypeScale(String rank);
+    List<Map<String,String>> getDSAccidenEquip(String typeId);
 
     /**
      * 安全标准化级别占比
