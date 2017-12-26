@@ -80,8 +80,8 @@ public class DangerSourceServiceImpl implements DangerSourceService {
      * @return
      */
     @Override
-    public List<Map<String,String>> getDSAccidenType(){
-        return dangerSourceMapper.getDSAccidenType();
+    public List<Map<String,String>> getDSAccidenType(String typeId){
+        return dangerSourceMapper.getDSAccidenType(typeId);
     }
 
     /**

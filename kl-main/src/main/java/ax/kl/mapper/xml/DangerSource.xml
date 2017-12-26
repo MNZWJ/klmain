@@ -63,6 +63,7 @@
     <select id="getDSAccidenType" resultType="java.util.Map">
         SELECT ISNULL(COUNT(di.SourceId),0) AS num,sd.DictName FROM TB_REL_DRESOURCE_ACCIDENTYPE da
         JOIN TB_BASE_DANGERSOURCE_INFO di ON da.SourceId=di.SourceId
+        AND di.Rank=#{typeId}
         RIGHT JOIN TB_SYS_DATADICT sd ON da.TypeId=sd.DictId
         WHERE sd.TypeId = '61c44efb-ec19-4f92-9c47-507dee5b4bbe'
         GROUP BY sd.DictId,sd.DictName,sd.DictOrder

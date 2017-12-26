@@ -55,4 +55,10 @@ public interface EquipTypeService {
      * @return
      */
     String removeOrder(Map<String,String> map);
+
+    /**
+     * 获取设备类型
+     * @return
+     */
+    List<Map<String,String>> getEquipType();
 }

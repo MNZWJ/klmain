@@ -58,13 +58,16 @@
         EXEC (@strSql)
     </select>
 
-    <!--可能引起的事故类型占比-->
-    <select id="getDSAccidenTypeScale" resultType="java.util.Map">
-        SELECT COUNT(rda.RelationId) AS num,sd.dictName FROM TB_REL_DRESOURCE_ACCIDENTYPE rda
-        JOIN TB_BASE_DANGERSOURCE_INFO di ON di.SourceId=rda.SourceId AND Rank=#{rank}
-        RIGHT JOIN TB_SYS_DATADICT sd ON rda.TypeId=sd.DictId
-        WHERE sd.TypeId='61c44efb-ec19-4f92-9c47-507dee5b4bbe'
-        GROUP BY sd.DictName,sd.DictOrder
+    <!--危险源涉及的存储设备类型占比-->
+    <select id="getDSAccidenEquip" resultType="java.util.Map">
+        SELECT COUNT(bei.EquipId) AS num,sd.dictName FROM TB_BASE_DANGERSOURCE_INFO bdi
+        JOIN TB_BASE_PROCESS_UNIT bpu ON bpu.SourceId=bdi.SourceId
+        JOIN TB_BASE_EQUIP_INFO bei ON bei.UnitId=bpu.UnitId
+        AND bei.EquipType=#{typeId}
+        RIGHT JOIN TB_SYS_DATADICT sd ON sd.DictId=bdi.Rank
+        WHERE sd.TypeId='8ea8562f-e58b-461c-9485-a967bc5e29ca'
+        GROUP BY sd.DictId,sd.DictName,sd.DictOrder
+        ORDER BY sd.DictOrder
     </select>
 
     <!--安全标准化级别占比-->

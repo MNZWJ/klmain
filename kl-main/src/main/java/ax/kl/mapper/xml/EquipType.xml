@@ -51,4 +51,10 @@
         UPDATE TB_BASE_EQUIP_TYPE SET TypeOrder=#{typeOrder1} WHERE  TypeCode=#{typeCode1}
         UPDATE TB_BASE_EQUIP_TYPE SET TypeOrder=#{typeOrder2} WHERE  TypeCode=#{typeCode2}
     </update>
+
+    <!--所有二级设备类型-->
+    <select id="getEquipType" resultType="java.util.Map">
+        SELECT typeCode,typeName FROM TB_BASE_EQUIP_TYPE WHERE PCode = '0'
+        ORDER BY TypeOrder
+    </select>
 </mapper>
