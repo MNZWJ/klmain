@@ -14,6 +14,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
@@ -88,5 +89,19 @@ public class ProcessUnitController {
         JSONObject obj=new JSONObject();
         obj.put("valid",result);
         return obj;
+    }
+
+    @ApiOperation(value = "导入事故隐患")
+    @RequestMapping(value = "/inputFile",method = RequestMethod.POST)
+    @ResponseBody
+    public String inputHAccident(@RequestParam("file") MultipartFile file){
+        String result ="";
+        try {
+            result = this.processUnitService.inputFile(file);
+        }catch (Exception e){
+            System.out.printf(e.getMessage());
+            result = e.getMessage();
+        }
+        return result;
     }
 }

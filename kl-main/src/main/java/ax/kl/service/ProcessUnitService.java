@@ -4,6 +4,7 @@ import ax.kl.entity.CompanyInfo;
 import ax.kl.entity.ProcessUnit;
 import com.baomidou.mybatisplus.plugins.Page;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -35,5 +36,12 @@ public interface ProcessUnitService {
      * 删除工艺单元信息
      */
     void delProcessUnit(String[] idLists);
+
+    /**
+     * 字节流获取Excel数据并插入
+     * @param  file
+     * @return
+     */
+    String inputFile(MultipartFile file);
 
 }

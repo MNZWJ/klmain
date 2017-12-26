@@ -50,5 +50,37 @@
         SELECT COUNT(*) FROM TB_BASE_PROCESS_UNIT WHERE UniqueCode = #{uniqueCodeU}
     </select>
 
+    <!--获取所有的重大危险源-->
+    <select id="getDangerSource" resultType="java.util.Map">
+        SELECT SourceId,SourceName FROM TB_BASE_DANGERSOURCE_INFO
+    </select>
+
+    <!--获取所有的企业信息-->
+    <select id="getCompany" resultType="java.util.Map">
+        SELECT CompanyId,CompanyName FROM TB_BASE_COMPANY_INFO
+    </select>
+
+    <!--获取所有的工艺单元信息-->
+    <select id="getProcessUnit" resultType="java.util.Map">
+        SELECT UnitId,UnitName FROM TB_BASE_PROCESS_UNIT
+    </select>
+
+
+    <!--判断企业与重大危险源是否匹配-->
+    <select id="check" resultType="ax.kl.entity.DangerSourceInfo">
+        SELECT * FROM TB_BASE_DANGERSOURCE_INFO
+         WHERE CompanyId=#{companyId} AND SourceName=#{sourceName}
+    </select>
+
+    <!--插入数据集合-->
+    <insert id="insertProcessUnit" parameterType="java.util.List">
+        INSERT INTO TB_BASE_PROCESS_UNIT
+        (UnitId,UniqueCode,SourceId,UnitName,FEI,DangerRank,AfterFEI,AfterDangerRank) VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.unitId},#{item.uniqueCodeU},#{item.sourceId},#{item.unitName},#{item.fEI},#{item.dangerRank},
+            #{item.afterFEI},#{item.afterDangerRank})
+        </foreach>
+    </insert>
+
 
 </mapper>
