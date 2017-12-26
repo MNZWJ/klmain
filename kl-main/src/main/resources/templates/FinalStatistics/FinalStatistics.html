@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <#include "/Common/Layout.html" />
+
+
+
+    <style>
+        ::-webkit-scrollbar {
+            width: 14px;
+            height: 14px;
+        }
+
+        ::-webkit-scrollbar-track,
+        ::-webkit-scrollbar-thumb {
+            border-radius: 999px;
+            border: 5px solid transparent;
+        }
+
+        ::-webkit-scrollbar-track {
+            box-shadow: 1px 1px 5px rgba(255,255,255,.2) inset;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            min-height: 20px;
+            background-clip: content-box;
+            box-shadow: 0 0 0 5px rgba(255,255,255,.5) inset;
+        }
+
+        ::-webkit-scrollbar-corner {
+            background: transparent;
+        }
+        .numDanger {
+            display: inline-block;
+            width: 30px;
+            height: 75%;
+            background-color: #22529b;
+        }
+
+        #rankMenu li a:hover{
+            background:#0e76a8;
+        }
+    </style>
+    <link rel="stylesheet" href="../../Scripts/icheck-1.x/skins/all.css">
+    <link rel="stylesheet" href="../../Scripts/icheck-1.x/skins/square/red.css">
+    <script src="../../Scripts/icheck-1.x/icheck.js"></script>
+    <script src="../../Scripts/Echarts/echarts-3.8.4/echarts.min.js"></script>
+    <script src="../../ProjectScripts/Common/common.js"></script>
+    <script src="../../ProjectScripts/FinalStatistics/FinalStatistics.js"></script>
+</head>
+<body style="background-color: #0e2a42;">
+
+
+<div id="fullDiv" style="width: 100%;height: 100%;">
+
+
+    <div style="width: 33.3%;height: 100%;position: relative;float: left;padding-top: 1%">
+
+
+        <div style="overflow-y: visible;height: 32%;width: 100%;">
+
+            <div id="titleDivC1"
+                 style="margin-left:5%;height: 30px;line-height: 30px;color: #fff; width: 88%;background-color: #0a4164">
+                <span style="font-size: 24px;margin-left: 10px;">企业类型占比</span>
+            </div>
+            <div style="margin-left:5%;width: 88%;height: 78%;overflow-y: auto">
+                <div id="companyTypeEchart"  style="width: 100%;height:100%;">
+
+                </div>
+            </div>
+
+
+        </div>
+
+
+        <div style="height: 32%;width: 100%;">
+            <div id="titleDivColor1"
+                 style="margin-left:5%;height: 30px;line-height: 30px;color: #fff; width: 88%;background-color: #0a4164">
+                <span style="font-size: 24px;margin-left: 10px;">重大危险源等级占比</span>
+            </div>
+            <div style="margin-left:5%;width: 88%;height: 75%;">
+                <div id="sourceRankEchart" style="width: 100%;height: 100%;"></div>
+            </div>
+        </div>
+        <div style="height: 32%;width: 100%;">
+            <div id="titleDivColor2"
+                 style="margin-left:5%;height: 30px;line-height: 30px;color: #fff; width: 88%;background-color: #0a4164">
+                <span style="font-size: 24px;margin-left: 10px;">月度报警类型统计</span>
+            </div>
+            <div style="margin-left:5%;width: 88%;height: 88%;">
+                <div id="alarmTypeMonthEchart" style="width: 100%;height: 100%; margin-bottom: 0%"></div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div style="width: 33.3%;height: 100%;position: relative;float: left;padding-top: 1%">
+
+
+        <div style="overflow-y: visible;height: 32%;width: 100%;">
+
+
+            <div id="titleDivC"
+                 style="margin-left:8%;height: 30px;line-height: 30px;color: #fff; width: 88%;background-color: #0a4164">
+                <span style="font-size: 24px;margin-left: 10px;">垦利区基本情况统计</span>
+            </div>
+            <div style="margin-left:8%;width: 88%;height: 88%;">
+                <table style="height: 100%;width: 100%;">
+                    <tr>
+                        <td width="50%" style="text-align: center">
+
+                                <span style="color: #fff;font-size: 24px;font-weight: bold">企业数量</span>
+                                <div id="ccompanyNum"  style="margin: 0 auto;font-size: 34px;font-weight: bold;color: #fef424;">
+                                    26家
+                                </div>
+
+                        </td>
+                        <td width="50%" style="text-align: center">
+
+                                <span style="color: #fff;font-size: 24px;font-weight: bold">重大危险源数量</span>
+                                <div id="DangerousNum"  style="margin: 0 auto;font-size: 34px;font-weight: bold;color:#fef424">
+                                    26个
+                                </div>
+
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+
+
+        <div style="height: 32%;width: 100%;">
+            <div id="titleDivColo"
+                 style="margin-left:8%;height: 30px;line-height: 30px;color: #fff; width: 88%;background-color: #0a4164">
+                <span style="font-size: 24px;margin-left: 10px;">近五年重大危险源数量统计</span>
+            </div>
+            <div style="margin-left:8%;width: 88%;height: 88%;">
+                <div id="fiveYearCountInfo" style="width: 100%;height: 100%;">
+
+                </div>
+            </div>
+        </div>
+        <div style="height: 32%;width: 100%;">
+            <div id="123"
+                 style="margin-left:8%;height: 30px;line-height: 30px;color: #fff; width: 88%;background-color: #0a4164">
+                <span style="font-size: 24px;margin-left: 10px;">本月行业报警统计</span>
+                <div id="dLabel" onclick="openModel()" style="line-height:28px;color: #fff;height: 28px;float: right;margin-right:10px;margin-top: 1px;cursor: pointer;" >
+                    <span class="glyphicon glyphicon-search"></span>
+                </div>
+            </div>
+            <div style="margin-left:8%;width: 88%;height: 88%;">
+                <div id="industryAlarmEchart" style="width: 100%;height: 100%;">
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div style="width: 33.3%;height: 100%;position: relative;float: left;padding-top: 1%">
+
+
+        <div style="overflow-y: visible;height: 32%;width: 100%;">
+
+
+            <div id="titleDivColor"
+                 style="height: 30px;line-height: 30px;color: #fff; width: 88%;background-color: #0a4164;margin: 0 auto;">
+                <span style="font-size: 24px;margin-left: 10px;">企业分布情况</span>
+            </div>
+            <div style="width: 88%;height: 78%;overflow-y: auto;margin: 0 auto;">
+                <div id="industryCompanyInfo"  style="width: 100%;height: 100%;">
+
+                </div>
+            </div>
+
+        </div>
+
+
+        <div style="height: 32%;width: 100%;">
+            <div id="titleDivCol1"
+                 style="margin-left:0;height: 30px;line-height: 30px;color: #fff; width: 88%;background-color: #0a4164;margin: 0 auto;">
+                <span style="font-size: 24px;margin-left: 10px;">重大危险源可能引发事故类型</span>
+
+                <div style="line-height:28px;color: #fff;height: 28px;float: right;margin-right:10px;margin-top: 1px;cursor: pointer;" >
+                    <div class="btn-group dropdown">
+                        <span data-toggle="dropdown">
+                            <a id="defaultRank"></a>
+                            <span class="glyphicon glyphicon-triangle-bottom" ></span>
+                        </span>
+                        <ul id="rankMenu" class="dropdown-menu" role="menu" style="background-color: #0e2a42;min-width: 100%">
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+            <div style="margin-left:0;width: 88%;height: 88%;margin: 0 auto;">
+                <div id="DSAccidenTypeEchart" style="width: 100%;height: 100%;"></div>
+            </div>
+        </div>
+        <div style="height: 32%;width: 100%;">
+            <div id="ti1234"
+                 style="margin-left:0;height: 30px;line-height: 30px;color: #fff; width: 88%;background-color: #0a4164;margin: 0 auto;">
+                <span style="font-size: 24px;margin-left: 10px;">本月行政区域报警情况统计</span>
+
+            </div>
+            <div style="margin-left:0;width: 88%;height: 88%;margin: 0 auto;">
+                <div id="areaAlarmEchart" style="width: 100%;height: 100%;"></div>
+            </div>
+        </div>
+
+
+
+    </div>
+
+
+</div>
+</div>
+
+
+<!--模态窗-->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop='static'
+     data-target=".bs-example-modal-lg">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">请选择要展示的行业</h4>
+            </div>
+            <div class="modal-body">
+                <input id="selectIndustry" type="hidden">
+                <div  class="row">
+                    <div  class="col-xs-10 col-xs-offset-1">
+                        <form id="hangYe">
+
+
+                            <div id="hangYeUl">
+
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="btn_save" onclick="loadIndustryAlarm()">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>
