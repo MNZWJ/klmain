@@ -129,5 +129,77 @@
         </foreach>
     </insert>
 
+    <!--获取企业名称-->
+    <select id="getCompanyForName" resultType="java.util.Map">
+        SELECT CompanyId,CompanyName FROM TB_BASE_COMPANY_INFO
+    </select>
 
+    <!--插入企业信息-->
+    <insert id="insertCompanyInfo" parameterType="java.util.List">
+        INSERT INTO TB_BASE_COMPANY_INFO ( CompanyId,
+        CompanyName,UniqueCode, Area,LegalPerson,ContactWay,SafeManageRank,
+        StandardRank, OperatingState,  Longt, Lat,ScaleCode, TypeCode,
+        DirectArea,SimpleName ,SuperVisionUnit  )   VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.companyId}, #{ item.companyName },#{ item.uniqueCode },#{ item.area },
+            #{ item.legalPerson },#{ item.contactWay },#{ item.safeManageRank },
+            #{ item.standardRank }, #{ item.operatingState }, #{ item.longt },#{ item.lat },
+            #{ item.scaleCode },#{ item.typeCode },#{ item.directArea } ,#{item.simpleName}
+            ,#{item.superVisionUnit}   )
+        </foreach>
+    </insert>
+
+    <!-- /*插入企业行业*/-->
+    <insert id="insertCompanyIndustry" parameterType="java.util.List">
+        INSERT INTO TB_REL_COMPANY_INDUSTRY (RelId, CompanyId, IndustryId)
+        VALUES
+        <foreach collection="hylist" item="item"  separator=","  index="index">
+            (
+            NEWID() ,#{ item.companyId },#{ item.industryCode }
+            )
+        </foreach>
+    </insert>
+
+    <!--插入企业化工工艺信息-->
+    <insert id="insertCompanyTechnology" parameterType="java.util.List">
+        INSERT INTO TB_REL_COMPANY_ART ( RelationId,CompanyId, TechnologyId,
+        MonitorUnit  )        VALUES
+        <foreach collection="list1" item="item" index="index" separator=",">
+            ( NEWID() ,#{item.companyId },#{ item.technologyId }  ,#{ item.monitorUnit }  )
+        </foreach>
+    </insert>
+
+    <!--插入企业证书信息-->
+    <insert id="insertCompanyCert" parameterType="java.util.List">
+        INSERT INTO TB_BASE_COMPANY_CERTIFICATE (
+        CertId,CompanyId,CertType, CertNo,StartDate, Validity
+        )        VALUES
+        <foreach collection="list2" item="item" separator="," index="index">
+            (
+            NEWID() ,#{ item.companyId },#{ item.certType },#{ item.certNo },#{ item.startDate },#{ item.validity }
+            )
+        </foreach>
+    </insert>
+
+    <!--插入企业化学品信息-->
+    <insert id="insertCompanyChemical" parameterType="java.util.List">
+        INSERT INTO TB_REL_COMPANY_CHEMICAL (
+        RelId,ChemId,CompanyId, Dreserves,Unit
+        )        VALUES
+        <foreach collection="list3" item="item" separator="," index="index">
+            (
+            NEWID() ,#{ item.chemId },#{ item.companyId },#{ item.dreserves },#{ item.unit }
+            )
+        </foreach>
+    </insert>
+
+    <!--获取数据字典数据-->
+    <select id="getDictListForName" resultType="java.util.Map">
+        SELECT DictId,DictName  from  TB_SYS_DATADICT
+    </select>
+
+    <!--获取化学品数据-->
+    <select id="getChemicalListForName" resultType="java.util.Map">
+        SELECT 	ChemId,	ChemName   FROM 	TB_BASE_CHEMICAL_CATALOG
+    </select>
 </mapper>

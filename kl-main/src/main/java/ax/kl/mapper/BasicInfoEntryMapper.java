@@ -1,14 +1,12 @@
 package ax.kl.mapper;
 
-import ax.kl.entity.ChemicalCataLog;
-import ax.kl.entity.ChemicalsInfo;
-import ax.kl.entity.CompanyChemical;
-import ax.kl.entity.CompanyInfo;
+import ax.kl.entity.*;
 import com.baomidou.mybatisplus.plugins.Page;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 基本信息录入
@@ -35,7 +33,6 @@ public interface BasicInfoEntryMapper {
      */
     void  saveQYHYData(@Param("industry") String[] IndustryCode, @Param("companyId")String companyId);
 
-
     /**
      * 保存危险工艺单元
      * @param processTable
@@ -50,8 +47,6 @@ public interface BasicInfoEntryMapper {
      * @param companyId
      */
     void saveChemicalData(@Param("chemicalTable")List<CompanyChemical> chemicalTable, @Param("companyId")String companyId);
-
-
 
     /**
      * 保存证书
@@ -80,7 +75,6 @@ public interface BasicInfoEntryMapper {
      */
     void delCompanyInfo(String[] idLists);
 
-
     /**
      * 验证编码的唯一性
      * @param typeCode
@@ -97,11 +91,66 @@ public interface BasicInfoEntryMapper {
      * @return
      */
     List<ChemicalCataLog> getChemicalInfoList(Page page, @Param("chemName") String chemName, @Param("cas") String cas);
+
     /**
      * 通过ID获取公司化学品信息
      * @param companyId
      * @return
      */
     List<CompanyChemical> getChemicalList(@Param("companyId") String companyId);
+
+    /**
+     * 获取企业信息
+     * @return
+     */
+    List<Map<String,String>> getCompanyForName();
+
+    /**
+     * 插入企业信息
+     * @param list
+     * @return
+     */
+    int insertCompanyInfo(@Param("list")List<CompanyInfo> list);
+
+    /**
+     * 插入企业行业
+     * @param hylist
+     * @return
+     */
+    int insertCompanyIndustry(@Param("hylist")List<CompanyInfo> hylist);
+
+    /**
+     * 插入企业化工工艺信息
+     * @param list1
+     * @return
+     */
+    int insertCompanyTechnology(@Param("list1")List<CompanyInfo> list1);
+
+    /**
+     * 插入企业证书信息
+     * @param list2
+     * @return
+     */
+    int insertCompanyCert(@Param("list2")List<CompanyInfo> list2);
+
+    /**
+     * 插入企业化学品信息
+     * @param list3
+     * @return
+     */
+    int insertCompanyChemical(@Param("list3")List<CompanyChemical> list3);
+
+    /**
+     * 获取数据字典
+     * @return
+     */
+    List<Map<String,String>> getDictListForName();
+
+
+    /**
+     * 获取化学品数据
+     * @return
+     */
+    List<Map<String,String>> getChemicalListForName();
 
 }

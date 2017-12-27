@@ -234,7 +234,6 @@ function getTypeCodeList() {
             $.each(companyList, function (i) {
                 $('#searchTypeCode').append("<option value='" + companyList[i].dictId + "'>" + companyList[i].dictName + "</option>");
                 $('#typeCode').append("<option value='" + companyList[i].dictId + "'>" + companyList[i].dictName + "</option>");
-
             });
             $('#searchTypeCode').selectpicker('val', '');
             $('#typeCode').selectpicker('val', '');
@@ -1260,3 +1259,77 @@ $('#btn_save').click(function () {
         });
     }
 });
+
+
+/**
+ * 导入
+ */
+function inputFile() {
+    $('#InputMadel').modal('show');
+    var oFileInput = new FileInput();
+    oFileInput.Init("file", "/BasicInfoEntry/inputCompanyInfo");
+}
+
+//初始化导入Div
+function FileInput () {
+    var oFile = new Object();
+
+    //初始化fileinput控件（第一次初始化）
+    oFile.Init = function(ctrlName, uploadUrl) {
+        var control = $('#' + ctrlName);
+
+        //初始化上传控件的样式
+        control.fileinput({
+            language: 'zh', //设置语言
+            uploadUrl: uploadUrl, //上传的地址
+            allowedFileExtensions: ['xls', 'xlsx'],//接收的文件后缀
+            showUpload: true, //是否显示上传按钮
+            showCaption: true,//是否显示被选文件的简介
+            showPreview: true,//是否显示预览区域
+            autoReplace: true,
+            dropZoneEnabled: true,//是否显示拖拽区域
+            showRemove: true,//显示移除按钮
+            dropZoneTitle: '拖拽文件到这里 …',
+            uploadLabel: '导入',
+            browseClass: "btn btn-primary", //按钮样式
+            maxFileCount: 1, //表示允许同时上传的最大文件个数
+            enctype: 'multipart/form-data',
+            validateInitialCount:true,
+            previewFileIcon: "<i class='glyphicon glyphicon-level-up'></i>",
+            fileActionSettings:{
+                showRemove: true,
+                showUpload: false,
+                showZoom: false}
+        });
+
+        //导入文件上传完成之后的事件
+        $("#file").on("fileuploaded", function (event, data, previewId, index) {
+            $("#InputMadel").modal("hide");
+            $("#enterpriseTable").bootstrapTable("refresh", {})
+            clearDiv();
+            //$('#file').fileinput('clear');
+            BootstrapDialog.alert({
+                title: '提示',
+                size:BootstrapDialog.SIZE_SMALL,
+                message: data.response,
+                type: BootstrapDialog.TYPE_SUCCESS , // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+                closable: false, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                buttonLabel: '确定', // <-- Default value is 'OK',
+            });
+        });
+    }
+    return oFile;
+};
+
+/**
+ * 表单清空导入记录
+ */
+function clearDiv() {
+    $("#fileDiv").html("<input type=\"file\" name=\"file\" id=\"file\" class=\"file-loading\"/>");
+}
+
+//模板下载
+function downloadModel() {
+    window.location.href= "./../../Temp/企业基本信息导入模板.xlsx";
+}

@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link rel="stylesheet" href="../../Scripts/bootstrap-table/bootstrap-table.min.css"/>
     <link rel="stylesheet" href="../../Scripts/bootstrape-select/css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="../../Scripts/bootStrap-fileinput/css/fileinput.css"/>
     <link rel="stylesheet" href="../../Scripts/bootstrap-table/extensions/editable/bootstrap-editable.css">
     <script src="../../Scripts/bootstrap-table/bootstrap-table.min.js"></script>
     <script src="../../Scripts/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
@@ -14,6 +15,8 @@
     <script src="../../Scripts/bootstrape-select/js/bootstrap-select.js"></script>
     <script src="../../Scripts/bootstrape-select/js/bootstrap-select.min.js"></script>
     <script src="../../Scripts/bootstrape-select/js/i18n/defaults-zh_CN.js"></script>
+    <script src="../../Scripts/bootStrap-fileinput/js/fileinput.js"></script>
+    <script src="../../Scripts/bootStrap-fileinput/js/locales/zh.js"></script>
     <script src="../../ProjectScripts/Common/common.js"></script>
     <style>
         .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
@@ -92,6 +95,7 @@
                     <label class="xs-only" for="searchIndustryId">企业行业：</label>
                     <select placeholder="请选择"class="selectpicker" style="width: 115px;" data-style="btn-default" id="searchIndustryId">                                                >
                     </select>
+                    <br/>
                     <button class="btn btn-default" type="button" onclick="searchMenus()">
                         <span class="glyphicon glyphicon-search" type="button"></span> 查询
                     </button>
@@ -107,6 +111,12 @@
                     </button>
                     <button class="btn btn-danger" type="button" onclick="companyDel()">
                         <span class="glyphicon glyphicon-minus"></span> 删除
+                    </button>
+                    <button class="btn btn-default" type="button" onclick="downloadModel()">
+                        <span class="glyphicon glyphicon-download-alt" type="button"></span>模板下载
+                    </button>
+                    <button class="btn btn-default" type="button" onclick="inputFile()">
+                        <span class="glyphicon glyphicon-import" type="button"></span>导入
                     </button>
                 </form>
             </div>
@@ -370,6 +380,25 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+
+<!--导入框-->
+<div class="modal fade" id="InputMadel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="InputMadelLabel">请选择Excel文件</h4>
+            </div>
+            <div class="modal-body" id="fileDiv">
+                <input type="file" name="file" id="file" class="file-loading"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script src="../../ProjectScripts/BasicInfoEntry/BasicInfoEntry.js"></script>
 
 </body>

@@ -13,6 +13,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
@@ -110,5 +111,19 @@ public class BasicInfoEntryController {
     @ResponseBody
     public List<CompanyChemical> getChemicalList(@RequestParam String companyId) {
         return basicInfoEntryService.getChemicalList(companyId);
+    }
+
+    @ApiOperation(value = "导入企业信息")
+    @RequestMapping(value = "/inputCompanyInfo",method = RequestMethod.POST)
+    @ResponseBody
+    public String inputCompanyInfo(@RequestParam("file") MultipartFile file){
+        String result ="";
+        try {
+            result = basicInfoEntryService.inputCompanyInfo(file);
+        }catch (Exception e){
+            System.out.printf(e.getMessage());
+            result = e.getMessage();
+        }
+        return result;
     }
 }

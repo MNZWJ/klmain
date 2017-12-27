@@ -135,7 +135,6 @@ public class HiddenAccidentServiceImpl implements HiddenAccidentService {
                     }catch(Exception e){
                         value = cell.getNumericCellValue()+"";
                     }
-
                     if ("".equals(value)||value==null){
                         break;
                     }
