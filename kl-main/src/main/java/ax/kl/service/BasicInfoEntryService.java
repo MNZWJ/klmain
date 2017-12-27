@@ -5,6 +5,7 @@ import ax.kl.entity.ChemicalsInfo;
 import ax.kl.entity.CompanyChemical;
 import ax.kl.entity.CompanyInfo;
 import com.baomidou.mybatisplus.plugins.Page;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -63,4 +64,11 @@ public interface BasicInfoEntryService {
      * @return
      */
     List<CompanyChemical> getChemicalList(String companyId);
+
+    /**
+     * 字节流获取Excel数据并插入
+     * @param  file
+     * @return
+     */
+    String inputCompanyInfo(MultipartFile file);
 }
