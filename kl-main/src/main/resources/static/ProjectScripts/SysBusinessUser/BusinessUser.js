@@ -237,6 +237,16 @@ function formValidator() {
                     }
                 }
 
+            },
+            //登录名验证
+            loginName: {
+                validators: {
+
+                    notEmpty: {
+                        message: '登录名不能为空'
+                    }
+                }
+
             }
         }
     });
@@ -602,9 +612,11 @@ function userDel() {
 function showOrHiddenLogin() {
     if ($("#isLogin").is(':checked')) {
         $("#login").show();
+        $("#userForm").data('bootstrapValidator').addField("loginName");//删除编码验证
     } else {
         $("#login").hide();
         $("#loginName").val('');
+        $("#userForm").data('bootstrapValidator').removeField("loginName");//删除编码验证
     }
 }
 
