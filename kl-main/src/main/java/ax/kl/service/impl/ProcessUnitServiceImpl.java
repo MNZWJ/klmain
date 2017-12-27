@@ -10,10 +10,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.plugins.Page;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -207,21 +205,13 @@ public class ProcessUnitServiceImpl implements ProcessUnitService {
                     Cell cell =row.getCell(colum.get("序号"));
                     //如果有序号列
                     if (cell!=null){
-                        try {
-                            //通过各种方法获取序号列此行的值
-                            value = cell.getStringCellValue();
-                        }catch(Exception e){
-                            value =cell.getNumericCellValue()+"";
-                        }
-                        //如果没有值那就有问题，跳出循环
-                        if ("".equals(value)||value==null){
-                            break;
-                        }
+                        value=getCellValue(cell);
                     }
+
                     cell =row.getCell(colum.get("企业名称"));
                     if (cell!=null){
                         //获取其值
-                        value = cell.getStringCellValue();
+                        value=getCellValue(cell);
                         //与获取的所有企业的集合元素进行比对取出CompanyId
                         if (value!=null&&company.containsKey(value)){
                             value=company.get(value);
@@ -235,7 +225,7 @@ public class ProcessUnitServiceImpl implements ProcessUnitService {
 
                     cell =row.getCell(colum.get("重大危险源名称"));
                     if (cell!=null){
-                        value = cell.getStringCellValue();
+                        value=getCellValue(cell);
                         if (value!=null&&dangerSource.containsKey(value)){
                             sourceId=dangerSource.get(value);
                             //判断此危险源是不是前一列公司的危险源
@@ -253,7 +243,7 @@ public class ProcessUnitServiceImpl implements ProcessUnitService {
 
                     cell =row.getCell(colum.get("工艺单元名称"));
                     if (cell!=null){
-                        value=cell.getStringCellValue();
+                        value=getCellValue(cell);
                     }else{
                         return "导入失败：第1页第"+ (i-1) + "行工艺单元名称不能为空，请核对后再次导入";
                     }
@@ -261,16 +251,7 @@ public class ProcessUnitServiceImpl implements ProcessUnitService {
 
                     cell =row.getCell(colum.get("工艺单元唯一编码"));
                     if (cell!=null){
-                        try {
-                            //通过各种方法获取序号列此行的值
-                            value = cell.getStringCellValue();
-                        }catch(Exception e){
-                            value =cell.getNumericCellValue()+"";
-                        }
-                        //如果没有值那就有问题，跳出循环
-                        if ("".equals(value)||value==null){
-                            break;
-                        }
+                        value=getCellValue(cell);
                         if(pUniqueCode.size()!=0){
                             if(pUniqueCode.contains(value)){
                                 return "导入失败：文件中含有重复的工艺单元唯一编码，请重新输入后再次导入";
@@ -288,16 +269,7 @@ public class ProcessUnitServiceImpl implements ProcessUnitService {
 
                     cell =row.getCell(colum.get("火灾爆炸指数F&EI"));
                     if (cell!=null){
-                        try {
-                            //通过各种方法获取序号列此行的值
-                            value = cell.getStringCellValue();
-                        }catch(Exception e){
-                            value =cell.getNumericCellValue()+"";
-                        }
-                        //如果没有值那就有问题，跳出循环
-                        if ("".equals(value)||value==null){
-                            break;
-                        }
+                        value=getCellValue(cell);
                         //如果没有值那就有问题，跳出循环
                         if (!isNumeric(value)){
                             return "导入失败：第1页第"+ (i-1) + "行火灾爆炸指数F&EI不是数字，请核对后再次导入";
@@ -309,16 +281,7 @@ public class ProcessUnitServiceImpl implements ProcessUnitService {
 
                     cell =row.getCell(colum.get("补偿后的F&EI"));
                     if (cell!=null){
-                        try {
-                            //通过各种方法获取序号列此行的值
-                            value = cell.getStringCellValue();
-                        }catch(Exception e){
-                            value =cell.getNumericCellValue()+"";
-                        }
-                        //如果没有值那就有问题，跳出循环
-                        if ("".equals(value)||value==null){
-                            break;
-                        }
+                        value=getCellValue(cell);
                         //如果没有值那就有问题，跳出循环
                         if (!isNumeric(value)){
                             return "导入失败：第1页第"+ (i-1) + "行补偿后的F&EI不是数字，请核对后再次导入";
@@ -330,7 +293,7 @@ public class ProcessUnitServiceImpl implements ProcessUnitService {
 
                     cell =row.getCell(colum.get("危险等级"));
                     if (cell!=null){
-                        value=cell.getStringCellValue();
+                        value=getCellValue(cell);
                         if(!dangerRank.contains(value)){
                             return "导入失败：第1页第"+ (i-1) + "行危险等级未按正确格式输入，请核对后再次导入";
                         }
@@ -342,7 +305,7 @@ public class ProcessUnitServiceImpl implements ProcessUnitService {
 
                     cell =row.getCell(colum.get("补偿后的危险等级"));
                     if (cell!=null){
-                        value=cell.getStringCellValue();
+                        value=getCellValue(cell);
                         if(!dangerRank.contains(value)){
                             return "导入失败：第1页第"+ (i-1) + "行补偿后的危险等级未按正确格式输入，请核对后再次导入";
                         }
@@ -395,22 +358,13 @@ public class ProcessUnitServiceImpl implements ProcessUnitService {
                     Cell cell =row.getCell(colum.get("序号"));
                     //如果有序号列
                     if (cell!=null){
-                        try {
-                            //通过各种方法获取序号列此行的值
-                            value = cell.getStringCellValue();
-                        }catch(Exception e){
-                            value =cell.getNumericCellValue()+"";
-                        }
-                        //如果没有值那就有问题，跳出循环
-                        if ("".equals(value)||value==null){
-                            break;
-                        }
+                        value=getCellValue(cell);
                     }
 
                     cell =row.getCell(colum.get("企业名称"));
                     if (cell!=null){
                         //获取其值
-                        value = cell.getStringCellValue();
+                        value=getCellValue(cell);
                         //与获取的所有企业的集合元素进行比对取出CompanyId
                         if (value!=null&&company.containsKey(value)){
                             value=company.get(value);
@@ -421,7 +375,7 @@ public class ProcessUnitServiceImpl implements ProcessUnitService {
 
                     cell =row.getCell(colum.get("重大危险源名称"));
                     if (cell!=null){
-                        value = cell.getStringCellValue();
+                        value=getCellValue(cell);
                         if (value!=null&&dangerSource.containsKey(value)){
                             sourceId=dangerSource.get(value);
                             //判断此危险源是不是前一列公司的危险源
@@ -436,7 +390,7 @@ public class ProcessUnitServiceImpl implements ProcessUnitService {
 
                     cell =row.getCell(colum.get("工艺单元名称"));
                     if (cell!=null){
-                        value=cell.getStringCellValue();
+                        value=getCellValue(cell);
                         if (value!=null&&unit.containsKey(value)){
                             value=unit.get(value);
                         }else if (value!=null&&pNameAndID.containsKey(value)){
@@ -451,16 +405,7 @@ public class ProcessUnitServiceImpl implements ProcessUnitService {
 
                     cell =row.getCell(colum.get("设备唯一编码"));
                     if (cell!=null){
-                        try {
-                            //通过各种方法获取序号列此行的值
-                            value = cell.getStringCellValue();
-                        }catch(Exception e){
-                            value = cell.getNumericCellValue()+"";
-                        }
-                        //如果没有值那就有问题，跳出循环
-                        if ("".equals(value)||value==null){
-                            break;
-                        }
+                        value=getCellValue(cell);
                         if(eUniqueCode.size()!=0){
                             if(eUniqueCode.contains(value)){
                                 return "导入失败：文件中含有重复的设备唯一编码，请重新输入后再次导入";
@@ -478,16 +423,7 @@ public class ProcessUnitServiceImpl implements ProcessUnitService {
 
                     cell =row.getCell(colum.get("设备名称"));
                     if (cell!=null){
-                        try {
-                            //通过各种方法获取序号列此行的值
-                            value = cell.getStringCellValue();
-                        }catch(Exception e){
-                            value = cell.getNumericCellValue()+"";
-                        }
-                        //如果没有值那就有问题，跳出循环
-                        if ("".equals(value)||value==null){
-                            break;
-                        }
+                        value=getCellValue(cell);
                     }else{
                         return "导入失败：第2页第"+(i-1) + "行设备名称不能为空，请核对后再次导入";
                     }
@@ -495,7 +431,7 @@ public class ProcessUnitServiceImpl implements ProcessUnitService {
 
                     cell =row.getCell(colum.get("设备类型"));
                     if (cell!=null){
-                        value=cell.getStringCellValue();
+                        value=getCellValue(cell);
                         if (value!=null&&equipType.containsKey(value)){
                             value=equipType.get(value);
                         }else {
@@ -508,7 +444,7 @@ public class ProcessUnitServiceImpl implements ProcessUnitService {
 
                     cell =row.getCell(colum.get("设备使用状态"));
                     if (cell!=null){
-                        value=cell.getStringCellValue();
+                        value=getCellValue(cell);
                         if (value!=null&&equipStatus.containsKey(value)){
                             value=equipStatus.get(value);
                         }else {
@@ -621,5 +557,45 @@ public class ProcessUnitServiceImpl implements ProcessUnitService {
     private static boolean isNumeric(String str){
         String reg = "^[0-9]+(.[0-9]+)?$";
         return str.matches(reg);
+    }
+
+    /**
+     * 获取cell值
+     * @param cell
+     * @return
+     */
+    private String getCellValue(Cell cell) {
+        String cellValue = "";
+        if (cell == null){
+            return "";
+        }
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+        CellType cellType =cell.getCellTypeEnum();
+        //字符串型
+        if (cellType == CellType.STRING){
+            cellValue = cell.getStringCellValue();
+        }
+        //数值型
+        else if (cellType == CellType.NUMERIC){
+            //判断是否为日期格式
+            if (DateUtil.isCellDateFormatted(cell)){
+                cellValue=sdf.format(cell.getDateCellValue());
+            }else {
+                if(cell.getNumericCellValue()-(int)cell.getNumericCellValue()>0){
+                    cellValue = String.valueOf(cell.getNumericCellValue());
+                }else{
+                    cellValue = String.valueOf((int)cell.getNumericCellValue());
+                }
+            }
+        }
+        //Boolean
+        else if (cellType == CellType.BOOLEAN){
+            cellValue = String.valueOf(cell.getBooleanCellValue());
+        }
+        //空值
+        else if (cellType == CellType.BLANK){
+            cellValue = "";
+        }
+        return cellValue;
     }
 }

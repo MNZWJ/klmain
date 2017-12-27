@@ -9,10 +9,7 @@ import com.baomidou.mybatisplus.plugins.Page;
 import org.apache.commons.collections4.map.HashedMap;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -338,43 +336,32 @@ public class MajorDSInfoEntryServiceImpl implements MajorDSInfoEntryService {
             Cell cell =row.getCell(colum.get("序号"));
             //如果有序号列
             if (cell!=null){
-                try {
-                    value = cell.getStringCellValue();
-                }catch(Exception e){
-                    value = cell.getNumericCellValue()+"";
-                }
-                //如果没有值那就有问题，跳出循环
-                if ("".equals(value)||value==null){
-                    break;
-                }
+                value=getCellValue(cell);
             }
+
             cell =row.getCell(colum.get("企业名称"));
             if (cell!=null){
                 //获取其值
-                value = cell.getStringCellValue();
+                value=getCellValue(cell);
                 //与获取的所有企业的集合元素进行比对取出CompanyId
                 if (value!=null&&company.containsKey(value)){
                     value=company.get(value);
                     companyId=value;
                 }else {
-                    all.put("result","导入失败：第1页第"+ (i-1) + "行企业名称未找到指定对象，请核对后再次导入");
+                    all.put("result","导入失败：第1页第"+ (i+1) + "行企业名称未找到指定对象，请核对后再次导入");
                     return all;
                 }
             }else{
-                all.put("result","导入失败：第1页第"+ (i-1) + "行企业名称不能为空，请核对后再次导入");
+                all.put("result","导入失败：第1页第"+ (i+1) + "行企业名称不能为空，请核对后再次导入");
                 return all;
             }
             dangerSourceInfo.setCompanyId(companyId);
 
             cell =row.getCell(colum.get("重大危险源名称"));
             if (cell!=null){
-                value = cell.getStringCellValue();
-                //如果没有值那就有问题，跳出循环
-                if ("".equals(value)||value==null){
-                    break;
-                }
+                value=getCellValue(cell);
             }else{
-                all.put("result","导入失败：第1页第"+ (i-1) + "行重大危险源名称不能为空，请核对后再次导入");
+                all.put("result","导入失败：第1页第"+ (i+1) + "行重大危险源名称不能为空，请核对后再次导入");
                 return all;
             }
             sourceName=value;
@@ -382,25 +369,25 @@ public class MajorDSInfoEntryServiceImpl implements MajorDSInfoEntryService {
 
             cell =row.getCell(colum.get("危险源唯一编码"));
             if (cell!=null){
-                value = cell.getStringCellValue();
+                value=getCellValue(cell);
                 //如果没有值那就有问题，跳出循环
                 if ("".equals(value)||value==null){
                     break;
                 }
                 if(dUniqueCode.size()!=0){
                     if(dUniqueCode.contains(value)){
-                        all.put("result","导入失败：文件中含有重复的危险源唯一编码，请重新输入后再次导入");
+                        all.put("result","导入失败第1页第"+ (i+1)+ "行含有重复的危险源唯一编码，请重新输入后再次导入");
                         return all;
                     }
                 }
                 dUniqueCode.add(value);
 
                 if(this.processUnitMapper.validateUniqueCode(value)!=0){
-                    all.put("result","导入失败：第1页第"+ (i-1)+ "行危险源唯一编码在数据库中已存在，请重新输入后再次导入");
+                    all.put("result","导入失败：第1页第"+ (i+1)+ "行危险源唯一编码在数据库中已存在，请重新输入后再次导入");
                     return all;
                 }
             }else{
-                all.put("result","导入失败：第1页第"+ (i-1) + "行危险源唯一编码不能为空，请核对后再次导入");
+                all.put("result","导入失败：第1页第"+ (i+1) + "行危险源唯一编码不能为空，请核对后再次导入");
                 return all;
             }
             dangerSourceInfo.setUniqueCode(value);
@@ -413,7 +400,7 @@ public class MajorDSInfoEntryServiceImpl implements MajorDSInfoEntryService {
             cell =row.getCell(colum.get("事故类型"));
             if (cell!=null){
                 //通过各种方法获取序号列此行的值
-                value = cell.getStringCellValue();
+                value=getCellValue(cell);
                 //与获取的所有事故类型并比对
                 if(aT.containsKey(value)){
                     value=aT.get(value);
@@ -438,200 +425,130 @@ public class MajorDSInfoEntryServiceImpl implements MajorDSInfoEntryService {
                     }
                 }
                 if(aTs.size()==0){
-                    all.put("result","导入失败：第1页第"+ (i-1) + "行事故类型未找到指定对象,如果是多选，请用'_'分割，请核对后再次导入");
+                    all.put("result","导入失败：第1页第"+ (i+1) + "行事故类型未找到指定对象,如果是多选，请用'_'分割，请核对后再次导入");
                     return all;
                 }
             }else{
-                all.put("result","导入失败：第1页第"+ (i-1) + "行事故类型不能为空，请核对后再次导入");
+                all.put("result","导入失败：第1页第"+ (i+1) + "行事故类型不能为空，请核对后再次导入");
                 return all;
             }
 
             cell =row.getCell(colum.get("R值"));
             if (cell!=null){
-                try {
-                    value = cell.getStringCellValue();
-                }catch(Exception e){
-                    value = cell.getNumericCellValue()+"";
-                }
-                //如果没有值那就有问题，跳出循环
-                if ("".equals(value)||value==null){
-                    break;
-                }
+                value=getCellValue(cell);
                 //如果没有值那就有问题，跳出循环
                 if (!isNumeric(value)){
-                    all.put("result","导入失败：第1页第"+ (i-1) + "行R值不是数字，请核对后再次导入");
+                    all.put("result","导入失败：第1页第"+ (i+1)+ "行R值不是数字，请核对后再次导入");
                     return all;
                 }
             }else{
-                all.put("result","导入失败：第1页第"+ (i-1) + "行R值不能为空，请核对后再次导入");
+                all.put("result","导入失败：第1页第"+ (i+1) + "行R值不能为空，请核对后再次导入");
                 return all;
             }
             dangerSourceInfo.setRValue(value);
 
             cell =row.getCell(colum.get("危险源等级"));
             if (cell!=null){
-                value=cell.getStringCellValue();
+                value=getCellValue(cell);
                 //与获取的所有危险源等级并比对
                 if (value!=null&&dR.containsKey(value)){
                     value=dR.get(value);
                 }else {
-                    all.put("result","导入失败：第1页第"+ (i-1) + "行危险源等级未找到指定对象，请核对后再次导入");
+                    all.put("result","导入失败：第1页第"+ (i+1) + "行危险源等级未找到指定对象，请核对后再次导入");
                     return all;
                 }
             }else{
-                all.put("result","导入失败：第1页第"+ (i-1) + "行危险源等级不能为空，请核对后再次导入");
+                all.put("result","导入失败：第1页第"+ (i+1) + "行危险源等级不能为空，请核对后再次导入");
                 return all;
             }
             dangerSourceInfo.setRank(value);
 
             cell =row.getCell(colum.get("备案编号"));
-            int bh=0;
             if (cell!=null){
-                try {
-                    value = cell.getStringCellValue();
-                }catch(Exception e){
-                    value = cell.getNumericCellValue()+"";
-                    try {
-                        bh=(int)cell.getNumericCellValue();
-                    }catch (Exception e1){
-                        value = cell.getNumericCellValue()+"";
-                    }
-                }
-                //如果没有值那就有问题，跳出循环
-                if ("".equals(value)||value==null){
-                    break;
-                }
-                dangerSourceInfo.setRecordNo(bh==0?value:String.valueOf(bh));
+                value=getCellValue(cell);
             }else{
-                dangerSourceInfo.setRecordNo("");
+                value="";
             }
-
+            dangerSourceInfo.setRecordNo(value);
 
             cell =row.getCell(colum.get("登记日期"));
             if (cell!=null){
-                 value = cell.getStringCellValue();
+                value=getCellValue(cell);
                 if(!checkDate(value)){
-                    all.put("result","导入失败：第1页第"+ (i-1) + "行登记日期未按正确格式输入，格式为yyyy-mm-dd");
+                    all.put("result","导入失败：第1页第"+ (i+1) + "行登记日期未按正确格式输入，格式为yyyy-mm-dd");
                     return all;
                 }
             }else{
-                all.put("result","导入失败：第1页第"+ (i-1) + "行登记日期不能为空，请核对后再次导入");
+                all.put("result","导入失败：第1页第"+ (i+1) + "行登记日期不能为空，请核对后再次导入");
                 return all;
             }
             dangerSourceInfo.setRecordDate(value);
 
             cell =row.getCell(colum.get("有效期"));
             if (cell!=null){
-                value=cell.getStringCellValue();
+                value=getCellValue(cell);
                 if(!checkDate(value)){
-                    all.put("result","导入失败：第1页第"+ (i-1) + "行有效期未按正确格式输入，格式为yyyy-mm-dd");
+                    all.put("result","导入失败：第1页第"+ (i+1) + "行有效期未按正确格式输入，格式为yyyy-mm-dd");
                     return all;
                 }
             }else{
-                all.put("result","导入失败：第1页第"+ (i-1) + "行有效期不能为空，请核对后再次导入");
+                all.put("result","导入失败：第1页第"+ (i+1) + "行有效期不能为空，请核对后再次导入");
                 return all;
             }
             dangerSourceInfo.setValidity(value);
 
             cell =row.getCell(colum.get("经度"));
             if (cell!=null){
-                try {
-                    value = cell.getStringCellValue();
-                }catch(Exception e){
-                    value = cell.getNumericCellValue()+"";
-                }
-                //如果没有值那就有问题，跳出循环
-                if ("".equals(value)||value==null){
-                    break;
-                }
+                value=getCellValue(cell);
             }else{
-                all.put("result","导入失败：第1页第"+ (i-1) + "行经度不能为空，请核对后再次导入");
+                all.put("result","导入失败：第1页第"+ (i+1) + "行经度不能为空，请核对后再次导入");
                 return all;
             }
             dangerSourceInfo.setLongt(value);
 
             cell =row.getCell(colum.get("纬度"));
             if (cell!=null){
-                try {
-                    value = cell.getStringCellValue();
-                }catch(Exception e){
-                    value = cell.getNumericCellValue()+"";
-                }
-                //如果没有值那就有问题，跳出循环
-                if ("".equals(value)||value==null){
-                    break;
-                }
+                value=getCellValue(cell);
             }else{
-                all.put("result","导入失败：第1页第"+ (i-1) + "行纬度不能为空，请核对后再次导入");
+                all.put("result","导入失败：第1页第"+ (i+1) + "行纬度不能为空，请核对后再次导入");
                 return all;
             }
             dangerSourceInfo.setLat(value);
 
             cell =row.getCell(colum.get("状态"));
             if (cell!=null){
-                value=cell.getStringCellValue();
+                value=getCellValue(cell);
                 //与获取的所有状态并比对
                 if (value!=null&&dS.containsKey(value)){
                     value=dS.get(value);
                 }else {
-                    all.put("result","导入失败：第1页第"+ (i-1) + "行状态未找到指定对象，请核对后再次导入");
+                    all.put("result","导入失败：第1页第"+ (i+1) + "行状态未找到指定对象，请核对后再次导入");
                     return all;
                 }
             }else{
-                all.put("result","导入失败：第1页第"+ (i-1) + "行状态不能为空，请核对后再次导入");
+                all.put("result","导入失败：第1页第"+ (i+1) + "行状态不能为空，请核对后再次导入");
                 return all;
             }
             dangerSourceInfo.setStatus(value);
 
             cell =row.getCell(colum.get("可能引发事故死亡人数"));
-            int death=0;
             if (cell!=null){
-                try {
-                    value = cell.getStringCellValue();
-                }catch(Exception e){
-                    value = cell.getNumericCellValue()+"";
-                    try {
-                        death=(int)cell.getNumericCellValue();
-                    }catch (Exception e1){
-                        all.put("result","导入失败：第1页第"+ (i-1) + "行可能引发事故死亡人数必须是整数，请核对后再次导入");
-                        return all;
-                    }
-
-                }
-                //如果没有值那就有问题，跳出循环
-                if ("".equals(value)||value==null){
-                    break;
-                }
-
+                value=getCellValue(cell);
             }else{
-                all.put("result","导入失败：第1页第"+ (i-1) + "行可能引发事故死亡人数不能为空，请核对后再次导入");
+                all.put("result","导入失败：第1页第"+ (i+1) + "行可能引发事故死亡人数不能为空，请核对后再次导入");
                 return all;
             }
-            dangerSourceInfo.setDeathToll(String.valueOf(death));
+            dangerSourceInfo.setDeathToll(value);
 
             cell =row.getCell(colum.get("厂区边界外500米范围人数估值"));
             int border=0;
             if (cell!=null){
-                try {
-                    value = cell.getStringCellValue();
-                }catch(Exception e){
-                    value = cell.getNumericCellValue()+"";
-                    try {
-                        border=(int)cell.getNumericCellValue();
-                    }catch (Exception e1){
-                        all.put("result","导入失败：第1页第"+ (i-1) + "行厂区边界外500米范围人数估值必须是整数，请核对后再次导入");
-                        return all;
-                    }
-                }
-                //如果没有值那就有问题，跳出循环
-                if ("".equals(value)||value==null){
-                    break;
-                }
+                value=getCellValue(cell);
             }else{
-                all.put("result","导入失败：第1页第"+ (i-1) + "行厂区边界外500米范围人数估值不能为空，请核对后再次导入");
+                all.put("result","导入失败：第1页第"+ (i+1) + "行厂区边界外500米范围人数估值不能为空，请核对后再次导入");
                 return all;
             }
-            dangerSourceInfo.setOutPersonCount(String.valueOf(border));
+            dangerSourceInfo.setOutPersonCount(value);
 
 
             dSs.add(dangerSourceInfo);
@@ -697,38 +614,29 @@ public class MajorDSInfoEntryServiceImpl implements MajorDSInfoEntryService {
             Cell cell =row.getCell(colum.get("序号"));
             //如果有序号列
             if (cell!=null){
-                try {
-                    //通过各种方法获取序号列此行的值
-                    value = cell.getStringCellValue();
-                }catch(Exception e){
-                    value =cell.getNumericCellValue()+"";
-                }
-                //如果没有值那就有问题，跳出循环
-                if ("".equals(value)||value==null){
-                    break;
-                }
+                value=getCellValue(cell);
             }
 
             cell =row.getCell(colum.get("企业名称"));
             if (cell!=null){
                 //获取其值
-                value = cell.getStringCellValue();
+                value=getCellValue(cell);
                 //与获取的所有企业的集合元素进行比对取出CompanyId
                 if (value!=null&&company.containsKey(value)){
                     value=company.get(value);
                     companyId=value;
                 }else {
-                    all.put("result","导入失败：第2页第"+ (i-1) + "行企业名称未找到指定对象，请核对后再次导入");
+                    all.put("result","导入失败：第2页第"+ (i+1) + "行企业名称未找到指定对象，请核对后再次导入");
                     return all;
                 }
             }else{
-                all.put("result","导入失败：第2页第"+ (i-1) + "行企业名称不能为空，请核对后再次导入");
+                all.put("result","导入失败：第2页第"+ (i+1) + "行企业名称不能为空，请核对后再次导入");
                 return all;
             }
 
             cell =row.getCell(colum.get("重大危险源名称"));
             if (cell!=null){
-                value = cell.getStringCellValue();
+                value=getCellValue(cell);
                 if (value!=null){
                     if(!dS.containsKey(value)){
                         String str=value+","+companyId;
@@ -743,109 +651,74 @@ public class MajorDSInfoEntryServiceImpl implements MajorDSInfoEntryService {
                         }
                     }
                     if(facilitiesCondition.getSourceId()==null){
-                        all.put("result","导入失败：第2页第"+ (i-1) + "行重大危险源名称非此企业名称下危险源，请核对后再次导入");
+                        all.put("result","导入失败：第2页第"+ (i+1) + "行重大危险源名称非此企业名称下危险源，请核对后再次导入");
                         return all;
                     }
                 }else {
-                    all.put("result","导入失败：第2页第"+ (i-1) + "行重大危险源名称未找到指定对象，请核对后再次导入");
+                    all.put("result","导入失败：第2页第"+ (i+1) + "行重大危险源名称未找到指定对象，请核对后再次导入");
                     return all;
                 }
             }else{
-                all.put("result","导入失败：第2页第"+ (i-1) + "行重大危险源名称不能为空，请核对后再次导入");
+                all.put("result","导入失败：第2页第"+ (i+1) + "行重大危险源名称不能为空，请核对后再次导入");
                 return all;
             }
 
             cell =row.getCell(colum.get("装置设施名称"));
             if (cell!=null){
-                try {
-                    value = cell.getStringCellValue();
-                }catch(Exception e){
-                    value =cell.getNumericCellValue()+"";
-                }
-                //如果没有值那就有问题，跳出循环
-                if ("".equals(value)||value==null){
-                    break;
-                }
+                value=getCellValue(cell);
             }else{
-                all.put("result","导入失败：第2页第"+ (i-1) + "行装置设施名称不能为空，请核对后再次导入");
+                all.put("result","导入失败：第2页第"+ (i+1) + "行装置设施名称不能为空，请核对后再次导入");
                 return all;
             }
             facilitiesCondition.setFacilities(value);
 
             cell =row.getCell(colum.get("周边环境名称"));
             if (cell!=null){
-                try {
-                    //通过各种方法获取序号列此行的值
-                    value = cell.getStringCellValue();
-                }catch(Exception e){
-                    value =cell.getNumericCellValue()+"";
-                }
-                //如果没有值那就有问题，跳出循环
-                if ("".equals(value)||value==null){
-                    break;
-                }
+                value=getCellValue(cell);
             }else{
-                all.put("result","导入失败：第2页第"+ (i-1) + "行周边环境名称不能为空，请核对后再次导入");
+                all.put("result","导入失败：第2页第"+ (i+1) + "行周边环境名称不能为空，请核对后再次导入");
                 return all;
             }
             facilitiesCondition.setEnvironment(value);
 
             cell =row.getCell(colum.get("实际距离（米）"));
             if (cell!=null){
-                try {
-                    //通过各种方法获取序号列此行的值
-                    value = cell.getStringCellValue();
-                }catch(Exception e){
-                    value =cell.getNumericCellValue()+"";
-                }
-                //如果没有值那就有问题，跳出循环
-                if ("".equals(value)||value==null){
-                    break;
-                }
+                value=getCellValue(cell);
                 //如果没有值那就有问题，跳出循环
                 if (!isNumeric(value)){
-                    all.put("result","导入失败：第2页第"+ (i-1) + "行实际距离（米）不是数字，请核对后再次导入");
+                    all.put("result","导入失败：第2页第"+ (i+1) + "行实际距离（米）不是数字，请核对后再次导入");
                     return all;
                 }
             }else{
-                all.put("result","导入失败：第2页第"+ (i-1) + "行实际距离（米）不能为空，请核对后再次导入");
+                all.put("result","导入失败：第2页第"+ (i+1) + "行实际距离（米）不能为空，请核对后再次导入");
                 return all;
             }
             facilitiesCondition.setRealDistance(Double.parseDouble(value));
 
             cell =row.getCell(colum.get("标准要求（米）"));
             if (cell!=null){
-                try {
-                    //通过各种方法获取序号列此行的值
-                    value = cell.getStringCellValue();
-                }catch(Exception e){
-                    value =cell.getNumericCellValue()+"";
-                }
-                //如果没有值那就有问题，跳出循环
-                if ("".equals(value)||value==null){
-                    break;
-                }
+                value=getCellValue(cell);
                 //如果没有值那就有问题，跳出循环
                 if (!isNumeric(value)){
-                    all.put("result","导入失败：第2页第"+ (i-1) + "行标准要求（米）不是数字，请核对后再次导入");
+                    all.put("result","导入失败：第2页第"+ (i+1) + "行标准要求（米）不是数字，请核对后再次导入");
                     return all;
                 }
             }else{
-                all.put("result","导入失败：第2页第"+ (i-1) + "行标准要求（米）不能为空，请核对后再次导入");
+                all.put("result","导入失败：第2页第"+ (i+1) + "行标准要求（米）不能为空，请核对后再次导入");
                 return all;
             }
             facilitiesCondition.setStandardDistance(Double.parseDouble(value));
 
             cell =row.getCell(colum.get("与标准符合性"));
             if (cell!=null){
-                value=cell.getStringCellValue();
+                value=getCellValue(cell);
                 if(!value.equals("符合")&&!value.equals("不符合")){
-                    all.put("result","导入失败：第2页第"+ (i-1) + "行与标准符合性未按正确格式输入，请核对后再次导入");
+                    all.put("result","导入失败：第2页第"+ (i+1) + "行与标准符合性未按正确格式输入，请核对后再次导入");
                     return all;
                 }
 
             }else{
-                all.put("result","导入失败：第2页第"+ (i-1) + "行与标准符合性不能为空，请核对后再次导入");
+                all.put("result","导入失败：第2页第"+ (i+1) + "行与标准符合性不能为空，请核对后再次导入");
                 return all;
             }
             facilitiesCondition.setConformance(value);
@@ -904,46 +777,28 @@ public class MajorDSInfoEntryServiceImpl implements MajorDSInfoEntryService {
             Cell cell =row.getCell(colum.get("序号"));
             //如果有序号列
             if (cell!=null){
-                try {
-                    //通过各种方法获取序号列此行的值
-                    value = cell.getStringCellValue();
-                }catch(Exception e){
-                    value =cell.getNumericCellValue()+"";
-                }
-                //如果没有值那就有问题，跳出循环
-                if ("".equals(value)||value==null){
-                    break;
-                }
+                value=getCellValue(cell);
             }
 
             cell =row.getCell(colum.get("企业名称"));
             if (cell!=null){
-                try {
-                    //通过各种方法获取序号列此行的值
-                    value = cell.getStringCellValue();
-                }catch(Exception e){
-                    value =cell.getNumericCellValue()+"";
-                }
-                //如果没有值那就有问题，跳出循环
-                if ("".equals(value)||value==null){
-                    break;
-                }
+                value=getCellValue(cell);
                 //与获取的所有企业的集合元素进行比对取出CompanyId
                 if (value!=null&&company.containsKey(value)){
                     value=company.get(value);
                     companyId=value;
                 }else {
-                    all.put("result","导入失败：第3页第"+ (i-1) + "行企业名称未找到指定对象，请核对后再次导入");
+                    all.put("result","导入失败：第3页第"+ (i+1) + "行企业名称未找到指定对象，请核对后再次导入");
                     return all;
                 }
             }else{
-                all.put("result","导入失败：第3页第"+ (i-1) + "行企业名称不能为空，请核对后再次导入");
+                all.put("result","导入失败：第3页第"+ (i+1) + "行企业名称不能为空，请核对后再次导入");
                 return all;
             }
 
             cell =row.getCell(colum.get("重大危险源名称"));
             if (cell!=null){
-                value = cell.getStringCellValue();
+                value=getCellValue(cell);
                 if (value!=null){
                     if(!dS.containsKey(value)){
                         String str=value+","+companyId;
@@ -958,72 +813,45 @@ public class MajorDSInfoEntryServiceImpl implements MajorDSInfoEntryService {
                         }
                     }
                     if(legalProtection.getSourceId()==null){
-                        all.put("result","导入失败：第2页第"+ (i-1) + "行重大危险源名称非此企业名称下危险源，请核对后再次导入");
+                        all.put("result","导入失败：第2页第"+ (i+1) + "行重大危险源名称非此企业名称下危险源，请核对后再次导入");
                         return all;
                     }
                 }else {
-                    all.put("result","导入失败：第2页第"+ (i-1) + "行重大危险源名称未找到指定对象，请核对后再次导入");
+                    all.put("result","导入失败：第2页第"+ (i+1) + "行重大危险源名称未找到指定对象，请核对后再次导入");
                     return all;
                 }
             }else{
-                all.put("result","导入失败：第2页第"+ (i-1) + "行重大危险源名称不能为空，请核对后再次导入");
+                all.put("result","导入失败：第2页第"+ (i+1) + "行重大危险源名称不能为空，请核对后再次导入");
                 return all;
             }
 
             cell =row.getCell(colum.get("保护区"));
             if (cell!=null){
-                try {
-                    //通过各种方法获取序号列此行的值
-                    value = cell.getStringCellValue();
-                }catch(Exception e){
-                    value =cell.getNumericCellValue()+"";
-                }
-                //如果没有值那就有问题，跳出循环
-                if ("".equals(value)||value==null){
-                    break;
-                }
+                value=getCellValue(cell);
             }else{
-                all.put("result","导入失败：第3页第"+ (i-1) + "行保护区不能为空，请核对后再次导入");
+                all.put("result","导入失败：第3页第"+ (i+1) + "行保护区不能为空，请核对后再次导入");
                 return all;
             }
             legalProtection.setProtectArea(value);
 
             cell =row.getCell(colum.get("周边环境说明"));
             if (cell!=null){
-                try {
-                    //通过各种方法获取序号列此行的值
-                    value = cell.getStringCellValue();
-                }catch(Exception e){
-                    value =cell.getNumericCellValue()+"";
-                }
-                //如果没有值那就有问题，跳出循环
-                if ("".equals(value)||value==null){
-                    break;
-                }
+                value=getCellValue(cell);
             }else{
-                all.put("result","导入失败：第3页第"+ (i-1) + "行周边环境说明不能为空，请核对后再次导入");
+                all.put("result","导入失败：第3页第"+ (i+1) + "行周边环境说明不能为空，请核对后再次导入");
                 return all;
             }
             legalProtection.setEnvironment(value);
 
             cell =row.getCell(colum.get("与规定符合性"));
             if (cell!=null){
-                try {
-                    //通过各种方法获取序号列此行的值
-                    value = cell.getStringCellValue();
-                }catch(Exception e){
-                    value =cell.getNumericCellValue()+"";
-                }
-                //如果没有值那就有问题，跳出循环
-                if ("".equals(value)||value==null){
-                    break;
-                }
+                value=getCellValue(cell);
                 if(!value.equals("符合")&&!value.equals("不符合")){
-                    all.put("result","导入失败：第3页第"+ (i-1) + "行与规定符合性未按正确格式输入，请核对后再次导入");
+                    all.put("result","导入失败：第3页第"+ (i+1) + "行与规定符合性未按正确格式输入，请核对后再次导入");
                     return all;
                 }
             }else{
-                all.put("result","导入失败：第3页第"+ (i-1) + "行与规定符合性不能为空，请核对后再次导入");
+                all.put("result","导入失败：第3页第"+ (i+1) + "行与规定符合性不能为空，请核对后再次导入");
                 return all;
             }
             legalProtection.setConformance(value);
@@ -1088,38 +916,29 @@ public class MajorDSInfoEntryServiceImpl implements MajorDSInfoEntryService {
             Cell cell =row.getCell(colum.get("序号"));
             //如果有序号列
             if (cell!=null){
-                try {
-                    //通过各种方法获取序号列此行的值
-                    value = cell.getStringCellValue();
-                }catch(Exception e){
-                    value =cell.getNumericCellValue()+"";
-                }
-                //如果没有值那就有问题，跳出循环
-                if ("".equals(value)||value==null){
-                    break;
-                }
+                value=getCellValue(cell);
             }
 
             cell =row.getCell(colum.get("企业名称"));
             if (cell!=null){
                 //获取其值
-                value = cell.getStringCellValue();
+                value=getCellValue(cell);
                 //与获取的所有企业的集合元素进行比对取出CompanyId
                 if (value!=null&&company.containsKey(value)){
                     value=company.get(value);
                     companyId=value;
                 }else {
-                    all.put("result","导入失败：第4页第"+ (i-1) + "行企业名称未找到指定对象，请核对后再次导入");
+                    all.put("result","导入失败：第4页第"+ (i+1) + "行企业名称未找到指定对象，请核对后再次导入");
                     return all;
                 }
             }else{
-                all.put("result","导入失败：第4页第"+ (i-1) + "行企业名称不能为空，请核对后再次导入");
+                all.put("result","导入失败：第4页第"+ (i+1) + "行企业名称不能为空，请核对后再次导入");
                 return all;
             }
 
             cell =row.getCell(colum.get("重大危险源名称"));
             if (cell!=null){
-                value = cell.getStringCellValue();
+                value=getCellValue(cell);
                 if (value!=null){
                     if(!dS.containsKey(value)){
                         String str=value+","+companyId;
@@ -1134,53 +953,37 @@ public class MajorDSInfoEntryServiceImpl implements MajorDSInfoEntryService {
                         }
                     }
                     if(dangerSourceChemical.getSourceId()==null){
-                        all.put("result","导入失败：第2页第"+ (i-1) + "行重大危险源名称非此企业名称下危险源，请核对后再次导入");
+                        all.put("result","导入失败：第2页第"+ (i+1) + "行重大危险源名称非此企业名称下危险源，请核对后再次导入");
                         return all;
                     }
                 }else {
-                    all.put("result","导入失败：第2页第"+ (i-1) + "行重大危险源名称未找到指定对象，请核对后再次导入");
+                    all.put("result","导入失败：第2页第"+ (i+1) + "行重大危险源名称未找到指定对象，请核对后再次导入");
                     return all;
                 }
             }else{
-                all.put("result","导入失败：第2页第"+ (i-1) + "行重大危险源名称不能为空，请核对后再次导入");
+                all.put("result","导入失败：第2页第"+ (i+1) + "行重大危险源名称不能为空，请核对后再次导入");
                 return all;
             }
 
             cell =row.getCell(colum.get("化学品名称"));
             if (cell!=null){
                 //获取其值
-                try {
-                    value = cell.getStringCellValue();
-                }catch(Exception e){
-                    value =cell.getNumericCellValue()+"";
-                }
-                //如果没有值那就有问题，跳出循环
-                if ("".equals(value)||value==null){
-                    break;
-                }
+                value=getCellValue(cell);
                 //与获取的所有企业的集合元素进行比对取出CompanyId
                 if (value!=null&&HPN.containsKey(value)){
                     chemicalName=value;
                 }else {
-                    all.put("result","导入失败：第4页第"+ (i-1) + "行化学品名称未找到指定对象，请核对后再次导入");
+                    all.put("result","导入失败：第4页第"+ (i+1) + "行化学品名称未找到指定对象，请核对后再次导入");
                     return all;
                 }
             }else{
-                all.put("result","导入失败：第4页第"+ (i-1) + "行化学品名称不能为空，请核对后再次导入");
+                all.put("result","导入失败：第4页第"+ (i+1) + "行化学品名称不能为空，请核对后再次导入");
                 return all;
             }
 
             cell =row.getCell(colum.get("CAS"));
             if (cell!=null){
-                try {
-                    value = cell.getStringCellValue();
-                }catch(Exception e){
-                    value =cell.getNumericCellValue()+"";
-                }
-                //如果没有值那就有问题，跳出循环
-                if ("".equals(value)||value==null){
-                    break;
-                }
+                value=getCellValue(cell);
             }else{
                 value="";
             }
@@ -1190,29 +993,21 @@ public class MajorDSInfoEntryServiceImpl implements MajorDSInfoEntryService {
             if(chemicalsInfo!=null){
                 value=chemicalsInfo.getChemId();
             }else {
-                all.put("result","导入失败：第4页第"+ (i-1) + "行CAS与化学品名称不匹配，请核对后再次导入");
+                all.put("result","导入失败：第4页第"+ (i+1) + "行CAS与化学品名称不匹配，请核对后再次导入");
                 return all;
             }
             dangerSourceChemical.setChemId(value);
 
             cell =row.getCell(colum.get("设计储量"));
             if (cell!=null){
-                try {
-                    value = cell.getStringCellValue();
-                }catch(Exception e){
-                    value =cell.getNumericCellValue()+"";
-                }
-                //如果没有值那就有问题，跳出循环
-                if ("".equals(value)||value==null){
-                    break;
-                }
+                value=getCellValue(cell);
                 //如果没有值那就有问题，跳出循环
                 if (!isNumeric(value)){
-                    all.put("result", "导入失败：第4页第"+ (i-1) + "行设计储量不是数字，请核对后再次导入");
+                    all.put("result", "导入失败：第4页第"+ (i+1) + "行设计储量不是数字，请核对后再次导入");
                     return all;
                 }
             }else{
-                all.put("result", "导入失败：第4页第"+ (i-1) + "行设计储量不能为空，请核对后再次导入");
+                all.put("result", "导入失败：第4页第"+ (i+1) + "行设计储量不能为空，请核对后再次导入");
                 return all;
             }
             dangerSourceChemical.setDreserves(Double.parseDouble(value));
@@ -1220,17 +1015,9 @@ public class MajorDSInfoEntryServiceImpl implements MajorDSInfoEntryService {
 
             cell =row.getCell(colum.get("单位"));
             if (cell!=null){
-                try {
-                    value = cell.getStringCellValue();
-                }catch(Exception e){
-                    value =cell.getNumericCellValue()+"";
-                }
-                //如果没有值那就有问题，跳出循环
-                if ("".equals(value)||value==null){
-                    break;
-                }
+                value=getCellValue(cell);
             }else{
-                all.put("result","导入失败：第4页第"+ (i-1) + "行单位不能为空，请核对后再次导入");
+                all.put("result","导入失败：第4页第"+ (i+1) + "行单位不能为空，请核对后再次导入");
                 return all;
             }
             dangerSourceChemical.setUnit(value);
@@ -1351,6 +1138,46 @@ public class MajorDSInfoEntryServiceImpl implements MajorDSInfoEntryService {
         Pattern p = Pattern.compile(eL);
         Matcher m = p.matcher(str);
         return m.matches();
+    }
+
+    /**
+     * 获取cell值
+     * @param cell
+     * @return
+     */
+    private String getCellValue(Cell cell) {
+        String cellValue = "";
+        if (cell == null){
+            return "";
+        }
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+        CellType cellType =cell.getCellTypeEnum();
+        //字符串型
+        if (cellType == CellType.STRING){
+            cellValue = cell.getStringCellValue();
+        }
+        //数值型
+        else if (cellType == CellType.NUMERIC){
+            //判断是否为日期格式
+            if (DateUtil.isCellDateFormatted(cell)){
+                cellValue=sdf.format(cell.getDateCellValue());
+            }else {
+                if(cell.getNumericCellValue()-(int)cell.getNumericCellValue()>0){
+                    cellValue = String.valueOf(cell.getNumericCellValue());
+                }else{
+                    cellValue = String.valueOf((int)cell.getNumericCellValue());
+                }
+            }
+        }
+        //Boolean
+        else if (cellType == CellType.BOOLEAN){
+            cellValue = String.valueOf(cell.getBooleanCellValue());
+        }
+        //空值
+        else if (cellType == CellType.BLANK){
+            cellValue = "";
+        }
+        return cellValue;
     }
 
 
