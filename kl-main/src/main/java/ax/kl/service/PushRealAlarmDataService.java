@@ -9,6 +9,6 @@ package ax.kl.service;
 public interface PushRealAlarmDataService {
 
 
-    public String pushMessage();
+    String pushMessage();
 
 }

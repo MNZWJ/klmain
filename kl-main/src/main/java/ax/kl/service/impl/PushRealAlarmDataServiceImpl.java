@@ -1,13 +1,10 @@
 package ax.kl.service.impl;
 
-import ax.kl.service.DangerousAlarmStatisticService;
-import ax.kl.service.DynamicRiskCloudService;
-import ax.kl.service.PushRealAlarmDataService;
-import ax.kl.service.RealTimeWarnService;
+
+import ax.kl.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
-
 import java.util.HashMap;
 
 /**
@@ -43,6 +40,12 @@ public class PushRealAlarmDataServiceImpl implements PushRealAlarmDataService {
     @Autowired
     RealTimeWarnService realTimeWarnService;
 
+    /**
+     * 超期运行报警
+     */
+    @Autowired
+    OverdueAlarmService overdueAlarmService;
+
     @Override
     public String pushMessage() {
 
@@ -61,6 +64,8 @@ public class PushRealAlarmDataServiceImpl implements PushRealAlarmDataService {
         //实时预警数据获取
         this.messagingTemplate.convertAndSend( "/topic/RealTimeWarnRealTimeWarnData", realTimeWarnService.getRealTimeWarnData());
 
+        //超期运行报警
+        this.messagingTemplate.convertAndSend("/topic/RealAlarmCompanyList",overdueAlarmService.getAlarmCompanyList(new HashMap<String , String>()));
         return "1";
     }
 }
