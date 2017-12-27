@@ -87,6 +87,7 @@ $(function () {
                 }
             }]
     });
+    clean();
 });
 function init() {
     getCompanyList();

@@ -33,6 +33,7 @@ $(function () {
     initChemiacalAllTable();//初始化化学品全部信息列表
     initChemicalTable();//初始话所引用化学品信息列表
     init();
+
     //加载列表
     $('#enterpriseTable').bootstrapTable({
         height: scanHeight - 6,
@@ -166,6 +167,7 @@ $(function () {
             }
         ]
     });
+    clearRole();
 });
 //预加载
 function  init() {

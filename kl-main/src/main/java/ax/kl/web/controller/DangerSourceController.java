@@ -1,6 +1,7 @@
 package ax.kl.web.controller;
 
 import ax.kl.entity.ChemicalsInfo;
+import ax.kl.entity.DangerSourceChemical;
 import ax.kl.entity.DangerSourceInfo;
 import ax.kl.service.DangerSourceService;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -75,10 +76,9 @@ public class DangerSourceController {
     @RequestMapping(value = "/getChemicalsInfoListTable")
     @ApiOperation(value = "获取重大危险源化学品列表信息")
     @ResponseBody
-    public List<ChemicalsInfo> getChemicalsInfoListTable(@RequestParam Map<String,String> param) {
-        String sourceId =param.get("sourceId");
-        List<ChemicalsInfo> list=dangerSourceService.getChemicalsInfoListBySourceId(sourceId);
-        return list;
+    public List<DangerSourceChemical> getChemicalsInfoListTable(@RequestParam("sourceId") String sourceId) {
+
+        return dangerSourceService.getChemicalsInfoListBySourceId(sourceId);
     }
 
     @RequestMapping(value = "/getSourceRankCount")

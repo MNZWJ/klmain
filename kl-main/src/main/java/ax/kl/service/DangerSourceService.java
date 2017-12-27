@@ -1,6 +1,7 @@
 package ax.kl.service;
 
 import ax.kl.entity.ChemicalsInfo;
+import ax.kl.entity.DangerSourceChemical;
 import ax.kl.entity.DangerSourceInfo;
 import com.baomidou.mybatisplus.plugins.Page;
 
@@ -42,7 +43,7 @@ public interface DangerSourceService {
      * @param sourceId
      * @return
      */
-    List<ChemicalsInfo> getChemicalsInfoListBySourceId(String sourceId);
+    List<DangerSourceChemical> getChemicalsInfoListBySourceId(String sourceId);
 
     /**
      * 获取重大危险源等级数量

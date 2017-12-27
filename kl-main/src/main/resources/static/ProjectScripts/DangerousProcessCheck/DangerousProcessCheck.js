@@ -81,6 +81,7 @@ $(function () {
             },
         ]
     });
+    clearRole();
 });
 //预加载数据
 function init() {

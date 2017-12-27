@@ -1,9 +1,6 @@
 package ax.kl.mapper;
 
-import ax.kl.entity.ChemicalsInfo;
-import ax.kl.entity.CompanyArt;
-import ax.kl.entity.CompanyInfo;
-import ax.kl.entity.DangerSourceInfo;
+import ax.kl.entity.*;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import org.apache.ibatis.annotations.Param;
@@ -47,7 +44,7 @@ public interface EnterpriseInfoMapper extends BaseMapper<CompanyInfo> {
      * @param companyId
      * @return
      */
-    List<ChemicalsInfo> getChemicalsInfoList(@Param("companyId") String companyId);
+    List<CompanyChemical> getChemicalsInfoList(@Param("companyId") String companyId);
 
 
     /**

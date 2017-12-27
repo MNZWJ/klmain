@@ -1,9 +1,6 @@
 package ax.kl.service.impl;
 
-import ax.kl.entity.ChemicalsInfo;
-import ax.kl.entity.CompanyArt;
-import ax.kl.entity.CompanyInfo;
-import ax.kl.entity.DangerSourceInfo;
+import ax.kl.entity.*;
 import ax.kl.mapper.EnterpriseInfoMapper;
 import ax.kl.service.EnterpriseInfoService;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -87,7 +84,7 @@ public class EnterpriseInfoServiceImpl implements EnterpriseInfoService {
      * @return
      */
     @Override
-    public List<ChemicalsInfo> getChemicalsInfoList(String companyId) {
+    public List<CompanyChemical> getChemicalsInfoList(String companyId) {
         return enterpriseInfoMapper.getChemicalsInfoList(companyId);
     }
 
