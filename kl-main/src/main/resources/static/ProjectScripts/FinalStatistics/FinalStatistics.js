@@ -78,7 +78,7 @@ function loadDSAccidenType(rank){
 
             var option = {
 
-                color: [ "#00544a", "#6ca748","#a5a5a5"],
+                color: [ "#e87f15", "#c82222","#639023"],
 
 
 
