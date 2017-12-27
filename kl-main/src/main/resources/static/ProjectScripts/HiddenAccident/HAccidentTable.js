@@ -202,8 +202,13 @@ function clean() {
     $("#dangerSource").val("");
     $("#rank").val("");
     $("#rectification").val("");
-    $("#startdate").val("");
-    $("#enddate").val("");
+
+    $('#startdate').val('');
+    $('#startdateDiv').datetimepicker('update');
+    $("#startdateDiv").datetimepicker('setEndDate', new Date());
+    $('#enddate').val('');
+    $('#enddateDiv').datetimepicker('update');
+    $('#enddateDiv').datetimepicker('setStartDate','1979-12-12');
 }
 
 //初始化导入Div
@@ -243,16 +248,28 @@ function FileInput () {
             $("#myModal").modal("hide");
             $("#table").bootstrapTable("refresh", {})
             clearDiv();
-            //$('#file').fileinput('clear');
-            BootstrapDialog.alert({
-                title: '提示',
-                size:BootstrapDialog.SIZE_SMALL,
-                message: data.response,
-                type: BootstrapDialog.TYPE_SUCCESS , // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定', // <-- Default value is 'OK',
-            });
+            data = data.response.toString();
+            if (data.indexOf("成功")==-1){
+                BootstrapDialog.alert({
+                    title: '提示',
+                    size:BootstrapDialog.SIZE_SMALL,
+                    message: data,
+                    type: BootstrapDialog.TYPE_DANGER , // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+                    closable: false, // <-- Default value is false
+                    draggable: true, // <-- Default value is false
+                    buttonLabel: '确定', // <-- Default value is 'OK',
+                });
+            }else {
+                BootstrapDialog.alert({
+                    title: '提示',
+                    size:BootstrapDialog.SIZE_SMALL,
+                    message: data,
+                    type: BootstrapDialog.TYPE_SUCCESS , // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+                    closable: false, // <-- Default value is false
+                    draggable: true, // <-- Default value is false
+                    buttonLabel: '确定', // <-- Default value is 'OK',
+                });
+            }
         });
     }
     return oFile;
@@ -279,7 +296,7 @@ function loaddate() {
         initialDate: new Date(),
         autoclose: true,//选中自动关闭
         todayBtn: true//显示今日按钮
-    });
+    }).datetimepicker('setEndDate', new Date());
     $('#enddateDiv').datetimepicker({
         language: 'zh-CN',//显示中文
         format: 'yyyy-mm-dd',//显示格式
@@ -287,5 +304,13 @@ function loaddate() {
         initialDate: new Date(),
         autoclose: true,//选中自动关闭
         todayBtn: true//显示今日按钮
+    }).datetimepicker('setEndDate', new Date());
+
+    $('#startdateDiv').datetimepicker().on('changeDate',function(ev){
+        $('#enddateDiv').datetimepicker('setStartDate', ev.date);
+    });
+
+    $('#enddateDiv').datetimepicker().on('changeDate',function(ev){
+        $('#startdateDiv').datetimepicker('setEndDate', ev.date);
     });
 }
