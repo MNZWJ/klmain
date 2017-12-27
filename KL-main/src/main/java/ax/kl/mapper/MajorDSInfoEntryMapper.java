@@ -162,4 +162,12 @@ public interface MajorDSInfoEntryMapper {
      * @return
      */
     int insertDangerSourceChemical(@Param("list")List<DangerSourceChemical> dSCs);
+
+    /**
+     * 匹配化学品名称与CAS
+     * @param chemicalName
+     * @param cas
+     * @return
+     */
+    ChemicalsInfo piPei(@Param("chemicalName")String chemicalName, @Param("cas")String cas);
 }
