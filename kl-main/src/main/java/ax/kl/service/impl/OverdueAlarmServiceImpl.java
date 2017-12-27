@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 超期运行预警
@@ -23,16 +24,28 @@ public class OverdueAlarmServiceImpl implements OverdueAlarmService {
 
     /**
      * 获取企业预警信息
-     * @param searchCompanyName
-     * @param searchScaleCode
-     * @param searchTypeCode
      * @return
      */
     @Override
-    public List<CompanyInfo> getAlarmCompanyList(String searchCompanyName,String searchScaleCode,String searchTypeCode,String searchAlarm){
+    public List<CompanyInfo> getAlarmCompanyList(Map<String,String> map){
+        String searchCompanyName = "";
+        String searchScaleCode = "";
+        String searchTypeCode = "";
+        String searchAlarm = "";
+        if (map.containsKey("searchCompanyName")){
+            searchCompanyName = map.get("searchCompanyName");
+        }
+        if (map.containsKey("searchScaleCode")){
+            searchScaleCode = map.get("searchScaleCode");
+        }
+        if (map.containsKey("searchTypeCode")){
+            searchTypeCode = map.get("searchTypeCode");
+        }
+        if (map.containsKey("searchAlarm")){
+            searchAlarm = map.get("searchAlarm");
+        }
         return overdueAlarmMapper.getAlarmCompanyList(searchCompanyName,searchScaleCode,searchTypeCode,searchAlarm);
     }
-
     /**
      * 获取已超期证书列表
      * @param companyId
