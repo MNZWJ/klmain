@@ -4,6 +4,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
@@ -16,35 +17,41 @@ public class DangerSourceChemical {
      *主键
      */
     @TableId("RelId")
-    @JSONField(name = "RelId")
+    @ApiModelProperty("主键")
     private String relId;
 
     /**
      * 危险源Id
      */
     @TableField("SourceId")
-    @JSONField(name = "SourceId")
+    @ApiModelProperty("危险源ID")
     private String sourceId;
 
+    @TableField("SourceName")
+    @ApiModelProperty("危险源名称")
+    private String sourceName;
     /**
      * 化学物品Id
      */
     @TableField("ChemId")
-    @JSONField(name = "ChemId")
+    @ApiModelProperty("化学物品Id")
     private String chemId;
 
-    /**
-     * 化学品含量
-     */
+    @TableField("ChemName")
+    @ApiModelProperty("化学品名称")
+    private String chemName;
+
+    @TableField("CAS")
+    @ApiModelProperty("CAS")
+    private String cAS;
+
     @TableField("Dreserves")
-    @JSONField(name = "Dreserves")
+    @ApiModelProperty("设计储量")
     private Double dreserves;
 
-    /**
-     * 单位
-     */
+
     @TableField("Unit")
-    @JSONField(name = "Unit")
+    @ApiModelProperty("单位")
     private String unit;
 
 }

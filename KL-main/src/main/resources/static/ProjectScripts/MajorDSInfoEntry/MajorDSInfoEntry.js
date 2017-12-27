@@ -170,6 +170,7 @@ $(function () {
             }
         ]
     });
+    clearRole();
 });
 //文本框数据加载
 function init() {
