@@ -79,4 +79,10 @@ public interface InspectionService {
      */
     List<IndustryCompanyInfo> getCompanyDirectAirData();
 
+    /**
+     * 获取企业和危险源数量
+     * @return
+     */
+    List<Map<String,String>> getCompanyNum();
+
 }

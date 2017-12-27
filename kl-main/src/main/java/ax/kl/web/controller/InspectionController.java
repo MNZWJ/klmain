@@ -106,4 +106,11 @@ public class InspectionController {
     }
 
 
+    @RequestMapping("/getCompanyNum")
+    @ApiOperation(value="获取企业和危险源数量")
+    @ResponseBody
+    public List<Map<String,String>> getCompanyNum(){
+        return inspectionService.getCompanyNum();
+    }
+
 }
