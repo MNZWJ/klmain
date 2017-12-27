@@ -27,6 +27,21 @@ function loadEcharts(){
     //加载占比
     rankMenu();
 
+    //加载企业和重大危险源数量
+    loadCompanyNum();
+
+}
+
+//加载企业和重大危险源数量
+function loadCompanyNum(){
+    $.ajax({
+       type:'post',
+       url:'/Inspection/getCompanyNum' ,
+        success:function(result){
+            $("#companyNum").html(result[0]["companyNum"]+"家");
+            $("#DangerousNum").html(result[0]["dangerSourceNum"]+"个");
+        }
+    });
 }
 
 
@@ -116,10 +131,7 @@ function rankMenu() {
 /**近五年重大危险源数量统计*/
 var fiveYearCountInfo=null;
 function loadfiveYearCountEchart(){
-    if(fiveYearCountInfo!=null){
-        fiveYearCountInfo.dispose();
-        fiveYearCountInfo=null;
-    }
+
     $.ajax({
         type:'get',
         url:'/DSourceStatistics/getFiveYearCountbarInfo',
@@ -166,6 +178,13 @@ function loadfiveYearCountEchart(){
                     textStyle:{
                         color: '#ffffff'
                     }
+                },
+                grid: {
+                    top:'20%',
+                    left: '3%',
+                    right: '4%',
+                    bottom: '10%',
+                    containLabel: true
                 },
                 xAxis: [
                     {
@@ -286,7 +305,7 @@ function loadSourceRank(){
                 series: [{
                     name: '重大危险源等级占比',
                     type: 'pie',
-                    //radius: ['65%', '85%'],
+                    radius: ['0%', '65%'],
                     avoidLabelOverlap: false,
                     itemStyle: dataStyle,
                     data: data
@@ -773,6 +792,7 @@ function loadAlarmTypeMonthEchart() {
                                         }
                                     }
                                 },
+                                radius: ['0%', '65%'],
                                 data: data
                             }
                         ]
@@ -884,12 +904,12 @@ function loadIndustryCompany(){
                             {
                                 type:'inside',
                                 start: 0,
-                                end: 60,
+                                end: 40,
                             },
                             {
                                 show: "true",
                                 start: 0,
-                                end: 60,
+                                end: 40,
 
                                 textStyle: {
                                     color: '#fff'
@@ -968,7 +988,7 @@ function loadCompanyType(){
                 series: [{
                     name: '企业类型占比',
                     type: 'pie',
-                    //radius: ['65%', '85%'],
+                    radius: ['0%', '65%'],
                     avoidLabelOverlap: true,
                     itemStyle: dataStyle,
                     label: {
@@ -1036,6 +1056,10 @@ function resizePage(){
     }
     if(fiveYearCountInfo!=null){
         fiveYearCountInfo.resize();
+    }
+
+    if( DSAccidenTypeEchart!=null){
+        DSAccidenTypeEchart.resize();
     }
 
 

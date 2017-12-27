@@ -20,7 +20,9 @@ public class WebSocketScheduledTasks {
 
     @Autowired
     PushRealAlarmDataService pushRealAlarmDataService ;
-    //每1分钟执行一次
+    /**
+     *     每1分钟执行一次
+     */
     @Scheduled(cron = "0 */1 *  * * * ")
     public void reportCurrentByCron(){
         pushRealAlarmDataService.pushMessage();
