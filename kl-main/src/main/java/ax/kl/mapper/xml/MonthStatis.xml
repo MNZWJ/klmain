@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ax.kl.mapper.MonthStatisMapper">
+
+    <!--每日报警统计-->
+    <insert id="totalDayAlarm">
+      INSERT into TB_STATIS_DAY_ALARM_copy
+          SELECT NEWID() AS TotalId,
+                 r.AlarmCode AS AlarmType,
+                 COUNT(1) AS AlarmCount,
+                 r.AlarmDate AS AlarmDate,
+                 'ZT' AS IDCode
+            FROM TB_REALTIME_ALARM_DATA_copy r
+           WHERE r.TargetCode = '0'
+           GROUP BY r.AlarmCode, r.AlarmDate
+          union ALL
+          select NEWID() as totalId,
+                 SUBSTRING(rd.TargetCode, 1, 2) as alarmType,
+                 count(1) as alramCount,
+                 rd.AlarmDate,
+                 'ZB' as IDCode
+            from TB_REALTIME_ALARM_DATA_copy rd
+           where rd.TargetCode != '0'
+           GROUP BY SUBSTRING(rd.TargetCode, 1, 2), rd.AlarmDate
+    </insert>
+
+    <!--企业每日报警统计-->
+    <insert id="totalCompanyDayAlarm">
+        insert into TB_STATIS_COMPANY_DAY_ALARM_copy
+          SELECT NEWID() AS TotalId,
+                 SUBSTRING(r.EquipCode, 1, 9) as CompanyCode,
+                 r.AlarmCode AS AlarmType,
+                 COUNT(1) AS AlarmCount,
+                 r.AlarmDate AS AlarmDate,
+                 'ZT' AS IDCard
+            FROM TB_REALTIME_ALARM_DATA_copy r
+           WHERE r.TargetCode = '0'
+           GROUP BY r.AlarmCode,SUBSTRING(r.EquipCode, 1, 9),r.AlarmDate
+          union ALL
+          select NEWID() as totalId,
+                 SUBSTRING(rd.EquipCode, 1, 9) as CompanyCode,
+                 SUBSTRING(rd.TargetCode, 1, 2) as alarmType,
+                 count(1) as alramCount,
+                 rd.AlarmDate,
+                 'ZB' as IDCode
+            from TB_REALTIME_ALARM_DATA_copy rd
+           where rd.TargetCode != '0'
+           GROUP BY SUBSTRING(rd.EquipCode, 1, 9),
+                    SUBSTRING(rd.TargetCode, 1, 2),
+                    rd.AlarmDate
+    </insert>
+
+    <!--获取区域报警统计数据-->
+    <select id="getAreaAlarmData" resultType="java.util.HashMap">
+        select dt.DictId as areaId,
+               count(1) as num,
+               SUBSTRING(r.AlarmDate, 1, 7) as monthDate
+          from TB_REALTIME_ALARM_DATA_copy r
+         INNER JOIN TB_BASE_COMPANY_INFO c
+            on r.EquipCode like c.UniqueCode + '%'
+         INNER JOIN TB_SYS_DATADICT dt
+            on c.DirectArea = dt.DictId
+         GROUP BY dt.DictId, dt.DictName, SUBSTRING(r.AlarmDate, 1, 7)
+    </select>
+
+    <!--插入区域报警数据-->
+    <insert id="insertAreaAlarmData">
+       INSERT into TB_STATIS_AREA_MONTH_ALARM_copy
+          select NEWID() as TotalId,
+                 dt.DictId as areaId,
+                 count(1) as num,
+                 SUBSTRING(r.AlarmDate, 1, 7) as monthDate
+            from TB_REALTIME_ALARM_DATA_copy r
+           INNER JOIN TB_BASE_COMPANY_INFO c
+              on r.EquipCode like c.UniqueCode + '%'
+           INNER JOIN TB_SYS_DATADICT dt
+              on c.DirectArea = dt.DictId
+            LEFT JOIN TB_STATIS_AREA_MONTH_ALARM_copy m
+              on dt.DictId = m.Area
+             AND m.MonthDate = SUBSTRING(r.AlarmDate, 1, 7)
+           where m.TotalId is null
+           GROUP BY dt.DictId, dt.DictName, SUBSTRING(r.AlarmDate, 1, 7)
+    </insert>
+
+    <!--更新区域报警统计数据-->
+    <update id="UpdateAreaAlarmData" parameterType="java.util.List">
+        <foreach item="item" index="index" collection="list" open="" separator=";" close="">
+            update TB_STATIS_AREA_MONTH_ALARM_copy  set AlarmCount=AlarmCount+#{item.num}
+            where Area=#{item.areaId} and MonthDate=#{item.monthDate}
+        </foreach>
+    </update>
+
+    <!--获取行业报警统计数据-->
+    <select id="getIndustryAlarmData" resultType="java.util.HashMap">
+        select i.IndustryId,
+               r.AlarmCode as alarmType,
+               count(1) as num,
+               SUBSTRING(r.AlarmDate, 1, 7) as monthDate,
+               'ZT' as IDCode
+          from TB_REALTIME_ALARM_DATA_copy r
+         INNER JOIN TB_BASE_COMPANY_INFO c
+            on r.TargetCode = '0'
+           and r.EquipCode like c.UniqueCode + '%'
+         INNER JOIN TB_REL_COMPANY_INDUSTRY i
+            on c.CompanyId = i.CompanyId
+         GROUP BY i.IndustryId, r.AlarmCode, SUBSTRING(r.AlarmDate, 1, 7)
+        union ALL
+        select id.IndustryId,
+               SUBSTRING(rd.TargetCode, 1, 2) as alarmType,
+               count(1) as num,
+               SUBSTRING(rd.AlarmDate, 1, 7) as monthDate,
+               'ZB' as IDCode
+          from TB_REALTIME_ALARM_DATA_copy rd
+         INNER JOIN TB_BASE_COMPANY_INFO cd
+            on rd.TargetCode != '0'
+           and rd.EquipCode like cd.UniqueCode + '%'
+         INNER JOIN TB_REL_COMPANY_INDUSTRY id
+            on cd.CompanyId = id.CompanyId
+         GROUP BY id.IndustryId,
+                  SUBSTRING(rd.TargetCode, 1, 2),
+                  SUBSTRING(rd.AlarmDate, 1, 7)
+    </select>
+
+    <!--插入行业报警统计数据-->
+    <insert id="insertIndustryAlarmData">
+        insert into TB_STATIS_INDUSTRY_MONTH_ALARM_copy
+          SELECT NEWID() as TotalId,
+                 i.IndustryId,
+                 r.AlarmCode AS alarmType,
+                 COUNT(1) AS num,
+                 SUBSTRING(r.AlarmDate, 1, 7) AS monthDate,
+                 'ZT' AS IDCode
+            FROM TB_REALTIME_ALARM_DATA_copy r
+           INNER JOIN TB_BASE_COMPANY_INFO c
+              ON r.TargetCode = '0'
+             AND r.EquipCode LIKE c.UniqueCode + '%'
+           INNER JOIN TB_REL_COMPANY_INDUSTRY i
+              ON c.CompanyId = i.CompanyId
+            LEFT JOIN TB_STATIS_INDUSTRY_MONTH_ALARM ia
+              on i.IndustryId = ia.IndustryId
+             and r.AlarmCode = ia.AlarmType
+             and ia.MonthDay = SUBSTRING(r.AlarmDate, 1, 7)
+             and ia.IDCode = 'ZT'
+           where ia.TotalId is null
+           GROUP BY i.IndustryId, r.AlarmCode, SUBSTRING(r.AlarmDate, 1, 7)
+          UNION ALL
+          SELECT NEWID() as TotalId,
+                 id.IndustryId,
+                 SUBSTRING(rd.TargetCode, 1, 2) AS alarmType,
+                 COUNT(1) AS num,
+                 SUBSTRING(rd.AlarmDate, 1, 7) AS monthDate,
+                 'ZB' AS IDCode
+            FROM TB_REALTIME_ALARM_DATA_copy rd
+           INNER JOIN TB_BASE_COMPANY_INFO cd
+              ON rd.TargetCode != '0'
+             AND rd.EquipCode LIKE cd.UniqueCode + '%'
+           INNER JOIN TB_REL_COMPANY_INDUSTRY id
+              ON cd.CompanyId = id.CompanyId
+            LEFT JOIN TB_STATIS_INDUSTRY_MONTH_ALARM iad
+              on id.IndustryId = iad.IndustryId
+             and iad.AlarmType = SUBSTRING(rd.TargetCode, 1, 2)
+             and iad.MonthDay = SUBSTRING(rd.AlarmDate, 1, 7)
+             and iad.IDCode = 'ZB'
+           where iad.TotalId is null
+           GROUP BY id.IndustryId,
+                    SUBSTRING(rd.TargetCode, 1, 2),
+                    SUBSTRING(rd.AlarmDate, 1, 7)
+    </insert>
+
+    <!--更新行业报警统计数据-->
+    <update id="UpdateIndustryAlarmData" parameterType="java.util.List">
+        <foreach item="item" index="index" collection="list" open="" separator=";" close="">
+            UPDATE TB_STATIS_INDUSTRY_MONTH_ALARM_copy set AlarmNum=AlarmNum+#{item.num}
+            where IndustryId=#{item.IndustryId} and AlarmType=#{item.alarmType}
+            and MonthDay=#{item.monthDate} and IDCode=#{item.IDCode}
+        </foreach>
+    </update>
+
+    <!--清空实时报警表-->
+    <delete id="truncTable">
+        truncate table TB_REALTIME_ALARM_DATA_copy
+    </delete>
+
+</mapper>
