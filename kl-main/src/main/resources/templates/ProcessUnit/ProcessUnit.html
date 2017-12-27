@@ -45,9 +45,10 @@
         }
         #as .has-feedback .form-control-feedback {
             position: absolute;
-            top: 25px;
-            right: 100px;
+            top: 0px;
+            right: -33px;
         }
+
 
         .form-horizontal .has-feedback .form-control-feedback {
             position: absolute;
@@ -184,21 +185,24 @@
                                             <div>
                                                 <form id="unitForm" class="form-inline" name="myForm" role="form">
                                                     <input type="hidden" name="unitId" id="unitId">
-                                                    <div id="as" class="form-group col-md-6" style="height:50px;">
-                                                        <label for="CompanyName" style="margin-left: 30px;margin-right: 16px;font-size: 13px;">所属企业</label>
-                                                        <select onchange="changeDangerSource(document.myForm)" id="CompanyName" name="CompanyName"
-                                                                class="selectpicker col-md-8" style="width: 115px;margin-right:100px;" data-live-search="true"
-                                                                data-style="btn-default">
-                                                        </select>
+                                                    <div id="as">
+                                                        <div  class="form-group col-md-6" style="height:50px;">
+                                                            <label for="CompanyName" style="margin-left: 30px;margin-right: 16px;font-size: 13px;">所属企业</label>
+                                                            <select onchange="changeDangerSource(document.myForm)" id="CompanyName" name="CompanyName"
+                                                                    class="selectpicker col-md-8" style="width: 115px;margin-right:100px;" data-live-search="true"
+                                                                    data-style="btn-default">
+                                                            </select>
+                                                        </div>
                                                     </div>
-                                                    <div class="form-group col-md-6"  style="height:50px;">
-                                                        <label for="SourceId" style="font-size: 13px;margin-right: 5px;">所属重大危险源</label>
-                                                        <select id="SourceId" name="SourceId" class="selectpicker col-md-8" style="width: 115px;margin-right:-50px;"
-                                                                data-style="btn-default" data-live-search="true"
-                                                                class="form-control" width="115px">
-                                                        </select>
+                                                    <div id="as2">
+                                                        <div class="form-group col-md-6"  style="height:50px;">
+                                                            <label for="SourceId" style="font-size: 13px;margin-right: 5px;">所属重大危险源</label>
+                                                            <select id="SourceId" name="SourceId" class="selectpicker col-md-8" style="width: 115px;margin-right:-50px;"
+                                                                    data-style="btn-default" data-live-search="true"
+                                                                    class="form-control" width="115px">
+                                                            </select>
+                                                        </div>
                                                     </div>
-
                                                     <div id="bs" class="form-group col-md-6" style="height:50px;padding-right: 60px;">
                                                         <label for="UnitName" class="col-md-4" style="font-size: 13px;width: 125px;">工艺单元名称</label>
                                                         <input type="text" name="UnitName" class="form-control select-sm col-md-8" style="width: 155px;margin-left: -5px;"
