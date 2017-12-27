@@ -39,23 +39,7 @@ public class OverdueAlarmController {
     @RequestMapping(value = "/getAlarmCompanyList",method = RequestMethod.GET)
     @ResponseBody
     public List<CompanyInfo> getAlarmCompanyList(@RequestParam Map<String,String> map){
-        String searchCompanyName = "";
-        String searchScaleCode = "";
-        String searchTypeCode = "";
-        String searchAlarm = "";
-        if (map.containsKey("searchCompanyName")){
-            searchCompanyName = map.get("searchCompanyName");
-        }
-        if (map.containsKey("searchScaleCode")){
-            searchScaleCode = map.get("searchScaleCode");
-        }
-        if (map.containsKey("searchTypeCode")){
-            searchTypeCode = map.get("searchTypeCode");
-        }
-        if (map.containsKey("searchAlarm")){
-            searchAlarm = map.get("searchAlarm");
-        }
-        return overdueAlarmService.getAlarmCompanyList(searchCompanyName,searchScaleCode,searchTypeCode,searchAlarm);
+        return overdueAlarmService.getAlarmCompanyList(map);
     }
 
     @ApiOperation(value = "/getCertificateAlarm",tags = "获取企业超期证书")

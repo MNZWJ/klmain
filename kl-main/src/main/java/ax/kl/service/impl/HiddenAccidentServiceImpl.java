@@ -7,10 +7,7 @@ import ax.kl.service.HiddenAccidentService;
 import com.baomidou.mybatisplus.plugins.Page;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -88,10 +86,11 @@ public class HiddenAccidentServiceImpl implements HiddenAccidentService {
         InputStream is;
         POIFSFileSystem fs;
         Workbook book =null;
-        String result ="";
         Map<String,String> source = getSourceForName();
-        int in =0;
+        //所有数据
         List<HiddenAccident> list =new ArrayList<HiddenAccident>();
+        //分段倒入处理
+        List<List<HiddenAccident>> input  =new ArrayList<>();
         try {
             is = parmfile.getInputStream();
             /**判断Excel版本*/
@@ -115,8 +114,9 @@ public class HiddenAccidentServiceImpl implements HiddenAccidentService {
             int columCount = firstRow.getLastCellNum();
             Map<String,Integer> colum =new HashMap<String, Integer>();
             for (int i=0;i<columCount;i++){
-                String columText = firstRow.getCell(i).getStringCellValue();
-                if (columText!=null){
+                Cell cell =firstRow.getCell(i);
+                String columText = getCellValue(cell);
+                if (columText!=null&&!"".equals(columText)){
                     colum.put(columText,i);
                 }
             }
@@ -127,105 +127,82 @@ public class HiddenAccidentServiceImpl implements HiddenAccidentService {
                     continue;
                 }
                 HiddenAccident hiddenAccident =new HiddenAccident();
-                String value ="-";
+                String value ="";
                 Cell cell =row.getCell(colum.get("序号"));
-                if (cell!=null){
-                    try {
-                        value = cell.getStringCellValue();
-                    }catch(Exception e){
-                        value = cell.getNumericCellValue()+"";
-                    }
-
-                    if ("".equals(value)||value==null){
-                        break;
-                    }
+                value =getCellValue(cell);
+                if ("".equals(value)){
+                    break;
                 }
+
                 cell =row.getCell(colum.get("重大危险源"));
-                if (cell!=null){
-                    value = cell.getStringCellValue();
-                    if (value!=null&&source.containsKey(value)){
-                        value=source.get(value);
-                    }else {
-                        return "导入失败：第"+ i + "行重大危险源未找到指定对象，请核对后再次导入";
-                    }
+                value = getCellValue(cell);
+                if (source.containsKey(value)){
+                    value=source.get(value);
+                }else {
+                    return "导入失败：第"+ i + "行重大危险源未找到指定对象，请核对后再次导入";
                 }
-
                 hiddenAccident.setDangerSource(value);
 
                 cell =row.getCell(colum.get("隐患描述"));
-                if (cell!=null){
-                    value=nvl(cell.getStringCellValue(),"-");
-                }
+                value =getCellValue(cell);
                 hiddenAccident.setHiddenDanager(value);
 
                 cell =row.getCell(colum.get("行政区划"));
-                if (cell!=null){
-                    value=nvl(cell.getStringCellValue(),"-");
-                }
+                value =getCellValue(cell);
                 hiddenAccident.setArea(value);
 
                 cell =row.getCell(colum.get("行业分类"));
-                if (cell!=null){
-                    value=nvl(cell.getStringCellValue(),"-");
-                }
+                value =getCellValue(cell);
                 hiddenAccident.setIndustry(value);
 
                 cell =row.getCell(colum.get("隐患监管部门"));
-                if (cell!=null){
-                    value=nvl(cell.getStringCellValue(),"-");
-                }
+                value =getCellValue(cell);
                 hiddenAccident.setSuperviseDept(value);
 
                 cell =row.getCell(colum.get("隐患来源"));
-                if (cell!=null){
-                    value=nvl(cell.getStringCellValue(),"-");
-                }
+                value =getCellValue(cell);
                 hiddenAccident.setSource(value);
 
                 cell =row.getCell(colum.get("隐患类别"));
-                if (cell!=null){
-                    value=nvl(cell.getStringCellValue(),"-");
-                }
+                value =getCellValue(cell);
                 hiddenAccident.setCategory(value);
 
                 cell =row.getCell(colum.get("隐患级别"));
-                if (cell!=null){
-                    value=nvl(cell.getStringCellValue(),"-");
-                }
+                value =getCellValue(cell);
                 hiddenAccident.setRank(value);
 
                 cell =row.getCell(colum.get("上报日期"));
-                if (cell!=null){
-                    value=nvl(cell.getStringCellValue(),"-");
-                }
+                value =getCellValue(cell);
                 hiddenAccident.setUpReportDate(value);
 
                 cell =row.getCell(colum.get("整改期限"));
-                if (cell!=null){
-                    value=nvl(cell.getStringCellValue(),"-");
-                }
+                value =getCellValue(cell);
                 hiddenAccident.setReformTerm(value);
 
                 cell =row.getCell(colum.get("整改情况"));
-                if (cell!=null){
-                    value=nvl(cell.getStringCellValue(),"-");
-                }
+                value =getCellValue(cell);
                 hiddenAccident.setRectification(value);
 
                 list.add(hiddenAccident);
-                if (list.size()>100){
-                    in += hiddenAccidentMapper.insertHiddenDanger(list);
-                    list = new ArrayList<HiddenAccident>();
+
+                //分段插入处理
+                if (list.size()==100){
+                    input.add(list);
+                    list =new ArrayList<>();
                 }
             }
         }catch (Exception e){
             System.out.printf("失败："+e.getMessage());
         }
 
-        if (list.size()>0){
-            in += hiddenAccidentMapper.insertHiddenDanger(list);
+        for (List<HiddenAccident> l:input){
+            hiddenAccidentMapper.insertHiddenDanger(l);
         }
-       return "成功插入"+in+"条。";
+        if (list.size()>0){
+            hiddenAccidentMapper.insertHiddenDanger(list);
+        }
+        String num =String.valueOf(input.size()*100+list.size());
+       return "成功插入"+num+"条。";
     }
 
     /**
@@ -240,8 +217,39 @@ public class HiddenAccidentServiceImpl implements HiddenAccidentService {
         }
         return source;
     }
-
-    private String nvl(String arg1,String arg2){
-        return arg1==null?arg2:arg1;
+    /**
+     * 获取cell值
+     * @param cell
+     * @return
+     */
+    private String getCellValue(Cell cell) {
+        String cellValue = "";
+        if (cell == null){
+            return "";
+        }
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+        CellType cellType =cell.getCellTypeEnum();
+        //字符串型
+        if (cellType == CellType.STRING){
+            cellValue = cell.getStringCellValue();
+        }
+        //数值型
+        else if (cellType == CellType.NUMERIC){
+            //判断是否为日期格式
+            if (DateUtil.isCellDateFormatted(cell)){
+                cellValue=sdf.format(cell.getDateCellValue());
+            }else {
+                cellValue = String.valueOf(cell.getNumericCellValue());
+            }
+        }
+        //Boolean
+        else if (cellType == CellType.BOOLEAN){
+            cellValue = String.valueOf(cell.getBooleanCellValue());
+        }
+        //空值
+        else if (cellType == CellType.BLANK){
+            cellValue = "";
+        }
+        return cellValue;
     }
 }

@@ -89,4 +89,10 @@ public interface EquipTypeMapper {
      */
     int upDateOrderSort(@Param("typeCode1")String typeCode1,@Param("typeOrder1")String typeOrder1,
     @Param("typeCode2")String typeCode2,@Param("typeOrder2")String typeOrder2);
+
+    /**
+     * 设备类型
+     * @return
+     */
+    List<Map<String,String>> getEquipType();
 }

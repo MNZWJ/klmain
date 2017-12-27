@@ -10,6 +10,8 @@ $(function () {
 
     // $("#map").height(scanHeight);
     initMap();
+
+    initSocket();
 });
 
 //初始化地图
@@ -69,22 +71,14 @@ function initTable() {
             showDiv();
         },
         onLoadError: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                size: BootstrapDialog.SIZE_SMALL,
-                message: '表格加载失败！',
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定', // <-- Default value is 'OK',
-
-            });
         },
 
         columns: [
             {
 
                 title: '序号',
+                halign: 'center',
+                align: 'center',
                 width: '5%',
                 formatter: function (value, row, index) {
                     return index + 1;
@@ -119,6 +113,7 @@ function initTable() {
                 field: 'startDate',
                 title: '开始日期',
                 halign: 'center',
+                align: 'center',
                 width: '20%',
                 cellStyle: function (value, row, index, field) {
                     value = value ==undefined?'-':value;
@@ -132,6 +127,7 @@ function initTable() {
                 field: 'validity',
                 title: '有效期',
                 halign: 'center',
+                align: 'center',
                 width: '20%',
                 cellStyle: function (value, row, index, field) {
                     return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
@@ -179,16 +175,6 @@ function initTable() {
             showDiv();
         },
         onLoadError: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                size: BootstrapDialog.SIZE_SMALL,
-                message: '表格加载失败！',
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定', // <-- Default value is 'OK',
-
-            });
         },
 
         columns: [
@@ -380,11 +366,12 @@ function openwindow() {
 }
 
 //查询企业
-function searchCompanyList() {
+function searchCompanyList(real) {
     var searchCompanyName = mini.get("searchCompanyName").getText();
     var searchScaleCode = mini.get("searchScaleCode").getValue();
     var searchTypeCode = mini.get("searchTypeCode").getValue();
     var searchAlarm = mini.get("alarm").getValue();
+    var c=[];
     $.ajax({
         type: 'get',
         async: false,
@@ -396,13 +383,16 @@ function searchCompanyList() {
         },
         url: '/OverdueAlarm/getAlarmCompanyList',
         success: function (result) {
-            loadCompanyList(result);
+            if (real){
+                c=result;
+            }else {
+                loadCompanyList(result);
+            }
         },
         error: function () {
-            alert("请求失败");
         }
     });
-
+    return c;
 }
 
 
@@ -413,4 +403,39 @@ function clearSearch() {
     mini.get("searchTypeCode").setValue('');
 }
 
+//初始化socket连接
+function initSocket(){
+    // 建立连接对象（还未发起连接）
+    var socket = new SockJS("http://"+window.location.hostname+":"+window.location.port+"/webSocketServer?a=b&c=d");
+
+    // 获取 STOMP 子协议的客户端对象
+    var stompClient = Stomp.over(socket);
+
+    // 向服务器发起websocket连接并发送CONNECT帧
+    stompClient.connect(
+        {},
+        function connectCallback(frame) {
+            // 连接成功时（服务器响应 CONNECTED 帧）的回调方法
+            // alert("连接成功");
+            stompClient.subscribe('/topic/RealAlarmCompanyList', function (response) {
+                var data = JSON.parse(response.body);
+                var comlist = searchCompanyList(true);
+                var c = [];
+                $.each(comlist,function (i,n) {
+                    $.each(data,function (a,b) {
+                        if(n.companyId==b.companyId){
+                            c.push(b);
+                        }
+                    })
+                })
+                loadCompanyList(c);
+
+            });
+        },
+        function errorCallBack(error) {
+            // 连接失败时（服务器响应 ERROR 帧）的回调方法
+            alert("连接失败");
+        }
+    );
+}
 

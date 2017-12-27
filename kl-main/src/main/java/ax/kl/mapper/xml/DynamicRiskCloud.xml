@@ -10,6 +10,7 @@
         ci.CompanyName,
         di.SourceId,
         di.SourceName,
+        di.Rank,
         di.Longt,
         di.Lat,
         SUM(CASE WHEN hd.Rank='重大隐患' THEN 1 ELSE 0 END) AS MajorHidden,
@@ -38,6 +39,7 @@
         ci.CompanyName,
         di.SourceId,
         di.SourceName,
+        di.Rank,
         di.Longt,
         di.Lat
 

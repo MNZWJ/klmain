@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <#include "/Common/Layout.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+
     <link rel="stylesheet" href="../../Scripts/bootstrap-table/bootstrap-table.min.css"/>
     <link rel="stylesheet" href="../../Scripts/bootstrape-select/css/bootstrap-select.min.css">
     <link rel="stylesheet" href="../../Scripts/bootstrap-table/extensions/editable/bootstrap-editable.css">
@@ -15,6 +17,11 @@
     <script src="../../Scripts/bootstrape-select/js/bootstrap-select.min.js"></script>
     <script src="../../Scripts/bootstrape-select/js/i18n/defaults-zh_CN.js"></script>
     <script src="../../ProjectScripts/Common/common.js"></script>
+
+<!--导入所用css和js-->
+    <link rel="stylesheet" href="../../Scripts/bootStrap-fileinput/css/fileinput.css"/>
+    <script src="../../Scripts/bootStrap-fileinput/js/fileinput.js"></script>
+    <script src="../../Scripts/bootStrap-fileinput/js/locales/zh.js"></script>
 
 
     <style>
@@ -32,11 +39,16 @@
             top: 25px;
             right: 20px;
         }
+
+        #fileDiv.modal-body {
+            height: 100px;
+        }
         #as .has-feedback .form-control-feedback {
             position: absolute;
-            top: 25px;
-            right: 100px;
+            top: 0px;
+            right: -33px;
         }
+
 
         .form-horizontal .has-feedback .form-control-feedback {
             position: absolute;
@@ -89,6 +101,17 @@
         a:active {
             text-decoration: none;
         }
+
+
+        #importModal .modal-body{
+            width: 500px;
+        }
+        #importModal .modal-lg{
+            width: 500px;
+        }
+        #importModal input{
+            font-size: 12px;
+        }
     </style>
 
 </head>
@@ -119,6 +142,12 @@
                     </button>
                     <button class="btn btn-danger" type="button" onclick="unitDel()">
                         <span class="glyphicon glyphicon-minus"></span> 删除
+                    </button>
+                    <button class="btn btn-default" type="button" onclick="downloadModel()">
+                        <span class="glyphicon glyphicon-download-alt" type="button"></span>模板下载
+                    </button>
+                    <button class="btn btn-default" type="button" onclick="inputFile()">
+                        <span class="glyphicon glyphicon-import" type="button"></span>导入
                     </button>
 
                 </form>
@@ -156,21 +185,24 @@
                                             <div>
                                                 <form id="unitForm" class="form-inline" name="myForm" role="form">
                                                     <input type="hidden" name="unitId" id="unitId">
-                                                    <div id="as" class="form-group col-md-6" style="height:50px;">
-                                                        <label for="CompanyName" style="margin-left: 30px;margin-right: 16px;font-size: 13px;">所属企业</label>
-                                                        <select onchange="changeDangerSource(document.myForm)" id="CompanyName" name="CompanyName"
-                                                                class="selectpicker col-md-8" style="width: 115px;margin-right:100px;" data-live-search="true"
-                                                                data-style="btn-default">
-                                                        </select>
+                                                    <div id="as">
+                                                        <div  class="form-group col-md-6" style="height:50px;">
+                                                            <label for="CompanyName" style="margin-left: 30px;margin-right: 16px;font-size: 13px;">所属企业</label>
+                                                            <select onchange="changeDangerSource(document.myForm)" id="CompanyName" name="CompanyName"
+                                                                    class="selectpicker col-md-8" style="width: 115px;margin-right:100px;" data-live-search="true"
+                                                                    data-style="btn-default">
+                                                            </select>
+                                                        </div>
                                                     </div>
-                                                    <div class="form-group col-md-6"  style="height:50px;">
-                                                        <label for="SourceId" style="font-size: 13px;margin-right: 5px;">所属重大危险源</label>
-                                                        <select id="SourceId" name="SourceId" class="selectpicker col-md-8" style="width: 115px;margin-right:-50px;"
-                                                                data-style="btn-default" data-live-search="true"
-                                                                class="form-control" width="115px">
-                                                        </select>
+                                                    <div id="as2">
+                                                        <div class="form-group col-md-6"  style="height:50px;">
+                                                            <label for="SourceId" style="font-size: 13px;margin-right: 5px;">所属重大危险源</label>
+                                                            <select id="SourceId" name="SourceId" class="selectpicker col-md-8" style="width: 115px;margin-right:-50px;"
+                                                                    data-style="btn-default" data-live-search="true"
+                                                                    class="form-control" width="115px">
+                                                            </select>
+                                                        </div>
                                                     </div>
-
                                                     <div id="bs" class="form-group col-md-6" style="height:50px;padding-right: 60px;">
                                                         <label for="UnitName" class="col-md-4" style="font-size: 13px;width: 125px;">工艺单元名称</label>
                                                         <input type="text" name="UnitName" class="form-control select-sm col-md-8" style="width: 155px;margin-left: -5px;"
@@ -255,6 +287,23 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default"  id="btn_save" >保存</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--导入框-->
+<div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="myFileLabel"
+    style="height:300px;margin: auto">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header"  >
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myFileLabel">请选择Excel文件</h4>
+            </div>
+            <div class="modal-body" id="fileDiv">
+                <input type="file" name="file" id="file" class="file-loading"/>
             </div>
         </div>
     </div>

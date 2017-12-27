@@ -167,18 +167,6 @@ function initTable(){
             return "bootTableRow";
         },
         onLoadError:function(){
-
-
-            BootstrapDialog.alert({
-                title: '错误',
-                size:BootstrapDialog.SIZE_SMALL,
-                message: '表格加载失败！',
-                type: BootstrapDialog.TYPE_DANGER , // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定', // <-- Default value is 'OK',
-
-            });
         },
         onClickRow:function(row, $element){
 
@@ -193,12 +181,14 @@ function initTable(){
                     var page = $('#table').bootstrapTable('getOptions');
 
                     return (page.pageNumber - 1) * page.pageSize + index + 1;
-                }
+                },
+                width:'6%'
             }
             ,
             {
                 field:'state',
-                checkbox: true
+                checkbox: true,
+                width:'5%'
             },
             {
 

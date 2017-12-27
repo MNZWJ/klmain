@@ -1,6 +1,7 @@
 package ax.kl.service.impl;
 
 import ax.kl.entity.ChemicalsInfo;
+import ax.kl.entity.DangerSourceChemical;
 import ax.kl.entity.DangerSourceInfo;
 import ax.kl.mapper.DangerSourceMapper;
 import ax.kl.service.DangerSourceService;
@@ -56,13 +57,13 @@ public class DangerSourceServiceImpl implements DangerSourceService {
         return this.dangerSourceMapper.getAllDSource();
     }
 
-    ;    /**
+    /**
      * 获取重大危险源关联化学品
      * @param sourceId 危险源Id
      * @return
      */
     @Override
-    public List<ChemicalsInfo> getChemicalsInfoListBySourceId(String sourceId) {
+    public List<DangerSourceChemical> getChemicalsInfoListBySourceId(String sourceId) {
         return dangerSourceMapper.getChemicalsInfoListBySourceId(sourceId);
     }
 
@@ -80,8 +81,8 @@ public class DangerSourceServiceImpl implements DangerSourceService {
      * @return
      */
     @Override
-    public List<Map<String,String>> getDSAccidenType(){
-        return dangerSourceMapper.getDSAccidenType();
+    public List<Map<String,String>> getDSAccidenType(String typeId){
+        return dangerSourceMapper.getDSAccidenType(typeId);
     }
 
     /**

@@ -67,15 +67,6 @@ $(function () {
             return "sysorgTableRow";
         },
         onLoadError: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                message: '表格加载失败！',
-                size: BootstrapDialog.SIZE_SMALL,
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定' // <-- Default value is 'OK',
-            });
         },
         columns: [
             {
@@ -121,11 +112,31 @@ function clearRole() {
 //人员角色菜单保存
 function saveRoleMenu() {
     if (treeNode == null || treeNode == "") {
-        alert("请选择需要赋权限的人员！！！");
+        BootstrapDialog.alert({
+            title: '警告',
+            message: '请选择需要赋权限的人员！！！',
+            size: BootstrapDialog.SIZE_SMALL,
+            type: BootstrapDialog.TYPE_WARNING, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+
+            closable: false, // <-- Default value is false
+            draggable: true, // <-- Default value is false
+            buttonLabel: '确定', // <-- Default value is 'OK',
+
+        });
         return;
     }
     if (treeNode[0].icon != "glyphicon glyphicon-user") {
-        alert("请对人员赋权限！！！");
+        BootstrapDialog.alert({
+            title: '警告',
+            message: '请对人员赋权限！！！',
+            size: BootstrapDialog.SIZE_SMALL,
+            type: BootstrapDialog.TYPE_WARNING, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+
+            closable: false, // <-- Default value is false
+            draggable: true, // <-- Default value is false
+            buttonLabel: '确定', // <-- Default value is 'OK',
+
+        });
         return;
     }
     var roleId= $('#sysorgTable').bootstrapTable('getSelections');//获取所选角色
@@ -143,11 +154,31 @@ function saveRoleMenu() {
         async:false,
         data:{role:ids,menu:nodeId},
         success: function (result) {
-            if(result)
-                alert("保存成功！");
+            if(result){
+                BootstrapDialog.alert({
+                    title: '提示',
+                    message:"保存成功",
+                    size:BootstrapDialog.SIZE_SMALL,
+                    type: BootstrapDialog.TYPE_SUCCESS , // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+                    closable: false, // <-- Default value is false
+                    draggable: true, // <-- Default value is false
+                    buttonLabel: '确定', // <-- Default value is 'OK',
+
+                });
+            }
         },
         error:function (e) {
-            alert("保存失败！");
+            BootstrapDialog.alert({
+                title: '错误',
+                message: '保存失败！',
+                size: BootstrapDialog.SIZE_SMALL,
+                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+
+                closable: false, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                buttonLabel: '确定', // <-- Default value is 'OK',
+
+            });
         }
     });
 }

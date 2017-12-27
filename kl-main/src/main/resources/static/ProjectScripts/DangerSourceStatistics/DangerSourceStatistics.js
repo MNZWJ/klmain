@@ -3,7 +3,6 @@ var scanHeight=0;
 $(function () {
     //获取浏览器高度
     scanHeight = $(window).height();
-
     $("#fullDiv").height(scanHeight+'px');
     //近五年重大危险源数量统计
     loadfiveYearCountEchart();
@@ -12,14 +11,14 @@ $(function () {
 
     loadfiveYearAccitentTypeScale();
 
-    //可能引发事故类型占比
-    loadDSAccidenTypeScale();
+    //下拉菜单{危险源涉及的存储设备类型占比、重大危险源级别和可能引发事故类型的区域分布}
+    selectMrnu();
 
     //安全标准化级别占比
     loadStandardRankScale();
 
     //重大危险源级别和可能引发事故类型的区域分布
-     loadRankAndAccenTypeAreaInfo();
+     //loadRankAndAccenTypeAreaInfo();
 
     //重大危险源引发事故死亡人数统计
     loadDeathTollInfo();
@@ -74,7 +73,7 @@ function loadfiveYearCountEchart(){
                         }
                     }
                 },
-                color: ["#ed2d2d","#ff881f","#ffe01f","#0e77ab"],
+                color: ["#ab382c","#ef8938","#dfd728","#0e59cb"],
                 legend: {
                     data:dataName,
                     textStyle:{
@@ -188,7 +187,7 @@ function loadfiveYearAccitentTypeScale(){
                         }
                     }
                 },
-                color: [ "#00544a", "#6ca748","#a5a5a5"],
+                color: [ "#e87f15", "#c82222","#639023"],
                 legend: {
                     data:dataName,
                     textStyle:{
@@ -245,18 +244,26 @@ function loadfiveYearAccitentTypeScale(){
     });
 }
 
-/**可能引发事故类型占比*/
-var DSAccidenTypeScale=null;
-function loadDSAccidenTypeScale() {
-    if(DSAccidenTypeScale!=null){
-        DSAccidenTypeScale.dispose();
-        DSAccidenTypeScale=null;
+/**危险源涉及的存储设备类型占比*/
+var DSourceEquipType=null;
+function loadDSourceEquipType(rank) {
+    if(DSourceEquipType!=null){
+        DSourceEquipType.dispose();
+        DSourceEquipType=null;
     }
-    var rank=$("#rank").val();
+    var rankId = "CG";
+    if(rank!=null||rank!=undefined){
+        rankId =rank.id;
+        var rankName=rank.innerHTML;
+        if (rankName.length>2){
+            rankName = rankName.substring(0,2);
+        }
+        $("#defaultType").html(rankName);
+    }
     $.ajax({
         type:'get',
-        url:'/DSourceStatistics/getDSAccidenTypeScale',
-        data:{rank:'ece6d61a-7294-46ba-b8df-60bc838d9deb'},
+        url:'/DSourceStatistics/getDSAccidenEquip',
+        data:{typeId:rankId},
         success:function(result){
             var legendData=[];
             var data=[];
@@ -281,14 +288,14 @@ function loadDSAccidenTypeScale() {
 
             var option = {
 
-                color: [ "#00544a", "#6ca748","#a5a5a5"],
+                color: ["#ab382c","#ef8938","#dfd728","#0e59cb"],
                 tooltip: {
                     trigger: 'item',
                     formatter: "{b}: {c} ({d}%)"
                 },
 
                 series: [{
-                    name: '可能引发的事故类型占比',
+                    name: '危险源涉及的存储设备类型占比',
                     type: 'pie',
                     //radius: ['65%', '85%'],
                     avoidLabelOverlap: false,
@@ -296,10 +303,48 @@ function loadDSAccidenTypeScale() {
                     data: data
                 }]
             };
-            DSAccidenTypeScale =echarts.init(document.getElementById("DSAccidenTypeScale"));
-            DSAccidenTypeScale.setOption(option);
+            DSourceEquipType =echarts.init(document.getElementById("DSourceEquipType"));
+            DSourceEquipType.setOption(option);
         },
         error:function(e){
+        }
+    });
+}
+
+/**
+ * 下拉菜单
+ * @constructor
+ */
+function selectMrnu() {
+    //危险源涉及的存储设备类型占比
+    var typeMenu =document.getElementById("typeMenu");
+    $.ajax({
+        type:'get',
+        url: "/EquipType/getEquipType",
+        success:function (result) {
+            $.each(result, function (i, n) {
+                typeMenu.innerHTML+="<li><a id=\""+n.typeCode+ "\" style=\"color: #fff\" onclick=loadDSourceEquipType(this);>"+n.typeName+"</a></li>";
+                if (i==0){
+                    var rank={id:n.typeCode,innerHTML:n.typeName};
+                    loadDSourceEquipType(rank);
+                }
+            });
+        }
+    });
+
+    var accidentMenu =document.getElementById("accidentMenu");
+    //事故类型菜单
+    $.ajax({
+        type:'get',
+        url: "/SysDictionary/getDataDictList?typeId=" + acccidentTyptDictId,
+        success:function (result) {
+            $.each(result, function (i, n) {
+                accidentMenu.innerHTML+="<li><a id=\""+n.dictId+ "\" style=\"color: #fff\" onclick=loadRankAndAccenTypeAreaInfo(this);>"+n.dictName+"</a></li>";
+                if (i==0){
+                    var acc={id:n.dictId,innerHTML:n.dictName};
+                    loadRankAndAccenTypeAreaInfo(acc);
+                }
+            });
         }
     });
 }
@@ -338,7 +383,7 @@ function loadStandardRankScale() {
 
             var option = {
 
-                color: [ "#00544a", "#6ca748","#a5a5a5"],
+                color: [ "#c82222","#e87f15", "#166eaa","#639023","#9c9c9c","#316b70"],
                 tooltip: {
                     trigger: 'item',
                     formatter: "{b}: {c} ({d}%)"
@@ -346,8 +391,6 @@ function loadStandardRankScale() {
                 series: [{
                     name: '安全标准化级别占比',
                     type: 'pie',
-                    //radius: ['65%', '85%'],
-                    avoidLabelOverlap: false,
                     itemStyle: dataStyle,
                     data: data
                 }]
@@ -362,15 +405,16 @@ function loadStandardRankScale() {
 
 /**重大危险源级别和可能引发事故类型的区域分布*/
 var RankAndAccenTypeAreaInfo=null;
-function loadRankAndAccenTypeAreaInfo() {
+function loadRankAndAccenTypeAreaInfo(acc) {
     if(RankAndAccenTypeAreaInfo!=null){
         RankAndAccenTypeAreaInfo.dispose();
         RankAndAccenTypeAreaInfo=null;
     }
+    $("#defaultAccident").html(acc.innerHTML);
     $.ajax({
         type: 'get',
         url: '/DSourceStatistics/getRankAndAccenTypeAreaInfo',
-        data:{typeId:'07963916-7f6e-40a8-8fd4-337802182a70'},
+        data:{typeId:acc.id},
         success: function (result) {
             var data = [];
             var legendData = [];
@@ -396,7 +440,7 @@ function loadRankAndAccenTypeAreaInfo() {
                                 type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
                             }
                         },
-                        color: ["#ed2d2d", "#ff881f", "#ffe01f", "#0e77ab", "#00544a", "#6ca748","a5a5a5"],
+                        color: ["#ab382c","#ef8938","#dfd728","#0e59cb"],
                         legend: {
                             data: legendData,
                             textStyle: {
@@ -505,7 +549,7 @@ function loadDeathTollInfo() {
                                 type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
                             }
                         },
-                        color: ["#0e77ab", "#ffe01f", "#ff881f", "#ed2d2d"],
+                        color: ["#0e59cb","#dfd728","#ef8938","#ab382c"],
                         legend: {
                             data: legendData,
                             textStyle: {
@@ -594,8 +638,8 @@ function resizePage(){
         FiveYearAccitentTypeScale.resize();
     }
 
-    if(DSAccidenTypeScale!=null){
-        DSAccidenTypeScale.resize();
+    if(DSourceEquipType!=null){
+        DSourceEquipType.resize();
     }
     if(StandardRankScale!=null){
         StandardRankScale.resize();

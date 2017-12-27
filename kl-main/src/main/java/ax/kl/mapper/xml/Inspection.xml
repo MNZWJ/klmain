@@ -265,6 +265,13 @@ ORDER BY
 		sd2.DictOrder
 	</select>
 
+	<!--获取企业和重大危险源数量-->
+	<select id="getCompanyNum" resultType="java.util.Map">
+		SELECT COUNT(DISTINCT ci.CompanyId) as companyNum,COUNT(di.SourceId) as dangerSourceNum FROM TB_BASE_COMPANY_INFO ci
+LEFT JOIN TB_BASE_DANGERSOURCE_INFO di ON ci.CompanyId=di.CompanyId
+
+	</select>
+
 
 </mapper>
 

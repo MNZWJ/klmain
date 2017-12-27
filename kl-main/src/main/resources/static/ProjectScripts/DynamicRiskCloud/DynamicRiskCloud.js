@@ -4,7 +4,7 @@ var sourceId = "";
 var scanHeight = 0;
 //判断是否初始化表格
 var tableFlag = 0;
-var methodRefresh="";
+var methodRefresh=true;
 $(function () {
     //获取浏览器高度
     scanHeight = $(window).height();
@@ -15,15 +15,12 @@ $(function () {
 
     //模态窗关闭事件
     $('#myModal').on('hidden.bs.modal', function () {
+        methodRefresh=true;
 
-        methodRefresh=setInterval(function(){
-            searchCompanyList();
-        },1000*60*3);
     });
-    methodRefresh=setInterval(function(){
-        searchCompanyList();
-    },1000*60*3);
 
+
+    initSocket();
 });
 
 //初始化地图
@@ -202,9 +199,9 @@ function heatMap() {
     map.clearOverlays();
     heatmapOverlay = new BMapLib.HeatmapOverlay({"radius": 26});
     map.addOverlay(heatmapOverlay);
-    setTimeout(function () {
-        heatmapOverlay.setDataSet({data: headPoints, max: 100});
-    },500);
+
+    heatmapOverlay.setDataSet({data: headPoints, max: 100});
+
 
 }
 
@@ -235,7 +232,7 @@ function onZoomChanged() {
 function loadHazard(hazardList) {
     map.clearOverlays();
 
-    setTimeout(function(){
+
         $.each(hazardList, function (i, n) {
 
             var tempPoint = new BMap.Point(n.longt, n.lat);
@@ -281,13 +278,13 @@ function loadHazard(hazardList) {
 
 
         });
-    },500);
+
 
 }
 
 //重大危险源点击事件
 function onMarkClick(e) {
-    clearInterval(methodRefresh);
+
     sourceId = e.target.customData.sourceId;
     var riskWarn = e.target.customData.riskWarn;
     var colorFlag = e.target.customData.colorFlag;
@@ -388,6 +385,7 @@ function onMarkClick(e) {
 
 
     $('#myModal').modal('show');
+    methodRefresh=false;
 
 
 }
@@ -459,18 +457,6 @@ function initTable() {
             return "bootTableRow";
         },
         onLoadError: function () {
-
-
-            BootstrapDialog.alert({
-                title: '错误',
-                size: BootstrapDialog.SIZE_SMALL,
-                message: '表格加载失败！',
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定', // <-- Default value is 'OK',
-
-            });
         },
 
         columns: [
@@ -667,6 +653,95 @@ function resizePage() {
 
 }
 
+
+//初始化socket连接
+function initSocket(){
+    // 建立连接对象（还未发起连接）
+    var socket = new SockJS("http://"+window.location.hostname+":"+window.location.port+"/webSocketServer");
+
+    // 获取 STOMP 子协议的客户端对象
+    var stompClient = Stomp.over(socket);
+
+    // 向服务器发起websocket连接并发送CONNECT帧
+    stompClient.connect(
+        {},
+        function connectCallback(frame) {
+            // 连接成功时（服务器响应 CONNECTED 帧）的回调方法
+            // alert("连接成功");
+            stompClient.subscribe('/topic/DynamicRiskCloudHazardList', function (response) {
+
+                if(methodRefresh) {
+
+                    var returnData = response.body;
+
+                    var data = JSON.parse(returnData);
+                    var searchCompanyName = mini.get("searchCompanyName").getValue();
+                    var searchSourceName = mini.get("searchSourceName").getValue();
+                    var searchRank = mini.get("searchRank").getValue();
+                    var realList = [];
+                    $.each(data, function (i, n) {
+                        var isFlag=false;
+                        if (searchCompanyName != "") {
+                            if (n.companyName.indexOf(searchCompanyName) > -1) {
+                                isFlag=true;
+                            }else{
+                                isFlag=false;
+                            }
+                        }else{
+                            isFlag=true;
+                        }
+
+                        if(isFlag){
+
+                            if (searchSourceName != "") {
+                                if (n.sourceName.indexOf(searchSourceName) > -1) {
+                                    isFlag=true;
+                                }else{
+                                    isFlag=false;
+                                }
+                            }else{
+                                isFlag=true;
+                            }
+                        }
+
+
+                        if(isFlag){
+                            if (searchRank != "") {
+                                if (n.rank == searchRank) {
+                                    isFlag=true;
+                                }else{
+                                    isFlag=false;
+                                }
+                            }else{
+                                isFlag=true;
+                            }
+                        }
+
+                        if(isFlag){
+                            realList.push(n);
+                        }
+
+
+                    });
+                    hazardList = realList;
+                    if (map.getZoom() >= 14) {
+                        loadHazard(realList);
+                    } else {
+
+                        loadHeatMapData(realList);
+                        heatMap();
+                    }
+
+
+                }
+            });
+        },
+        function errorCallBack(error) {
+            // 连接失败时（服务器响应 ERROR 帧）的回调方法
+            alert("连接失败");
+        }
+    );
+}
 
 
 

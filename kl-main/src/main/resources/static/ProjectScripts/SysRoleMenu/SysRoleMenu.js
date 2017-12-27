@@ -77,20 +77,11 @@ $(function () {
         sortStable: true,//设置为 true 将获得稳定的排序，我们会添加_position属性到 row 数据中。
         selectItemName: 'state',
         idField: 'roleId',
+        singleSelect:true,//设置True 将禁止多选
         rowStyle: function () {//自定义行样式
             return "bootTableRow";
         },
         onLoadError: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                message: '表格加载失败！',
-                size: BootstrapDialog.SIZE_SMALL,
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定' // <-- Default value is 'OK',
-
-            });
         },
         onClickRow: function (row, $element) {
             $("#roleTable").bootstrapTable("uncheckAll");

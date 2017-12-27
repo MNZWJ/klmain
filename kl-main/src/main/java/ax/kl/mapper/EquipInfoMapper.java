@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 设备类型mapper
@@ -51,5 +52,22 @@ public interface EquipInfoMapper {
     int updateEquipInfo(EquipInfo equipInfo);
 
 
+    /**
+     * 插入list集合数据
+     * @param list
+     * @return
+     */
+    int insertList(@Param("list")List<EquipInfo> list);
 
+    /**
+     *获取所有设备类型
+     * @return
+     */
+    List<Map<String,String>> getEquipType();
+
+    /**
+     *获取所有设备使用状态
+     * @return
+     */
+    List<Map<String,String>> getEquipStatus();
 }

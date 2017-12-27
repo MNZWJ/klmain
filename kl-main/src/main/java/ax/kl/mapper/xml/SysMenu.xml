@@ -31,7 +31,7 @@
 
     <insert id="saveMenu" parameterType="ax.kl.entity.SysMenu">
         insert into TB_SYS_MENUS(MenuId, ParentMenuId,URL,MenuName,MenuOrder,MenuLevel)
-          values(NEWID(), #{ParentMenuId},#{URL},#{MenuName},#{MenuOrder},#{MenuLevel})
+          values(#{MenuId}, #{ParentMenuId},#{URL},#{MenuName},#{MenuOrder},#{MenuLevel})
     </insert>
 
     <select id="getMaxOrder" resultType="int">

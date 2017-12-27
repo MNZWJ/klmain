@@ -56,7 +56,7 @@
         OutPersonCount,DeathToll,RecordDate,Status
         )VALUES ( #{sourceId},#{uniqueCode},#{companyId},#{sourceName},#{rValue},#{rank},
         #{recordNo},#{validity},#{longt},#{lat},#{outPersonCount},#{deathToll},#{recordDate},
-        #{status}        )
+        #{status})
     </insert>
 
     <!--更新危险源信息-->
@@ -152,4 +152,90 @@
             AND cas LIKE '%'+ #{cas} + '%'
         </if>
     </select>
+
+    <!--获取所有的事故类型-->
+    <select id="getAccidentType" resultType="java.util.Map">
+        SELECT DictId,DictName FROM TB_SYS_DATADICT
+        WHERE TypeId='61c44efb-ec19-4f92-9c47-507dee5b4bbe'
+    </select>
+
+    <!--获取所有的危险源状态-->
+    <select id="getStatus" resultType="java.util.Map">
+        SELECT DictId,DictName FROM TB_SYS_DATADICT
+        WHERE TypeId='65584600-2b72-4742-8ea8-d595bf6eca8a'
+    </select>
+
+    <!--获取所有的危险源等级-->
+    <select id="getDangerSourceRank" resultType="java.util.Map">
+        SELECT DictId,DictName FROM TB_SYS_DATADICT
+        WHERE TypeId='8ea8562f-e58b-461c-9485-a967bc5e29ca'
+    </select>
+
+    <!--获取所有的危险源等级-->
+    <select id="piPei" resultType="ax.kl.entity.ChemicalsInfo">
+        SELECT * FROM TB_BASE_CHEMICAL_CATALOG
+        WHERE ChemName=#{chemicalName}
+            <if test="cas !=''">
+                and CAS=#{cas}
+            </if>
+            <if test="cas==''">
+                and CAS=''
+            </if>
+    </select>
+
+    <!--获取所有的危险源等级-->
+    <select id="getHP" resultType="java.util.Map">
+        SELECT ChemId,ChemName,CAS
+          FROM TB_BASE_CHEMICAL_CATALOG
+    </select>
+
+    <!--插入事故类型集合-->
+    <insert id="insertAccidentType" parameterType="java.util.List">
+        INSERT INTO TB_REL_DRESOURCE_ACCIDENTYPE
+        (RelationId,SourceId,TypeId) VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (NEWID(),#{item.sourceId},#{item.typeId})
+        </foreach>
+    </insert>
+
+    <!--插入危险源集合-->
+    <insert id="insertDangerSourceInfo" parameterType="java.util.List">
+        INSERT INTO TB_BASE_DANGERSOURCE_INFO
+        (SourceId,UniqueCode,CompanyId,SourceName,RValue,Rank,RecordNo,Validity,Longt,Lat,
+        OutPersonCount,DeathToll,RecordDate,Status) VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            ( #{item.sourceId},#{item.uniqueCode},#{item.companyId},#{item.sourceName},#{item.rValue},#{item.rank},
+            #{item.recordNo},#{item.validity},#{item.longt},#{item.lat},#{item.outPersonCount},#{item.deathToll},#{item.recordDate},
+            #{item.status})
+        </foreach>
+    </insert>
+
+    <!--插入装置设施周围环境信息-->
+    <insert id="insertFacilitiesCondition" parameterType="java.util.List">
+        INSERT INTO TB_BASE_DR_FACILITIES_CONDITION
+        (TargetId,SourceId,Facilities,Environment
+        ,RealDistance,StandardDistance,Conformance) VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.targetId } ,#{item.sourceId },#{ item.facilities }  ,#{ item.environment } ,#{ item.realDistance }
+            ,#{ item.standardDistance } ,#{ item.conformance })
+        </foreach>
+    </insert>
+
+    <!--保存法律保护区信息-->
+    <insert id="insertLegalProtection" parameterType="java.util.List">
+        INSERT INTO TB_BASE_DR_LEGAL_PROTECTION
+        (TargetId,SourceId,ProtectArea,Environment,Conformance ) VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.targetId } ,#{ item.sourceId },#{ item.protectArea },#{ item.environment },#{ item.conformance })
+        </foreach>
+    </insert>
+
+    <!--保存危险源相关化学品信息-->
+    <insert id="insertDangerSourceChemical" parameterType="java.util.List">
+        INSERT INTO TB_REL_DRESOURCE_CHEMICAL
+        (RelId,ChemId,SourceId, Dreserves,Unit) VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{ item.relId } ,#{ item.chemId },#{ item.sourceId },#{ item.dreserves },#{ item.unit })
+        </foreach>
+    </insert>
 </mapper>

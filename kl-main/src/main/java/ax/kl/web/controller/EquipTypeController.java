@@ -80,7 +80,6 @@ public class EquipTypeController {
     @ResponseBody
     public JSONObject validateTypeCode(@RequestParam Map<String,String> param){
         String typecode = param.get("typeCode");
-        Map<String,String> map =new HashMap<>(1);
         boolean result = equipTypeService.validateTypeCode(typecode);
         JSONObject obj=new JSONObject();
         obj.put("valid",result);
@@ -99,5 +98,12 @@ public class EquipTypeController {
             return ResultUtil.error(01,"当前已是第一条数据！");
         }
         return ResultUtil.error(02,"当前已是最后一条数据！");
+    }
+
+    @ApiOperation(value = "设备类型")
+    @RequestMapping(value = "/getEquipType", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Map<String,String>> getEquipType() {
+        return equipTypeService.getEquipType();
     }
 }

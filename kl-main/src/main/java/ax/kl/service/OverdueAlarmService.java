@@ -6,6 +6,7 @@ import ax.kl.entity.RealtimeAlarmData;
 import com.baomidou.mybatisplus.plugins.Page;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 超期运行预警
@@ -18,7 +19,7 @@ public interface OverdueAlarmService {
      * 获取企业预警信息
      * @return
      */
-    List<CompanyInfo> getAlarmCompanyList(String searchCompanyName, String searchScaleCode, String searchTypeCode,String searchAlarm);
+    List<CompanyInfo> getAlarmCompanyList(Map<String,String> map);
 
     /**
      * 获取已超期证书列表

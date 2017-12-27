@@ -79,30 +79,20 @@ function initTable() {
             return "bootTableRow";
         },
         onLoadError: function () {
-
-
-            BootstrapDialog.alert({
-                title: '错误',
-                size: BootstrapDialog.SIZE_SMALL,
-                message: '表格加载失败！',
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定', // <-- Default value is 'OK',
-
-            });
         },
 
         columns: [
             {
 
                 title: '序号',
+                halign: 'center',
+                align: 'center',
                 formatter: function (value, row, index) {
 
 
                     return index + 1;
                 },
-                width: '14%'
+                width: '10%'
             }
             ,
 
@@ -111,6 +101,7 @@ function initTable() {
                 field: 'chemName',
                 title: '化学品名称',
                 halign: 'center',
+                align: 'left',
                 width: '28%',
                 cellStyle: function (value, row, index, field) {
                     return {classes: '', css:  {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
@@ -118,6 +109,7 @@ function initTable() {
             }, {
                 field: 'cAS',
                 title: 'CAS',
+                align: 'center',
                 halign: 'center',
                 width: '21%',
                 cellStyle: function (value, row, index, field) {
@@ -134,6 +126,7 @@ function initTable() {
                 field: 'dreserves',
                 title: '设计储量',
                 halign: 'center',
+                align: 'right',
                 width: '21%',
                 cellStyle: function (value, row, index, field) {
                     return {classes: '', css:  {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
@@ -149,6 +142,7 @@ function initTable() {
                 field: 'unit',
                 title: '计量单位',
                 halign: 'center',
+                align: 'center',
                 width: '16%',
                 cellStyle: function (value, row, index, field) {
                     return {classes: '', css:  {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
@@ -183,24 +177,14 @@ function initTable() {
             return "bootTableRow";
         },
         onLoadError: function () {
-
-
-            BootstrapDialog.alert({
-                title: '错误',
-                size: BootstrapDialog.SIZE_SMALL,
-                message: '表格加载失败！',
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定', // <-- Default value is 'OK',
-
-            });
         },
 
         columns: [
             {
 
                 title: '序号',
+                halign: 'center',
+                align: 'center',
                 formatter: function (value, row, index) {
 
 
@@ -215,6 +199,7 @@ function initTable() {
                 field: 'sourceName',
                 title: '危险源名称',
                 halign: 'center',
+                align: 'left',
                 width: '30%',
                 cellStyle: function (value, row, index, field) {
                     return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
@@ -230,6 +215,7 @@ function initTable() {
                 field: 'rank',
                 title: '危险源等级',
                 halign: 'center',
+                align: 'center',
                 width: '20%',
                 align: 'center',
                 cellStyle: function (value, row, index, field) {
@@ -246,6 +232,7 @@ function initTable() {
                 field: 'OutPersonCount',
                 title: '500米范围内人数估值',
                 halign: 'center',
+                align: 'right',
                 width: '25%',
                 cellStyle: function (value, row, index, field) {
                     return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
@@ -262,6 +249,7 @@ function initTable() {
                 field: 'recordDate',
                 title: '投用时间',
                 halign: 'center',
+                align: 'center',
                 width: '15%',
                 cellStyle: function (value, row, index, field) {
                     return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
@@ -297,23 +285,14 @@ function initTable() {
         },
         onLoadError: function () {
 
-
-            BootstrapDialog.alert({
-                title: '错误',
-                size: BootstrapDialog.SIZE_SMALL,
-                message: '表格加载失败！',
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定', // <-- Default value is 'OK',
-
-            });
         },
 
         columns: [
             {
 
                 title: '序号',
+                halign: 'center',
+                align: 'center',
                 formatter: function (value, row, index) {
 
 
@@ -328,6 +307,7 @@ function initTable() {
                 field: 'technologyName',
                 title: '工艺名称',
                 halign: 'center',
+                align: 'left',
                 width: '40%',
                 cellStyle: function (value, row, index, field) {
                     return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
@@ -343,6 +323,7 @@ function initTable() {
                 field: 'monitorUnit',
                 title: '重点监控单元',
                 halign: 'center',
+                align: 'center',
                 width: '50%',
                 cellStyle: function (value, row, index, field) {
                     return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
@@ -384,7 +365,6 @@ function getCompanyList() {
             mini.get("searchCompanyName").setData(companyList);
         },
         error: function () {
-            alert("请求失败");
         }
     });
     return companyList;
@@ -434,17 +414,6 @@ function onMarkClick(e) {
             }
         },
         error: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                message: '请检查网络连接！',
-                size: BootstrapDialog.SIZE_SMALL,
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定', // <-- Default value is 'OK',
-
-            });
         }
 
     });
@@ -522,7 +491,6 @@ function searchCompanyList() {
             // }
         },
         error: function () {
-            alert("请求失败");
         }
     });
 

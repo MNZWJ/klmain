@@ -42,11 +42,16 @@
     </select>
 
     <!--危险源化学品信息-->
-    <select id="getChemicalsInfoListBySourceId" resultMap="ChemicalsInfo">
-        SELECT bcc.ChemId,bcc.ChemName,bcc.CAS FROM TB_BASE_DANGERSOURCE_INFO bdi
-        JOIN TB_REL_DRESOURCE_CHEMICAL rdc ON rdc.SourceId=bdi.SourceId
-        JOIN TB_BASE_CHEMICAL_CATALOG bcc ON bcc.ChemId=rdc.ChemId
-        WHERE bdi.SourceId=#{sourceId}
+    <select id="getChemicalsInfoListBySourceId" resultType="ax.kl.entity.DangerSourceChemical">
+        SELECT
+        cl.ChemName,
+        cl.CAS,
+        cc.Unit,
+        cc.Dreserves
+        FROM
+        TB_REL_DRESOURCE_CHEMICAL cc
+        JOIN TB_BASE_CHEMICAL_CATALOG cl ON cc.ChemId = cl.ChemId
+        WHERE cc.SourceId=#{sourceId}
     </select>
 
     <!--重大危险源各等级数量-->
@@ -63,6 +68,7 @@
     <select id="getDSAccidenType" resultType="java.util.Map">
         SELECT ISNULL(COUNT(di.SourceId),0) AS num,sd.DictName FROM TB_REL_DRESOURCE_ACCIDENTYPE da
         JOIN TB_BASE_DANGERSOURCE_INFO di ON da.SourceId=di.SourceId
+        AND di.Rank=#{typeId}
         RIGHT JOIN TB_SYS_DATADICT sd ON da.TypeId=sd.DictId
         WHERE sd.TypeId = '61c44efb-ec19-4f92-9c47-507dee5b4bbe'
         GROUP BY sd.DictId,sd.DictName,sd.DictOrder
@@ -83,22 +89,22 @@
         FROM TB_SYS_DATADICT sd2
         WHERE sd2.TypeId = '8ea8562f-e58b-461c-9485-a967bc5e29ca') AS t
         ORDER BY dictOrder
-<!--        UNION
-        SELECT sd2.DictId AS typeId,sd2.DictName AS typeName,sd2.dictOrder,'类型' AS stack,
-        STUFF((SELECT ','+ CAST(COUNT(rda.RelationId) AS VARCHAR)
-        FROM TB_REL_DRESOURCE_ACCIDENTYPE rda
-        JOIN TB_BASE_DANGERSOURCE_INFO di ON rda.SourceId=di.SourceId
-        JOIN TB_BASE_COMPANY_INFO ci ON di.CompanyId=ci.CompanyId
-        JOIN TB_SYS_DATADICT sd ON rda.TypeId=sd.DictId
-        AND rda.TypeId=sd2.DictId
-        RIGHT JOIN TB_SYS_DATADICT sd1 ON sd1.DictId=ci.DirectArea
-        WHERE sd1.TypeId = '8b4524ce-15cf-404a-8182-a7e8a8d68343'
-        GROUP BY sd1.DictId FOR xml path('')),1,1,'') AS numList
-        FROM TB_SYS_DATADICT sd2
-        WHERE sd2.TypeId = '61c44efb-ec19-4f92-9c47-507dee5b4bbe'
-        GROUP BY sd2.DictId,sd2.DictName,sd2.DictOrder
-        ORDER BY DictOrder
-        -->
+        <!--        UNION
+                SELECT sd2.DictId AS typeId,sd2.DictName AS typeName,sd2.dictOrder,'类型' AS stack,
+                STUFF((SELECT ','+ CAST(COUNT(rda.RelationId) AS VARCHAR)
+                FROM TB_REL_DRESOURCE_ACCIDENTYPE rda
+                JOIN TB_BASE_DANGERSOURCE_INFO di ON rda.SourceId=di.SourceId
+                JOIN TB_BASE_COMPANY_INFO ci ON di.CompanyId=ci.CompanyId
+                JOIN TB_SYS_DATADICT sd ON rda.TypeId=sd.DictId
+                AND rda.TypeId=sd2.DictId
+                RIGHT JOIN TB_SYS_DATADICT sd1 ON sd1.DictId=ci.DirectArea
+                WHERE sd1.TypeId = '8b4524ce-15cf-404a-8182-a7e8a8d68343'
+                GROUP BY sd1.DictId FOR xml path('')),1,1,'') AS numList
+                FROM TB_SYS_DATADICT sd2
+                WHERE sd2.TypeId = '61c44efb-ec19-4f92-9c47-507dee5b4bbe'
+                GROUP BY sd2.DictId,sd2.DictName,sd2.DictOrder
+                ORDER BY DictOrder
+                -->
     </select>
 
     <!--各行业重大危险源数量-->

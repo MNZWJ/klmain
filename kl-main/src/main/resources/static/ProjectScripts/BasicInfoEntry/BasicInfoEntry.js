@@ -33,6 +33,7 @@ $(function () {
     initChemiacalAllTable();//初始化化学品全部信息列表
     initChemicalTable();//初始话所引用化学品信息列表
     init();
+
     //加载列表
     $('#enterpriseTable').bootstrapTable({
         height: scanHeight - 6,
@@ -61,15 +62,6 @@ $(function () {
             return "bootTableRow";
         },
         onLoadError: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                message: '表格加载失败！',
-                size: BootstrapDialog.SIZE_SMALL,
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定' // <-- Default value is 'OK',
-            });
         },
         columns: [
             {
@@ -100,19 +92,7 @@ $(function () {
                     users.push(rowData);
                     return "<a href='javascript:look(\""+rowData.companyId+"\")'>" + value + "</a>";
                 }
-            },/*{
-                field: 'legalPerson',
-                title: '法人代表',
-                halign: 'center',
-                align:'center',
-                width:'5%',
-            }, {
-                field: 'contactWay',
-                title: '联系方式',
-                halign: 'center',
-                align:'center',
-                width:'8%',
-            }, */ {
+            },{
                 field: 'safeManageRank',
                 title: '安全管理分级',
                 halign: 'center',
@@ -177,20 +157,7 @@ $(function () {
                         return "";
                     }
                 }
-
-            }, /*{
-                field: 'area',
-                title: '行政区域',
-                halign: 'center',
-                width:'9%',
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                },
-                formatter: function (value, row, index) {
-                    return '<span title="'+value+'">'+value+'</span>'
-
-                }
-            },*/
+            },
             {
                 field: 'directArea',
                 title: '直属区域',
@@ -200,6 +167,7 @@ $(function () {
             }
         ]
     });
+    clearRole();
 });
 //预加载
 function  init() {
@@ -259,7 +227,6 @@ function getTypeCodeList() {
             $.each(companyList, function (i) {
                 $('#searchTypeCode').append("<option value='" + companyList[i].dictId + "'>" + companyList[i].dictName + "</option>");
                 $('#typeCode').append("<option value='" + companyList[i].dictId + "'>" + companyList[i].dictName + "</option>");
-
             });
             $('#searchTypeCode').selectpicker('val', '');
             $('#typeCode').selectpicker('val', '');
@@ -457,15 +424,6 @@ function look(companyId) {
             $('#directArea').selectpicker('val', result[0].directArea);
         },
         error: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                message: '请检查网络连接！',
-                size: BootstrapDialog.SIZE_SMALL,
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定', // <-- Default value is 'OK',
-            });
         }
     });
     $("#myModelLabel").text("查看");
@@ -600,15 +558,6 @@ function companyEdit() {
             $('#directArea').selectpicker('val', result[0].directArea);
         },
         error: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                message: '请检查网络连接！',
-                size: BootstrapDialog.SIZE_SMALL,
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定', // <-- Default value is 'OK',
-            });
         }
     });
     $('#uniqueCode').attr("readonly","readonly");
@@ -643,15 +592,6 @@ function initTable(x) {
         minimumCountColumns: 2,
         smartDisplay:true,
         onLoadError: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                message: '表格加载失败！',
-                size: BootstrapDialog.SIZE_SMALL,
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定' // <-- Default value is 'OK',
-            });
         },
         onLoadSuccess:function(){
             //当查看时控制可编辑表格不可编辑
@@ -759,15 +699,6 @@ function initCert(x) {
             return "bootTableRow";
         },
         onLoadError: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                message: '表格加载失败！',
-                size: BootstrapDialog.SIZE_SMALL,
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定' // <-- Default value is 'OK',
-            });
         },
         onLoadSuccess:function(){
             //当查看时控制可编辑表格不可编辑
@@ -1030,15 +961,6 @@ function initChemiacalAllTable() {
             }
         },
         onLoadError: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                message: '表格加载失败！',
-                size: BootstrapDialog.SIZE_SMALL,
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定' // <-- Default value is 'OK',
-            });
         },
         columns: [
             {
@@ -1125,15 +1047,6 @@ function initChemicalTable() {
             return "bootTableRow";
         },
         onLoadError: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                message: '表格加载失败！',
-                size: BootstrapDialog.SIZE_SMALL,
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定' // <-- Default value is 'OK',
-            });
         },
         onLoadSuccess:function(){
             //当查看时控制可编辑表格不可编辑
@@ -1266,6 +1179,7 @@ $('#btn_save').click(function () {
                         callback: function () {
                             $('#myModal').modal('hide');
                             $("#enterpriseTable").bootstrapTable("refresh");
+                            getCompanyList();
                         }
                     });
                 }
@@ -1284,3 +1198,86 @@ $('#btn_save').click(function () {
         });
     }
 });
+
+
+/**
+ * 导入
+ */
+function inputFile() {
+    $('#InputMadel').modal('show');
+    var oFileInput = new FileInput();
+    oFileInput.Init("file", "/BasicInfoEntry/inputCompanyInfo");
+}
+
+//初始化导入Div
+function FileInput () {
+    var oFile = new Object();
+
+    //初始化fileinput控件（第一次初始化）
+    oFile.Init = function(ctrlName, uploadUrl) {
+        var control = $('#' + ctrlName);
+
+        //初始化上传控件的样式
+        control.fileinput({
+            language: 'zh', //设置语言
+            uploadUrl: uploadUrl, //上传的地址
+            allowedFileExtensions: ['xls', 'xlsx'],//接收的文件后缀
+            showUpload: true, //是否显示上传按钮
+            showCaption: true,//是否显示被选文件的简介
+            showPreview: true,//是否显示预览区域
+            autoReplace: true,
+            dropZoneEnabled: true,//是否显示拖拽区域
+            showRemove: true,//显示移除按钮
+            dropZoneTitle: '拖拽文件到这里 …',
+            uploadLabel: '导入',
+            browseClass: "btn btn-primary", //按钮样式
+            maxFileCount: 1, //表示允许同时上传的最大文件个数
+            enctype: 'multipart/form-data',
+            validateInitialCount:true,
+            previewFileIcon: "<i class='glyphicon glyphicon-level-up'></i>",
+            fileActionSettings:{
+                showRemove: true,
+                showUpload: false,
+                showZoom: false}
+        });
+
+        //导入文件上传完成之后的事件
+        $("#file").on("fileuploaded", function (event, data, previewId, index) {
+            $("#InputMadel").modal("hide");
+            $("#enterpriseTable").bootstrapTable("refresh", {})
+            clearDiv();
+            //$('#file').fileinput('clear');
+            BootstrapDialog.alert({
+                title: '提示',
+                size:BootstrapDialog.SIZE_SMALL,
+                message: data.response,
+                type: BootstrapDialog.TYPE_SUCCESS , // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+                closable: false, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                buttonLabel: '确定', // <-- Default value is 'OK',
+            });
+        });
+    }
+    return oFile;
+};
+
+/**
+ * 表单清空导入记录
+ */
+function clearDiv() {
+    $("#fileDiv").html("<input type=\"file\" name=\"file\" id=\"file\" class=\"file-loading\"/>");
+}
+
+//模板下载
+function downloadModel() {
+    window.location.href= "./../../Temp/企业基本信息导入模板.xlsx";
+    BootstrapDialog.alert({
+        title: '提示',
+        message: '模板中序号一列为必填，如果不填可能会导致数据上传失败！',
+        size: BootstrapDialog.SIZE_SMALL,
+        type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+        closable: false, // <-- Default value is false
+        draggable: true, // <-- Default value is false
+        buttonLabel: '确定', // <-- Default value is 'OK',
+    });
+}

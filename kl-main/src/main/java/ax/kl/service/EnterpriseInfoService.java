@@ -1,9 +1,6 @@
 package ax.kl.service;
 
-import ax.kl.entity.ChemicalsInfo;
-import ax.kl.entity.CompanyArt;
-import ax.kl.entity.CompanyInfo;
-import ax.kl.entity.DangerSourceInfo;
+import ax.kl.entity.*;
 import com.baomidou.mybatisplus.plugins.Page;
 
 import java.util.List;
@@ -46,7 +43,7 @@ public interface EnterpriseInfoService {
      * @param companyId
      * @return
      */
-    List<ChemicalsInfo> getChemicalsInfoList(String companyId);
+    List<CompanyChemical> getChemicalsInfoList(String companyId);
 
     /**
      * 加载危险化学工艺

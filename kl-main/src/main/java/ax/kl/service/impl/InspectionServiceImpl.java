@@ -98,4 +98,14 @@ public class InspectionServiceImpl implements InspectionService {
     public List<IndustryCompanyInfo> getCompanyDirectAirData() {
         return inspectionMapper.getCompanyDirectAirData();
     }
+
+    /**
+     * 获取企业和危险源数量
+     *
+     * @return
+     */
+    @Override
+    public List<Map<String, String>> getCompanyNum() {
+        return inspectionMapper.getCompanyNum();
+    }
 }

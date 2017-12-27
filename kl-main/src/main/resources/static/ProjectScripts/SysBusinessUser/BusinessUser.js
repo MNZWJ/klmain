@@ -237,6 +237,16 @@ function formValidator() {
                     }
                 }
 
+            },
+            //登录名验证
+            loginName: {
+                validators: {
+
+                    notEmpty: {
+                        message: '登录名不能为空'
+                    }
+                }
+
             }
         }
     });
@@ -277,16 +287,6 @@ function initTable(){
             return "bootTableRow";
         },
         onLoadError: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                message: '表格加载失败！',
-                size: BootstrapDialog.SIZE_SMALL,
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定', // <-- Default value is 'OK',
-
-            });
         },
         onClickRow: function (row, $element) {
 
@@ -612,9 +612,11 @@ function userDel() {
 function showOrHiddenLogin() {
     if ($("#isLogin").is(':checked')) {
         $("#login").show();
+        $("#userForm").data('bootstrapValidator').addField("loginName");//删除编码验证
     } else {
         $("#login").hide();
         $("#loginName").val('');
+        $("#userForm").data('bootstrapValidator').removeField("loginName");//删除编码验证
     }
 }
 

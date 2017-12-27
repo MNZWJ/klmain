@@ -36,15 +36,6 @@ $(function () {
             return "bootTableRow";
         },
         onLoadError: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                message: '表格加载失败！',
-                size: BootstrapDialog.SIZE_SMALL,
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定' // <-- Default value is 'OK',
-            });
         },
         columns: [{
             title: '序号',
@@ -92,7 +83,7 @@ $(function () {
             field: 'rValue',
             title: 'R值',
             halign: 'center',
-            align: 'center',
+            align: 'right',
             valign:'middle',
             width:'9%'
         }, {
@@ -179,6 +170,7 @@ $(function () {
             }
         ]
     });
+    clearRole();
 });
 //文本框数据加载
 function init() {
@@ -202,7 +194,6 @@ function MajorAangerous() {
             $('#searchRank  .selectpicker').selectpicker('refresh',{});
         },
         error: function () {
-            alert("请求失败");
         }
     });
 }
@@ -242,7 +233,6 @@ function getCompanyList() {
             $('#searchCompanyName .selectpicker').selectpicker('refresh',{});
         },
         error: function () {
-            alert("请求失败");
         }
     });
 }

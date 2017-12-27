@@ -33,15 +33,6 @@ $(function () {
             return "bootTableRow";
         },
         onLoadError: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                message: '表格加载失败！',
-                size: BootstrapDialog.SIZE_SMALL,
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定' // <-- Default value is 'OK',
-            });
         },
         columns: [{
             title: '序号',
@@ -60,7 +51,12 @@ $(function () {
             {
             field: 'companyName',
             title: '企业名称',
-            halign: 'center'
+            halign: 'center',
+            class: "bootTableRow",
+            formatter: function (value, row, index) {
+                value = value==undefined?"-":value;
+                return '<span title="'+value+'">'+value+'</span>'
+            }
         },{
             field: 'technologyName',
             title: '危险工艺名称',
@@ -68,7 +64,12 @@ $(function () {
         }, {
             field: 'monitorUnit',
             title: '重点监控单元',
-            halign: 'center'
+            halign: 'center',
+            class: "bootTableRow",
+            formatter: function (value, row, index) {
+                value = value==undefined?"-":value;
+                return '<span title="'+value+'">'+value+'</span>'
+            }
         },   {
                 field: 'companyType',
                 title: '企业性质',
@@ -80,6 +81,7 @@ $(function () {
             },
         ]
     });
+    clearRole();
 });
 //预加载数据
 function init() {
@@ -101,7 +103,6 @@ function RiskProcess() {
             $('#searchRisk  .selectpicker').selectpicker('refresh',{});
         },
         error: function () {
-            alert("请求失败");
         }
     });
 }
@@ -120,7 +121,6 @@ function getCompanyList() {
             $('#searchCompanyName .selectpicker').selectpicker('refresh',{});
         },
         error: function () {
-            alert("请求失败");
         }
     });
 }

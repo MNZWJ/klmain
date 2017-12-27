@@ -1,4 +1,3 @@
-
 var scanHeight = "";
 $(function () {
     //获取浏览器高度
@@ -14,7 +13,8 @@ $(function () {
         }
     });
 
-    // connect();
+
+    initSocket();
 });
 
 //初始化表格
@@ -36,23 +36,8 @@ function initTable() {
             return "bootTableRow";
         },
         onLoadError: function () {
-
-
-            BootstrapDialog.alert({
-                title: '错误',
-                message: '表格加载失败！',
-                size: BootstrapDialog.SIZE_SMALL,
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定', // <-- Default value is 'OK',
-
-            });
         },
         onClickRow: function (row, $element) {
-
-            // $("#roleTable").bootstrapTable("uncheckAll");
-            // $("#roleTable").bootstrapTable("checkBy", {field: 'roleId', values: [row.roleId]})
         },
         undefinedText:'',
         columns: [
@@ -61,6 +46,9 @@ function initTable() {
                 title: '序号',
                 field: 'number1',
                 valign: "middle",
+                halign: 'center',
+                align: 'center',
+                width:'5%',
                 formatter: function (value, row, index) {
                     return  index + 1;
                 },
@@ -77,7 +65,7 @@ function initTable() {
                     title: '企业',
                     halign: 'center',
                     align: 'center',
-
+                    width:'12%',
                     valign: "middle",
                     colspan: 1,
                     rowspan: 3,
@@ -94,7 +82,7 @@ function initTable() {
                     title: '重大危险源',
                     halign: 'center',
                     align: 'center',
-
+                    width:'12%',
                     valign: "middle",
                     colspan: 1,
                     rowspan: 3,
@@ -111,7 +99,7 @@ function initTable() {
                     title: '固有风险',
                     valign: "middle",
                     align: "center",
-                     width: 'auto',
+
                     colspan: 5,
                     rowspan: 1,
                     cellStyle: function (value, row, index, field) {
@@ -133,7 +121,7 @@ function initTable() {
 
                     valign: "middle",
                     align: "center",
-
+                    width:'6%',
                     colspan: 1,
                     rowspan: 2,
                     formatter:function(value,row,index){
@@ -172,7 +160,7 @@ function initTable() {
                 field: 'rank',
                 valign: "middle",
                 align: "center",
-
+                width:'9%',
                 colspan: 1,
                 rowspan: 2,
 
@@ -195,7 +183,7 @@ function initTable() {
                 field: 'fEI',
                 valign: "middle",
                 align: "center",
-
+                width:'8%',
                 colspan: 1,
                 rowspan: 2,
                 formatter:function(value,row,index){
@@ -243,7 +231,7 @@ function initTable() {
                 title: '风险',
                 valign: "middle",
                 align: "center",
-
+                width:'6%',
                 colspan: 1,
                 rowspan: 2,
                 formatter:function(value,row,index){
@@ -289,7 +277,7 @@ function initTable() {
                 field:'airStatusNum',
                 valign: "middle",
                 align: "center",
-
+                width:'9%',
                 colspan: 1,
                 rowspan: 2,
                 cellStyle:function cellStyle(value, row, index, field) {
@@ -308,7 +296,7 @@ function initTable() {
                 field:'processUnitNum',
                 valign: "middle",
                 align: "center",
-
+                width:'8%',
                 colspan: 1,
                 rowspan: 2,
                 cellStyle:function cellStyle(value, row, index, field) {
@@ -328,7 +316,7 @@ function initTable() {
                     field:'conditionNum',
                     valign: "middle",
                     align: "center",
-
+                    width:'8%',
                     colspan: 1,
                     rowspan: 1,
 
@@ -348,7 +336,7 @@ function initTable() {
                     field:'protectionNum',
                     valign: "middle",
                     align: "center",
-
+                    width:'9%',
                     colspan: 1,
                     rowspan: 1,
                     cellStyle:function cellStyle(value, row, index, field) {
@@ -367,7 +355,7 @@ function initTable() {
                     field:'generalHidden',
                     valign: "middle",
                     align: "center",
-
+                    width:'6%',
                     colspan: 1,
                     rowspan: 1,
                     cellStyle:function cellStyle(value, row, index, field) {
@@ -386,7 +374,7 @@ function initTable() {
                     field:'majorHidden',
                     valign: "middle",
                     align: "center",
-
+                    width:'6%',
                     colspan: 1,
                     rowspan: 1,
                     cellStyle:function cellStyle(value, row, index, field) {
@@ -424,36 +412,36 @@ function resizePage() {
         }
     });
 }
+//初始化socket连接
+function initSocket(){
+    // 建立连接对象（还未发起连接）
+    var socket = new SockJS("http://"+window.location.hostname+":"+window.location.port+"/webSocketServer");
+
+    // 获取 STOMP 子协议的客户端对象
+    var stompClient = Stomp.over(socket);
+
+    // 向服务器发起websocket连接并发送CONNECT帧
+    stompClient.connect(
+        {},
+        function connectCallback(frame) {
+            // 连接成功时（服务器响应 CONNECTED 帧）的回调方法
+            // alert("连接成功");
+            stompClient.subscribe('/topic/RealTimeWarnRealTimeWarnData', function (response) {
 
 
-/////////////////////////////////////
-// var stompClient = null;
-//
-// function connect() {
-//     var socket = new SockJS('/endpointSang');
-//     stompClient = Stomp.over(socket);
-//     stompClient.connect({}, function (frame) {
-//
-//         console.log('Connected:' + frame);
-//         stompClient.subscribe('/topic/getResponse', function (response) {
-//             showResponse(JSON.parse(response.body).name);
-//         })
-//     });
-// }
-// function disconnect() {
-//     if (stompClient != null) {
-//         stompClient.disconnect();
-//     }
-//
-//     console.log('Disconnected');
-// }
-//
-// function showResponse(message) {
-//     alert(message);
-// }
-// function sendName() {
-//
-//     var name = '123';
-//     console.log('name:' + name);
-//     stompClient.send("/welcome", {}, JSON.stringify({'name': name}));
-// }
+
+                    var returnData = response.body;
+
+                    var data = JSON.parse(returnData);
+
+                    $("#table").bootstrapTable("load", data);
+
+
+            });
+        },
+        function errorCallBack(error) {
+            // 连接失败时（服务器响应 ERROR 帧）的回调方法
+            alert("连接失败");
+        }
+    );
+}

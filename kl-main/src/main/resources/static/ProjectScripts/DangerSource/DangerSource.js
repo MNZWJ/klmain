@@ -121,17 +121,6 @@ function onMarkClick(e) {
             };
         },
         error: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                message: '请检查网络连接！',
-                size: BootstrapDialog.SIZE_SMALL,
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定', // <-- Default value is 'OK',
-
-            });
         }
 
     });
@@ -225,55 +214,81 @@ function initTable() {
         showRefresh: false,//是否显示 刷新按钮
         queryParams: function (pageReqeust) {
             pageReqeust.sourceId = sourceId;
-
             return pageReqeust;
         },
         rowStyle: function () {//自定义行样式
             return "bootTableRow";
         },
         onLoadSuccess:function(result){
+            debugger;
         },
         onLoadError: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                size: BootstrapDialog.SIZE_SMALL,
-                message: '表格加载失败！',
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定', // <-- Default value is 'OK',
-
-            });
         },
         columns: [
             {
-
                 title: '序号',
+                halign: 'center',
+                align: 'center',
                 formatter: function (value, row, index) {
-
-
                     return index + 1;
-                }
-            }
-            ,
-
-            {
-
+                },
+                width: '10%'
+            } , {
                 field: 'chemName',
                 title: '化学品名称',
                 halign: 'center',
-                width: '40%',
-                class: "bootTableRow",
-                formatter: function (value, row, index) {
-                    return '<span title="'+value+'">'+value+'</span>'
-
+                align: 'left',
+                width: '28%',
+                cellStyle: function (value, row, index, field) {
+                    return {classes: '', css:  {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
                 }
             }, {
                 field: 'cAS',
                 title: 'CAS',
+                align: 'center',
                 halign: 'center',
-                width: '50%'
-            }]
+                width: '21%',
+                cellStyle: function (value, row, index, field) {
+                    return {classes: '', css:  {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                },
+                formatter: function (value, row, index) {
+                    if(value==undefined){
+                        value="";
+                    }
+                    return '<span title="'+value+'">'+value+'</span>'
+                }
+            }, {
+                field: 'dreserves',
+                title: '设计储量',
+                halign: 'center',
+                align: 'right',
+                width: '21%',
+                cellStyle: function (value, row, index, field) {
+                    return {classes: '', css:  {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                },
+                formatter: function (value, row, index) {
+                    if(value==undefined){
+                        value="";
+                    }
+                    return '<span title="'+value+'">'+value+'</span>'
+                }
+            }, {
+                field: 'unit',
+                title: '计量单位',
+                halign: 'center',
+                align: 'center',
+                width: '16%',
+                cellStyle: function (value, row, index, field) {
+                    return {classes: '', css:  {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+                },
+                formatter: function (value, row, index) {
+                    if(value==undefined){
+                        value="";
+                    }
+                    return '<span title="'+value+'">'+value+'</span>'
+                }
+            }
+        ]
     });
 }
 
@@ -291,7 +306,7 @@ function initEcharts() {
     //加载事故等级占比
     loadSourceRank();
     //加载占比
-    loadDSAccidenType();
+    rankMenu();
     //加载重大危险源行政区划分布情况
     loadDSDistribution();
     //危险源数量
@@ -327,11 +342,12 @@ function getSourceCount() {
 
 var DSAccidenTypeEchart =null;
 //加载可能引发的事故类型
-function loadDSAccidenType(){
-
+function loadDSAccidenType(rank){
+    $("#defaultRank").html(rank.innerHTML);
     $.ajax({
         type:'get',
         url:'/DangerSource/getDSAccidenType',
+        data:{typeId:rank.id},
         contentType:'application/json;charset=utf-8',
         success:function(result){
             var legendData=[];
@@ -365,43 +381,11 @@ function loadDSAccidenType(){
                     trigger: 'item',
                     formatter: "{b}: {c} ({d}%)"
                 },
-                // legend: {
-                //     orient: 'vertical',
-                //     x: '2%',
-                //     top: '30%',
-                //     data: legendData,
-                //     textStyle:{
-                //         color:'#fff'
-                //     }
-                // },
                 series: [{
                     name: '可能引发的事故类型占比',
                     type: 'pie',
-                    //radius: ['65%', '85%'],
                     avoidLabelOverlap: false,
                     itemStyle: dataStyle,
-                    // label: {
-                    //     normal: {
-                    //         show: false,
-                    //         position: 'center'
-                    //     },
-                    //     emphasis: {
-                    //         show: true,
-                    //         formatter: function(param) {
-                    //             return param.percent.toFixed(0) + '%';
-                    //         },
-                    //         textStyle: {
-                    //             fontSize: '30',
-                    //             fontWeight: 'bold',
-                    //             color:'#fff'
-                    //         }
-                    //     }
-                    // },
-                    // labelLine: {
-                    //     normal: {
-                    //         show: true
-                    //     }
-                    // },
                     data: data
                 }]
             };
@@ -414,6 +398,28 @@ function loadDSAccidenType(){
 
 }
 
+//可能发生的事故类型菜单
+function rankMenu() {
+    //事故等级菜单
+    var rankMenu =document.getElementById("rankMenu");
+    if ($("#rankMenu li").length!=0){
+        return
+    }
+    $.ajax({
+        type:'get',
+        url: "/SysDictionary/getDataDictList?typeId=" + MajorHazardRank,
+        success:function (result) {
+            $.each(result, function (i, n) {
+                rankMenu.innerHTML+="<li><a id=\""+n.dictId+ "\" style=\"color: #fff\" onclick=loadDSAccidenType(this);>"+n.dictName+"</a></li>";
+                if (i==0){
+                    var rank={id:n.dictId,innerHTML:n.dictName};
+                    loadDSAccidenType(rank);
+                }
+            });
+        }
+    });
+
+}
 
 var sourceRankEchart = null;
 //加载重大危险源等级占比

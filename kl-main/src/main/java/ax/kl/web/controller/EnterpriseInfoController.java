@@ -1,9 +1,6 @@
 package ax.kl.web.controller;
 
-import ax.kl.entity.ChemicalsInfo;
-import ax.kl.entity.CompanyArt;
-import ax.kl.entity.CompanyInfo;
-import ax.kl.entity.DangerSourceInfo;
+import ax.kl.entity.*;
 import ax.kl.service.EnterpriseInfoService;
 import com.baomidou.mybatisplus.plugins.Page;
 import io.swagger.annotations.Api;
@@ -92,7 +89,7 @@ public class EnterpriseInfoController {
     @RequestMapping("/getChemicalsInfoList")
     @ApiOperation(value="获取化学品信息")
     @ResponseBody
-    public List<ChemicalsInfo> getChemicalsInfoList(@RequestParam("companyId") String companyId){
+    public List<CompanyChemical> getChemicalsInfoList(@RequestParam("companyId") String companyId){
         return enterpriseInfoService.getChemicalsInfoList(companyId);
     }
 

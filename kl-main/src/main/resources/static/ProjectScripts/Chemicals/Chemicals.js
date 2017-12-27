@@ -26,16 +26,6 @@ $(function () {
         idField:"chemId",
         // 设置为 ''  在这种情况下传给服务器的参数为：pageSize,pageNumber
         onLoadError:function(){
-            BootstrapDialog.alert({
-                title: '错误',
-                size:BootstrapDialog.SIZE_SMALL,
-                message: '表格加载失败！',
-                type: BootstrapDialog.TYPE_DANGER , // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定', // <-- Default value is 'OK',
-
-            });
         },
         onLoadSuccess:function(result){
         },
@@ -80,7 +70,7 @@ $(function () {
                 field: 'dreserves',
                 title: '设计储量',
                 halign: 'center',
-                align: 'left',
+                align: 'right',
                 class: "bootTableRow",
                 formatter: function (value, row, index) {
                     return '<span title="'+value+'">'+value+'</span>'
@@ -89,13 +79,15 @@ $(function () {
                 field: 'unit',
                 title: '单位',
                 halign: 'center',
-                align: 'left',
+                align: 'center',
                 class: "bootTableRow",
                 formatter: function (value, row, index) {
+                    value = value==undefined?"-":value;
                     return '<span title="'+value+'">'+value+'</span>'
                 }
             }]
     });
+    clean();
 });
 function init() {
     getCompanyList();
@@ -115,7 +107,6 @@ function getCompanyList() {
             $('#companyName .selectpicker').selectpicker('refresh',{});
         },
         error: function () {
-            alert("请求失败");
         }
     });
 }

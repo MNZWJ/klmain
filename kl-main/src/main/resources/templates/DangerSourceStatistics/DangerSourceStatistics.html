@@ -69,6 +69,9 @@
         ::-webkit-scrollbar-corner {
             background: transparent;
         }
+        #accidentMenu li a:hover,#typeMenu li a:hover{
+            background:#0e76a8;
+        }
 
     </style>
 
@@ -118,12 +121,22 @@
         <div style="overflow-y: visible;height: 45%;width: 105%;">
             <div id="titleDivC"
                  style="margin-left:8%;height: 30px;line-height: 30px;color: #fff; width: 84%;background-color: #0a4164">
-                <span style="font-size: 20px;margin-left: 10px;">可能引发事故类型占比
+                <span style="font-size: 20px;margin-left: 10px;">危险源涉及设备类型占比
                 </span>
 
+                <div style="line-height:28px;color: #fff;height: 28px;float: right;margin-right:10px;margin-top: 1px;cursor: pointer;" >
+                    <div class="btn-group dropdown">
+                        <span data-toggle="dropdown">
+                            <a id="defaultType"></a>
+                            <span class="glyphicon glyphicon-triangle-bottom" ></span>
+                        </span>
+                        <ul id="typeMenu" class="dropdown-menu" role="menu" style="background-color: #0e2a42;min-width: 100%">
+                        </ul>
+                    </div>
+                </div>
             </div>
             <div style="margin-left:8%;width: 84%;margin-top:2%;height: 88%;">
-                <div id="DSAccidenTypeScale" style="width: 100%;height: 100%;"></div>
+                <div id="DSourceEquipType" style="width: 100%;height: 100%;"></div>
             </div>
 
         </div>
@@ -151,7 +164,17 @@
 
             <div id="titleDivC1"
                  style="margin-left:0;height: 30px;line-height: 30px;color: #fff; width: 88%;background-color: #0a4164">
-                <span style="font-size: 20px;margin-left: 10px;">重大危险源级别和可能引发事故类型的区域分布</span>
+                <span style="font-size: 20px;margin-left: 10px;">可能引发事故类型的区域分布</span>
+                <div style="line-height:28px;color: #fff;height: 28px;float: right;margin-right:10px;margin-top: 1px;cursor: pointer;" >
+                    <div class="btn-group dropdown">
+                        <span data-toggle="dropdown">
+                            <a id="defaultAccident"></a>
+                            <span class="glyphicon glyphicon-triangle-bottom" ></span>
+                        </span>
+                        <ul id="accidentMenu" class="dropdown-menu dropdown-menu-left" role="menu" style="background-color: #0e2a42;min-width: 100%">
+                        </ul>
+                    </div>
+                </div>
             </div>
             <div style="margin-left:0;width: 88%;height: 86%;">
                 <div id="RankAndAccenTypeAreaInfo" style="width: 100%;height: 100%;"></div>

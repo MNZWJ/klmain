@@ -58,7 +58,7 @@ $(function () {
         pageNumber: 1,                       //初始化加载第一页，默认第一页
         pageSize: 10,                       //每页的记录行数（*）
         pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
-        showRefresh: true,//是否显示 刷新按钮
+        showRefresh: false,//是否显示 刷新按钮
         sortStable: true,//设置为 true 将获得稳定的排序，我们会添加_position属性到 row 数据中。
         selectItemName: 'state',
         idField: 'sourceId',
@@ -67,15 +67,6 @@ $(function () {
             return "bootTableRow";
         },
         onLoadError: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                message: '表格加载失败！',
-                size: BootstrapDialog.SIZE_SMALL,
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定' // <-- Default value is 'OK',
-            });
         },
         columns: [{
             title: '序号',
@@ -123,7 +114,7 @@ $(function () {
             field: 'rValue',
             title: 'R值',
             halign: 'center',
-            align: 'center',
+            align: 'right',
             width:'2%',
                 valign:'middle',
         }, {
@@ -179,6 +170,7 @@ $(function () {
             }
         ]
     });
+    clearRole();
 });
 //文本框数据加载
 function init() {
@@ -226,7 +218,6 @@ function MajorAangerous() {
             $('#rank  .selectpicker').selectpicker('refresh',{});
         },
         error: function () {
-            alert("请求失败");
         }
     });
 }
@@ -268,7 +259,6 @@ function getCompanyList() {
             $('#companyId .selectpicker').selectpicker('refresh',{});
         },
         error: function () {
-            alert("请求失败");
         }
     });
 }
@@ -287,7 +277,6 @@ function getacccidentTyptList() {
             $('#accidentType .selectpicker').selectpicker('refresh',{});
         },
         error: function () {
-            alert("请求失败");
         }
     });
 }
@@ -306,7 +295,6 @@ function getaSourceStatusList() {
             $('#status .selectpicker').selectpicker('refresh',{});
         },
         error: function () {
-            alert("请求失败");
         }
     });
 }
@@ -348,15 +336,6 @@ function look(sourceId) {
             $('#status').selectpicker('val', result[0].status);
         },
         error: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                message: '请检查网络连接！',
-                size: BootstrapDialog.SIZE_SMALL,
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定', // <-- Default value is 'OK',
-            });
         }
     });
     $("#myModelLabel").text("查看");
@@ -483,15 +462,6 @@ function companyEdit() {
             $('#status').selectpicker('val', result[0].status);
         },
         error: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                message: '请检查网络连接！',
-                size: BootstrapDialog.SIZE_SMALL,
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定', // <-- Default value is 'OK',
-            });
         }
     });
     $('#uniqueCode').attr("readonly","readonly");
@@ -526,15 +496,6 @@ function initTable(x) {
         minimumCountColumns: 2,
         smartDisplay:true,
         onLoadError: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                message: '表格加载失败！',
-                size: BootstrapDialog.SIZE_SMALL,
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定' // <-- Default value is 'OK',
-            });
         },
         onLoadSuccess:function(){
             //当查看时控制可编辑表格不可编辑
@@ -659,15 +620,6 @@ function initCert(x) {
             return "bootTableRow";
         },
         onLoadError: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                message: '表格加载失败！',
-                size: BootstrapDialog.SIZE_SMALL,
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定' // <-- Default value is 'OK',
-            });
         },
         onLoadSuccess:function(){
             //当查看时控制可编辑表格不可编辑
@@ -796,15 +748,6 @@ function saveData() {
                     }
                 },
                 error: function () {
-                    BootstrapDialog.alert({
-                        title: '错误',
-                        message: '保存失败！',
-                        size: BootstrapDialog.SIZE_SMALL,
-                        type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                        closable: false, // <-- Default value is false
-                        draggable: true, // <-- Default value is false
-                        buttonLabel: '确定', // <-- Default value is 'OK',
-                    });
                 }
             });
         }
@@ -861,15 +804,6 @@ function companyDel() {
                         }
                     },
                     error: function () {
-                        BootstrapDialog.alert({
-                            title: '错误',
-                            message: '删除失败！',
-                            size: BootstrapDialog.SIZE_SMALL,
-                            type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                            closable: false, // <-- Default value is false
-                            draggable: true, // <-- Default value is false
-                            buttonLabel: '确定', // <-- Default value is 'OK',
-                        });
                     }
                 });
             }
@@ -979,15 +913,6 @@ function initChemiacalAllTable() {
             }
         },
         onLoadError: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                message: '表格加载失败！',
-                size: BootstrapDialog.SIZE_SMALL,
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定' // <-- Default value is 'OK',
-            });
         },
         columns: [
             {
@@ -1074,15 +999,6 @@ function initChemicalTable() {
             return "bootTableRow";
         },
         onLoadError: function () {
-            BootstrapDialog.alert({
-                title: '错误',
-                message: '表格加载失败！',
-                size: BootstrapDialog.SIZE_SMALL,
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定' // <-- Default value is 'OK',
-            });
         },
         onLoadSuccess:function(){
             //当查看时控制可编辑表格不可编辑
@@ -1188,4 +1104,77 @@ function searchchem() {
 function cleanchem() {
     chemName = $("#chemName").val("");
     cas = $("#cas").val("");
+}
+
+
+//模版下载
+function downloadModel() {
+    window.location.href= "./../../Temp/重大危险源信息导入模版.xlsx";
+}
+
+//文件的导入
+function inputFile() {
+    //导入框显示
+    $('#importModal').modal('show');
+
+    //bootstrap上传组件
+    var oFileInput = new FileInput();
+    //通过调用方法来进行文件导入
+    oFileInput.Init("file", "/MajorDSInfoEntry/inputFile");
+
+}
+
+//初始化导入Div
+function FileInput () {
+    var oFile = new Object();
+
+    //初始化fileinput控件（第一次初始化）
+    oFile.Init = function(ctrlName, uploadUrl) {
+        var control = $('#' + ctrlName);
+
+        //初始化上传控件的样式
+        control.fileinput({
+            language: 'zh', //设置语言
+            uploadUrl: uploadUrl, //上传的地址
+            allowedFileExtensions: ['xls', 'xlsx'],//接收的文件后缀
+            showUpload: true, //是否显示上传按钮
+            showCaption: true,//是否显示被选文件的简介
+            showPreview: false,//是否显示预览区域
+            autoReplace: true,
+            dropZoneEnabled: false,//是否显示拖拽区域
+            showRemove: false,//显示移除按钮
+            uploadLabel: '导入',
+            browseClass: "btn btn-primary", //按钮样式
+            maxFileCount: 1, //表示允许同时上传的最大文件个数
+            enctype: 'multipart/form-data',
+            validateInitialCount:true,
+            previewFileIcon: "<i class='glyphicon glyphicon-level-up'></i>",
+            fileActionSettings:{
+                showRemove: true,
+                showUpload: false,
+                showZoom: false}
+        });
+
+        //导入文件上传完成之后的事件
+        $("#file").on("fileuploaded", function (event, data, previewId, index) {
+            $("#importModal").modal("hide");
+            $("#MajorTable").bootstrapTable("refresh", {})
+            clearDiv();
+            BootstrapDialog.alert({
+                title: '提示',
+                size:BootstrapDialog.SIZE_SMALL,
+                message: data.response,
+                type: BootstrapDialog.TYPE_SUCCESS , // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+                closable: false, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                buttonLabel: '确定', // <-- Default value is 'OK',
+            });
+        });
+    }
+    return oFile;
+};
+
+//表单清空导入记录
+function clearDiv() {
+    $("#fileDiv").html("<input type=\"file\" name=\"file\" id=\"file\" class=\"file-loading\"/>");
 }

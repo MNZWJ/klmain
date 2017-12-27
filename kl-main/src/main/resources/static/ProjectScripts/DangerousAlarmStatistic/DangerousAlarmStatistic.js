@@ -1,13 +1,13 @@
-var scanHeight=0;
-var staticIndustryStr="";
+var scanHeight = 0;
+var staticIndustryStr = "";
 $(function () {
-    setInterval(function(){
+    setInterval(function () {
         $("#showTime").html(convert(new Date()));
-    },1000);
+    }, 1000);
     //获取浏览器高度
     scanHeight = $(window).height();
 
-    $("#fullDiv").height(scanHeight+'px');
+    $("#fullDiv").height(scanHeight + 'px');
     //加载今日报警类型占比图
     loadTodayAlarmTypeEchart();
     //今日企业报警次数表格
@@ -25,27 +25,31 @@ $(function () {
 
     //月度报警次数统计
     loadMonthAlarmCount();
+
+    initSocket();
 });
 
 
-var areaAlarmEchart=null;
-//本月行政区域报警情况统计
-function loadAreaAlarmEchart(){
-    $.ajax({
-       type:'post',
-       url:'/DangerousAlarmStatistic/getAreaAlarmMonth' ,
-        success:function(result){
+var areaAlarmEchart = null;
 
-           var area=[];
-           var monthData=result[0].alarmNum.split(',').map(function(data){
-               return +data;
-           });
-           var lastMonthData=result[1].alarmNum.split(',').map(function(data){
-               return +data;
-           });;
+//本月行政区域报警情况统计
+function loadAreaAlarmEchart() {
+    $.ajax({
+        type: 'post',
+        url: '/DangerousAlarmStatistic/getAreaAlarmMonth',
+        success: function (result) {
+
+            var area = [];
+            var monthData = result[0].alarmNum.split(',').map(function (data) {
+                return +data;
+            });
+            var lastMonthData = result[1].alarmNum.split(',').map(function (data) {
+                return +data;
+            });
+            ;
             $.ajax({
                 type: 'get',
-                async:false,
+                async: false,
                 url: "/SysDictionary/getDataDictList?typeId=" + DirectAreaDictId,
                 success: function (dataResult) {
                     $.each(dataResult, function (i, n) {
@@ -54,10 +58,9 @@ function loadAreaAlarmEchart(){
                 }
             });
 
-            for(var i=0;i<monthData.length-1;i++){
-                for(var j=i;j<monthData.length-1;j++){
-                    if (monthData[j] > monthData[j + 1])
-                    {
+            for (var i = 0; i < monthData.length - 1; i++) {
+                for (var j = i; j < monthData.length - 1; j++) {
+                    if (monthData[j] > monthData[j + 1]) {
                         var temp = monthData[j + 1];
                         monthData[j + 1] = monthData[j];
                         monthData[j] = temp;
@@ -74,9 +77,6 @@ function loadAreaAlarmEchart(){
             }
 
 
-
-
-
             var option = {
 
                 tooltip: {
@@ -85,17 +85,17 @@ function loadAreaAlarmEchart(){
                         type: 'shadow'
                     }
                 },
-                color:['#67b1b0','#277ace'],
+                color: ['#67b1b0', '#277ace'],
                 legend: {
-                    top:'5%',
+                    top: '5%',
                     data: ['本月报警次数', '上月报警次数'],
-                    textStyle:{
-                        color:'#fff'
+                    textStyle: {
+                        color: '#fff'
                     }
 
                 },
                 grid: {
-                    top:'20%',
+                    top: '20%',
                     left: '3%',
                     right: '4%',
                     bottom: '1%',
@@ -110,9 +110,9 @@ function loadAreaAlarmEchart(){
                             // fontSize: 20
                         }
                     },
-                    axisLine:{
-                        lineStyle:{
-                            color:'#fff'
+                    axisLine: {
+                        lineStyle: {
+                            color: '#fff'
                         }
                     },
                     minInterval: 1
@@ -125,21 +125,21 @@ function loadAreaAlarmEchart(){
                             color: '#fff',
                             fontSize: 10
                         },
-                        interval:0,
-                        formatter:function (params) {
-                            params =xAxisNameType(params);
+                        interval: 0,
+                        formatter: function (params) {
+                            params = xAxisNameType(params);
                             return params;
                         }
                     },
-                    axisLine:{
-                        lineStyle:{
-                            color:'#fff'
+                    axisLine: {
+                        lineStyle: {
+                            color: '#fff'
                         }
                     }
                 },
                 dataZoom: [
                     {
-                        type:'inside',
+                        type: 'inside',
 
                     },
                     {
@@ -150,7 +150,7 @@ function loadAreaAlarmEchart(){
                         textStyle: {
                             color: '#fff'
                         },
-                        yAxisIndex:0
+                        yAxisIndex: 0
                     }
                 ],
                 series: [
@@ -162,7 +162,7 @@ function loadAreaAlarmEchart(){
                             normal: {
                                 show: true,
                                 position: 'right',
-                                color:'#fff'
+                                color: '#fff'
                             }
                         }
                     },
@@ -174,7 +174,7 @@ function loadAreaAlarmEchart(){
                             normal: {
                                 show: true,
                                 position: 'right',
-                                color:'#fff'
+                                color: '#fff'
                             }
                         }
                     }
@@ -184,86 +184,92 @@ function loadAreaAlarmEchart(){
             areaAlarmEchart.setOption(option);
 
 
-
         }
     });
 }
 
 
+var industryAlarmEchart = null;
 
-
-var industryAlarmEchart=null;
 //本月行业报警统计
-function loadIndustryAlarmEchart(){
+function loadIndustryAlarmEchart() {
     $.ajax({
-       type:'post',
-       url:'/DangerousAlarmStatistic/getIndustryAlarmMonth',
-        data:{staticIndustryStr:staticIndustryStr},
-        success:function(result){
-           var data=[];
+        type: 'post',
+        url: '/DangerousAlarmStatistic/getIndustryAlarmMonth',
+        data: {staticIndustryStr: staticIndustryStr},
+        success: function (result) {
+            var data = [];
             var xData = [];
-            $.each(result,function(i,n){
-                var dataNum=n.DataNum.split(",");
-                var dataItem=[];
+            $.each(result, function (i, n) {
+                var dataNum = n.DataNum.split(",");
+                var dataItem = [];
                 dataItem.push(n.DictName);
                 xData.push(n.DictName);
-                var sumNum=0;
-                $.each(dataNum,function(i,n){
-                    sumNum+=parseInt(n);
+                var sumNum = 0;
+                $.each(dataNum, function (i, n) {
+                    sumNum += parseInt(n);
                     dataItem.push(n);
                 });
                 dataItem.push(sumNum);
                 data.push(dataItem);
             });
             $.ajax({
-                type:'post',
-                url:'/DangerousAlarmStatistic/getAlarmTypeList' ,
-                success:function (alarmList) {
+                type: 'post',
+                url: '/DangerousAlarmStatistic/getAlarmTypeList',
+                success: function (alarmList) {
 
                     var legend = [];
-                    legend.push({dim: 0, name: '行业',type: 'category', data: xData, inverse: true, nameLocation: 'start'})
+                    legend.push({
+                        dim: 0,
+                        name: '行业',
+                        type: 'category',
+                        data: xData,
+                        inverse: true,
+                        nameLocation: 'start'
+                    })
                     $.each(alarmList, function (i, n) {
 
-                        legend.push({dim: i+1, name: n.TypeName});
+                        legend.push({dim: i + 1, name: n.TypeName});
 
                     });
 
                     $.ajax({
                         type: 'get',
-                        async:false,
+                        async: false,
                         url: "/SysDictionary/getDataDictList?typeId=" + IndustryCodeDictId,
                         success: function (dataResult) {
-                            var str="";
-                            var checkId="";
+                            var str = "";
+                            var checkId = "";
                             $.each(dataResult, function (i, n) {
-                                var checkFlag="";
+                                var checkFlag = "";
 
-                                $.each(xData,function(j,m){
-                                    if(m==n.dictName){
-                                        checkFlag="checked"
-                                        checkId+=n.dictId+',';
+                                $.each(xData, function (j, m) {
+                                    if (m == n.dictName) {
+                                        checkFlag = "checked"
+                                        checkId += n.dictId + ',';
 
                                     }
                                 });
 
-                                str+="<div class='col-xs-4' style='text-align: left'  >";
-                                str+="<nobr ><input id='"+n.dictId+"' name='"+n.dictId+"' type='checkbox' "+checkFlag+">  <label for='"+n.dictId+"'>"+n.dictName+"</label></nobr>";
-                                str+="</div>";
+                                str += "<div class='col-xs-4' style='text-align: left'  >";
+                                str += "<nobr ><input id='" + n.dictId + "' name='" + n.dictId + "' type='checkbox' " + checkFlag + ">  <label for='" + n.dictId + "'>" + n.dictName + "</label></nobr>";
+                                str += "</div>";
 
                             });
                             $("#hangYeUl").html('');
                             $("#hangYeUl").append(str);
-                            $("#selectIndustry").val(checkId.substring(0,checkId.length-1));
+                            $("#selectIndustry").val(checkId.substring(0, checkId.length - 1));
 
                             $('input').iCheck({
                                 checkboxClass: 'icheckbox_flat-blue',
                                 radioClass: 'iradio_square',
                                 increaseArea: '20%' // optional
                             });
-                        }});
+                        }
+                    });
 
 
-                    legend.push({dim: alarmList.length+1, name: '合计'})
+                    legend.push({dim: alarmList.length + 1, name: '合计'})
                     var lineStyle = {
                         normal: {
                             width: 1,
@@ -282,7 +288,7 @@ function loadIndustryAlarmEchart(){
                         //         fontSize: 14
                         //     }
                         // },
-                        color:['#ffff00'],
+                        color: ['#ffff00'],
                         tooltip: {
                             padding: 10,
                             backgroundColor: '#222',
@@ -358,11 +364,8 @@ function loadIndustryAlarmEchart(){
                     industryAlarmEchart.setOption(option);
 
 
-                }});
-
-
-
-
+                }
+            });
 
 
         }
@@ -370,34 +373,35 @@ function loadIndustryAlarmEchart(){
 }
 
 
-var alarmTypeMonthEchart="";
+var alarmTypeMonthEchart = "";
+
 //月度报警类型统计
-function loadAlarmTypeMonthEchart(){
+function loadAlarmTypeMonthEchart() {
     $.ajax({
-        type:'post',
-        url:'/DangerousAlarmStatistic/getAlarmTypeMonth',
-        success:function(result){
-            var data=[];
-            $.each(result,function(i,n){
-                data.push([n.AlarmDate,n.AlarmCount,n.TargetName]);
+        type: 'post',
+        url: '/DangerousAlarmStatistic/getAlarmTypeMonth',
+        success: function (result) {
+            var data = [];
+            $.each(result, function (i, n) {
+                data.push([n.AlarmDate, n.AlarmCount, n.TargetName]);
             });
 
             $.ajax({
-               type:'post',
-               url:'/DangerousAlarmStatistic/getAlarmTypeList' ,
-                success:function (alarmList) {
-                   var legend=[];
-                   $.each(alarmList,function(i,n){
-                       legend.push(n.TypeName);
-                   });
+                type: 'post',
+                url: '/DangerousAlarmStatistic/getAlarmTypeList',
+                success: function (alarmList) {
+                    var legend = [];
+                    $.each(alarmList, function (i, n) {
+                        legend.push(n.TypeName);
+                    });
                     var option = {
 
-                        color:['#2377ad', '#97b356', '#23a290', '#547b98', '#e7971e', '#b5382d'],
+                        color: ['#2377ad', '#97b356', '#23a290', '#547b98', '#e7971e', '#b5382d'],
                         tooltip: {
                             trigger: 'axis',
                             axisPointer: {
                                 type: 'line',
-                                position: function(point, params, dom) {
+                                position: function (point, params, dom) {
                                     // 固定在顶部
                                     return [point[0], '50%'];
                                 },
@@ -410,15 +414,15 @@ function loadAlarmTypeMonthEchart(){
                         },
 
                         legend: {
-                            type:'scroll',
+                            type: 'scroll',
                             data: legend,
                             textStyle: {
                                 color: '#fff',
                                 // fontSize:20
                             },
-                            pageIconColor:'#fff',
-                            pageTextStyle:{
-                                color:'#fff'
+                            pageIconColor: '#fff',
+                            pageTextStyle: {
+                                color: '#fff'
                             }
                         },
 
@@ -433,7 +437,7 @@ function loadAlarmTypeMonthEchart(){
                                 animation: true,
                                 label: {
                                     show: true,
-                                    color:'#000'
+                                    color: '#000'
                                 }
                             },
                             splitLine: {
@@ -477,7 +481,6 @@ function loadAlarmTypeMonthEchart(){
                     alarmTypeMonthEchart.setOption(option);
                 }
             });
-            
 
 
         }
@@ -485,13 +488,14 @@ function loadAlarmTypeMonthEchart(){
 }
 
 
-var todayEquipTypeCountEchart="";
+var todayEquipTypeCountEchart = "";
+
 //今日设备类型报警统计
-function loadTodayEquipTypeCountEchart(){
+function loadTodayEquipTypeCountEchart() {
     $.ajax({
-       type:'post',
-        url:'/DangerousAlarmStatistic/getEquipTypeAlarmToday',
-        success:function(result){
+        type: 'post',
+        url: '/DangerousAlarmStatistic/getEquipTypeAlarmToday',
+        success: function (result) {
 
             var data = [];
             var legendData = [];
@@ -516,23 +520,23 @@ function loadTodayEquipTypeCountEchart(){
                                 type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
                             }
                         },
-                        color:['#2377ad', '#97b356', '#23a290', '#547b98', '#e7971e', '#b5382d'],
+                        color: ['#2377ad', '#97b356', '#23a290', '#547b98', '#e7971e', '#b5382d'],
                         legend: {
-                            type:'scroll',
+                            type: 'scroll',
                             data: legendData,
                             textStyle: {
                                 color: '#fff',
                                 // fontSize: 20
                             },
-                            pageIconColor:'#fff',
-                            pageTextStyle:{
-                                color:'#fff'
+                            pageIconColor: '#fff',
+                            pageTextStyle: {
+                                color: '#fff'
                             },
-                            pageIconSize:12
+                            pageIconSize: 12
 
                         },
                         grid: {
-                            top:'20%',
+                            top: '20%',
                             left: '3%',
                             right: '4%',
                             bottom: '5%',
@@ -547,14 +551,14 @@ function loadTodayEquipTypeCountEchart(){
                                         color: '#fff',
                                         fontSize: 10
                                     },
-                                    formatter:function (params) {
-                                        params =xAxisNameType(params);
+                                    formatter: function (params) {
+                                        params = xAxisNameType(params);
                                         return params;
                                     }
                                 },
-                                axisLine:{
-                                    lineStyle:{
-                                        color:'#fff'
+                                axisLine: {
+                                    lineStyle: {
+                                        color: '#fff'
                                     }
                                 }
                             }
@@ -568,9 +572,9 @@ function loadTodayEquipTypeCountEchart(){
                                         // fontSize: 20
                                     }
                                 },
-                                axisLine:{
-                                    lineStyle:{
-                                        color:'#fff'
+                                axisLine: {
+                                    lineStyle: {
+                                        color: '#fff'
                                     }
                                 }
                             }
@@ -595,20 +599,19 @@ function loadTodayEquipTypeCountEchart(){
             });
 
 
-
         }
     });
 }
 
 //月度报警次数统计
-function loadMonthAlarmCount(){
+function loadMonthAlarmCount() {
     $('#monthAlarmCount').bootstrapTable({
         height: '100%',
         // striped: true,      //是否显示行间隔色
         cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
         method: 'get',//请求方式
         url: '/DangerousAlarmStatistic/getMonthAllAlarmCount',//请求url
-        pagination:false,
+        pagination: false,
         clickToSelect: true,//是否启用点击选中行
         showRefresh: false,//是否显示 刷新按钮
         queryParams: function (pageReqeust) {
@@ -618,18 +621,6 @@ function loadMonthAlarmCount(){
             return "bootTableRow";
         },
         onLoadError: function () {
-
-
-            BootstrapDialog.alert({
-                title: '错误',
-                size: BootstrapDialog.SIZE_SMALL,
-                message: '表格加载失败！',
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定', // <-- Default value is 'OK',
-
-            });
         },
 
         columns: [
@@ -639,12 +630,23 @@ function loadMonthAlarmCount(){
                 formatter: function (value, row, index) {
 
 
-                    return "<div style='background-color: #44d3e4;border-radius: 8px;height: 14px;width:14px;text-align: center;line-height: 14px;'>"+(index + 1)+"</div>";
+                    return "<div style='background-color: #44d3e4;border-radius: 8px;height: 14px;width:14px;text-align: center;line-height: 14px;'>" + (index + 1) + "</div>";
                 },
                 cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', "word-wrap":"break-word;",'text-overflow': 'ellipsis','overflow': 'hidden','color':'#fff','background-color':'#0a2732','vertical-align':'middle'}};
+                    return {
+                        classes: '',
+                        css: {
+                            'white-space': 'nowrap',
+                            "word-wrap": "break-word;",
+                            'text-overflow': 'ellipsis',
+                            'overflow': 'hidden',
+                            'color': '#fff',
+                            'background-color': '#0a2732',
+                            'vertical-align': 'middle'
+                        }
+                    };
                 },
-                width: '5%',
+                width: '15%',
             }
             ,
 
@@ -652,53 +654,83 @@ function loadMonthAlarmCount(){
 
                 field: 'MonthDay',
                 title: '月份',
-                halign: 'left',
-                align:'center',
-                width: '55%',
+                halign: 'center',
+                align: 'center',
+                width: '40%',
                 cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', "word-wrap":"break-word;",'text-overflow': 'ellipsis','overflow': 'hidden','color':'#37afbf','background-color':'#0a2732'}};
+                    return {
+                        classes: '',
+                        css: {
+                            'white-space': 'nowrap',
+                            "word-wrap": "break-word;",
+                            'text-overflow': 'ellipsis',
+                            'overflow': 'hidden',
+                            'color': '#37afbf',
+                            'background-color': '#0a2732'
+                        }
+                    };
                 },
                 formatter: function (value, row, index) {
-                    return '<span  title="'+value+'">'+value+'</span>'
+                    return '<span  title="' + value + '">' + value + '</span>'
 
                 }
             }, {
                 field: 'alarmCount',
                 title: '报警次数',
-                halign: 'left',
-                align:'center',
-                width: '40%',
+                halign: 'center',
+                align: 'center',
+                width: '45%',
                 cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', "word-wrap":"break-word;",'text-overflow': 'ellipsis','overflow': 'hidden','color':'#37afbf','background-color':'#0a2732'}};
+                    return {
+                        classes: '',
+                        css: {
+                            'white-space': 'nowrap',
+                            "word-wrap": "break-word;",
+                            'text-overflow': 'ellipsis',
+                            'overflow': 'hidden',
+                            'color': '#37afbf',
+                            'background-color': '#0a2732'
+                        }
+                    };
                 },
                 formatter: function (value, row, index) {
-                    return '<span >'+value+'次</span>'
+                    return '<span >' + value + '次</span>'
 
                 }
-            },{
+            }, {
                 field: 'alarmUp',
                 title: '环比增长',
-                halign: 'left',
-                align:'center',
+                halign: 'center',
+                align: 'center',
                 width: '40%',
                 cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', "word-wrap":"break-word;",'text-overflow': 'ellipsis','overflow': 'hidden','color':'#37afbf','background-color':'#0a2732'}};
+                    return {
+                        classes: '',
+                        css: {
+                            'white-space': 'nowrap',
+                            "word-wrap": "break-word;",
+                            'text-overflow': 'ellipsis',
+                            'overflow': 'hidden',
+                            'color': '#37afbf',
+                            'background-color': '#0a2732'
+                        }
+                    };
                 },
                 formatter: function (value, row, index) {
-                    var str="";
-                    if(value!=undefined&&value!= null&&value!=""){
-                        value=parseFloat(value);
-                        if(value>0){
-                            str+="<span style='color: #f00;'><span class='glyphicon glyphicon-triangle-top'></span> "+(value*100).toFixed(2)+"%</span>";
-                        }else if(value<0){
-                            str+="<span style='color: #0f0;'><span class='glyphicon glyphicon-triangle-bottom'></span> "+(Math.abs(value).toFixed(2)*100).toFixed(2)+"%</span>";
-                        }else{
-                            str+="<span style='color: #0080c0;'><span class='glyphicon glyphicon-minus'></span> 0%</span>";
+                    var str = "";
+                    if (value != undefined && value != null && value != "") {
+                        value = parseFloat(value);
+                        if (value > 0) {
+                            str += "<span style='color: #f00;'><span class='glyphicon glyphicon-triangle-top'></span> " + (value * 100).toFixed(2) + "%</span>";
+                        } else if (value < 0) {
+                            str += "<span style='color: #0f0;'><span class='glyphicon glyphicon-triangle-bottom'></span> " + (Math.abs(value).toFixed(2) * 100).toFixed(2) + "%</span>";
+                        } else {
+                            str += "<span style='color: #0080c0;'><span class='glyphicon glyphicon-minus'></span> 0%</span>";
                         }
-                    }else{
-                        str="-";
+                    } else {
+                        str = "-";
                     }
-                    return '<span >'+str+'</span>'
+                    return '<span >' + str + '</span>'
 
                 }
             }]
@@ -707,7 +739,7 @@ function loadMonthAlarmCount(){
 
 
 //今日企业报警次数表格
-function initLoadCompanyAlarmTable(){
+function initLoadCompanyAlarmTable() {
 
     $('#todayCompanyAlarm').bootstrapTable({
         height: '100%',
@@ -715,7 +747,7 @@ function initLoadCompanyAlarmTable(){
         cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
         method: 'get',//请求方式
         url: '/DangerousAlarmStatistic/getCompanyAlarmData',//请求url
-        pagination:false,
+        pagination: false,
         clickToSelect: true,//是否启用点击选中行
         showRefresh: false,//是否显示 刷新按钮
         queryParams: function (pageReqeust) {
@@ -725,18 +757,6 @@ function initLoadCompanyAlarmTable(){
             return "bootTableRow";
         },
         onLoadError: function () {
-
-
-            BootstrapDialog.alert({
-                title: '错误',
-                size: BootstrapDialog.SIZE_SMALL,
-                message: '表格加载失败！',
-                type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-                closable: false, // <-- Default value is false
-                draggable: true, // <-- Default value is false
-                buttonLabel: '确定', // <-- Default value is 'OK',
-
-            });
         },
 
         columns: [
@@ -746,12 +766,23 @@ function initLoadCompanyAlarmTable(){
                 formatter: function (value, row, index) {
 
 
-                    return "<div style='background-color: #44d3e4;border-radius: 8px;height: 14px;width: 14px;text-align: center;line-height: 14px;'>"+(index + 1)+"</div>";
+                    return "<div style='background-color: #44d3e4;border-radius: 8px;height: 14px;width: 14px;text-align: center;line-height: 14px;'>" + (index + 1) + "</div>";
                 },
                 cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', "word-wrap":"break-word;",'text-overflow': 'ellipsis','overflow': 'hidden','color':'#fff','background-color':'#0a2732','vertical-align':'middle'}};
+                    return {
+                        classes: '',
+                        css: {
+                            'white-space': 'nowrap',
+                            "word-wrap": "break-word;",
+                            'text-overflow': 'ellipsis',
+                            'overflow': 'hidden',
+                            'color': '#fff',
+                            'background-color': '#0a2732',
+                            'vertical-align': 'middle'
+                        }
+                    };
                 },
-                width: '5%',
+                width: '15%',
             }
             ,
 
@@ -760,25 +791,45 @@ function initLoadCompanyAlarmTable(){
                 field: 'CompanyName',
                 title: '企业',
                 halign: 'center',
-                width: '55%',
+                width: '50%',
                 cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', "word-wrap":"break-word;",'text-overflow': 'ellipsis','overflow': 'hidden','color':'#37afbf','background-color':'#0a2732'}};
+                    return {
+                        classes: '',
+                        css: {
+                            'white-space': 'nowrap',
+                            "word-wrap": "break-word;",
+                            'text-overflow': 'ellipsis',
+                            'overflow': 'hidden',
+                            'color': '#37afbf',
+                            'background-color': '#0a2732'
+                        }
+                    };
                 },
                 formatter: function (value, row, index) {
-                    return '<span  title="'+value+'">'+value+'</span>'
+                    return '<span  title="' + value + '">' + value + '</span>'
 
                 }
             }, {
                 field: 'AlarmNum',
                 title: '报警次数',
-                halign: 'left',
-                align:'center',
-                width: '40%',
+                halign: 'center',
+                align: 'center',
+                width: '35%',
                 cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', "word-wrap":"break-word;",'text-overflow': 'ellipsis','overflow': 'hidden','color':'#37afbf','background-color':'#0a2732'}};
+                    return {
+                        classes: '',
+                        css: {
+                            'white-space': 'nowrap',
+                            "word-wrap": "break-word;",
+                            'text-overflow': 'ellipsis',
+                            'overflow': 'hidden',
+                            'color': '#37afbf',
+                            'background-color': '#0a2732'
+                        }
+                    };
                 },
                 formatter: function (value, row, index) {
-                    return '<span >'+value+'次</span>'
+                    return '<span >' + value + '次</span>'
 
                 }
             }]
@@ -786,18 +837,19 @@ function initLoadCompanyAlarmTable(){
 }
 
 
-var todayAlarmTypeEchart=null;
+var todayAlarmTypeEchart = null;
+
 //加载今日报警类型占比图
-function loadTodayAlarmTypeEchart(){
+function loadTodayAlarmTypeEchart() {
     $.ajax({
-       type:'post',
-       url:'/DangerousAlarmStatistic/getAlarmTypeDay',
-        success:function(result){
-            var legendData=[];
-            var data=[];
-            $.each(result,function(i,n){
+        type: 'post',
+        url: '/DangerousAlarmStatistic/getAlarmTypeDay',
+        success: function (result) {
+            var legendData = [];
+            var data = [];
+            $.each(result, function (i, n) {
                 legendData.push(n['TypeName']);
-                data.push({value:n['TypeNum'],name:n['TypeName']});
+                data.push({value: n['TypeNum'], name: n['TypeName']});
             });
             var dataStyle = {
                 normal: {
@@ -807,25 +859,25 @@ function loadTodayAlarmTypeEchart(){
                 }
             };
 
-            var option ={
+            var option = {
 
                 color: ['#2377ad', '#97b356', '#23a290', '#547b98', '#e7971e', '#b5382d'],
 
-                legend:{
-                    type:'scroll',
-                    left:10,
-                    orient:'vertical',
-                    data:legendData,
-                    textStyle:{
-                        color:'#fff'
+                legend: {
+                    type: 'scroll',
+                    left: 10,
+                    orient: 'vertical',
+                    data: legendData,
+                    textStyle: {
+                        color: '#fff'
                     },
-                    itemWidth:20,
-                    pageIconSize:10,
-                    pageIconColor:'#fff',
-                    pageTextStyle:{
-                        color:'#fff'
+                    itemWidth: 20,
+                    pageIconSize: 10,
+                    pageIconColor: '#fff',
+                    pageTextStyle: {
+                        color: '#fff'
                     },
-                    pageIconSize:12
+                    pageIconSize: 12
                 },
 
                 tooltip: {
@@ -835,55 +887,54 @@ function loadTodayAlarmTypeEchart(){
                 series: [{
                     name: '今日报警类型占比',
                     type: 'pie',
-                    center: ['50%','60%'],
+                    center: ['50%', '60%'],
                     avoidLabelOverlap: true,
-                    center: ['60%','50%'],
+                    center: ['60%', '50%'],
                     avoidLabelOverlap: false,
                     itemStyle: dataStyle,
                     data: data
                 }]
             };
-            todayAlarmTypeEchart =echarts.init(document.getElementById("todayAlarmType"));
+            todayAlarmTypeEchart = echarts.init(document.getElementById("todayAlarmType"));
             todayAlarmTypeEchart.setOption(option);
         },
-        error:function(){
+        error: function () {
 
         }
     });
 }
 
 
-
-
 //适应页面大小
-function resizePage(){
+function resizePage() {
 
 
     //获取浏览器高度
     scanHeight = $(window).height();
 
-    $("#fullDiv").height(scanHeight+'px');
+    $("#fullDiv").height(scanHeight + 'px');
 
-    if(todayAlarmTypeEchart!=null){
+    if (todayAlarmTypeEchart != null) {
         todayAlarmTypeEchart.resize();
     }
 
-    if(todayEquipTypeCountEchart!=null){
+    if (todayEquipTypeCountEchart != null) {
         todayEquipTypeCountEchart.resize();
     }
 
-    if(industryAlarmEchart!=null){
+    if (industryAlarmEchart != null) {
         industryAlarmEchart.resize();
     }
-    if(areaAlarmEchart!=null){
+    if (areaAlarmEchart != null) {
         areaAlarmEchart.resize();
     }
 
-    if(alarmTypeMonthEchart!=null){
+    if (alarmTypeMonthEchart != null) {
         alarmTypeMonthEchart.resize();
     }
 
 }
+
 //转换日期格式
 function convert(date) {
     var today = new Date(date);
@@ -897,14 +948,14 @@ function convert(date) {
 }
 
 //打开模态窗
-function openModel(){
+function openModel() {
     $("#myModal").modal("show");
 
     $('input[type="checkbox"]').iCheck('uncheck');
-    var checkId= $("#selectIndustry").val();
-    if(checkId!=""){
-        $.each(checkId.split(','),function(i,n){
-            $("#"+n).iCheck('check');
+    var checkId = $("#selectIndustry").val();
+    if (checkId != "") {
+        $.each(checkId.split(','), function (i, n) {
+            $("#" + n).iCheck('check');
         });
     }
 
@@ -912,15 +963,90 @@ function openModel(){
 }
 
 //重新加载行业echart
-function loadIndustryAlarm(){
+function loadIndustryAlarm() {
     var industryStr = "";
     var industryList = $('#hangYe')[0];
-    for(var i=0;i<industryList.length;i++){
-        if(industryList[i].checked){
-            industryStr+=industryList[i].attributes.name.nodeValue+",";
+    for (var i = 0; i < industryList.length; i++) {
+        if (industryList[i].checked) {
+            industryStr += industryList[i].attributes.name.nodeValue + ",";
         }
     }
-    staticIndustryStr=industryStr;
+    staticIndustryStr = industryStr;
     loadIndustryAlarmEchart();
     $("#myModal").modal("hide");
+}
+
+
+//初始化socket连接
+function initSocket() {
+    // 建立连接对象（还未发起连接）
+    var socket = new SockJS("http://" + window.location.hostname + ":" + window.location.port + "/webSocketServer");
+
+    // 获取 STOMP 子协议的客户端对象
+    var stompClient = Stomp.over(socket);
+
+    // 向服务器发起websocket连接并发送CONNECT帧
+    stompClient.connect(
+        {},
+        function connectCallback(frame) {
+            // 连接成功时（服务器响应 CONNECTED 帧）的回调方法
+            // alert("连接成功");
+            //今日企业报警次数
+            stompClient.subscribe('/topic/DangerousAlaramCompanyAlarmData', function (response) {
+
+
+                var returnData = response.body;
+
+                var data = JSON.parse(returnData);
+                $('#todayCompanyAlarm').bootstrapTable("load",data);
+
+            });
+            //今日报警类型占比
+            stompClient.subscribe('/topic/DangerousAlarmTypeDay', function (response) {
+
+
+                var returnData = response.body;
+
+                var result = JSON.parse(returnData);
+                var data = [];
+                $.each(result, function (i, n) {
+
+                    data.push({value: n['TypeNum'], name: n['TypeName']});
+                });
+                todayAlarmTypeEchart.setOption({
+                    series:[{
+                        data:data
+                    }]
+                });
+
+
+            });
+
+            //今日设备类型报警统计
+            stompClient.subscribe('/topic/DangerousAlarmEquipTypeAlarmToday', function (response) {
+
+
+                var returnData = response.body;
+
+                var result = JSON.parse(returnData);
+                var data = [];
+                $.each(result, function (i, n) {
+                    data.push({name: n.TargetName, type: 'bar', barMaxWidth: 40, stack: '报警', data: n.numList.split(",")});
+                });
+                todayEquipTypeCountEchart.setOption({
+                    series:[{
+                        data:data
+                    }]
+                });
+
+
+            });
+
+
+        },
+        function errorCallBack(error) {
+            // 连接失败时（服务器响应 ERROR 帧）的回调方法
+            alert("连接失败");
+        }
+    );
 }

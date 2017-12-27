@@ -1,6 +1,7 @@
 package ax.kl.mapper;
 
 import ax.kl.entity.ChemicalsInfo;
+import ax.kl.entity.DangerSourceChemical;
 import ax.kl.entity.DangerSourceInfo;
 import com.baomidou.mybatisplus.plugins.Page;
 import org.apache.ibatis.annotations.Param;
@@ -43,7 +44,7 @@ public interface DangerSourceMapper {
      * @param sourceId 危险源Id
      * @return 化学品实体
      */
-    List<ChemicalsInfo> getChemicalsInfoListBySourceId(@Param("sourceId") String sourceId);
+    List<DangerSourceChemical> getChemicalsInfoListBySourceId(@Param("sourceId") String sourceId);
 
     /**
      * 获取重大危险源等级数量
@@ -55,7 +56,7 @@ public interface DangerSourceMapper {
      * 可能引发的事故类型数量
      * @return
      */
-    List<Map<String,String>> getDSAccidenType();
+    List<Map<String,String>> getDSAccidenType(@Param("typeId")String typeId);
 
     /**
      * 重大危险源分布情况

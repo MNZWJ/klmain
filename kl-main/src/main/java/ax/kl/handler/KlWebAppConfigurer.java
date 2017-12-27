@@ -9,6 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @Configuration
 public class KlWebAppConfigurer extends WebMvcConfigurerAdapter {
 
+    @Override
     public void addInterceptors(InterceptorRegistry registry){
         // 多个拦截器组成一个拦截器链
         // addPathPatterns 用于添加拦截规则
@@ -23,6 +24,7 @@ public class KlWebAppConfigurer extends WebMvcConfigurerAdapter {
      * 设置默认的访问页面
      * @param registry
      */
+    @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/").setViewName("forward:/Login/Index");
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
