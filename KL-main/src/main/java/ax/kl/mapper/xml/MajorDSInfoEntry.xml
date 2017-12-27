@@ -172,8 +172,20 @@
     </select>
 
     <!--获取所有的危险源等级-->
+    <select id="piPei" resultType="ax.kl.entity.ChemicalsInfo">
+        SELECT * FROM TB_BASE_CHEMICAL_CATALOG
+        WHERE ChemName=#{chemicalName}
+            <if test="cas !=''">
+                and CAS=#{cas}
+            </if>
+            <if test="cas==''">
+                and CAS=''
+            </if>
+    </select>
+
+    <!--获取所有的危险源等级-->
     <select id="getHP" resultType="java.util.Map">
-        SELECT ChemId,ChemName,COALESCE(CAS,' ')
+        SELECT ChemId,ChemName,CAS
           FROM TB_BASE_CHEMICAL_CATALOG
     </select>
 
@@ -223,7 +235,7 @@
         INSERT INTO TB_REL_DRESOURCE_CHEMICAL
         (RelId,ChemId,SourceId, Dreserves,Unit) VALUES
         <foreach collection="list" item="item" index="index" separator=",">
-            (#{ item.relId } ,#{ item.chemId },#{ sourceId },#{ item.dreserves },#{ item.unit })
+            (#{ item.relId } ,#{ item.chemId },#{ item.sourceId },#{ item.dreserves },#{ item.unit })
         </foreach>
     </insert>
 </mapper>

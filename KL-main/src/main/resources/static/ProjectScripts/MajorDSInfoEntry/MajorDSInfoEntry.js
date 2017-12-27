@@ -1141,7 +1141,7 @@ function FileInput () {
             showPreview: false,//是否显示预览区域
             autoReplace: true,
             dropZoneEnabled: false,//是否显示拖拽区域
-            showRemove: true,//显示移除按钮
+            showRemove: false,//显示移除按钮
             uploadLabel: '导入',
             browseClass: "btn btn-primary", //按钮样式
             maxFileCount: 1, //表示允许同时上传的最大文件个数
@@ -1157,7 +1157,7 @@ function FileInput () {
         //导入文件上传完成之后的事件
         $("#file").on("fileuploaded", function (event, data, previewId, index) {
             $("#importModal").modal("hide");
-            $("#processUnitTable").bootstrapTable("refresh", {})
+            $("#MajorTable").bootstrapTable("refresh", {})
             clearDiv();
             BootstrapDialog.alert({
                 title: '提示',
