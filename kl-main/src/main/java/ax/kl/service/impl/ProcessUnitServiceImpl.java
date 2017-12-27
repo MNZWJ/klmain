@@ -614,21 +614,11 @@ public class ProcessUnitServiceImpl implements ProcessUnitService {
     }
 
     /**
-     * 空值替换
-     * @param arg1
-     * @param arg2
-     * @return
-     */
-    private String nvl(String arg1,String arg2){
-        return arg1==null?arg2:arg1;
-    }
-
-    /**
      * 判断String是否是数字
      * @param str
      * @return
      */
-    public static boolean isNumeric(String str){
+    private static boolean isNumeric(String str){
         String reg = "^[0-9]+(.[0-9]+)?$";
         return str.matches(reg);
     }

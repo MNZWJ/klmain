@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 重大危险源信息录入
@@ -103,5 +104,62 @@ public interface MajorDSInfoEntryMapper {
     List<ChemicalCataLog> getChemicalInfoByCompany(Page page, @Param("chemName") String chemName, @Param("cas") String cas,@Param("companyId") String companyId);
 
 
+    /**
+     * 获取事故类型
+     * @return
+     */
+    List<Map<String,String>> getAccidentType();
 
+    /**
+     * 获取所有状态
+     * @return
+     */
+    List<Map<String,String>> getStatus();
+
+    /**
+     * 获取所有危险源等级
+     * @return
+     */
+    List<Map<String,String>> getDangerSourceRank();
+
+    /**
+     * 获取所有化学品信息
+     * @return
+     */
+    List<Map<String,String>> getHP();
+
+    /**
+     * 插入事故类型数据
+     * @param aTs
+     * @return
+     */
+    int insertAccidentType(@Param("list")List<AccidentType> aTs);
+
+    /**
+     * 插入危险源数据
+     * @param dSs
+     * @return
+     */
+    int insertDangerSourceInfo(@Param("list")List<DangerSourceInfo> dSs);
+
+    /**
+     * 插入装置设施周围环境信息
+     * @param fCs
+     * @return
+     */
+    int insertFacilitiesCondition(@Param("list")List<FacilitiesCondition> fCs);
+
+    /**
+     * 保存法律保护区信息
+     * @param lPs
+     * @return
+     */
+    int insertLegalProtection(@Param("list")List<LegalProtection> lPs);
+
+    /**
+     * 保存危险源相关化学品信息
+     * @param dSCs
+     * @return
+     */
+    int insertDangerSourceChemical(@Param("list")List<DangerSourceChemical> dSCs);
 }
