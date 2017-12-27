@@ -24,6 +24,10 @@ public class CompanyInfo {
   @ApiModelProperty("企业名称")
   private String companyName;
 
+  @TableField("SuperVisionUnit")
+  @ApiModelProperty("监管单位")
+  private String superVisionUnit;
+
   @TableField("Area")
   @ApiModelProperty("行政区域")
   private String area;
