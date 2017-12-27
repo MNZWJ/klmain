@@ -85,7 +85,7 @@ public class SysOrganiseServiceImpl implements SysOrganiseService {
     @Override
 
     public List<SysDataDict> getDataDictByTypeId() {
-        return sysDictionaryMapper.GetDictList(new Page(),"53",null);
+        return sysDictionaryMapper.getDataDictList("53");
     }
 
     @Override
