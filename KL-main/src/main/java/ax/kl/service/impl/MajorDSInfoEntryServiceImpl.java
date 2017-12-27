@@ -888,11 +888,6 @@ public class MajorDSInfoEntryServiceImpl implements MajorDSInfoEntryService {
         Row firstRow = sheet.getRow(1);
         //获取列数
         int columCount = firstRow.getLastCellNum();
-        Map<String,String> HPN=getHPN();
-        //存放化学品名称
-        String hP="";
-        //存放CAS
-        String cas="";
         Map<String,Integer> colum =new HashMap<String, Integer>();
         for (int i=0;i<columCount;i++){
             //获取第一行i列的内容
@@ -966,15 +961,20 @@ public class MajorDSInfoEntryServiceImpl implements MajorDSInfoEntryService {
             }
 
             cell =row.getCell(colum.get("化学品名称"));
+
             if (cell!=null){
                 //获取其值
                 value=getCellValue(cell);
-                //与获取的所有企业的集合元素进行比对取出CompanyId
-                if (value!=null&&HPN.containsKey(value)){
-                    chemicalName=value;
-                }else {
-                    all.put("result","导入失败：第4页第"+ (i+1) + "行化学品名称未找到指定对象，请核对后再次导入");
-                    return all;
+                if(!value.equals("")){
+                    //与获取的所有企业的集合元素进行比对取出CompanyId
+                    chemicalsInfo=this.majorDSInfoEntryMapper.getObjectByName(value);
+                    if(chemicalsInfo!=null){
+                        chemicalName=value;
+                    }
+                    else {
+                        all.put("result","导入失败：第4页第"+ (i+1) + "行化学品名称未找到指定对象，请核对后再次导入");
+                        return all;
+                    }
                 }
             }else{
                 all.put("result","导入失败：第4页第"+ (i+1) + "行化学品名称不能为空，请核对后再次导入");
@@ -1043,14 +1043,7 @@ public class MajorDSInfoEntryServiceImpl implements MajorDSInfoEntryService {
      * 获取化学品名称信息
      * @return
      */
-    private Map<String,String> getHPN() {
-        List<Map<String,String>> cs=this.majorDSInfoEntryMapper.getHP();
-        Map<String,String> map=new HashMap<String,String>();
-        for(Map<String,String> c:cs){
-            map.put(c.get("ChemName"),c.get("ChemId"));
-        }
-        return map;
-    }
+
 
 
     /**
