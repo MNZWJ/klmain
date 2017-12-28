@@ -517,7 +517,7 @@ function openCondition(){
 
 //打开法律保护区域相关信息
 function openProtection(){
-    $("#conditionModalLabel").html("法律保护区与信息");
+    $("#conditionModalLabel").html("法律保护区域信息");
     $('#table').bootstrapTable('destroy');
 
 

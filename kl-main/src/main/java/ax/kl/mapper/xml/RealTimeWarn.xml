@@ -50,8 +50,8 @@ SELECT
 	ISNULL((SELECT SUM(CASE WHEN lg.Conformance='不符合' then 1 ELSE 0 END) FROM Legal lg WHERE ds.SourceId=lg.SourceId),0) AS ProtectionNum,
 	(SELECT COUNT(*) FROM Hidden hd WHERE hd.DangerSource=ds.SourceId AND hd.Rank='一般隐患') AS GeneralHidden,
 	(SELECT COUNT(*) FROM Hidden hd WHERE hd.DangerSource=ds.SourceId AND hd.Rank='重大隐患') AS MajorHidden,
-	(SELECT COUNT(*) FROM RealTimeAlarm ra WHERE ISNULL(ra.TargetCode, '1')='0') AS ProcessUnitNum,
-	(SELECT COUNT(*) FROM RealTimeAlarm ra WHERE ra.TargetCode='0') as AirStatusNum,
+	(SELECT SUM(CASE WHEN ISNULL(ra.TargetCode, '0')!='0' THEN 1 ELSE 0 END ) FROM RealTimeAlarm ra WHERE  ra.SourceId=ds.SourceId) AS ProcessUnitNum,
+	(SELECT SUM(CASE WHEN ISNULL(ra.TargetCode, '1')='0' THEN 1 ELSE 0 END ) FROM RealTimeAlarm ra WHERE ra.SourceId=ds.SourceId) as AirStatusNum,
 	sd.DictName AS Rank
 
 FROM

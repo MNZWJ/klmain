@@ -1,5 +1,6 @@
 package ax.kl.web.controller;
 
+import ax.kl.entity.AlarmInfoEntity;
 import ax.kl.entity.DangerSourceInfo;
 import ax.kl.entity.EquipInfo;
 import ax.kl.service.DynamicRiskCloudService;
@@ -56,6 +57,19 @@ public class DynamicRiskCloudController {
     @ResponseBody
     public Map<String,List<EquipInfo>> getEquipAlarmInfo(@RequestParam("sourceId") String sourceId){
         return dynamicRiskCloudService.getEquipAlarmInfo(sourceId);
+    }
+
+    @ApiOperation("获取气体报警信息")
+    @RequestMapping(value = "/getAilAlarmInfo",method = RequestMethod.GET)
+    @ResponseBody
+    public List<AlarmInfoEntity> getAilAlarmInfo(@RequestParam("unitId") String unitId){
+        return dynamicRiskCloudService.getAilAlarmInfo(unitId);
+    }
+    @ApiOperation("获取单个设备报警信息")
+    @RequestMapping(value = "/getEquipAlarm",method = RequestMethod.GET)
+    @ResponseBody
+    public List<AlarmInfoEntity> getEquipAlarm(String equipId){
+        return dynamicRiskCloudService.getEquipAlarm(equipId);
     }
 
 }

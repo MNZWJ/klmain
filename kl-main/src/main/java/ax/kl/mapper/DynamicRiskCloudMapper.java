@@ -1,5 +1,6 @@
 package ax.kl.mapper;
 
+import ax.kl.entity.AlarmInfoEntity;
 import ax.kl.entity.DangerSourceInfo;
 import ax.kl.entity.EquipInfo;
 import org.apache.ibatis.annotations.Param;
@@ -41,5 +42,18 @@ public interface DynamicRiskCloudMapper {
      */
     public List<EquipInfo> getEquipAlarmInfo(@Param("sourceId")String sourceId);
 
+    /**
+     * 获取气体报警信息
+     * @param unitId
+     * @return
+     */
+    public List<AlarmInfoEntity> getAilAlarmInfo(String unitId);
+
+    /**
+     * 获取气体报警信息
+     * @param equipId
+     * @return
+     */
+    public List<AlarmInfoEntity> getEquipAlarm(String equipId);
 
 }

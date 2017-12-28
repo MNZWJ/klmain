@@ -1,5 +1,6 @@
 package ax.kl.service;
 
+import ax.kl.entity.AlarmInfoEntity;
 import ax.kl.entity.DangerSourceInfo;
 import ax.kl.entity.EquipInfo;
 
@@ -34,6 +35,18 @@ public interface DynamicRiskCloudService {
      */
     public Map<String,List<EquipInfo>> getEquipAlarmInfo(String sourceId);
 
+    /**
+     * 获取气体报警信息
+     * @param unitId
+     * @return
+     */
+    public List<AlarmInfoEntity> getAilAlarmInfo(String unitId);
 
+    /**
+     * 获取单个设备报警信息
+     * @param equipId
+     * @return
+     */
+    public List<AlarmInfoEntity> getEquipAlarm(String equipId);
 
 }
