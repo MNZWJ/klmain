@@ -122,11 +122,6 @@ public interface MajorDSInfoEntryMapper {
      */
     List<Map<String,String>> getDangerSourceRank();
 
-    /**
-     * 获取所有化学品信息
-     * @return
-     */
-    List<Map<String,String>> getHP();
 
     /**
      * 插入事故类型数据
@@ -170,4 +165,11 @@ public interface MajorDSInfoEntryMapper {
      * @return
      */
     ChemicalsInfo piPei(@Param("chemicalName")String chemicalName, @Param("cas")String cas);
+
+    /**
+     * 根据化学品名获取对象
+     * @param chemicalName
+     * @return
+     */
+    ChemicalsInfo getObjectByName(@Param("chemicalName")String chemicalName);
 }

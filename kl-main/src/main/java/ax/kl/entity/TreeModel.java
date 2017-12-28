@@ -47,6 +47,9 @@ public class TreeModel {
     /**
      * 图标
      */
-    @TableField("icon")
+    @TableField(value = "icon",exist = false)
     private String icon;
+
+    @TableField(value = "image",exist = false)
+    private String image;
 }

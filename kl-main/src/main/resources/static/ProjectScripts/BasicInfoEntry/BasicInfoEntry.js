@@ -1271,4 +1271,13 @@ function clearDiv() {
 //模板下载
 function downloadModel() {
     window.location.href= "./../../Temp/企业基本信息导入模板.xlsx";
+    BootstrapDialog.alert({
+        title: '提示',
+        message: '模板中序号一列为必填，如果不填可能会导致数据上传失败！',
+        size: BootstrapDialog.SIZE_SMALL,
+        type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+        closable: false, // <-- Default value is false
+        draggable: true, // <-- Default value is false
+        buttonLabel: '确定', // <-- Default value is 'OK',
+    });
 }

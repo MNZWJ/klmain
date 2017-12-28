@@ -5,7 +5,6 @@
 *
 * Commercial License : http://www.miniui.com/license
 *
-* Copyright(c) 2012 All Rights Reserved. Shanghai PusSoft Co., Ltd (上海普加软件有限公司) [ services@plusoft.com.cn ]. 
 * 
 */
 
