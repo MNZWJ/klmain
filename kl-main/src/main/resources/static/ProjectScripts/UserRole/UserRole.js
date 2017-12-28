@@ -23,6 +23,8 @@ $(function () {
                 highlightSelected: true,//当选择节点时是否高亮显示。
                 showBorder: false,//是否在节点上显示边框。
                 onlyLeafCheck: true,//只有根节点才能被选中
+                showImage: true,
+                showIcon:true,
                 data: result,
                 //节点选中方法
                 onNodeSelected: function (event, data) {
