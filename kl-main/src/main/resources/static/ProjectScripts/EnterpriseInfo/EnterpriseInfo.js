@@ -52,44 +52,24 @@ $(function () {
                 var page = $('#enterpriseTable').bootstrapTable('getOptions');
                 return (page.pageNumber - 1) * page.pageSize + index + 1;
             }
-        }, {
-            field: 'state',
-            checkbox: true,
-            width: '3%'
         },
             {
                 field: 'companyName',
                 title: '企业名称',
                 halign: 'center',
                 class: "bootTableRow",
-                width: "8.3%",
+                width: "15%",
                 formatter: function (value, rowData, rowIndex) {
                     users.push(rowData);
                     return "<a href='javascript:look(\""+rowData.companyId+"\")'>" + value + "</a>";
                 }
             },{
-                field: 'legalPerson',
-                title: '法人代表',
-                halign: 'center',
-                align:'center',
-                width: "8.3%"
-            }, {
-                field: 'contactWay',
-                title: '联系方式',
-                halign: 'center',
-                align:'left',
-                class: "bootTableRow",
-                width: "8.3%",
-                formatter: function (value, row, index) {
-                    return '<span title="' + value + '">' + value + '</span>'
-                }
-            },  {
                 field: 'safeManageRank',
                 title: '安全管理分级',
                 halign: 'center',
                 align: 'center',
                 class: "bootTableRow",
-                width: "8.3%"
+                width: "6%"
 
             },   {
                 field: 'standardRank',
@@ -97,20 +77,20 @@ $(function () {
                 halign: 'center',
                 align: 'center',
                 class: "bootTableRow",
-                width: "8.3%"
+                width: "6%"
             },   {
                 field: 'operatingState',
                 title: '经营状态',
                 halign: 'center',
                 align: 'center',
                 class: "bootTableRow",
-                width: "8.3%"
+                width: "5%"
             }, {
                 field: 'industryCode',
                 title: '所属行业',
                 halign: 'center',
                 align: 'left',
-                width: "8.3%",
+                width: "10%",
                 class: "bootTableRow",
                 formatter: function (value, row, index) {
                     value = value==undefined?"":value;
@@ -122,35 +102,25 @@ $(function () {
                 title: '企业规模',
                 halign: 'center',
                 align:'center',
-                width: "8.3%",
+                width: "5%",
             },
             {
                 field: 'typeCode',
                 title: '企业类型',
                 halign: 'center',
                 align:'center',
-                width: "8.3%",
+                width: "10%",
                 class: "bootTableRow",
                 formatter: function (value, row, index) {
                     value = value==undefined?"":value;
                     return '<span title="'+value+'">'+value+'</span>'
                 }
-            }, {
-                field: 'area',
-                title: '行政区域',
-                halign: 'center',
-                align: 'left',
-                width: "8.3%",
-                class: "bootTableRow",
-                formatter: function (value, row, index) {
-                    return '<span title="'+value+'">'+value+'</span>'
-                }
-            }, {
+            },{
                 field: 'directArea',
                 title: '直属区域',
                 halign: 'center',
                 align:'center',
-                width: '8.3%',
+                width: '5%',
                 class: "bootTableRow",
                 formatter: function (value, row, index) {
                     value = value==undefined?"":value;

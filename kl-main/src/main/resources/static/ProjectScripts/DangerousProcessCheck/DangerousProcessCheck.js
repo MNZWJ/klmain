@@ -44,9 +44,6 @@ $(function () {
                 var page = $('#processTable').bootstrapTable('getOptions');
                 return (page.pageNumber - 1) * page.pageSize + index + 1;
             }
-        }, {
-            field: 'state',
-            checkbox: true
         },
             {
             field: 'companyName',
@@ -79,7 +76,14 @@ $(function () {
                 field: 'area',
                 title: '行政区域',
                 align: 'center',
-                halign: 'center'
+                halign: 'center',
+                halign: 'center',
+                width:'15%'
+            } ,{
+                field: 'area',
+                title: '行政区域',
+                halign: 'center',
+                width:'15%'
             },
         ]
     });
