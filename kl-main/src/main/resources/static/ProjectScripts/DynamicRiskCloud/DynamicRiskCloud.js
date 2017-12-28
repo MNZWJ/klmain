@@ -461,19 +461,13 @@ function initTable() {
 
         columns: [
             {
-
                 title: '序号',
                 formatter: function (value, row, index) {
                     var page = $('#hiddenRiskTable').bootstrapTable('getOptions');
                     return (page.pageNumber - 1) * page.pageSize + index + 1;
-
                 },
                 width: '80px'
-            }
-            ,
-
-            {
-
+            },{
                 field: 'companyName',
                 title: '公司名称',
                 halign: 'center',
@@ -486,7 +480,6 @@ function initTable() {
                 },
                 formatter: function (value, row, index) {
                     return '<span title="' + value + '">' + value + '</span>'
-
                 }
             }, {
                 field: 'hiddenDanager',
@@ -501,7 +494,6 @@ function initTable() {
                 },
                 formatter: function (value, row, index) {
                     return '<span title="' + value + '">' + value + '</span>'
-
                 }
             }, {
                 field: 'area',
@@ -516,7 +508,6 @@ function initTable() {
                 },
                 formatter: function (value, row, index) {
                     return '<span title="' + value + '">' + value + '</span>'
-
                 }
             }, {
                 field: 'industry',
@@ -531,7 +522,6 @@ function initTable() {
                 },
                 formatter: function (value, row, index) {
                     return '<span title="' + value + '">' + value + '</span>'
-
                 }
             }, {
                 field: 'superviseDept',
@@ -546,7 +536,6 @@ function initTable() {
                 },
                 formatter: function (value, row, index) {
                     return '<span title="' + value + '">' + value + '</span>'
-
                 }
             }, {
                 field: 'source',
@@ -561,7 +550,6 @@ function initTable() {
                 },
                 formatter: function (value, row, index) {
                     return '<span title="' + value + '">' + value + '</span>'
-
                 }
             }, {
                 field: 'rank',
@@ -576,7 +564,6 @@ function initTable() {
                 },
                 formatter: function (value, row, index) {
                     return '<span title="' + value + '">' + value + '</span>'
-
                 }
             }, {
                 field: 'upReportDate',
@@ -591,7 +578,6 @@ function initTable() {
                 },
                 formatter: function (value, row, index) {
                     return '<span title="' + value + '">' + value + '</span>'
-
                 }
             }, {
                 field: 'reformTerm',
@@ -606,7 +592,6 @@ function initTable() {
                 },
                 formatter: function (value, row, index) {
                     return '<span title="' + value + '">' + value + '</span>'
-
                 }
             }, {
                 field: 'rectification',
@@ -621,7 +606,6 @@ function initTable() {
                 },
                 formatter: function (value, row, index) {
                     return '<span title="' + value + '">' + value + '</span>'
-
                 }
             }
         ]
