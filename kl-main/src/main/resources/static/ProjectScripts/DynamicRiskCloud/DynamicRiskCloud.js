@@ -472,11 +472,12 @@ function initTable() {
         columns: [
             {
                 title: '序号',
+                align:'center',
                 formatter: function (value, row, index) {
                     var page = $('#hiddenRiskTable').bootstrapTable('getOptions');
                     return (page.pageNumber - 1) * page.pageSize + index + 1;
                 },
-                width: '80px'
+                width: '45px'
             },{
                 field: 'companyName',
                 title: '公司名称',
@@ -508,6 +509,7 @@ function initTable() {
             }, {
                 field: 'area',
                 title: '行政区划',
+                align:'center',
                 halign: 'center',
                 width: '120px',
                 cellStyle: function (value, row, index, field) {
@@ -522,6 +524,7 @@ function initTable() {
             }, {
                 field: 'industry',
                 title: '行业分类',
+                align:'center',
                 halign: 'center',
                 width: '120px',
                 cellStyle: function (value, row, index, field) {
@@ -565,6 +568,7 @@ function initTable() {
                 field: 'rank',
                 title: '隐患级别',
                 halign: 'center',
+                align:'center',
                 width: '100px',
                 cellStyle: function (value, row, index, field) {
                     return {
@@ -578,8 +582,9 @@ function initTable() {
             }, {
                 field: 'upReportDate',
                 title: '上报日期',
+                align:'center',
                 halign: 'center',
-                width: '100px',
+                width: '90px',
                 cellStyle: function (value, row, index, field) {
                     return {
                         classes: '',
@@ -592,8 +597,9 @@ function initTable() {
             }, {
                 field: 'reformTerm',
                 title: '整改期限',
+                align:'center',
                 halign: 'center',
-                width: '100px',
+                width: '90px',
                 cellStyle: function (value, row, index, field) {
                     return {
                         classes: '',
@@ -606,8 +612,9 @@ function initTable() {
             }, {
                 field: 'rectification',
                 title: '整改情况',
+                align:'center',
                 halign: 'center',
-                width: '100px',
+                width: '90px',
                 cellStyle: function (value, row, index, field) {
                     return {
                         classes: '',
