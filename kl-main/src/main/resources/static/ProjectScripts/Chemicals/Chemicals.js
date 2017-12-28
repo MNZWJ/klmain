@@ -38,6 +38,7 @@ $(function () {
                 title: '序号',
                 halign: 'center',
                 align: 'center',
+                width:'5%',
                 formatter: function (value, row, index) {
                     var page = $('#table').bootstrapTable('getOptions');
                     return (page.pageNumber - 1) * page.pageSize + index + 1;
@@ -47,6 +48,7 @@ $(function () {
                 title: '化学品名称',
                 halign: 'center',
                 align: 'left',
+                width:'25%',
                 class: "bootTableRow",
                 formatter: function (value, row, index) {
                     return '<span title="'+value+'">'+value+'</span>'
@@ -56,12 +58,14 @@ $(function () {
                 title: 'CAS',
                 halign: 'center',
                 align: 'left',
+                width:'15%',
                 class: "bootTableRow"
             },{
                 field: 'companyId',
                 title: '企业名称',
                 halign: 'center',
                 align: 'left',
+                width:'25%',
                 class: "bootTableRow",
                 formatter: function (value, row, index) {
                     return '<span title="'+value+'">'+value+'</span>'
@@ -71,6 +75,7 @@ $(function () {
                 title: '设计储量',
                 halign: 'center',
                 align: 'right',
+                width:'15%',
                 class: "bootTableRow",
                 formatter: function (value, row, index) {
                     return '<span title="'+value+'">'+value+'</span>'
@@ -80,6 +85,7 @@ $(function () {
                 title: '单位',
                 halign: 'center',
                 align: 'center',
+                width:'15%',
                 class: "bootTableRow",
                 formatter: function (value, row, index) {
                     value = value==undefined?"-":value;
