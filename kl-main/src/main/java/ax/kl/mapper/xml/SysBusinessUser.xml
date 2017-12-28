@@ -17,6 +17,23 @@
             </if>
         </where>
     </select>
+
+    <!--加载组织机构树-->
+    <select id="getSysOrganiseTreeList" resultType="ax.kl.entity.TreeModel">
+        SELECT o.OrganiseId AS id,o.ParentId as parentId,o.OrganiseName AS text,o.OrganiseCode AS code,
+		(
+			CASE
+			WHEN COUNT (u.UserId) > 0 THEN
+				'../../Images/Common/org1.png'
+			ELSE
+				'../../Images/Common/org2.png'
+			END
+		) AS 'image'
+	FROM TB_SYS_ORGANISE o
+LEFT JOIN TB_SYS_BUSINESSUSER u ON u.DeptCode LIKE o.OrganiseCode + '%'
+	GROUP BY o.OrganiseId,o.ParentId,o.OrganiseName,o.OrganiseCode
+    </select>
+
     <!--更新人员-->
     <insert id="updateBusinessUser">
         update TB_SYS_BUSINESSUSER

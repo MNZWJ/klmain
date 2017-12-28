@@ -2,6 +2,7 @@ package ax.kl.service;
 
 import ax.kl.entity.LoginInfo;
 import ax.kl.entity.SysOrganise;
+import ax.kl.entity.TreeModel;
 import com.baomidou.mybatisplus.plugins.Page;
 import ax.kl.entity.SysBusinessUser;
 
@@ -39,4 +40,9 @@ public interface SysBusinessUserService {
      */
     LoginInfo getUserInfo(String buserId);
 
+    /**
+     * 获取组织机构树
+     * @return
+     */
+    List<TreeModel> getSysOrganiseTreeList();
 }
