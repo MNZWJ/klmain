@@ -32,11 +32,11 @@ $(function () {
     initTable();//初始化危险工艺表格
     initChemiacalAllTable();//初始化化学品全部信息列表
     initChemicalTable();//初始话所引用化学品信息列表
-    init();
+
 
     //加载列表
     $('#enterpriseTable').bootstrapTable({
-        height: scanHeight - 6,
+        //height: scanHeight - 6,
         url: '/EnterpriseInfo/getCompanyInfoList',
         method: 'get',                      //请求方式（*）
         toolbar: '#enterpriseToolbar',                //工具按钮用哪个容器
@@ -167,7 +167,7 @@ $(function () {
             }
         ]
     });
-    clearRole();
+    init();
 });
 //预加载
 function  init() {
@@ -208,8 +208,8 @@ function getCompanyList() {
             $.each(companyList, function (i) {
                 $('#searchCompanyName').append("<option value='" + companyList[i].companyId + "'>" + companyList[i].companyName + "</option>");
             });
+            $('#searchCompanyName').selectpicker('refresh');
             $('#searchCompanyName').selectpicker('val','');
-            $('#searchCompanyName .selectpicker').selectpicker('refresh',{});
         },
         error: function () {
             alert("请求失败");
@@ -361,6 +361,7 @@ function getIndustryCodeList() {
 //查询
 function searchMenus() {
     companyId = $("#searchCompanyName").selectpicker('val');
+    companyId = companyId == null ? "" : companyId;
     searchScaleCode = $("#searchScaleCode").selectpicker('val');
     searchTypeCode = $("#searchTypeCode").selectpicker('val');
     searchIndustryCode = $("#searchIndustryId").selectpicker('val');
@@ -1092,7 +1093,13 @@ function initChemicalTable() {
                     type: 'text',
                     title: '设计储量',
                     emptytext: '请输入',
-                }
+                    validate:function(value){
+                        debugger;
+                        if(isNaN(Number($.trim(value)))){
+                            return "请输入数字！";
+                        }
+                    }
+                },
             },{
                 field: 'unit',
                 title: '单位',
