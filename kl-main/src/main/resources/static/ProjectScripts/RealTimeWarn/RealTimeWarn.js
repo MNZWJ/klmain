@@ -23,6 +23,7 @@ function initTable() {
 
     $('#table').bootstrapTable({
         height: scanHeight,
+
         striped: true,      //是否显示行间隔色
         cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
         method: 'get',//请求方式
@@ -48,7 +49,7 @@ function initTable() {
                 valign: "middle",
                 halign: 'center',
                 align: 'center',
-                width:'5%',
+                // width:'5%',
                 formatter: function (value, row, index) {
                     return  index + 1;
                 },
@@ -65,7 +66,7 @@ function initTable() {
                     title: '企业',
                     halign: 'center',
                     align: 'center',
-                    width:'12%',
+                    // width:'12%',
                     valign: "middle",
                     colspan: 1,
                     rowspan: 3,
@@ -82,7 +83,7 @@ function initTable() {
                     title: '重大危险源',
                     halign: 'center',
                     align: 'center',
-                    width:'12%',
+                    // width:'12%',
                     valign: "middle",
                     colspan: 1,
                     rowspan: 3,
@@ -99,7 +100,7 @@ function initTable() {
                     title: '固有风险',
                     valign: "middle",
                     align: "center",
-
+                    // WIDTH:"35%",
                     colspan: 5,
                     rowspan: 1,
                     cellStyle: function (value, row, index, field) {
@@ -110,7 +111,7 @@ function initTable() {
                 title: '动态风险',
                 valign: "middle",
                 align: "center",
-
+                // WIDTH:"35%",
                 colspan: 5,
                 rowspan: 1
             }],
@@ -121,7 +122,7 @@ function initTable() {
 
                     valign: "middle",
                     align: "center",
-                    width:'6%',
+                    // width:'20%',
                     colspan: 1,
                     rowspan: 2,
                     formatter:function(value,row,index){
@@ -160,7 +161,7 @@ function initTable() {
                 field: 'rank',
                 valign: "middle",
                 align: "center",
-                width:'9%',
+                // width:'40%',
                 colspan: 1,
                 rowspan: 2,
 
@@ -183,7 +184,7 @@ function initTable() {
                 field: 'fEI',
                 valign: "middle",
                 align: "center",
-                width:'8%',
+                // width:'30%',
                 colspan: 1,
                 rowspan: 2,
                 formatter:function(value,row,index){
@@ -223,7 +224,7 @@ function initTable() {
                 title: '安全距离不符合项',
                 valign: "middle",
                 align: "center",
-
+                // width:'40%',
                 colspan: 2,
                 rowspan: 1
             }, {
@@ -277,7 +278,7 @@ function initTable() {
                 field:'airStatusNum',
                 valign: "middle",
                 align: "center",
-                width:'9%',
+                // width:'9%',
                 colspan: 1,
                 rowspan: 2,
                 cellStyle:function cellStyle(value, row, index, field) {
@@ -296,7 +297,7 @@ function initTable() {
                 field:'processUnitNum',
                 valign: "middle",
                 align: "center",
-                width:'8%',
+                // width:'8%',
                 colspan: 1,
                 rowspan: 2,
                 cellStyle:function cellStyle(value, row, index, field) {
@@ -316,7 +317,7 @@ function initTable() {
                     field:'conditionNum',
                     valign: "middle",
                     align: "center",
-                    width:'8%',
+                    // width:'8%',
                     colspan: 1,
                     rowspan: 1,
 
@@ -336,7 +337,7 @@ function initTable() {
                     field:'protectionNum',
                     valign: "middle",
                     align: "center",
-                    width:'9%',
+                    // width:'9%',
                     colspan: 1,
                     rowspan: 1,
                     cellStyle:function cellStyle(value, row, index, field) {
@@ -355,7 +356,7 @@ function initTable() {
                     field:'generalHidden',
                     valign: "middle",
                     align: "center",
-                    width:'6%',
+                    // width:'6%',
                     colspan: 1,
                     rowspan: 1,
                     cellStyle:function cellStyle(value, row, index, field) {
@@ -374,7 +375,7 @@ function initTable() {
                     field:'majorHidden',
                     valign: "middle",
                     align: "center",
-                    width:'6%',
+                    // width:'6%',
                     colspan: 1,
                     rowspan: 1,
                     cellStyle:function cellStyle(value, row, index, field) {
@@ -392,6 +393,13 @@ function initTable() {
             ]
         ]
     });
+
+
+    $(".fixed-table-header .table").prepend('<colgroup><col width="6%"><col width="13%"><col width="13%"><col width="7%"><col width="8%"><col width="7%"><col width="7%"><col width="7%"><col width="7%"><col width="6%">\n' +
+        '<col width="6%">' +
+        '<col width="6%">' +
+        '<col width="6%">' +
+        '</colgroup>');
 }
 
 

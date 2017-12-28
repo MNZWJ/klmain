@@ -217,10 +217,10 @@ public class ProcessUnitServiceImpl implements ProcessUnitService {
                             value=company.get(value);
                             companyId=value;
                         }else {
-                            return "导入失败：第1页第"+ (i-1) + "行企业名称未找到指定对象，请核对后再次导入";
+                            return "导入失败：第1页第"+ (i+1) + "行企业名称未找到指定对象，请核对后再次导入";
                         }
                     }else{
-                        return "导入失败：第1页第"+ (i-1) + "行企业名称不能为空，请核对后再次导入";
+                        return "导入失败：第1页第"+ (i+1) + "行企业名称不能为空，请核对后再次导入";
                     }
 
                     cell =row.getCell(colum.get("重大危险源名称"));
@@ -231,13 +231,13 @@ public class ProcessUnitServiceImpl implements ProcessUnitService {
                             //判断此危险源是不是前一列公司的危险源
                             dangerSourceInfo=this.processUnitMapper.check(value,companyId);
                             if(dangerSourceInfo==null){
-                                return "导入失败：第1页第"+ (i-1) + "行重大危险源名称非此企业名称下危险源，请核对后再次导入";
+                                return "导入失败：第1页第"+ (i+1) + "行重大危险源名称非此企业名称下危险源，请核对后再次导入";
                             }
                         }else {
-                            return "导入失败：第1页第"+ (i-1) + "行重大危险源名称未找到指定对象，请核对后再次导入";
+                            return "导入失败：第1页第"+ (i+1) + "行重大危险源名称未找到指定对象，请核对后再次导入";
                         }
                     }else{
-                        return "导入失败：第1页第"+ (i-1) + "行重大危险源名称不能为空，请核对后再次导入";
+                        return "导入失败：第1页第"+ (i+1) + "行重大危险源名称不能为空，请核对后再次导入";
                     }
                     processUnit.setSourceId(sourceId);
 
@@ -245,7 +245,7 @@ public class ProcessUnitServiceImpl implements ProcessUnitService {
                     if (cell!=null){
                         value=getCellValue(cell);
                     }else{
-                        return "导入失败：第1页第"+ (i-1) + "行工艺单元名称不能为空，请核对后再次导入";
+                        return "导入失败：第1页第"+ (i+1) + "行工艺单元名称不能为空，请核对后再次导入";
                     }
                     processUnit.setUnitName(value);
 
@@ -254,16 +254,16 @@ public class ProcessUnitServiceImpl implements ProcessUnitService {
                         value=getCellValue(cell);
                         if(pUniqueCode.size()!=0){
                             if(pUniqueCode.contains(value)){
-                                return "导入失败：文件中含有重复的工艺单元唯一编码，请重新输入后再次导入";
+                                return "导入失败：第1页第"+  (i+1) + "行含有重复的工艺单元唯一编码，请重新输入后再次导入";
                             }
                         }
                         pUniqueCode.add(value);
 
                         if(this.processUnitMapper.validateUniqueCode(value)!=0){
-                            return "导入失败：第1页第"+ (i-1)+ "行工艺单元唯一编码在数据库中已存在，请重新输入后再次导入";
+                            return "导入失败：第1页第"+  (i+1) + "行工艺单元唯一编码在数据库中已存在，请重新输入后再次导入";
                         }
                     }else{
-                        return "导入失败：第1页第"+ (i-1) + "行工艺单元唯一编码不能为空，请核对后再次导入";
+                        return "导入失败：第1页第"+  (i+1)  + "行工艺单元唯一编码不能为空，请核对后再次导入";
                     }
                     processUnit.setUniqueCodeU(value);
 
@@ -272,10 +272,10 @@ public class ProcessUnitServiceImpl implements ProcessUnitService {
                         value=getCellValue(cell);
                         //如果没有值那就有问题，跳出循环
                         if (!isNumeric(value)){
-                            return "导入失败：第1页第"+ (i-1) + "行火灾爆炸指数F&EI不是数字，请核对后再次导入";
+                            return "导入失败：第1页第"+ (i+1)  + "行火灾爆炸指数F&EI不是数字，请核对后再次导入";
                         }
                     }else{
-                        return "导入失败：第1页第"+ (i-1) + "行火灾爆炸指数F&EI不能为空，请核对后再次导入";
+                        return "导入失败：第1页第"+  (i+1)  + "行火灾爆炸指数F&EI不能为空，请核对后再次导入";
                     }
                     processUnit.setFEI(Double.parseDouble(value));
 
@@ -284,10 +284,10 @@ public class ProcessUnitServiceImpl implements ProcessUnitService {
                         value=getCellValue(cell);
                         //如果没有值那就有问题，跳出循环
                         if (!isNumeric(value)){
-                            return "导入失败：第1页第"+ (i-1) + "行补偿后的F&EI不是数字，请核对后再次导入";
+                            return "导入失败：第1页第"+ (i+1)  + "行补偿后的F&EI不是数字，请核对后再次导入";
                         }
                     }else{
-                        return "导入失败：第1页第"+ (i-1) + "行补偿后的F&EI不能为空，请核对后再次导入";
+                        return "导入失败：第1页第"+  (i+1) + "行补偿后的F&EI不能为空，请核对后再次导入";
                     }
                     processUnit.setAfterFEI(Double.parseDouble(value));
 
@@ -295,11 +295,11 @@ public class ProcessUnitServiceImpl implements ProcessUnitService {
                     if (cell!=null){
                         value=getCellValue(cell);
                         if(!dangerRank.contains(value)){
-                            return "导入失败：第1页第"+ (i-1) + "行危险等级未按正确格式输入，请核对后再次导入";
+                            return "导入失败：第1页第"+  (i+1)  + "行危险等级未按正确格式输入，请核对后再次导入";
                         }
 
                     }else{
-                        return "导入失败：第1页第"+ (i-1) + "行危险等级不能为空，请核对后再次导入";
+                        return "导入失败：第1页第"+  (i+1)  + "行危险等级不能为空，请核对后再次导入";
                     }
                     processUnit.setDangerRank(value);
 
@@ -307,10 +307,10 @@ public class ProcessUnitServiceImpl implements ProcessUnitService {
                     if (cell!=null){
                         value=getCellValue(cell);
                         if(!dangerRank.contains(value)){
-                            return "导入失败：第1页第"+ (i-1) + "行补偿后的危险等级未按正确格式输入，请核对后再次导入";
+                            return "导入失败：第1页第"+ (i+1)  + "行补偿后的危险等级未按正确格式输入，请核对后再次导入";
                         }
                     }else{
-                        return "导入失败：第1页第"+ (i-1) + "行补偿后的危险等级不能为空，请核对后再次导入";
+                        return "导入失败：第1页第"+ (i+1)  + "行补偿后的危险等级不能为空，请核对后再次导入";
                     }
                     processUnit.setAfterDangerRank(value);
                     processUnit.setUnitId(UUID.randomUUID().toString());
@@ -369,7 +369,7 @@ public class ProcessUnitServiceImpl implements ProcessUnitService {
                         if (value!=null&&company.containsKey(value)){
                             value=company.get(value);
                         }else {
-                            return "导入失败：第2页第"+ (i-1) + "行企业名称未找到指定对象，请核对后再次导入";
+                            return "导入失败：第2页第"+  (i+1)  + "行企业名称未找到指定对象，请核对后再次导入";
                         }
                     }
 
@@ -381,10 +381,10 @@ public class ProcessUnitServiceImpl implements ProcessUnitService {
                             //判断此危险源是不是前一列公司的危险源
                             dangerSourceInfo=this.processUnitMapper.check(value,companyId);
                             if(dangerSourceInfo==null){
-                                return "导入失败：第2页第"+ (i-1) + "行重大危险源名称非此企业名称下危险源，请核对后再次导入";
+                                return "导入失败：第2页第"+  (i+1)  + "行重大危险源名称非此企业名称下危险源，请核对后再次导入";
                             }
                         }else {
-                            return "导入失败：第2页第"+ (i-1) + "行重大危险源名称未找到指定对象，请核对后再次导入";
+                            return "导入失败：第2页第"+  (i+1)  + "行重大危险源名称未找到指定对象，请核对后再次导入";
                         }
                     }
 
@@ -396,10 +396,10 @@ public class ProcessUnitServiceImpl implements ProcessUnitService {
                         }else if (value!=null&&pNameAndID.containsKey(value)){
                             value=pNameAndID.get(value);
                         }else {
-                            return "导入失败：第2页第"+ (i-1) + "行工艺单元名称未找到指定对象，请核对后再次导入";
+                            return "导入失败：第2页第"+  (i+1)  + "行工艺单元名称未找到指定对象，请核对后再次导入";
                         }
                     }else{
-                        return "导入失败：第2页第"+ (i-1) + "行工艺单元名称不能为空，请核对后再次导入";
+                        return "导入失败：第2页第"+  (i+1)  + "行工艺单元名称不能为空，请核对后再次导入";
                     }
                     equipInfo.setUnitId(value);
 
@@ -408,16 +408,16 @@ public class ProcessUnitServiceImpl implements ProcessUnitService {
                         value=getCellValue(cell);
                         if(eUniqueCode.size()!=0){
                             if(eUniqueCode.contains(value)){
-                                return "导入失败：文件中含有重复的设备唯一编码，请重新输入后再次导入";
+                                return "导入失败第2页第"+  (i+1)  + "行含有重复的设备唯一编码，请重新输入后再次导入";
                             }
                         }
                         eUniqueCode.add(value);
                         if(this.equipInfoMapper.validateEquipCode(value)!=0){
-                            return "导入失败：第2页第"+ (i-1) + "行设备唯一编码在数据库中已存在，请重新输入后再次导入";
+                            return "导入失败：第2页第"+ (i+1) + "行设备唯一编码在数据库中已存在，请重新输入后再次导入";
                         }
                     }
                     else{
-                        return "导入失败：第2页第"+ (i-1) + "行设备唯一编码不能为空，请核对后再次导入";
+                        return "导入失败：第2页第"+ (i+1) + "行设备唯一编码不能为空，请核对后再次导入";
                     }
                     equipInfo.setUniqueCode(value);
 
@@ -425,7 +425,7 @@ public class ProcessUnitServiceImpl implements ProcessUnitService {
                     if (cell!=null){
                         value=getCellValue(cell);
                     }else{
-                        return "导入失败：第2页第"+(i-1) + "行设备名称不能为空，请核对后再次导入";
+                        return "导入失败：第2页第"+(i+1) + "行设备名称不能为空，请核对后再次导入";
                     }
                     equipInfo.setEquipName(value);
 
@@ -435,10 +435,10 @@ public class ProcessUnitServiceImpl implements ProcessUnitService {
                         if (value!=null&&equipType.containsKey(value)){
                             value=equipType.get(value);
                         }else {
-                            return "导入失败：第2页第"+ (i-1) + "行设备类型未找到指定对象，请核对后再次导入";
+                            return "导入失败：第2页第"+ (i+1) + "行设备类型未找到指定对象，请核对后再次导入";
                         }
                     }else{
-                        return "导入失败：第2页第"+ (i-1) + "行设备类型不能为空，请核对后再次导入";
+                        return "导入失败：第2页第"+ (i+1) + "行设备类型不能为空，请核对后再次导入";
                     }
                     equipInfo.setEquipType(value);
 
@@ -448,10 +448,10 @@ public class ProcessUnitServiceImpl implements ProcessUnitService {
                         if (value!=null&&equipStatus.containsKey(value)){
                             value=equipStatus.get(value);
                         }else {
-                            return "导入失败：第2页第"+ (i-1) + "行设备使用状态未找到指定对象，请核对后再次导入";
+                            return "导入失败：第2页第"+ (i+1) + "行设备使用状态未找到指定对象，请核对后再次导入";
                         }
                     }else{
-                        return "导入失败：第2页第"+ (i-1) + "行设备使用状态不能为空，请核对后再次导入";
+                        return "导入失败：第2页第"+ (i+1) + "行设备使用状态不能为空，请核对后再次导入";
                     }
                     equipInfo.setEquipStatus(value);
 

@@ -18,22 +18,18 @@ $(function () {
                 highlightSelected: true,//当选择节点时是否高亮显示。
                 showBorder: false,//是否在节点上显示边框。
                 showCheckbox:true,
+                showImage: true,
                 showIcon:true,
                 data: result,
                 onNodeChecked:function(event, node){
                     var nodeIds =getChildNodeIdArr(node);
                     var listNode= [];
                     $.each(nodeIds,function(i,n){
-                        if(n instanceof Array)
+                        if(n instanceof Array){
                             n = n[0];
+                        }
                         listNode.push(($("#tree").treeview("getNode",n))[0]);
                     });
-                    //选中父节点
-                    // var p=$("#tree").treeview('getParents',node);
-                    // while (p.length == 1){
-                    //     listNode.push(p[0]);
-                    //     p=$("#tree").treeview('getParents',p[0]);
-                    // }
                     $("#tree").treeview('checkNode', [listNode,{ silent: true }]);
                 },
                 onNodeUnchecked:function(event, node){
@@ -68,7 +64,7 @@ $(function () {
         url: '/SysRole/GetRoleList',//请求url
         pagination: 'true',//显示分页条
         paginationLoop: 'true',//启用分页条无限循环功能
-        pageNumber: 1,                       //初始化加载第一页，默认第一页
+        pageNumber: 1,//初始化加载第一页，默认第一页
         pageSize: 10,                       //每页的记录行数（*）
         pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
         toolbar: '#roleToolbar',                //工具按钮用哪个容器
