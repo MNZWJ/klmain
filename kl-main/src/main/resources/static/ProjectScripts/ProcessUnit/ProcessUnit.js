@@ -64,8 +64,6 @@ $(function () {
             .val('')
             .removeAttr('checked')
             .removeAttr('selected');
-        $("#unitForm").data('bootstrapValidator').destroy();
-        $('#unitForm').data('bootstrapValidator', null);
     });
 
 });
@@ -607,7 +605,6 @@ function unitEdit() {
         return false;
     }
     unitId=rows[0].unitId;
-    $("#unitForm").data('bootstrapValidator').resetForm(false);
 
     if(state){
         $("#unitForm").find('input').removeAttr('readonly');
@@ -681,7 +678,6 @@ function unitEdit() {
     $("#btn_save").show();
     $("#addEquip").show();
     $("#delEquip").show();
-    $("#unitForm").data('bootstrapValidator').removeField("UniqueCodeU");//删除编码验证
 }
 
 //删除字典
@@ -793,7 +789,6 @@ function look(obj) {
         .removeAttr('selected');
     var rows = $("#processUnitTable").bootstrapTable("getSelections");//获取所有选中的行
 
-    $("#unitForm").data('bootstrapValidator').resetForm(false);
 
     if(state){
         $("#unitForm").find('input').removeAttr('readonly');
@@ -857,10 +852,14 @@ function checkForm(obj){
     var info="";
     var uniqueCode="";
     var count=0;
+    var uid="";
     $.each(obj, function () {
         if((this.value==""||null==this.value)&&this.name!='unitId'){
             info="请将表单填写完整！！！"
             return false;
+        }
+        if(this.name=='unitId'){
+            uid=this.value;
         }
         if(this.name=='SourceId'){
             count++;
@@ -874,10 +873,10 @@ function checkForm(obj){
         info="请选择表单的重大危险源名称！！！"
     }
 
-    if(uniqueCode!=''){
+    if(uniqueCode!=''&&uid==''){
         $.ajax({
             type: 'post',
-            url: '/EquipInfo/validateEquipCode?UniqueCode='+uniqueCode,
+            url: '/ProcessUnit/validateUniqueCode?UniqueCodeU='+uniqueCode,
             async: false,
             contentType : 'application/json;charset=utf-8',
             success: function (result) {
