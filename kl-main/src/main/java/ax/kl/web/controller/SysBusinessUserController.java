@@ -48,7 +48,7 @@ public class SysBusinessUserController {
 
         Map<String,Object> map=new HashMap();
         //获取组织机构树
-        List<TreeModel> tm=sysOrganiseService.getSysOrganiseTreeList();
+        List<TreeModel> tm=sysBusinessUserService.getSysOrganiseTreeList();
 
         //获取所有的可显的组织机构信息
         List<SysOrganise> sysOrganises=sysOrganiseService.getAllSysOrganises();
