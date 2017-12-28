@@ -10,18 +10,11 @@ $(function () {
     // $("#map").height(scanHeight);
     initMap();
 
-
-
-
-
-
     //模态窗关闭事件
     $('#myModal').on('hidden.bs.modal', function () {
         $("#toolbar").hide();
         searchName="";
     });
-
-
 
     //初始化公司查询选择框
     $.ajax({
@@ -74,7 +67,6 @@ function initMap() {
     mini.get("searchCompanyName").load("/Inspection/getCompanyList");
 }
 
-
 //获取危险源集合
 function getHazardList() {
     var hazardList = [];
@@ -103,7 +95,6 @@ function loadHazardList(hazardList) {
             imagUrl = "../../Images/Common/橙色.png";
         }
 
-
         var html = '<a title="' + n.sourceName + '" onclick="onMarkClick(\''+n.sourceId+'\',\''+n.sourceName+'\')"><div style="position: absolute; padding: 0pt; width: 51px; height: 25px; line-height:25px; overflow: hidden;background-size:51px 25px;background-image:url(' + imagUrl + ');text-align:center" ><span style="font-weight:bold;font-size:14px;color: #000;" >' + n.num + '</span>';
         + '</div></a>';
         var tempPoint = new BMap.Point(n.longt, n.lat);
@@ -114,7 +105,6 @@ function loadHazardList(hazardList) {
         });
 
         map.addOverlay(marker);
-
 
     });
 
@@ -134,8 +124,6 @@ function onMarkClick(e,name) {
     }
 
     $('#myModal').modal('show');
-
-
 
 }
 
