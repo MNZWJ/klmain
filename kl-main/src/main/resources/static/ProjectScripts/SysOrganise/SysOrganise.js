@@ -26,6 +26,7 @@ $(function () {
             var $jsonTree = $('#tree').treeview({
                 highlightSelected: true,//当选择节点时是否高亮显示。
                 showBorder: false,//是否在节点上显示边框。
+                showImage: true,
                 data: result.tm,
                 //节点选中方法
                 onNodeSelected: function (event, data) {
