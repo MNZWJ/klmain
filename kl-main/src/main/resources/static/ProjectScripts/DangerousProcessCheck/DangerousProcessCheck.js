@@ -44,9 +44,6 @@ $(function () {
                 var page = $('#processTable').bootstrapTable('getOptions');
                 return (page.pageNumber - 1) * page.pageSize + index + 1;
             }
-        }, {
-            field: 'state',
-            checkbox: true
         },
             {
             field: 'companyName',
@@ -73,11 +70,12 @@ $(function () {
         },   {
                 field: 'companyType',
                 title: '企业性质',
-                halign: 'center'
+                halign: 'center',
+                width:'15%'
             } ,{
                 field: 'area',
                 title: '行政区域',
-                halign: 'center'
+                halign: 'center', width:'15%'
             },
         ]
     });

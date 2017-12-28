@@ -48,7 +48,7 @@ $(function () {
                 title: '化学品名称',
                 halign: 'center',
                 align: 'left',
-                width:'25%',
+                width:'30%',
                 class: "bootTableRow",
                 formatter: function (value, row, index) {
                     return '<span title="'+value+'">'+value+'</span>'
@@ -75,7 +75,7 @@ $(function () {
                 title: '设计储量',
                 halign: 'center',
                 align: 'right',
-                width:'15%',
+                width:'10%',
                 class: "bootTableRow",
                 formatter: function (value, row, index) {
                     return '<span title="'+value+'">'+value+'</span>'
@@ -85,7 +85,7 @@ $(function () {
                 title: '单位',
                 halign: 'center',
                 align: 'center',
-                width:'15%',
+                width:'10%',
                 class: "bootTableRow",
                 formatter: function (value, row, index) {
                     value = value==undefined?"-":value;

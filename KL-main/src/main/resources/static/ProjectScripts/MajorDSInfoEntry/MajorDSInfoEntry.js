@@ -137,19 +137,9 @@ $(function () {
                 field: 'accidentType',
                 title: '可能引发<br/>事故类型',
                 halign: 'center',
-                width:'5%',
+                width:'3%',
                 align: 'center',
                 valign:'middle'
-                  // cellStyle: function (value, row, index, field) {
-                  //     return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                  // },
-                  // formatter: function (value, row, index) {
-                  //   if(value!=undefined){
-                  //       return '<span title="'+value+'">'+value+'</span>'
-                  //   }else{
-                  //       return "";
-                  //   }
-                  // }
             },
             {
                 field: 'deathToll',
