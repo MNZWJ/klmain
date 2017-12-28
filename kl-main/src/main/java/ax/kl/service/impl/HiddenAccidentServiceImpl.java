@@ -128,15 +128,11 @@ public class HiddenAccidentServiceImpl implements HiddenAccidentService {
                 }
                 HiddenAccident hiddenAccident =new HiddenAccident();
                 String value ="";
-                Cell cell =row.getCell(colum.get("序号"));
-                value =getCellValue(cell);
-                if ("".equals(value)){
-                    break;
-                }
-
-                cell =row.getCell(colum.get("重大危险源"));
+                Cell cell =row.getCell(colum.get("重大危险源"));
                 value = getCellValue(cell);
-                if (source.containsKey(value)){
+                if ("".equals(value)){
+                    continue;
+                } else if (source.containsKey(value)){
                     value=source.get(value);
                 }else {
                     return "导入失败：第"+ i + "行重大危险源未找到指定对象，请核对后再次导入";
