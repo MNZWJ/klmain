@@ -194,6 +194,7 @@ function initTable(){
             {
                 title: '序号',
                 field: 'number1',
+                align: 'center',
                 formatter: function (value, row, index) {
                     var page = $('#sysorgTable').bootstrapTable('getOptions');
 
@@ -211,7 +212,7 @@ function initTable(){
                 field: 'organiseName',
                 title: '组织机构名称',
                 halign: 'center',
-                align: 'center',
+                align: 'left',
                 width: '60%'
             },
             {

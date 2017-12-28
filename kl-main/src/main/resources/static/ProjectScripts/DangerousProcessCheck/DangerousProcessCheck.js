@@ -73,10 +73,12 @@ $(function () {
         },   {
                 field: 'companyType',
                 title: '企业性质',
+                align: 'center',
                 halign: 'center'
             } ,{
                 field: 'area',
                 title: '行政区域',
+                align: 'center',
                 halign: 'center'
             },
         ]

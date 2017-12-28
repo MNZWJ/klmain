@@ -92,6 +92,7 @@ $(function () {
 
                 title: '序号',
                 field: 'number1',
+                align: 'center',
                 formatter: function (value, row, index) {
                     var page = $('#roleTable').bootstrapTable('getOptions');
 
@@ -108,14 +109,14 @@ $(function () {
                 field: 'roleName',
                 title: '角色名称',
                 halign: 'center',
-                align: 'center',
+                align: 'left',
                 width: '50%'
             },
             {
                 field: 'roleCode',
                 title: '角色编码',
                 halign: 'center',
-                align: 'center',
+                align: 'left',
                 width: '30%'
             }
         ]

@@ -300,6 +300,7 @@ function initTable(){
             {
                 title: '序号',
                 field: 'number1',
+                align: 'center',
                 formatter: function (value, row, index) {
                     var page = $('#userTable').bootstrapTable('getOptions');
 
@@ -315,7 +316,7 @@ function initTable(){
                 field: 'userName',
                 title: '姓名',
                 halign: 'center',
-                align: 'center',
+                align: 'left',
                 width: '35%',
                 formatter: function (value, rowData, rowIndex) {
                     users.push(rowData);
@@ -343,7 +344,7 @@ function initTable(){
                 field: 'deptId',
                 title: '部门',
                 halign: 'center',
-                align: 'center',
+                align: 'left',
                 width: '40%',
                 formatter: function (value, row, index) {
                     $.each(sysOrgs, function (i, n) {
