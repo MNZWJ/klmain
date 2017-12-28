@@ -184,9 +184,9 @@
     </select>
 
     <!--获取所有的危险源等级-->
-    <select id="getHP" resultType="java.util.Map">
-        SELECT ChemId,ChemName,CAS
-          FROM TB_BASE_CHEMICAL_CATALOG
+    <select id="getObjectByName" resultType="ax.kl.entity.ChemicalsInfo">
+        SELECT * FROM TB_BASE_CHEMICAL_CATALOG
+        WHERE ChemName=#{chemicalName}
     </select>
 
     <!--插入事故类型集合-->
