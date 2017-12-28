@@ -2,6 +2,7 @@ package ax.kl.mapper;
 
 import ax.kl.entity.LoginInfo;
 import ax.kl.entity.SysUser;
+import ax.kl.entity.TreeModel;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import ax.kl.entity.SysBusinessUser;
@@ -54,4 +55,9 @@ public interface SysBusinessUserMapper extends BaseMapper<SysBusinessUser> {
      */
     List<LoginInfo> getUserInfo(@Param("buserId") String buserId);
 
+    /**
+     * 获取组织机构树
+     * @return
+     */
+    List<TreeModel> getSysOrganiseTreeList();
 }
