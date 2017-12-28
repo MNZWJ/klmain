@@ -48,7 +48,7 @@ $(function () {
                 halign: 'center',
                 align: 'left',
                 class: "bootTableRow",
-                width:'10%',
+                width:'15%',
                 cellStyle: function (value, row, index, field) {
                     return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
                 },
@@ -89,7 +89,7 @@ $(function () {
                 halign: 'center',
                 align: 'left',
                 class: "bootTableRow",
-                width:'40%',
+                width:'30%',
                 cellStyle: function (value, row, index, field) {
                     return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
                 },
@@ -116,7 +116,7 @@ $(function () {
                 halign: 'center',
                 align: 'center',
                 class: "bootTableRow",
-                width:'5%',
+                width:'7%',
                 formatter: function (value, row, index) {
                     return '<span title="'+value+'">'+value+'</span>'
                 }
