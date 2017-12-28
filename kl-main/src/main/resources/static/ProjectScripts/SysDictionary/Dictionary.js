@@ -251,6 +251,7 @@ function initTable(){
 
                 title: '序号',
                 field: 'number1',
+                align: 'center',
                 formatter: function (value, row, index) {
                     var page = $('#dictTable').bootstrapTable('getOptions');
 
@@ -268,7 +269,7 @@ function initTable(){
                 field: 'dictName',
                 title: '字典名称',
                 halign: 'center',
-                align: 'center',
+                align: 'left',
                 width: '60%'
             },
             {

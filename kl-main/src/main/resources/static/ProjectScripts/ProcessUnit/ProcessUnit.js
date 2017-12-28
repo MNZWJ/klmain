@@ -279,6 +279,7 @@ function initTable(){
         columns: [{
             title: '序号',
             field: 'number1',
+            align:'center',
             width:'4%',
             formatter: function (value, row, index) {
                 var page = $('#processUnitTable').bootstrapTable('getOptions');

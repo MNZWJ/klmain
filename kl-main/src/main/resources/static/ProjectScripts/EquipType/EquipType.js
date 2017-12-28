@@ -63,6 +63,7 @@ $(function () {
             {
                 title: '序号',
                 width: '10%',
+                align: 'center',
                 formatter: function (value, row, index) {
                     var page = $('#equipTable').bootstrapTable('getOptions');
                     return (page.pageNumber - 1) * page.pageSize + index + 1;

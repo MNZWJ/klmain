@@ -89,14 +89,14 @@ $(function () {
                 field: 'roleName',
                 title: '角色名称',
                 halign: 'center',
-                align: 'center',
+                align: 'left',
                 width: '50%'
             },
             {
                 field: 'roleCode',
                 title: '角色编码',
                 halign: 'center',
-                align: 'center',
+                align: 'left',
                 width: '30%'
             }
         ]
