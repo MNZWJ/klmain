@@ -18,10 +18,10 @@ public class DataStatisTask {
     MonthStatisService MonthStatisService;
 
     //每1分钟执行一次
-    @Scheduled(cron = "0 0 24  * * * ")
-    public void reportCurrentByCron(){
-       this.MonthStatisService.statisMonthData();
-    }
+//    @Scheduled(cron = "0 0 0  * * * ")
+//    public void reportCurrentByCron(){
+//       this.MonthStatisService.statisMonthData();
+//    }
 
     private SimpleDateFormat dateFormat(){
         return new SimpleDateFormat ("HH:mm:ss");
