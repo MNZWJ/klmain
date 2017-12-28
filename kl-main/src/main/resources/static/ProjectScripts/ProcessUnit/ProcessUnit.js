@@ -52,7 +52,6 @@ $(function () {
     //获取所有危险源
     getDangerSource();
 
-    formValidator();
 
     saveData();
 
@@ -67,7 +66,6 @@ $(function () {
             .removeAttr('selected');
         $("#unitForm").data('bootstrapValidator').destroy();
         $('#unitForm').data('bootstrapValidator', null);
-        formValidator();
     });
 
 });
@@ -76,94 +74,82 @@ $(function () {
 function saveData(){
     //绑定保存按钮提交事件
     $("#btn_save").on("click", function () {
+        //表单提交的方法、比如ajax提交
+        var unit = new Object();
+        //获取表单中输入的值和对应的表单控件名放入unit对象
+        var unitList = $('#unitForm').serializeArray();
+        //检验表单
+        var end = checkForm(unitList);
+        $.each(unitList, function () {
 
-        //获取表单对象
-        var bootstrapValidator = $("#unitForm").data('bootstrapValidator');
-        //手动触发验证
-        bootstrapValidator.validate();
-        if (bootstrapValidator.isValid()) {
-            //表单提交的方法、比如ajax提交
-            var unit = new Object();
-            //获取表单中输入的值和对应的表单控件名放入unit对象
-            var unitList = $('#unitForm').serializeArray();
-            //检验表单
-            var end = checkForm(unitList);
-            var c=false;
-            $.each(unitList, function () {
-
-                if(this.name=="unitId"){
-                    unit[this.name] = unitId;
-                }
-                if(this.name=='SourceId'){
-                    c=true;
-                }
-                unit[this.name] = this.value;
-            });
-            if (!end) {
-                return false;
-            }
-            if(!c){
-                return false;
+            if(this.name=="unitId"){
+                unit[this.name] = unitId;
             }
 
-
-            //获取折叠面板equipInfoTable表格中的值
-            var equipInfoTable = $('#equipInfoTable').bootstrapTable('getData');
-            var e = checkEquipTable(equipInfoTable);
-            if (!e) {
-                return false;
-            }
-            //,"deleteIds":equipIds.substring(0,equipIds.length-1)
-            var cmd = {
-                "unit": unit,
-                "equipInfoTable": equipInfoTable,
-                "deleteIds": equipIds.substring(0, equipIds.length - 1)
-            };
-
-            $.ajax({
-                type: 'post',
-                url: '/ProcessUnit/saveData',
-                //将sysOrg对象的JSON类型参数传到后台
-                data: {cmd: JSON.stringify(cmd)},
-                success: function (result) {
-                    //根据返回的result进行判断
-                    if (result.code == 0) {
-                        //显示结果弹出框
-                        BootstrapDialog.alert({
-                            title: "提示",
-                            message: "保存成功！",
-                            size: BootstrapDialog.SIZE_SMALL,
-                            type: BootstrapDialog.TYPE_SUCCESS, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-
-                            //回调函数
-                            callback: function () {
-
-                                //将弹出框隐藏
-                                $('#myModal').modal('hide');
-                                //更新数据表格
-                                $("#processUnitTable").bootstrapTable("refresh");
-                            }
-                        });
-
-
-                    }
-                },
-                //如果失败了
-                error: function () {
-                    BootstrapDialog.alert({
-                        title: '错误',
-                        message: '保存失败！',
-                        size: BootstrapDialog.SIZE_SMALL,
-                        type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-
-                        closable: false, // <-- Default value is false
-                        draggable: true, // <-- Default value is false
-                        buttonLabel: '确定', // <-- Default value is 'OK',
-
-                    });
-                }
-            });
+            unit[this.name] = this.value;
+        });
+        if (!end) {
+            return false;
         }
+
+
+        //获取折叠面板equipInfoTable表格中的值
+        var equipInfoTable = $('#equipInfoTable').bootstrapTable('getData');
+        var e = checkEquipTable(equipInfoTable);
+        if (!e) {
+            return false;
+        }
+        //,"deleteIds":equipIds.substring(0,equipIds.length-1)
+        var cmd = {
+            "unit": unit,
+            "equipInfoTable": equipInfoTable,
+            "deleteIds": equipIds.substring(0, equipIds.length - 1)
+        };
+
+        $.ajax({
+            type: 'post',
+            url: '/ProcessUnit/saveData',
+            //将sysOrg对象的JSON类型参数传到后台
+            data: {cmd: JSON.stringify(cmd)},
+            success: function (result) {
+                //根据返回的result进行判断
+                if (result.code == 0) {
+                    //显示结果弹出框
+                    BootstrapDialog.alert({
+                        title: "提示",
+                        message: "保存成功！",
+                        size: BootstrapDialog.SIZE_SMALL,
+                        type: BootstrapDialog.TYPE_SUCCESS, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+
+                        //回调函数
+                        callback: function () {
+
+                            //将弹出框隐藏
+                            $('#myModal').modal('hide');
+                            //更新数据表格
+                            $("#processUnitTable").bootstrapTable("refresh");
+                        }
+                    });
+
+
+                }
+            },
+            //如果失败了
+            error: function () {
+                BootstrapDialog.alert({
+                    title: '错误',
+                    message: '保存失败！',
+                    size: BootstrapDialog.SIZE_SMALL,
+                    type: BootstrapDialog.TYPE_DANGER, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+
+                    closable: false, // <-- Default value is false
+                    draggable: true, // <-- Default value is false
+                    buttonLabel: '确定', // <-- Default value is 'OK',
+
+                });
+            }
+        });
+
     });
 
 }
@@ -528,120 +514,7 @@ function queryParams(pageReqeust) {
     return pageReqeust;
 }
 
-//form验证规则
-function formValidator() {
-//表单验证
-    $("#unitForm").bootstrapValidator({
-        feedbackIcons: {
-            valid: 'glyphicon glyphicon-ok',
-            invalid: 'glyphicon glyphicon-remove',
-            validating: 'glyphicon glyphicon-refresh'
-        },
-        /**
-         * 表单域配置
-         */
-        fields: {
-            //设置工艺单元名称验证
-            UnitName: {
-                //隐藏或显示 该字段的验证
-                enabled: true,
-                //错误提示信息
-                message: '<br>输入有误',
 
-                // 定义每个验证规则
-                validators: {
-                    notEmpty: {
-                        message: '<br>请输入工艺单元名称'
-                    },
-                    stringLength: {
-                        min: 0,
-                        max: 50,
-                        message: '<br>工艺单元名称过长，名称长度不得大于50'
-                    },
-                    regexp: {
-                        regexp: /[^\]@=/'\"$%&^*{}<>\\\\[:\;]+/,
-                        message: '<br>工艺单元名称中含有非法字符'
-                    }
-                }
-            },
-            //唯一编码验证
-            UniqueCodeU: {
-                //隐藏或显示 该字段的验证
-                enabled: true,
-                threshold: 0,
-                //有3字符以上才发送ajax请求，（input中输入一个字符，插件会向服务器发送一次，设置限制，6字符以上才开始）
-                //错误提示信息
-                message: '<br>输入有误',
-                validators: {
-                    notEmpty: {
-                        message: '<br>唯一编码不能为空'
-                    }, stringLength: {
-                        min: 0,
-                        max: 30,
-                        message: '<br>唯一编码过长'
-                    },
-                    regexp: {
-                        regexp: /[^\]@=/'\"$%&^*{}<>\\\\[:\;]+/,
-                        message: '<br>输入值中含有非法字符'
-                    },
-                    remote:{
-                        url:'/ProcessUnit/validateUniqueCode',
-                        message: '<br>唯一编码已存在',
-                        type: 'POST'
-                    }
-                }
-            },
-            //设置企业验证
-            CompanyName: {
-                validators: {
-                    notEmpty: {
-                        message: '<br>请选择企业'
-                    }
-                }
-            },
-            //设置企业对应危险源验证
-            SourceId: {
-                validators: {
-                    notEmpty: {
-                        message: '请选择危险源'
-                    }
-                }
-            },
-            //设置火灾爆炸指数 F&EI验证
-            FEI: {
-                validators: {
-                    notEmpty: {
-                        message: '<br>请输入火灾爆炸指数 F&EI'
-                    }
-                }
-            },
-            //设置危险等级验证
-            DangerRank: {
-                validators: {
-                    notEmpty: {
-                        message: '请选择危险等级'
-                    }
-                }
-            },
-            //设置补偿后的 F&EI验证
-            AfterFEI: {
-                validators: {
-                    notEmpty: {
-                        message: '<br>请输入补偿后的 F&EI'
-                    }
-                }
-            },
-            //设置补偿后的危险等级验证
-            AfterDangerRank: {
-                validators: {
-                    notEmpty: {
-                        message: '请选择补偿后的危险等级'
-                    }
-                }
-            }
-        }
-    });
-}
 
 //按名称查询
 function searchMenus() {
@@ -676,7 +549,6 @@ function unitAdd() {
         .removeAttr('checked')
         .removeAttr('selected');
 
-    $("#unitForm").data('bootstrapValidator').resetForm(false);
     if(state){
         $("#unitForm").find('input').removeAttr('readonly');
         $("#unitForm").find('select').removeAttr("disabled", "disabled");
@@ -983,12 +855,39 @@ function resizePage(){
 //检验表单非空
 function checkForm(obj){
     var info="";
+    var uniqueCode="";
+    var count=0;
     $.each(obj, function () {
         if((this.value==""||null==this.value)&&this.name!='unitId'){
             info="请将表单填写完整！！！"
             return false;
         }
+        if(this.name=='SourceId'){
+            count++;
+        }
+        if(this.name=='UniqueCodeU'){
+            uniqueCode=this.value;
+        }
     });
+
+    if(count==0&&info==''){
+        info="请选择表单的重大危险源名称！！！"
+    }
+
+    if(uniqueCode!=''){
+        $.ajax({
+            type: 'post',
+            url: '/EquipInfo/validateEquipCode?UniqueCode='+uniqueCode,
+            async: false,
+            contentType : 'application/json;charset=utf-8',
+            success: function (result) {
+                if(!result.end){
+                    info="此工艺单元的唯一编码已存在";
+                }
+            }
+        });
+    }
+
     if(info==""){
         return true;
     }
