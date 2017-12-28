@@ -775,7 +775,7 @@ function initEquipInfoTable() {
                 field: 'equipCode',
                 title: '设备名称',
                 halign: 'center',
-                width: '20%',
+                // width: '19%',
                 cellStyle: function (value, row, index, field) {
                     return {
                         classes: '',
@@ -789,7 +789,7 @@ function initEquipInfoTable() {
                 field: 'alarmCode',
                 title: '报警类型',
                 halign: 'center',
-                width: '20%',
+                width: '18%',
                 cellStyle: function (value, row, index, field) {
                     return {
                         classes: '',
@@ -803,7 +803,7 @@ function initEquipInfoTable() {
                 field: 'alarmDate',
                 title: '报警时间',
                 halign: 'center',
-                width: '20%',
+                width: '19%',
                 cellStyle: function (value, row, index, field) {
                     return {
                         classes: '',
@@ -817,7 +817,7 @@ function initEquipInfoTable() {
                 field: 'realValue',
                 title: '实时值',
                 halign: 'center',
-                width: '20%',
+                width: '19%',
                 cellStyle: function (value, row, index, field) {
                     return {
                         classes: '',
@@ -831,7 +831,7 @@ function initEquipInfoTable() {
                 field: 'Threshold',
                 title: '阈值',
                 halign: 'center',
-                width: '20%',
+                width: '19%',
                 cellStyle: function (value, row, index, field) {
                     return {
                         classes: '',
@@ -967,9 +967,9 @@ function showAirIfo(unitId){
     if(tableFlag1==0){
         initAirIfoTable();
         tableFlag1=1;
-    }else{
-        $("#airInfoTable").bootstrapTable("refresh");
     }
+    $("#airInfoTable").bootstrapTable("refresh");
+
     $("#airInfoModal").modal("show");
 
 }
@@ -981,9 +981,8 @@ function showAlarmInfo(equip){
     if(tableFlag2==0){
         initEquipInfoTable();
         tableFlag2=1;
-    }else{
-        $('#equipInfoTable').bootstrapTable("refresh");
     }
+    $('#equipInfoTable').bootstrapTable("refresh");
     $("#equipInfoModal").modal("show");
 
 }
