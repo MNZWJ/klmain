@@ -34,15 +34,18 @@
     <select id="getAllSysOrganises" resultMap="BaseResultMap">
         SELECT OrganiseId,OrganiseName,ParentId,ShowOrder,IsDel,
                 OrganiseCode,iconField,OrganiseLevel,OrgType
-
         FROM TB_SYS_Organise
         WHERE IsDel='0'
-
     </select>
 
     <!--加载组织机构树-->
     <select id="getSysOrganiseTreeList" resultType="ax.kl.entity.TreeModel">
-        SELECT OrganiseId AS id,ParentId as parentId,OrganiseName AS text,OrganiseCode AS code FROM  TB_SYS_Organise WHERE IsDel='0' ORDER BY ShowOrder
+        SELECT o.OrganiseId AS id,o.ParentId as parentId,o.OrganiseName AS text,o.OrganiseCode AS code,
+                (CASE WHEN count(*)>1 THEN '../../Images/Common/org1.png' ELSE '../../Images/Common/org2.png' END) AS 'image'
+          FROM TB_SYS_ORGANISE o
+          LEFT JOIN TB_SYS_ORGANISE u
+            ON  u.ParentId=o.OrganiseId
+         GROUP BY o.OrganiseId,o.OrganiseName,o.ParentId,o.OrganiseCode
     </select>
 
     <!--插入组织机构-->
