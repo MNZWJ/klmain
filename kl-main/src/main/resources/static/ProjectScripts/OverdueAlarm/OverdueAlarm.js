@@ -1,6 +1,7 @@
 var companyId = "";
 var scanHeight = "";
 var flagTable=0;
+var selected = 0;
 //判断模态窗是否有数据：0 未加载,1 有数据,2 无数据
 var cerdiv = 0;
 var equipdiv= 0;
@@ -367,6 +368,7 @@ function openwindow() {
 
 //查询企业
 function searchCompanyList(real) {
+    selected = 1;
     var searchCompanyName = mini.get("searchCompanyName").getText();
     var searchScaleCode = mini.get("searchScaleCode").getValue();
     var searchTypeCode = mini.get("searchTypeCode").getValue();
@@ -406,7 +408,7 @@ function clearSearch() {
 //初始化socket连接
 function initSocket(){
     // 建立连接对象（还未发起连接）
-    var socket = new SockJS("http://"+window.location.hostname+":"+window.location.port+"/webSocketServer?a=b&c=d");
+    var socket = new SockJS("http://"+window.location.hostname+":"+window.location.port+"/webSocketServer");
 
     // 获取 STOMP 子协议的客户端对象
     var stompClient = Stomp.over(socket);
@@ -421,20 +423,24 @@ function initSocket(){
                 var data = JSON.parse(response.body);
                 var comlist = searchCompanyList(true);
                 var c = [];
-                $.each(comlist,function (i,n) {
-                    $.each(data,function (a,b) {
-                        if(n.companyId==b.companyId){
-                            c.push(b);
-                        }
-                    })
-                })
+                if (selected==1){
+                    $.each(comlist,function (i,n) {
+                        $.each(data,function (a,b) {
+                            if(n.companyId==b.companyId){
+                                c.push(b);
+                            }
+                        })
+                    });
+                }else {
+                    c=data;
+                }
                 loadCompanyList(c);
 
             });
         },
         function errorCallBack(error) {
             // 连接失败时（服务器响应 ERROR 帧）的回调方法
-            alert("连接失败");
+
         }
     );
 }
