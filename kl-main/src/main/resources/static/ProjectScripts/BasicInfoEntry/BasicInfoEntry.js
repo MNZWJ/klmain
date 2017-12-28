@@ -36,7 +36,7 @@ $(function () {
 
     //加载列表
     $('#enterpriseTable').bootstrapTable({
-        //height: scanHeight - 6,
+        height: scanHeight - 6,
         url: '/EnterpriseInfo/getCompanyInfoList',
         method: 'get',                      //请求方式（*）
         toolbar: '#enterpriseToolbar',                //工具按钮用哪个容器
