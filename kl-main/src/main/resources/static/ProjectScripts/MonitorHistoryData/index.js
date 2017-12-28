@@ -53,6 +53,7 @@ function initTable(){
                 field: 'dataNum',
                 halign: 'center',
                 align: 'center',
+                width:'5%',
                 formatter: function (value, row, index) {
                     var page = $('#dataTable').bootstrapTable('getOptions');
                     return (page.pageNumber - 1) * page.pageSize + index + 1;
@@ -62,49 +63,57 @@ function initTable(){
                 field: 'companyName',
                 title: '企业名称',
                 halign: 'center',
-                align: 'left'
+                align: 'left',
+                width:'15%'
             },
             {
                 field: 'dResourceName',
                 title: '重大危险源名称',
                 halign: 'center',
-                align: 'left'
+                align: 'left',
+                width:'25%'
             },
             {
                 field: 'unitName',
                 title: '工艺单元',
                 halign: 'center',
-                align: 'center'
+                align: 'center',
+                width:'10%'
             },
             {
                 field: 'equipName',
                 title: '设备名称',
                 halign: 'center',
-                align: 'center'
+                align: 'center',
+                width:'10%'
             },
             {
                 field: 'targetName',
                 title: '指标名称',
                 halign: 'center',
-                align: 'center'
+                align: 'center',
+                width:'10%'
             },
             {
                 field: 'realValue',
                 title: '实时值',
                 halign: 'center',
-                align: 'center'
+                align: 'center',
+                width:'5%'
             },
             {
                 field: 'targetUnit',
                 title: '单位',
                 halign: 'center',
-                align: 'center'
+                align: 'center',
+                width:'5%'
             },
             {
                 field: 'collectDate',
                 title: '采集时间',
                 halign: 'center',
-                align: 'center'
+                align: 'center',
+                width:'13%'
             }
         ]
     });
