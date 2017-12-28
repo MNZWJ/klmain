@@ -43,7 +43,7 @@ $(function () {
 
     //获取设备类型集合
     getEquipType();
-    
+
     //获取设备状态集合
     getEquipStatus();
 
@@ -291,18 +291,18 @@ function initTable(){
             checkbox: true,
             width:'3%',
         },{
-                field: 'unitName',
-                title: '工艺单元名称',
-                halign: 'center',
-                width:'10%',
-                align:'center',
-                cellStyle: function (value, row, index, field) {
-                    return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                },
-                formatter: function (value, rowData, rowIndex) {
-                    return "<a href='javascript:look(\""+rowData.unitId+"\")'>" + value + "</a>";
-                }
-            },{
+            field: 'unitName',
+            title: '工艺单元名称',
+            halign: 'center',
+            width:'10%',
+            align:'center',
+            cellStyle: function (value, row, index, field) {
+                return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+            },
+            formatter: function (value, rowData, rowIndex) {
+                return "<a href='javascript:look(\""+rowData.unitId+"\")'>" + value + "</a>";
+            }
+        },{
             field: 'companyName',
             title: '企业名称',
             halign: 'center',
@@ -338,30 +338,30 @@ function initTable(){
             width:'10%',
             align:'center'
         },{
-                field: 'fEI',
-                title: '火灾爆炸指数F&EI',
-                halign: 'center',
-                width:'10%',
-                align:'center'
-            },   {
-                field: 'afterFEI',
-                title: '补偿后的F&EI',
-                halign: 'center',
-                width:'8.5%',
-                align:'center'
-            },{
-                field: 'dangerRank',
-                title: '危险等级',
-                halign: 'center',
-                width:'7.5%',
-                align:'center'
-            },   {
-                field: 'afterDangerRank',
-                title: '补偿后的危险等级',
-                halign: 'center',
-                width:'10%',
-                align:'center'
-            }
+            field: 'fEI',
+            title: '火灾爆炸指数F&EI',
+            halign: 'center',
+            width:'10%',
+            align:'center'
+        },   {
+            field: 'afterFEI',
+            title: '补偿后的F&EI',
+            halign: 'center',
+            width:'8.5%',
+            align:'center'
+        },{
+            field: 'dangerRank',
+            title: '危险等级',
+            halign: 'center',
+            width:'7.5%',
+            align:'center'
+        },   {
+            field: 'afterDangerRank',
+            title: '补偿后的危险等级',
+            halign: 'center',
+            width:'10%',
+            align:'center'
+        }
         ]
     });
 }
@@ -689,7 +689,7 @@ function unitAdd() {
 
     changeDangerSource(document.myForm);
 
-    　
+
     $("#UniqueCodeU").removeAttr("readonly");
     $("#SourceId").selectpicker('val','');
     $("#DangerRank").selectpicker('val','');
