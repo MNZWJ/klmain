@@ -52,7 +52,7 @@
         SELECT
 	pu.UnitName,pu.UnitId,
 
-	SUM(case WHEN ad.TargetCode='0' THEN 1 ELSE 0 END) AS qiti
+	SUM(case WHEN ad.TargetCode='0' AND ad.Status='1' THEN 1 ELSE 0 END) AS qiti
 FROM
 	TB_BASE_PROCESS_UNIT pu
 LEFT JOIN TB_REALTIME_ALARM_DATA ad ON ad.EquipCode LIKE pu.UniqueCode+'%'
@@ -61,6 +61,29 @@ LEFT JOIN TB_REALTIME_ALARM_DATA ad ON ad.EquipCode LIKE pu.UniqueCode+'%'
 GROUP BY pu.UnitName,pu.UnitId
 
     </select>
+
+    <!--获取气体报警信息-->
+    <select id="getAilAlarmInfo" resultType="ax.kl.entity.AlarmInfoEntity">
+
+        SELECT
+	ad.RealId,
+	ei.EquipName AS EquipCode,
+	[at].TypeName AS AlarmCode,
+	ad.AlarmDate,
+	ad.RealValue,
+	ad.Threshold
+FROM
+	TB_BASE_PROCESS_UNIT pu
+JOIN TB_REALTIME_ALARM_DATA ad ON ad.EquipCode LIKE pu.UniqueCode + '%'
+JOIN TB_BASE_EQUIP_INFO ei ON ei.UniqueCode = ad.EquipCode
+JOIN TB_BASE_ALARM_TYPE AT ON ad.AlarmCode = [at].TypeCode
+JOIN TB_BASE_EQUIP_TYPE et ON ad.EquipType = et.TypeCode
+WHERE
+	pu.UnitId = #{unitId}
+AND ad.Status = '1'
+
+    </select>
+    
 
     <!--获取设备报警信息-->
     <select id="getEquipAlarmInfo" resultType="ax.kl.entity.EquipInfo">
@@ -73,6 +96,23 @@ LEFT JOIN TB_REALTIME_ALARM_DATA ad ON (ad.EquipCode=ei.UniqueCode AND ad.Status
 WHERE pu.SourceId=#{sourceId}
 GROUP BY ei.EquipName,ei.EquipId,ei.UnitId,et.NormalPict,et.AlarmPict
 ORDER BY alarmNum DESC
+    </select>
+
+    <!--获取单个报警信息-->
+    <select id="getEquipAlarm" resultType="ax.kl.entity.AlarmInfoEntity">
+
+        SELECT
+	ad.RealId,
+	ei.EquipName AS EquipCode,
+	[at].TypeName AS AlarmCode,
+	ad.AlarmDate,
+	ad.RealValue,
+	ad.Threshold
+FROM
+	TB_BASE_EQUIP_INFO ei
+JOIN TB_REALTIME_ALARM_DATA ad ON ei.UniqueCode = ad.EquipCode
+JOIN TB_BASE_ALARM_TYPE AT ON ad.AlarmCode = [at].TypeCode
+WHERE ei.EquipId=#{equipId} AND ad.Status='1'
     </select>
 
 

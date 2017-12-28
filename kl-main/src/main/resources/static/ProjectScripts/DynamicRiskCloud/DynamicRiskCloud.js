@@ -2,8 +2,12 @@ var headPoints = [];
 var hazardList = [];
 var sourceId = "";
 var scanHeight = 0;
+var unit="";
+var equip="";
 //判断是否初始化表格
 var tableFlag = 0;
+var tableFlag1 = 0;
+var tableFlag2 = 0;
 var methodRefresh=true;
 $(function () {
     //获取浏览器高度
@@ -312,8 +316,8 @@ function onMarkClick(e) {
         riskLevel = "一般";
         riskColor = "#ff881f";
     } else {
-        riskLevel = "无未";
-        riskColor = "#ffe01f";
+        riskLevel = "无";
+        riskColor = "#808080";
     }
 
     $(".myModalHeader").css("background-color", titleColor);
@@ -329,11 +333,13 @@ function onMarkClick(e) {
         success: function (result) {
             var strDiv = "";
             $.each(result, function (i, n) {
-                var riskType = "无报警";
+                var riskMethod = "";
+                var cursor="";
                 var imgUrl = "../../Images/Common/气体检测.png";
                 if (parseInt(n.qiti) > 0) {
-                    riskType = "有毒气、可燃气体报警";
+                    riskMethod = "onclick='showAirIfo(\""+n.UnitId+"\")'";
                     imgUrl = "../../Images/Common/气体检测报警.png";
+                    cursor="cursor:pointer"
                 }
                 var alarmData=null;
                 $.ajax({
@@ -347,7 +353,7 @@ function onMarkClick(e) {
                 });
 
 
-                strDiv += "<tr><td style='padding-left:10px;width: 49.5%;height: 100px;border: solid 1px #000;'>" + "<span>名称：" + n.UnitName + "</span><br/>" + "<span >有毒气、可燃气体报警<img style='width: 40px;height: 40px;margin-left: 10px;' src='" + imgUrl + "'></span>" + "</td>" + "<td  style='width: 50%;height: 100px;border: solid 1px #000;'>" +
+                strDiv += "<tr><td style='padding-left:10px;width: 49.5%;height: 100px;border: solid 1px #000;'>" + "<span>名称：" + n.UnitName + "</span><br/>" + "<span >有毒气、可燃气体报警<img style='width: 40px;height: 40px;margin-left: 10px;"+cursor+"' "+riskMethod+" src='" + imgUrl + "'></span>" + "</td>" + "<td  style='width: 50%;height: 100px;border: solid 1px #000;'>" +
 
                     "<table style='width: 100%;height: 100%;table-layout: fixed'>";
                 if(alarmData!=null&&alarmData!=""&&alarmData[n.UnitId]!=undefined&&alarmData[n.UnitId].length>0){
@@ -356,12 +362,16 @@ function onMarkClick(e) {
                     "</td><td style='width: 80%;'><div id='"+n.UnitId+"' style='width: 100%;height: 100%;overflow-x: hidden'><ul style='width:"+alarmData[n.UnitId].length*100+"px;position: relative;top: 50%;margin-top: -40px;'>";
                     $.each(alarmData[n.UnitId],function(j,m){
                         var imgName="";
+                        var cursor="";
+                        var showAlarmInfo="";
                         if(parseInt(m.alarmNum)>0){
+                            showAlarmInfo="onclick='showAlarmInfo(\""+m.equipId+"\")'"
+                            cursor="cursor:pointer";
                             imgName=m.alarmPict;
                         }else{
                             imgName=m.normalPict;
                         }
-                        strDiv +="<li style='width: 100px;text-align: center;overflow: hidden;white-space: nowrap;text-overflow: ellipsis'><img title='"+m.equipName+"' src='../../Images/EquipIcon/"+imgName+".png' style='width: 50px;height: 50px;'></img><br/><span  title='"+m.equipName+"'>" +
+                        strDiv +="<li style='width: 100px;text-align: center;overflow: hidden;white-space: nowrap;text-overflow: ellipsis'><img "+showAlarmInfo+" title='"+m.equipName+"' src='../../Images/EquipIcon/"+imgName+".png' style='width: 50px;height: 50px;"+cursor+"'></img><br/><span  title='"+m.equipName+"'>" +
                         m.equipName
                         +"</span></li>";
                     })
@@ -613,6 +623,222 @@ function initTable() {
 
 }
 
+
+
+//初始化气体报警
+function initAirIfoTable() {
+
+    $("#airInfoTable").bootstrapTable("destroy");
+    //气体报警表格
+    $('#airInfoTable').bootstrapTable({
+        height: scanHeight * 4 / 7,
+        striped: true,      //是否显示行间隔色
+        cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+        method: 'get',//请求方式
+        url: '/DynamicRiskCloud/getAilAlarmInfo',//请求url
+
+
+        clickToSelect: true,//是否启用点击选中行
+        showRefresh: false,//是否显示 刷新按钮
+        queryParams: function (pageReqeust) {
+            pageReqeust.unit = unit;
+            return pageReqeust;
+        },
+        rowStyle: function () {//自定义行样式
+            return "bootTableRow";
+        },
+        onLoadError: function () {
+        },
+
+        columns: [
+            {
+                title: '序号',
+                formatter: function (value, row, index) {
+
+                    return index + 1;
+                },
+                width: '6%'
+            } , {
+                field: 'equipCode',
+                title: '设备名称',
+                halign: 'center',
+                width: '20%',
+                cellStyle: function (value, row, index, field) {
+                    return {
+                        classes: '',
+                        css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis', 'overflow': 'hidden'}
+                    };
+                },
+                formatter: function (value, row, index) {
+                    return '<span title="' + value + '">' + value + '</span>'
+                }
+            }, {
+                field: 'alarmCode',
+                title: '报警类型',
+                halign: 'center',
+                width: '20%',
+                cellStyle: function (value, row, index, field) {
+                    return {
+                        classes: '',
+                        css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis', 'overflow': 'hidden'}
+                    };
+                },
+                formatter: function (value, row, index) {
+                    return '<span title="' + value + '">' + value + '</span>'
+                }
+            }, {
+                field: 'alarmDate',
+                title: '报警时间',
+                halign: 'center',
+                width: '20%',
+                cellStyle: function (value, row, index, field) {
+                    return {
+                        classes: '',
+                        css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis', 'overflow': 'hidden'}
+                    };
+                },
+                formatter: function (value, row, index) {
+                    return '<span title="' + value + '">' + value + '</span>'
+                }
+            },{
+                field: 'realValue',
+                title: '实时值',
+                halign: 'center',
+                width: '20%',
+                cellStyle: function (value, row, index, field) {
+                    return {
+                        classes: '',
+                        css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis', 'overflow': 'hidden'}
+                    };
+                },
+                formatter: function (value, row, index) {
+                    return '<span title="' + value + '">' + value + '</span>'
+                }
+            },{
+                field: 'Threshold',
+                title: '阈值',
+                halign: 'center',
+                width: '20%',
+                cellStyle: function (value, row, index, field) {
+                    return {
+                        classes: '',
+                        css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis', 'overflow': 'hidden'}
+                    };
+                }
+            }
+        ]
+    });
+
+}
+
+//初始化单个设备报警信息
+function initEquipInfoTable() {
+
+    $("#equipInfoTable").bootstrapTable("destroy");
+    //气体报警表格
+    $('#equipInfoTable').bootstrapTable({
+        height: scanHeight * 4 / 7,
+        striped: true,      //是否显示行间隔色
+        cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+        method: 'get',//请求方式
+        url: '/DynamicRiskCloud/getEquipAlarm',//请求url
+
+
+        clickToSelect: true,//是否启用点击选中行
+        showRefresh: false,//是否显示 刷新按钮
+        queryParams: function (pageReqeust) {
+            pageReqeust.equipId = equipId;
+            return pageReqeust;
+        },
+        rowStyle: function () {//自定义行样式
+            return "bootTableRow";
+        },
+        onLoadError: function () {
+        },
+
+        columns: [
+            {
+                title: '序号',
+                formatter: function (value, row, index) {
+
+                    return index + 1;
+                },
+                width: '6%'
+            } , {
+                field: 'equipCode',
+                title: '设备名称',
+                halign: 'center',
+                width: '20%',
+                cellStyle: function (value, row, index, field) {
+                    return {
+                        classes: '',
+                        css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis', 'overflow': 'hidden'}
+                    };
+                },
+                formatter: function (value, row, index) {
+                    return '<span title="' + value + '">' + value + '</span>'
+                }
+            }, {
+                field: 'alarmCode',
+                title: '报警类型',
+                halign: 'center',
+                width: '20%',
+                cellStyle: function (value, row, index, field) {
+                    return {
+                        classes: '',
+                        css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis', 'overflow': 'hidden'}
+                    };
+                },
+                formatter: function (value, row, index) {
+                    return '<span title="' + value + '">' + value + '</span>'
+                }
+            }, {
+                field: 'alarmDate',
+                title: '报警时间',
+                halign: 'center',
+                width: '20%',
+                cellStyle: function (value, row, index, field) {
+                    return {
+                        classes: '',
+                        css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis', 'overflow': 'hidden'}
+                    };
+                },
+                formatter: function (value, row, index) {
+                    return '<span title="' + value + '">' + value + '</span>'
+                }
+            },{
+                field: 'realValue',
+                title: '实时值',
+                halign: 'center',
+                width: '20%',
+                cellStyle: function (value, row, index, field) {
+                    return {
+                        classes: '',
+                        css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis', 'overflow': 'hidden'}
+                    };
+                },
+                formatter: function (value, row, index) {
+                    return '<span title="' + value + '">' + value + '</span>'
+                }
+            },{
+                field: 'Threshold',
+                title: '阈值',
+                halign: 'center',
+                width: '20%',
+                cellStyle: function (value, row, index, field) {
+                    return {
+                        classes: '',
+                        css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis', 'overflow': 'hidden'}
+                    };
+                }
+            }
+        ]
+    });
+
+}
+
+
+
 //查看事故隐患
 function showTable() {
     $("#hiddenAccidentModal").modal("show");
@@ -634,7 +860,8 @@ function resizePage() {
     scanHeight = $(window).height();
 
     tableFlag = 0;
-
+    tableFlag1=0;
+    tableFlag2=0;
 }
 
 
@@ -728,4 +955,28 @@ function initSocket(){
 }
 
 
+function showAirIfo(unitId){
+    unit=unitId;
+    if(tableFlag1==0){
+        initAirIfoTable();
+        tableFlag1=1;
+    }else{
+        $("#airInfoTable").bootstrapTable("refresh");
+    }
+    $("#airInfoModal").modal("show");
 
+}
+
+
+function showAlarmInfo(equip){
+    equipId=equip;
+
+    if(tableFlag2==0){
+        initEquipInfoTable();
+        tableFlag2=1;
+    }else{
+        $('#equipInfoTable').bootstrapTable("refresh");
+    }
+    $("#equipInfoModal").modal("show");
+
+}

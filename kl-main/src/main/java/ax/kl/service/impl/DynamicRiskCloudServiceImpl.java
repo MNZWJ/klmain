@@ -1,5 +1,6 @@
 package ax.kl.service.impl;
 
+import ax.kl.entity.AlarmInfoEntity;
 import ax.kl.entity.DangerSourceInfo;
 import ax.kl.entity.EquipInfo;
 import ax.kl.mapper.DynamicRiskCloudMapper;
@@ -93,6 +94,28 @@ public class DynamicRiskCloudServiceImpl implements DynamicRiskCloudService {
         Map<String,List<EquipInfo>> map=equipList.stream().collect(Collectors.groupingBy(EquipInfo::getUnitId));
 
         return map;
+    }
+
+    /**
+     * 获取气体报警信息
+     *
+     * @param unitId
+     * @return
+     */
+    @Override
+    public List<AlarmInfoEntity> getAilAlarmInfo(String unitId) {
+        return dynamicRiskCloudMapper.getAilAlarmInfo(unitId);
+    }
+
+    /**
+     * 获取单个设备报警信息
+     *
+     * @param equipId
+     * @return
+     */
+    @Override
+    public List<AlarmInfoEntity> getEquipAlarm(String equipId) {
+        return dynamicRiskCloudMapper.getEquipAlarm(equipId);
     }
 
 
