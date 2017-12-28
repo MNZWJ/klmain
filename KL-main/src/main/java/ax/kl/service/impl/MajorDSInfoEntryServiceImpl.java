@@ -541,7 +541,6 @@ public class MajorDSInfoEntryServiceImpl implements MajorDSInfoEntryService {
             dangerSourceInfo.setDeathToll(value);
 
             cell =row.getCell(colum.get("厂区边界外500米范围人数估值"));
-            int border=0;
             if (cell!=null){
                 value=getCellValue(cell);
             }else{
