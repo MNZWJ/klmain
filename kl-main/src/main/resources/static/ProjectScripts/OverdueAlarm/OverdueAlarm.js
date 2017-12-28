@@ -403,6 +403,7 @@ function clearSearch() {
     mini.get("searchCompanyName").setValue('');
     mini.get("searchScaleCode").setValue('');
     mini.get("searchTypeCode").setValue('');
+    mini.get("alarm").setValue('');
 }
 
 //初始化socket连接

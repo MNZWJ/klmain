@@ -77,7 +77,7 @@ $(function () {
                 field: 'contactWay',
                 title: '联系方式',
                 halign: 'center',
-                align:'left',
+                align:'center',
                 class: "bootTableRow",
                 width: "8.3%",
                 formatter: function (value, row, index) {
@@ -415,6 +415,7 @@ function initTable() {
             {
                 title: '序号',
                 width: '5%',
+                align: 'center',
                 formatter: function (value, row, index) {
                     return index + 1;
                 }
@@ -423,6 +424,7 @@ function initTable() {
                 field: 'sourceName',
                 title: '危险源名称',
                 halign: 'center',
+                align: 'left',
                 width: '30%',
                 class: "bootTableRow",
                 formatter: function (value, row, index) {
@@ -431,18 +433,21 @@ function initTable() {
             }, {
                 field: 'rank',
                 title: '危险源等级',
+                align: 'center',
                 halign: 'center',
-                width: '20%'
+                width: '10%'
             }, {
                 field: 'OutPersonCount',
                 title: '500米范围内人数估值',
                 halign: 'center',
-                width: '20%'
+                align: 'right',
+                width: '16%'
             }, {
                 field: 'recordDate',
                 title: '投用时间',
+                align: 'center',
                 halign: 'center',
-                width: '30%'
+                width: '9%'
             }]
     });
     //危险关联工艺
@@ -466,6 +471,7 @@ function initTable() {
         columns: [
             {
                 title: '序号',
+                align: 'center',
                 formatter: function (value, row, index) {
                     return index + 1;
                 }
