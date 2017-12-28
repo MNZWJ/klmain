@@ -279,6 +279,7 @@ function initTable(){
         columns: [{
             title: '序号',
             field: 'number1',
+            width:'4%',
             formatter: function (value, row, index) {
                 var page = $('#processUnitTable').bootstrapTable('getOptions');
 
@@ -286,11 +287,13 @@ function initTable(){
             }
         }, {
             field: 'state',
-            checkbox: true
+            checkbox: true,
+            width:'3%',
         },{
                 field: 'unitName',
                 title: '工艺单元名称',
                 halign: 'center',
+                width:'10%',
                 align:'center',
                 cellStyle: function (value, row, index, field) {
                     return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
@@ -302,6 +305,7 @@ function initTable(){
             field: 'companyName',
             title: '企业名称',
             halign: 'center',
+            width:'15%',
             align:'left',
             cellStyle: function (value, row, index, field) {
                 return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
@@ -313,6 +317,7 @@ function initTable(){
             field: 'sourceId',
             title: '危险源名称',
             halign: 'center',
+            width:'23%',
             align:'left',
             cellStyle: function (value, row, index, field) {
                 return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
@@ -329,26 +334,31 @@ function initTable(){
             field: 'uniqueCodeU',
             title: '唯一编码',
             halign: 'center',
+            width:'10%',
             align:'center'
         },{
                 field: 'fEI',
                 title: '火灾爆炸指数F&EI',
                 halign: 'center',
+                width:'10%',
                 align:'center'
             },   {
                 field: 'afterFEI',
                 title: '补偿后的F&EI',
                 halign: 'center',
+                width:'8.5%',
                 align:'center'
             },{
                 field: 'dangerRank',
                 title: '危险等级',
                 halign: 'center',
+                width:'7.5%',
                 align:'center'
             },   {
                 field: 'afterDangerRank',
                 title: '补偿后的危险等级',
                 halign: 'center',
+                width:'10%',
                 align:'center'
             }
         ]
