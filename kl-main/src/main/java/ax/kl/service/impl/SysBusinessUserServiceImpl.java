@@ -2,8 +2,10 @@ package ax.kl.service.impl;
 
 import ax.kl.common.DESEncryptTools;
 import ax.kl.common.PublicTools;
+import ax.kl.common.TreeUtil;
 import ax.kl.entity.LoginInfo;
 import ax.kl.entity.SysOrganise;
+import ax.kl.entity.TreeModel;
 import ax.kl.service.SysBusinessUserService;
 import com.baomidou.mybatisplus.plugins.Page;
 import ax.kl.entity.SysBusinessUser;
@@ -98,6 +100,11 @@ public class SysBusinessUserServiceImpl implements SysBusinessUserService {
             loginInfo = list.get(0);
         }
         return loginInfo;
+    }
+
+    @Override
+    public List<TreeModel> getSysOrganiseTreeList() {
+        return TreeUtil.getTree(this.sysBusinessUserMapper.getSysOrganiseTreeList());
     }
 
 

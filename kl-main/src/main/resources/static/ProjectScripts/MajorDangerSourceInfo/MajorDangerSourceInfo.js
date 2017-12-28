@@ -41,23 +41,32 @@ $(function () {
             title: '序号',
             halign: 'center',
             align: 'center',
-            width: '5%',
+            width: '4%',
             valign:'middle',
             formatter: function (value, row, index) {
                 var page = $('#MajorTable').bootstrapTable('getOptions');
                 return (page.pageNumber - 1) * page.pageSize + index + 1;
             }
-        }, {
-            field: 'state',
-            checkbox: true,
+        },{
+            field: 'sourceName',
+            title: '危险源名称',
+            halign: 'center',
             valign:'middle',
-            width: '3%'
-        }, {
+            width:'20%',
+            cellStyle: function (value, row, index, field) {
+                return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
+            },
+            formatter: function (value, row, index) {
+                value = value==undefined?"":value;
+                return '<span title="'+value+'">'+value+'</span>'
+            }
+        },
+            {
             field: 'companyId',
             title: '企业名称',
             halign: 'center',
             valign:'middle',
-            width:'9%',
+            width:'15%',
             cellStyle: function (value, row, index, field) {
                 return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
             },
@@ -67,62 +76,27 @@ $(function () {
 
             }
         },{
-            field: 'sourceName',
-            title: '危险源名称',
-            halign: 'center',
-            valign:'middle',
-            width:'9%',
-            cellStyle: function (value, row, index, field) {
-                return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-            },
-            formatter: function (value, row, index) {
-                value = value==undefined?"":value;
-                return '<span title="'+value+'">'+value+'</span>'
-            }
-        }, {
             field: 'rValue',
             title: 'R值',
             halign: 'center',
             align: 'right',
             valign:'middle',
-            width:'9%'
+            width:'4%'
         }, {
             field: 'rank',
             title: '危险源等级',
             halign: 'center',
             align: 'center',
             valign:'middle',
-            width:'9%'
+            width:'7%'
         },
-           /* {
-                field: 'recordNo',
-                title: '备案编号',
-                halign: 'center',
-                align: 'center',
-                width:'15%',
-                /!* cellStyle: function (value, row, index, field) {
-                 return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-             },
-                 formatter: function (value, row, index) {
-                     return '<span title="'+value+'">'+value+'</span>'
-                 }*!/
-            },*/
-            {
-                field: 'validity',
-                title: '有效期',
-                halign: 'center',
-                align: 'center',
-                valign:'middle',
-                width:'9%'
-
-            },
             {
                 field: 'status',
                 title: '状态',
                 halign: 'center',
                 align: 'center',
                 valign:'middle',
-                width:'9%',
+                width:'7%',
                 cellStyle: function (value, row, index, field) {
                     return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
                 },
@@ -137,7 +111,7 @@ $(function () {
                 halign: 'center',
                 align: 'center',
                 valign:'middle',
-                width:'9%'
+                width:'6%'
             },
             {
                 field: 'deathToll',
@@ -145,7 +119,14 @@ $(function () {
                 halign: 'center',
                 align: 'right',
                 valign:'middle',
-                width:'9%'
+                width:'7%'
+            },{
+                field: 'outPersonCount',
+                title: '500米人数<br/>估值',
+                halign: 'center',
+                valign:'middle',
+                align: 'right',
+                width:'6%'
             },
             {
                 field: 'recordDate',
@@ -153,22 +134,15 @@ $(function () {
                 halign: 'center',
                 align: 'center',
                 valign:'middle',
-                width:'9%'
-                /* cellStyle: function (value, row, index, field) {
-                     return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
-                 },
-                 formatter: function (value, row, index) {
-                     return '<span title="'+value+'">'+value+'</span>'
-                 }*/
-            },
-            {
-                field: 'outPersonCount',
-                title: '500米人数估值',
+                width:'6%'
+            }, {
+                field: 'validity',
+                title: '有效期',
                 halign: 'center',
+                align: 'center',
                 valign:'middle',
-                align: 'right'
-            }
-        ]
+                width:'6%'
+            }    ]
     });
     clearRole();
 });

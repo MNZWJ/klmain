@@ -414,13 +414,11 @@ function openCondition(){
                 {
 
                     title: '序号',
+                    align:'center',
                     formatter: function (value, row, index) {
-
-
                         return index + 1;
                     },
                     width:'5%'
-
                 }
                 ,
 
@@ -445,7 +443,6 @@ function openCondition(){
                     field: 'environment',
                     title: '周边环境名称',
                     halign: 'center',
-
                     cellStyle: function (value, row, index, field) {
                         return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
                     },
@@ -460,6 +457,7 @@ function openCondition(){
                 }, {
                     field: 'realDistance',
                     title: '实际距离',
+                    align:'right',
                     halign: 'center',
                     cellStyle: function (value, row, index, field) {
                         return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
@@ -475,6 +473,7 @@ function openCondition(){
                 }, {
                     field: 'standardDistance',
                     title: '标准要求',
+                    align:'right',
                     halign: 'center',
                     cellStyle: function (value, row, index, field) {
                         return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
@@ -491,6 +490,7 @@ function openCondition(){
                 }, {
                     field: 'conformance',
                     title: '与标准符合性',
+                    align:'center',
                     halign: 'center',
                     cellStyle: function (value, row, index, field) {
                         return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis','overflow': 'hidden'}};
@@ -546,9 +546,9 @@ function openProtection(){
                 {
 
                     title: '序号',
+                    align:'center',
+                    width:'5%',
                     formatter: function (value, row, index) {
-
-
                         return index + 1;
                     },
 
@@ -574,9 +574,9 @@ function openProtection(){
                     }
                 }, {
                     field: 'conformance',
-                    title: '与规定复合型',
+                    title: '与规定符合型',
+                    align:'center',
                     halign: 'center',
-
                 }]
         });
     }else{

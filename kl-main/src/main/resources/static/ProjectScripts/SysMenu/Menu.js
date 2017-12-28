@@ -182,7 +182,8 @@ function initTable(){
 
                     return (page.pageNumber - 1) * page.pageSize + index + 1;
                 },
-                width:'6%'
+                width:'6%',
+                align: 'center',
             }
             ,
             {
@@ -204,6 +205,7 @@ function initTable(){
             }, {
                 field: 'MenuLevel',
                 title: '菜单等级',
+                align: 'center',
                 halign: 'center',
                 width: '20%'
             }]

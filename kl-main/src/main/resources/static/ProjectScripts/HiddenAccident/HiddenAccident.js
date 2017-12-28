@@ -35,10 +35,15 @@ $(function () {
 
            $('.dropdown-menu, .inner').css('max-height','280px')
 
-       } 
+       }
     });
 
 });
+
+//清空查询条件
+function clearRole() {
+    $("#searchName").selectpicker('val','');//清空查询框
+}
 
 //初始化地图
 function initMap() {

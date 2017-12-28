@@ -33,6 +33,8 @@ $(function () {
             var $jsonTree = $('#tree').treeview({
                 highlightSelected: true,//当选择节点时是否高亮显示。
                 showBorder: false,//是否在节点上显示边框。
+                showImage: true,
+                showIcon:true,
                 data: result.tm,
                 //节点选中方法
                 onNodeSelected: function (event, data) {
@@ -298,6 +300,7 @@ function initTable(){
             {
                 title: '序号',
                 field: 'number1',
+                align: 'center',
                 formatter: function (value, row, index) {
                     var page = $('#userTable').bootstrapTable('getOptions');
 
@@ -313,7 +316,7 @@ function initTable(){
                 field: 'userName',
                 title: '姓名',
                 halign: 'center',
-                align: 'center',
+                align: 'left',
                 width: '35%',
                 formatter: function (value, rowData, rowIndex) {
                     users.push(rowData);
@@ -341,7 +344,7 @@ function initTable(){
                 field: 'deptId',
                 title: '部门',
                 halign: 'center',
-                align: 'center',
+                align: 'left',
                 width: '40%',
                 formatter: function (value, row, index) {
                     $.each(sysOrgs, function (i, n) {

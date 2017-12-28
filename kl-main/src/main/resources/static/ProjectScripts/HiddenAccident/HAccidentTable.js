@@ -33,6 +33,7 @@ $(function () {
                 title: '序号',
                 halign: 'center',
                 align: 'center',
+                width:'5%',
                 formatter: function (value, row, index) {
                     var page = $('#table').bootstrapTable('getOptions');
                     return (page.pageNumber - 1) * page.pageSize + index + 1;
@@ -42,7 +43,7 @@ $(function () {
                 title: '重大危险源名称',
                 halign: 'center',
                 align: 'left',
-                width: '10%',
+                width: '20%',
                 class:"bootTableRow",
                 formatter: function (value, row, index) {
                     value = value ==undefined?'-':value;
@@ -53,13 +54,13 @@ $(function () {
                 title: '隐患描述',
                 halign: 'center',
                 align: 'left',
-                width: '8.63%',
+                width: '15%',
                 class:"bootTableRow",
                 formatter: function (value, row, index) {
                     value = value ==undefined?'-':value;
                     return '<span title="'+value+'">'+value+'</span>'
                 }
-            }, {
+            }, /*{
                 field: 'area',
                 title: '行政区划',
                 halign: 'center',
@@ -70,18 +71,7 @@ $(function () {
                     value = value ==undefined?'-':value;
                     return '<span title="'+value+'">'+value+'</span>'
                 }
-            }, {
-                field: 'industry',
-                title: '行业分类',
-                halign: 'center',
-                align: 'left',
-                width: '8.63%',
-                class:"bootTableRow",
-                formatter: function (value, row, index) {
-                    value = value ==undefined?'-':value;
-                    return '<span title="'+value+'">'+value+'</span>'
-                }
-            },{
+            }, *//*{
                 field: 'superviseDept',
                 title: '隐患监管部门',
                 halign: 'center',
@@ -92,7 +82,7 @@ $(function () {
                     value = value ==undefined?'-':value;
                     return '<span title="'+value+'">'+value+'</span>'
                 }
-            },{
+            },*/{
                 field: 'source',
                 title: '隐患来源',
                 halign: 'center',
@@ -119,6 +109,17 @@ $(function () {
                 title: '隐患级别',
                 halign: 'center',
                 align: 'center',
+                width: '8.63%',
+                class:"bootTableRow",
+                formatter: function (value, row, index) {
+                    value = value ==undefined?'-':value;
+                    return '<span title="'+value+'">'+value+'</span>'
+                }
+            },{
+                field: 'industry',
+                title: '行业分类',
+                halign: 'center',
+                align: 'left',
                 width: '8.63%',
                 class:"bootTableRow",
                 formatter: function (value, row, index) {
