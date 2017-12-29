@@ -385,6 +385,7 @@ function initEquip() {
                 title: '序号',
                 field: 'number1',
                 halign: 'center',
+                width:'65px',
                 align: 'center',
                 formatter: function (value, row, index) {
                     var page = $('#equipInfoTable').bootstrapTable('getOptions');
@@ -428,6 +429,7 @@ function initEquip() {
             },{
                 field: 'uniqueCode',
                 title: '唯一编码',
+                width: '135px',
                 halign: 'center',
                 editable:{
                     type: 'text',
