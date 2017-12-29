@@ -245,9 +245,9 @@ function loadCompanyList(companyList) {
     map.clearOverlays();
     $.each(companyList, function (i, n) {
         var tempPoint = new BMap.Point(n.longt, n.lat);
-        var myIcon = new BMap.Icon("../../Images/Common/红点.png", new BMap.Size(50, 50));
+        var myIcon = new BMap.Icon("../../Images/Common/红点.png", new BMap.Size(20, 35));
         if (n.certificateAlarm>0&&n.realtimeAlarm==0){
-            myIcon = new BMap.Icon("../../Images/Common/蓝点.png", new BMap.Size(50, 50));
+            myIcon = new BMap.Icon("../../Images/Common/蓝点.png", new BMap.Size(20, 35));
         }
         var marker = new BMap.Marker(wgs2bd(tempPoint), {
             title: n.companyName,
