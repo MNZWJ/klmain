@@ -34,7 +34,14 @@
     </select>
     <!--加载树-->
     <select id="getDictTreeList" resultType="ax.kl.entity.TreeModel">
-        SELECT DictId AS id,TypeId as parentId,DictName AS text,DictCode AS code FROM  TB_SYS_DATADICT WHERE IsDel='0' ORDER BY DictOrder
+        SELECT a.DictId AS id,a.TypeId as parentId,a.DictName AS text,a.DictCode AS code,
+			(CASE WHEN count(*)>1 THEN '../../Images/Common/menu1.png' ELSE '../../Images/Common/menu2.png' END) AS 'image'
+          FROM  TB_SYS_DATADICT a
+          LEFT JOIN TB_SYS_DATADICT b
+            ON  a.DictId=b.TypeId
+         WHERE a.IsDel='0'
+         GROUP BY a.DictId,a.TypeId,a.DictName,a.DictCode,a.DictOrder
+         ORDER BY a.DictOrder
     </select>
 
     <!--插入数据-->
