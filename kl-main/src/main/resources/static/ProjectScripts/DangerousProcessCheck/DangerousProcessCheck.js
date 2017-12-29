@@ -79,12 +79,7 @@ $(function () {
                 halign: 'center',
                 halign: 'center',
                 width:'15%'
-            } ,{
-                field: 'area',
-                title: '行政区域',
-                halign: 'center',
-                width:'15%'
-            },
+            }
         ]
     });
     clearRole();
