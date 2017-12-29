@@ -606,6 +606,7 @@ function initTable(x) {
                 field: 'number1',
                 halign: 'center',
                 align: 'center',
+                width:'10%',
                 formatter: function (value, row, index) {
                     var page = $('#table').bootstrapTable('getOptions');
                     return (page.pageNumber - 1) * page.pageSize + index + 1;
@@ -620,6 +621,7 @@ function initTable(x) {
                 title: '危险工艺名称',
                 halign: 'center',
                 align:'center',
+                width:'40%',
                 editable:{
                     emptytext: '请选择',
                     type: 'select',
@@ -643,6 +645,7 @@ function initTable(x) {
                 field: 'monitorUnit',
                 title: '重点监控单元',
                 halign: 'center',
+                width:'40%',
                 editable:{
                     type: 'text',
                     title: '重点监控单元',
@@ -713,6 +716,7 @@ function initCert(x) {
                 field: 'number1',
                 halign: 'center',
                 align: 'center',
+                width:'10%',
                 formatter: function (value, row, index) {
                     var page = $('#certTable').bootstrapTable('getOptions');
                     return (page.pageNumber - 1) * page.pageSize + index + 1;
@@ -727,6 +731,7 @@ function initCert(x) {
                 title: '证书类型',
                 halign: 'center',
                 align:'center',
+                width:'25%',
                 editable:{
                     type: 'select',
                     title: '证书类型',
@@ -750,6 +755,7 @@ function initCert(x) {
                 field: 'certNo',
                 title: '证书编号',
                 halign: 'center',
+                width:'25%',
                 editable:{
                     type: 'text',
                     title: '证书编号',
@@ -759,6 +765,7 @@ function initCert(x) {
                 field: 'startDate',
                 title: '开始日期',
                 halign: 'center',
+                width:'15%',
                 editable:{
                     type: 'date',
                     title: '开始日期',
@@ -768,6 +775,7 @@ function initCert(x) {
                 field: 'validity',
                 title: '有效期',
                 halign: 'center',
+                width:'15%',
                 editable:{
                     type: 'date',
                     title: '有效期',
@@ -937,8 +945,8 @@ function initChemiacalAllTable() {
         sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
         clickToSelect: true,//是否启用点击选中行
         pageNumber: 1,                       //初始化加载第一页，默认第一页
-        pageSize: 20,                       //每页的记录行数（*）
-        pageList: [20, 50, 100, 200],        //可供选择的每页的行数（*）
+        pageSize: 5,                       //每页的记录行数（*）
+        pageList: [5, 10, 50, 100],        //可供选择的每页的行数（*）
         sortStable: true,//设置为 true 将获得稳定的排序，我们会添加_position属性到 row 数据中。
         queryParamsType: '', //默认值为 'limit' ,在默认情况下 传给服务端的参数为：offset,limit,sort
         // 设置为 ''  在这种情况下传给服务器的参数为：pageSize,pageNumber
@@ -969,6 +977,7 @@ function initChemiacalAllTable() {
             field: 'number1',
             halign: 'center',
             align: 'center',
+             width:'10%',
             formatter: function (value, row, index) {
                 var page = $('#chemicalAllTable').bootstrapTable('getOptions');
                 return (page.pageNumber - 1) * page.pageSize + index + 1;
@@ -981,25 +990,25 @@ function initChemiacalAllTable() {
                 field: 'chemName',
                 title: '化学品名称',
                 halign: 'center',
-                width:'23%',
+                width:'20%',
             }, {
                 field: 'cAS',
                 title: 'CAS',
                 halign: 'center',
                 align: 'center',
-                width:'23%',
+                width:'20%',
             }, {
                 field: 'alisaName',
                 title: '别名',
                 halign: 'center',
                 align: 'center',
-                width:'23%',
+                width:'20%',
             }, {
                 field: 'dangerType',
                 title: '化学品危险类别',
                 halign: 'center',
                 align: 'center',
-                width:'26%',
+                width:'20%',
             }]
     })
     //保存所选的化学品信息
@@ -1061,6 +1070,7 @@ function initChemicalTable() {
                 field: 'number1',
                 halign: 'center',
                 align: 'center',
+                width:'10%',
                 formatter: function (value, row, index) {
                     var page = $('#certTable').bootstrapTable('getOptions');
                     return (page.pageNumber - 1) * page.pageSize + index + 1;
@@ -1081,14 +1091,17 @@ function initChemicalTable() {
                 title: '化学品名称',
                 halign: 'center',
                 align:'center',
+                width:'20%'
             },{
                 field: 'cAS',
                 title: 'CAS',
                 halign: 'center',
+                wigth:'20%'
             },{
                 field: 'dreserves',
                 title: '设计储量',
                 halign: 'center',
+                width:'15%',
                 editable:{
                     type: 'text',
                     title: '设计储量',
@@ -1104,6 +1117,7 @@ function initChemicalTable() {
                 field: 'unit',
                 title: '单位',
                 halign: 'center',
+                width:'10%',
                 editable:{
                     type: 'text',
                     title: '单位',
