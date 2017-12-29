@@ -58,3 +58,4 @@ unused.txt
 
 # Editor directories and files
 */target/
+logs/

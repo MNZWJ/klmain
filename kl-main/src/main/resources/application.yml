@@ -62,6 +62,7 @@ mybatis-plus:
     lazyLoadingEnabled: true
     multipleResultSetsEnabled: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
 f4j:
   sql-performance-scan: false
   file-copy-file-store-root: C:/bzaq/file/
