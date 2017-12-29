@@ -201,8 +201,8 @@ function inputFile() {
 function clean() {
     $("#hiddenDanger").val("");
     $("#dangerSource").val("");
-    $("#rank").val("");
-    $("#rectification").val("");
+    $('#rank').selectpicker('val','');
+    $('#rectification').selectpicker('val','');
 
     $('#startdate').val('');
     $('#startdateDiv').datetimepicker('update');
