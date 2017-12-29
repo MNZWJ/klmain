@@ -19,9 +19,9 @@
     <script src="../../ProjectScripts/Common/common.js"></script>
 
 <!--导入所用css和js-->
-    <link rel="stylesheet" href="../../Scripts/bootStrap-fileinput/css/fileinput.css"/>
-    <script src="../../Scripts/bootStrap-fileinput/js/fileinput.js"></script>
-    <script src="../../Scripts/bootStrap-fileinput/js/locales/zh.js"></script>
+    <link rel="stylesheet" href="../../Scripts/bootstrap-fileinput/css/fileinput.css"/>
+    <script src="../../Scripts/bootstrap-fileinput/js/fileinput.js"></script>
+    <script src="../../Scripts/bootstrap-fileinput/js/locales/zh.js"></script>
 
 
     <style>
@@ -40,9 +40,7 @@
             right: 20px;
         }
 
-        #fileDiv.modal-body {
-            height: 100px;
-        }
+
         #as .has-feedback .form-control-feedback {
             position: absolute;
             top: 0px;
@@ -105,7 +103,11 @@
             text-decoration: none;
         }
 
-
+        .table{
+            table-layout: fixed;
+        }
+    </style>
+    <!--
         #importModal .modal-body{
             width: 500px;
         }
@@ -115,10 +117,10 @@
         #importModal input{
             font-size: 12px;
         }
-        .table{
-            table-layout: fixed;
+        #fileDiv.modal-body {
+            height: 100px;
         }
-    </style>
+    -->
 
 </head>
 <body>
@@ -299,8 +301,8 @@
 </div>
 
 <!--导入框-->
-<div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="myFileLabel"
-    style="height:300px;margin: auto">
+<!--style="height:300px;margin: auto"-->
+<div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="myFileLabel">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header"  >

@@ -1129,10 +1129,11 @@ function FileInput () {
             allowedFileExtensions: ['xls', 'xlsx'],//接收的文件后缀
             showUpload: true, //是否显示上传按钮
             showCaption: true,//是否显示被选文件的简介
-            showPreview: false,//是否显示预览区域
+            showPreview: true,//是否显示预览区域
             autoReplace: true,
-            dropZoneEnabled: false,//是否显示拖拽区域
-            showRemove: false,//显示移除按钮
+            dropZoneEnabled: true,//是否显示拖拽区域
+            showRemove: true,//显示移除按钮
+            dropZoneTitle: '拖拽文件到这里 …',
             uploadLabel: '导入',
             browseClass: "btn btn-primary", //按钮样式
             maxFileCount: 1, //表示允许同时上传的最大文件个数
