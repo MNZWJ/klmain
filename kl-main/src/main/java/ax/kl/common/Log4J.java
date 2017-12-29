@@ -18,9 +18,9 @@ public class Log4J {
     static {
         try{
             // 初始化log4j
-            String path = System.getProperty("user.dir");
-            path = path.substring(0,path.lastIndexOf("\\"));
-            System.setProperty("logPath",path);
+//            String path = System.getProperty("user.dir");
+//            path = path.substring(0,path.lastIndexOf("\\"));
+//            System.setProperty("logPath",path);
 
             String log4jPath = Log4J.class.getClassLoader().getResource("").getPath()+"log4j.properties";
             logger.info("日志启动");
