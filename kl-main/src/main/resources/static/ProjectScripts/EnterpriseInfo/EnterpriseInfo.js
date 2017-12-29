@@ -70,7 +70,6 @@ $(function () {
                 align: 'center',
                 class: "bootTableRow",
                 width: "6%"
-
             },   {
                 field: 'standardRank',
                 title: '标准化等级',
@@ -385,6 +384,8 @@ function initTable() {
             {
                 title: '序号',
                 width: '5%',
+                halign: 'center',
+                align:'center',
                 formatter: function (value, row, index) {
                     return index + 1;
                 }
@@ -402,17 +403,20 @@ function initTable() {
                 field: 'rank',
                 title: '危险源等级',
                 halign: 'center',
-                width: '20%'
+                width: '10%',
+                align:'center'
             }, {
                 field: 'OutPersonCount',
                 title: '500米范围内人数估值',
                 halign: 'center',
-                width: '20%'
+                width: '20%',
+                align:'right',
             }, {
                 field: 'recordDate',
                 title: '投用时间',
                 halign: 'center',
-                width: '30%'
+                width: '10%',
+                align:'center'
             }]
     });
     //危险关联工艺
@@ -436,6 +440,8 @@ function initTable() {
         columns: [
             {
                 title: '序号',
+                halign: 'center',
+                align:'center',
                 formatter: function (value, row, index) {
                     return index + 1;
                 }
@@ -444,6 +450,7 @@ function initTable() {
                 field: 'technologyName',
                 title: '工艺名称',
                 halign: 'center',
+                align:'center',
                 width: '40%',
                 cellStyle: function (value, row, index, field) {
                     return {classes: '', css: {'white-space': 'nowrap', 'text-overflow': 'ellipsis'}};
