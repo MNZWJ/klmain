@@ -145,12 +145,24 @@ function searchData() {
 //清空查询条件
 function clearParam() {
     $('#searchCompanyName').selectpicker('val','');
-    $('#qResourceName').selectpicker('val','');
-    $('#qUnitName').selectpicker('val','');
-    $('#qEquipName').selectpicker('val','');
-    $('#qTargetName').selectpicker('val','');
     $('#startdate').val("");
     $('#enddate').val("");
+
+    $("#qResourceName").html('');
+    $("#qResourceName").selectpicker('refresh');
+    $("#qResourceName").selectpicker('val','');
+
+    $("#qUnitName").html('');
+    $("#qUnitName").selectpicker('refresh');
+    $("#qUnitName").selectpicker('val','');
+
+    $("#qEquipName").html('');
+    $("#qEquipName").selectpicker('refresh');
+    $("#qEquipName").selectpicker('val','');
+
+    $("#qTargetName").html('');
+    $("#qTargetName").selectpicker('refresh');
+    $("#qTargetName").selectpicker('val','');
 }
 
 //表格返回参数方法
