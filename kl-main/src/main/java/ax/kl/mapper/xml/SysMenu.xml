@@ -22,7 +22,30 @@
     </select>
 
     <select id="getMenuTreeList" resultType="ax.kl.entity.TreeModel">
-        SELECT MenuId AS id,ParentMenuId as parentId,MenuName AS text FROM  TB_SYS_MENUS ORDER BY MenuOrder
+        /*SELECT MenuId AS id,ParentMenuId as parentId,MenuName AS text FROM  TB_SYS_MENUS ORDER BY MenuOrder*/
+        SELECT
+	a.MenuId AS id,
+	a.ParentMenuId AS parentId,
+	a.MenuName AS TEXT,
+	(
+		CASE
+		WHEN COUNT (*) > 1 THEN
+			'../../Images/Common/menu1.png'
+		ELSE
+			'../../Images/Common/menu2.png'
+		END
+	) AS 'image'
+FROM
+	TB_SYS_MENUS a
+LEFT JOIN TB_SYS_MENUS b ON b.ParentMenuId = a.MenuId
+
+GROUP BY
+	a.MenuId,
+	a.ParentMenuId,
+	a.MenuName,
+	a.MenuOrder
+ORDER BY a.MenuOrder
+
     </select>
 
     <select id="GetMenusList" resultMap="BaseResultMap">
