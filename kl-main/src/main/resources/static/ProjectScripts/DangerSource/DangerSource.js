@@ -66,19 +66,19 @@ function loadSourceList(courceList) {
     map.clearOverlays();
     $.each(courceList, function (i, n) {
         var tempPoint = new BMap.Point(n.longt, n.lat);
-        var myIcon = new BMap.Icon("../../Images/Common/红点.png", new BMap.Size(50, 50));
+        var myIcon = new BMap.Icon("../../Images/Common/红点.png", new BMap.Size(20, 35));
         switch (n.rank) {
             case "一级":
-                myIcon = new BMap.Icon("../../Images/Common/红点.png", new BMap.Size(50, 50));
+                myIcon = new BMap.Icon("../../Images/Common/红点.png", new BMap.Size(20, 35));
                 break;
             case "二级":
-                myIcon = new BMap.Icon("../../Images/Common/橙点.png", new BMap.Size(50, 50));
+                myIcon = new BMap.Icon("../../Images/Common/橙点.png", new BMap.Size(20, 35));
                 break;
             case "三级":
-                myIcon = new BMap.Icon("../../Images/Common/黄点.png", new BMap.Size(50, 50));
+                myIcon = new BMap.Icon("../../Images/Common/黄点.png", new BMap.Size(20, 35));
                 break;
             case "四级":
-                myIcon = new BMap.Icon("../../Images/Common/蓝点.png", new BMap.Size(50, 50));
+                myIcon = new BMap.Icon("../../Images/Common/蓝点.png", new BMap.Size(20, 35));
                 break;
         }
         var marker = new BMap.Marker(wgs2bd(tempPoint), {
