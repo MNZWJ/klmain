@@ -66,6 +66,7 @@ function loadSourceList(courceList) {
     map.clearOverlays();
     $.each(courceList, function (i, n) {
         var tempPoint = new BMap.Point(n.longt, n.lat);
+        //自定义图标
         var myIcon = new BMap.Icon("../../Images/Common/红点.png", new BMap.Size(20, 35));
         switch (n.rank) {
             case "一级":
