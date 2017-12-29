@@ -66,6 +66,7 @@ function loadSourceList(courceList) {
     map.clearOverlays();
     $.each(courceList, function (i, n) {
         var tempPoint = new BMap.Point(n.longt, n.lat);
+        //自定义图标
         var myIcon = new BMap.Icon("../../Images/Common/红点.png", new BMap.Size(20, 35));
         switch (n.rank) {
             case "一级":
@@ -82,8 +83,8 @@ function loadSourceList(courceList) {
                 break;
         }
         var marker = new BMap.Marker(wgs2bd(tempPoint), {
-            title: n.sourceName,
-            icon: myIcon
+            title: n.sourceName
+            //icon: myIco
         });
         map.addOverlay(marker);
         marker.customData = {sourceId: n.sourceId};
@@ -220,7 +221,6 @@ function initTable() {
             return "bootTableRow";
         },
         onLoadSuccess:function(result){
-            debugger;
         },
         onLoadError: function () {
         },
