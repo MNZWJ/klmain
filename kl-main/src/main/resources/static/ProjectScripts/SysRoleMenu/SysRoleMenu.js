@@ -18,6 +18,7 @@ $(function () {
                 highlightSelected: true,//当选择节点时是否高亮显示。
                 showBorder: false,//是否在节点上显示边框。
                 showCheckbox:true,
+                showImage: true,
                 data: result,
                 onNodeChecked:function(event, node){
                     var nodeIds =getChildNodeIdArr(node);
