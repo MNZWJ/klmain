@@ -3,7 +3,13 @@
 <mapper namespace="ax.kl.mapper.MonitorTargetMapper">
     <!--获取检测指标树-->
     <select id="getTargetTree" resultType="ax.kl.entity.TreeModel">
-        SELECT TargetCode AS Id,PCode AS parentId,TargetName AS text,LevelCode AS code FROM TB_BASE_MONITOR_TARGET ORDER BY LevelCode
+        SELECT a.TargetCode AS Id,a.PCode AS parentId,a.TargetName AS text,a.LevelCode AS code,
+			 (CASE WHEN count(*)>1 THEN '../../Images/Common/menu1.png' ELSE '../../Images/Common/menu2.png' END) AS 'image'
+          FROM TB_BASE_MONITOR_TARGET a
+          LEFT JOIN TB_BASE_MONITOR_TARGET b
+            ON  a.TargetCode=b.PCode
+         GROUP BY a.TargetCode,a.PCode,a.TargetName,a.LevelCode
+         ORDER BY a.LevelCode
     </select>
 
     <!--获取检测指标树-->
